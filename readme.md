@@ -1,11 +1,12 @@
 # a quality management software
-while it makes way more sense to automate quality management using assistive technology and digitalizing everything, this is not always possible. so this quality management software has a very specific use case depending on your environment:
+while it makes way more sense to automate quality management using assistive technology, digitalizing everything and use a decent software for your processes, this is not always possible. so this quality management software has a very specific use case depending on your environment:
 
 * your quality managment and documentation is still mainly paper-based
 * your quality manager is fed up with manual version control, archiving, publishing and keeping the overview list of documents clean
 * your company does not have the ressources to test out different expensive qm-software-solutions until you find one to suit your needs
 * employees have access to the it-infrastructure and printers, e.g. via network and group-accounts
 * your it-department is stubborn and unflexible so you have to make use of the tools you have access to, even if you have to fasten screws with a hammer because you don't get a screwdriver
+* there's at least one responsible employee capable of web-developement, office scripting or at least better at looking things up that average joe (like myself)
 
 [by error on line 1](http://erroronline.one) but feel free to use and modify at your own risk according to the license outlined below.
 
