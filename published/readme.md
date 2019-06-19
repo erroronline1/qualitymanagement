@@ -1,0 +1,1 @@
+this folder may contain the internal documents in use as pdf-files therefore unchangeable. like the external documents there is no subfolder structure neccessary because all documents are accessible through the documents lookup.

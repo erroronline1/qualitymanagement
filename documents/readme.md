@@ -1,0 +1,1 @@
+this folder contains the current version of your valid documents. these are macro endabled and always at the latest state of your working draft. from here the automation on versioning, archiving, publishing and registering takes place.

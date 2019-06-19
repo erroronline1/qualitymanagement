@@ -1,0 +1,1 @@
+this folder may contain the external documents in use. just for a better file management. like the published documents there is no subfolder structure neccessary because all documents are accessible through the documents lookup.
