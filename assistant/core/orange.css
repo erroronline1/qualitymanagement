@@ -1,0 +1,36 @@
+body,input,select {color:#333;}
+select option, select optgroup {color:#333}
+body {background-color:#C55C18;}
+::selection{background:rgb(0, 164, 201); color:#fff}
+input, select { background-color:transparent; border: 0 solid rgb(197, 43, 92); border-width: 0 0 1px 0;}
+header {color:#fff}
+header input, header select, #popuptext input, #popuptext select { background-color:transparent; color: #fff; border: 0 solid rgb(197, 43, 92); border-width: 0 0 1px 0;}
+textarea { background-color:transparent; border: 0 solid rgb(197, 43, 92); border-width: 1px;}
+
+#temp {background-color:rgba(255,255,255,.5);}
+#output {background-color:rgba(255,255,255,.7);}
+.items {background-color:rgba(197, 92, 24,.1);}
+.itemresize, .itemresize::before {border-color:rgba(0,0,0,.5); background-color: #E2AE8C;}
+
+#menu, .icon, #popuptext {background-color:rgba(121, 48, 0,.9); color:#fff; fill:#fff}
+.icon { background-color:transparent}
+
+input[type='button'], #popuptext input[type='button'], input[type='submit'], #popuptext input[type='submit'], .button {fill:#fff; color: #fff; background-color:rgb(197, 43, 92);}
+.button svg {fill:#fff}
+.checkmark { border-color: rgba(0,0,0,.5); background-color: transparent;}
+.checkmark::after, .custominput input:checked ~ .checkmark {background-color:rgba(0,0,0,.6);}
+.custominput input:checked ~ .checkmark::after{ background-color:#E2AE8C;}
+
+header .checkmark, #popuptext .checkmark { border-color: rgba(255, 255, 255,.5); background-color: transparent;}
+header .checkmark::after, header .custominput input:checked ~ .checkmark, #popuptext .checkmark::after, #popuptext .custominput input:checked ~ .checkmark {background-color:rgba(255, 255, 255,.6);}
+header .custominput input:checked ~ .checkmark::after, #popuptext .custominput input:checked ~ .checkmark::after { background-color:rgba(197, 92, 24, .8);}
+
+.highlight {color:rgb(197, 43, 92)}
+hr{background-color: rgb(197, 43, 92);}
+
+a:link {color:rgb(0, 106, 129);}
+a:hover::after {color:rgb(197, 43, 92);}
+
+#settings {float:right; display:block; margin:0 .5em; width:1em; height:1em; fill: #333; }
+
+#popup {background-color:rgba(0,0,0,.5); }

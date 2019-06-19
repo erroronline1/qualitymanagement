@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+<title></title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=11">
+<script src="core/core.js">
+
+//////////////////////////////////////////////////////////////
+//  6/2019 by error on line 1 (erroronline.one)
+//
+//  modular software platform to handle different javascripts
+//  for automated dataprocessing where security setting leave
+//  no other options or buying a software were to expensive
+//
+//  unfortunately written for ie11 on purpose
+//  tested with ie11, firefox, edge and chrome
+//
+//  chrome has an issue with cookies from local files, this is
+//  an issue that might need some tweaks.
+//  see https://bugs.chromium.org/p/chromium/issues/detail?id=535
+//
+//	add changes to the changelog in config/user_information.js
+//
+//////////////////////////////////////////////////////////////
+
+</script>
+<script src="core/config.js"></script>
+<script src="core/core_language_synthesis.js"></script>
+
+<link href="core/core.css" rel="stylesheet" type="text/css" />
+<link id="colortheme" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+<nav id="menu">
+	<span id="title">
+		<script>
+		document.write(core.var.logo+'<div style="display:inline-block">'+core.function.lang('title')+'&nbsp;</div>');
+		</script>
+	</span><br /><br />
+		<!-- since javascript doesn´t have access to local file system there is no automatic detection of json files available
+	hence the need to read explicit from registered_modules.json-->
+</nav>
+<div id="content">
+<header id="input">
+	<script>
+			document.write(core.function.lang('greeting'));
+	</script>
+</header>
+<main class="content">
+<article id="temp"></article>
+<aside id="output" onclick="selectText('output')"></aside>
+</main>
+</div>
+<div id="popup"><div id="popuptext"></div></div>
+
+<script src="core/user_information.js"></script>
+<script>
+	select_module();
+	document.title=core.function.lang('title');
+	el('temp').innerHTML=randomTip.show();
+	//load settings from cookies or defaults
+	var fontsize=document.body.style.fontSize=((core.function.cookie.get('settingFontsize') || 0)/10 + 1) + 'em';
+	el('colortheme').href='core/'+(core.function.cookie.get('settingTheme') || 'default')+'.css';
+	core.function.cookie.get('settingSmallmenu') && el('menu').classList.add('small');
+
+	updateTracker.alert();
+</script>
+</body>
+</html>
