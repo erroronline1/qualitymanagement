@@ -254,6 +254,7 @@ var core={
 		},
 		icon:{
 			//key[viewbox,transform scale, d-path]
+			home:['0 0 2048 2048','1,-1','M1024 1883l941 -942l-90 -90l-83 82v-805h-640v640h-256v-640h-640v805l-83 -82l-90 90zM1664 256v805l-640 640l-640 -640v-805h384v640h512v-640h384z'],
 			search:['0 0 2048 2048','1,-1','M1344 2048q97 0 187 -25t168 -71t142.5 -110.5t110.5 -142.5t71 -168t25 -187t-25 -187t-71 -168t-110.5 -142.5t-142.5 -110.5t-168 -71t-187 -25q-125 0 -239.5 42t-210.5 121l-785 -784q-19 -19 -45 -19t-45 19t-19 45t19 45l784 785q-79 96 -121 210.5t-42 239.5 q0 97 25 187t71 168t110.5 142.5t142.5 110.5t168 71t187 25zM1344 768q119 0 224 45.5t183 123.5t123.5 183t45.5 224t-45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224t45.5 -224t123.5 -183t183 -123.5t224 -45.5z'],
 			mail:['0 0 2048 2048','1,-1','M0 1664h2048v-1280h-2048v1280zM1905 1536h-1762l881 -441zM128 512h1792v888l-896 -447l-896 447v-888z'],
 			delete:['0 0 2048 2048','1,-1','M1792 1664h-128v-1472q0 -40 -15 -75t-41 -61t-61 -41t-75 -15h-1024q-40 0 -75 15t-61 41t-41 61t-15 75v1472h-128v128h512v128q0 27 10 50t27.5 40.5t40.5 27.5t50 10h384q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50v-128h512v-128zM768 1792h384v128h-384v-128z M1536 1664h-1152v-1472q0 -26 19 -45t45 -19h1024q26 0 45 19t19 45v1472zM768 384h-128v1024h128v-1024zM1024 384h-128v1024h128v-1024zM1280 384h-128v1024h128v-1024z'],
@@ -300,6 +301,7 @@ var slider={ //just fancy animation of content on module change
 function select_module(){
 	//load module list and return the main menu
 	if (typeof(core.var.modules)!='undefined'){
+		el('menu').innerHTML+='<input type="radio" name="modulemenu" id="home" /><label for="setting" title="'+core.function.lang('homeMenuEntry')+'" onclick="location.reload();">'+core.function.icon.insert('home')+core.function.lang('homeMenuEntry')+'</label>';
 		Object.keys(core.var.modules).forEach(function(key){
 			if (typeof core.var.modules[key]==='object' && core.function.cookie.get('module_'+key)!=1){
 			//create module-selector

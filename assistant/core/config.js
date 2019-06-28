@@ -177,6 +177,12 @@ core.var={
 		openLetterTemplateHint:{
 			en:function(){return 'change font to '+core.var.corporateFontFace+', size '+core.var.corporateFontSize;},
 			de:function(){return 'Schriftart ggf zu '+core.var.corporateFontFace+', Schriftgröße '+core.var.corporateFontSize+' anpassen';}},
-				
+		quickstart:{
+			en:'Quickstart',
+			de:'Schnelleinstieg'},
+		homeMenuEntry:{
+			en:'Home',
+			de:'Start'},
+					
 	},
 };
