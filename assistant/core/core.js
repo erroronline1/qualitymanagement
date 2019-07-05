@@ -146,7 +146,7 @@ var core={
 			return sel;
 		},
 
-		loadScript:function(url,callback) {
+		loadScript:function(url, callback, title) {
 			//load given script-files into scope a.k.a. load desired modules
 			if (url!='') {
 				if (typeof(reset)!='undefined') el('input').innerHTML='';
@@ -166,6 +166,7 @@ var core={
 					//of program even without reloading it. it does work fine, i suddenly was not so sure anymore if i wanted that for real.
 					//seemed a bit annoying but at least it is programmatically prepared
 					//enable following: if (url!='core/update_tracker.json') this.loadScript('core/update_tracker.json', 'updateTracker.alert()');
+					if (typeof(title)!='undefined') document.title=core.function.lang('title')+ ' - '+title;
 				}
 				catch (err) {return;}
 			}
@@ -306,7 +307,7 @@ function select_module(){
 			if (typeof core.var.modules[key]==='object' && core.function.cookie.get('module_'+key)!=1){
 			//create module-selector
 			opt='modules/' + key + '.js';
-			el('menu').innerHTML+='<input type="radio" name="modulemenu" id="module'+key+'" /><label for="module'+key+'" title="'+core.var.modules[key].display[core.var.selectedLanguage]+'" onclick="slider.slide(\''+key+'\'); core.function.loadScript(\''+opt+'\', \'module.function.'+key+'\'); return;">'+core.var.modules[key].icon+core.var.modules[key].display[core.var.selectedLanguage]+'</label>';
+			el('menu').innerHTML+='<input type="radio" name="modulemenu" id="module'+key+'" /><label for="module'+key+'" title="'+core.var.modules[key].display[core.var.selectedLanguage]+'" onclick="slider.slide(\''+key+'\'); core.function.loadScript(\''+opt+'\', \'module.function.'+key+'\', \''+core.var.modules[key].display[core.var.selectedLanguage]+'\'); return;">'+core.var.modules[key].icon+core.var.modules[key].display[core.var.selectedLanguage]+'</label>';
 			slider.modules.push(key);
 		}});
 		el('menu').innerHTML+='<input type="radio" name="modulemenu" id="settings" /><label for="setting" title="'+core.function.lang('settingMenuEntry')+'" onclick="core.function.popup(core.function.setting.setup()); return;">'+core.function.icon.insert('settings')+core.function.lang('settingMenuEntry')+'</label>';
