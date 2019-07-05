@@ -61,7 +61,7 @@ core.var={
 //	register all languages to be selectable within settings menu. if a language is not extended properly there might be object errors!
 	registeredLanguages:{ en: ["en","english"], de: ["de","deutsch"]},
 //	selected language in settings or desired default fallback
-	selectedLanguage:(core.function.cookie.get('settingLanguage') || 'en'),
+	selectedLanguage:(core.function.setting.get('settingLanguage') || 'en'),
 //	mail for error reporting or feature request as shown in settings
 	adminMail:'your@email.adr',
 //	corporate design considerations for font. used for copied content. has to be installed on local machine
@@ -129,6 +129,9 @@ core.var={
 		settingRestartNeccessary:{
 			en:'restart of application neccessary',
 			de:'Neustart der Oberfläche erforderlich'},
+		settingResetApp:{
+			en:'Reset application',
+			de:'Alle Einstellungen zurücksetzen'},
 
 		errorLoadingModules:{
 			en:'Error loading modules...',
@@ -140,8 +143,8 @@ core.var={
 			en:'Well, <em>please</em> provide values...',
 			de:'Na, die Angaben müssen schon auch gemacht werden...'},
 		errorNothingFound:{
-			en:function(query){return 'Search for <span class="highlight">'+ query + '</span> returned no results. Check spelling '+(core.function.cookie.get('settingFuzzySearch')?'':'or fuzzy-search-setting ')+'or look for parts of query. Please adhere to mimimum 3 character length.'},
-			de:function(query){return 'Zum Begriff <span class="highlight">'+ query + '</span> konnte nichts gefunden werden. Bitte eventuell Schreibweise '+(core.function.cookie.get('settingFuzzySearch')?'':'oder Fuzzy-Search-Einstellung ')+'überprüfen oder nach Wortteilen suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'},
+			en:function(query){return 'Search for <span class="highlight">'+ query + '</span> returned no results. Check spelling '+(core.function.setting.get('settingFuzzySearch')?'':'or fuzzy-search-setting ')+'or look for parts of query. Please adhere to mimimum 3 character length.'},
+			de:function(query){return 'Zum Begriff <span class="highlight">'+ query + '</span> konnte nichts gefunden werden. Bitte eventuell Schreibweise '+(core.function.setting.get('settingFuzzySearch')?'':'oder Fuzzy-Search-Einstellung ')+'überprüfen oder nach Wortteilen suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'},
 		},
 
 		buttonGenCaption:{

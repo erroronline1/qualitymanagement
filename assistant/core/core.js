@@ -64,7 +64,7 @@ var core={
 
 				function fuzzy(haystack, needle, ratio) {
 					if (haystack.indexOf(needle) > -1) return 2; // covers basic partial matches
-					if (!core.function.cookie.get('settingFuzzySearch')) return false;
+					if (!core.function.setting.get('settingFuzzySearch')) return false;
 					//nested loops compare substrings within long haystack for matching fuzzy needle
 					for (var sp=0; sp < haystack.length-needle.length; sp++){
 						var matches = 0;
@@ -172,22 +172,6 @@ var core={
 			}
 		},
 
-		cookie:{ // store favourites, settings and can be used for inter-module exchange 
-			set:function(name, value, expires){ //expires in seconds
-				var now = new Date(), time = now.getTime()+ expires*1000; now.setTime(time);
-				document.cookie = name + '=' + value + '; expires=' + now.toUTCString() + ';';
-			},
-			get:function(name){
-				var x=document.cookie;
-				if (x.indexOf(name+'=')>-1) {
-					var c=x.substring(x.indexOf(name)), start=c.indexOf('=')+1, end=c.indexOf(';')>-1?c.indexOf(';'):false;
-					return end ? c.substring(start,end) : c.substring(start);
-				}
-				else return false;
-			},
-			unset: function(name){ document.cookie = name + '=0; expires=Thu, 01 Jan 1970 00:00:00 UTC' + ';'; }
-		},
-
 		insert:{
 			//handle repetitive design patterns
 			checkbox:function(label, id, checked, event){ return '<label class="custominput">'+label+'<input type="checkbox" id="'+id+'" '+(checked?'checked="checked" ':'')+(event?event:'')+' /><span class="checkmark"></span></label>';},
@@ -211,7 +195,7 @@ var core={
 					var moduleSelector='', themeSelector=new Object();
 					//create module-selector
 					Object.keys(core.var.modules).forEach(function(key){
-						moduleSelector+=core.function.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_'+key, (core.function.cookie.get('module_'+key)!=1),'onchange="core.function.setting.switch(\'module_'+key+'\')"')+'<br />';
+						moduleSelector+=core.function.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_'+key, (core.function.setting.get('module_'+key)!=1),'onchange="core.function.setting.switch(\'module_'+key+'\')"')+'<br />';
 					});
 					//create theme-selector
 					Object.keys(core.var.themes).forEach(function(key){
@@ -220,38 +204,90 @@ var core={
 					} else moduleSelector=core.function.lang('errorLoadingModules');
 			
 					return ''
-					+core.function.lang('settingThemeCaption')+':<br />'+core.function.insert.select(themeSelector,'settingTheme','settingTheme', (core.function.cookie.get('settingTheme') || null), 'onchange="core.function.setting.theme(this.value)"')
-					+'<br />'+core.function.lang('settingMenusizeCaption')+':<br />'+core.function.insert.checkbox(core.function.lang('settingMenusizeSelector'),'settingSmallmenu', (core.function.cookie.get('settingSmallmenu') || 0), 'onchange="core.function.setting.reversedswitch(\'settingSmallmenu\')"')
-					+'<br />'+core.function.lang('settingFontsizeCaption')+':<br /><input type="range" min="-5" max="10" value="' + (core.function.cookie.get('settingFontsize') || 0) + '" id="fontsize" onchange="core.function.setting.fontsize(this.value)" />'
+					+core.function.lang('settingThemeCaption')+':<br />'+core.function.insert.select(themeSelector,'settingTheme','settingTheme', (core.function.setting.get('settingTheme') || null), 'onchange="core.function.setting.theme(this.value)"')
+					+'<br />'+core.function.lang('settingMenusizeCaption')+':<br />'+core.function.insert.checkbox(core.function.lang('settingMenusizeSelector'),'settingSmallmenu', (core.function.setting.get('settingSmallmenu') || 0), 'onchange="core.function.setting.reversedswitch(\'settingSmallmenu\')"')
+					+'<br />'+core.function.lang('settingFontsizeCaption')+':<br /><input type="range" min="-5" max="10" value="' + (core.function.setting.get('settingFontsize') || 0) + '" id="fontsize" onchange="core.function.setting.fontsize(this.value)" />'
 					+'<br />'+core.function.lang('settingLanguageCaption')+':<br />'+core.function.insert.select(core.var.registeredLanguages,'settingLanguage','settingLanguage', (core.var.selectedLanguage || null), 'title="'+core.function.lang('settingRestartNeccessary')+'" onchange="core.function.setting.language(this.value)"')
-					+'<br /><br />'+core.function.insert.checkbox('Fuzzy-Search','settingFuzzySearch',(core.function.cookie.get('settingFuzzySearch') || 0),'onchange="core.function.setting.reversedswitch(\'settingFuzzySearch\')"')
+					+'<br /><br />'+core.function.insert.checkbox('Fuzzy-Search','settingFuzzySearch',(core.function.setting.get('settingFuzzySearch') || 0),'onchange="core.function.setting.reversedswitch(\'settingFuzzySearch\')"')
 					+'<br /><small>'+core.function.lang('settingSearchOptionHint')+'</small>'
-					+'<br />'+core.function.insert.checkbox(core.function.lang('settingCopyOptionSelector'),'settingNewWindowCopy',(core.function.cookie.get('settingNewWindowCopy') || 0),'onchange="core.function.setting.reversedswitch(\'settingNewWindowCopy\')"')
+					+'<br />'+core.function.insert.checkbox(core.function.lang('settingCopyOptionSelector'),'settingNewWindowCopy',(core.function.setting.get('settingNewWindowCopy') || 0),'onchange="core.function.setting.reversedswitch(\'settingNewWindowCopy\')"')
 					+'<br /><small>'+core.function.lang('settingCopyOptionHint')+'</small>'
-					+'<br />'+core.function.insert.checkbox(core.function.lang('settingNotificationSelector'),'settingStarthinweis'+updateTracker.latestMajorUpdate(),(core.function.cookie.get('settingStarthinweis'+updateTracker.latestMajorUpdate()) !=1 ),'onchange="core.function.setting.switch(\'settingStarthinweis'+updateTracker.latestMajorUpdate()+'\')"')
+					+'<br />'+core.function.insert.checkbox(core.function.lang('settingNotificationSelector'),'settingStarthinweis'+updateTracker.latestMajorUpdate(),(core.function.setting.get('settingStarthinweis'+updateTracker.latestMajorUpdate()) !=1 ),'onchange="core.function.setting.switch(\'settingStarthinweis'+updateTracker.latestMajorUpdate()+'\')"')
 					+'<br /><small>'+core.function.lang('settingNotificationHint')+'</small>'
 					+'<br /><br />'+core.function.lang('settingModuleselectorCaption')+':<br />'+moduleSelector
+					+'<br /><br /><input type="button" onclick="core.function.setting.clear()" value="'+core.function.lang('settingResetApp')+'" />'
 					+'<br /><br />'+core.function.lang('settingGeneralHint');
 				},
 			theme:function(theme){
 				el('colortheme').href='core/'+theme+'.css';
-				core.function.cookie.set('settingTheme',theme,60*60*24*365);
+				core.function.setting.set('settingTheme',theme);
 			},
 			fontsize:function(value){
 				fontsize=document.body.style.fontSize=(value/10 + 1) + 'em';
-				core.function.cookie.set('settingFontsize',value,60*60*24*365);
+				core.function.setting.set('settingFontsize',value);
 			},
 			language:function(value){
-				core.function.cookie.set('settingLanguage',value,60*60*24*365);
+				core.function.setting.set('settingLanguage',value);
 			},
 			switch:function(name){ //on by default
-				if (el(name).checked) core.function.cookie.unset(name);
-				else core.function.cookie.set(name,1,60*60*24*365);
+				if (el(name).checked) core.function.setting.unset(name);
+				else core.function.setting.set(name,1);
 			},
 			reversedswitch:function(name){ //off by default
-				if (el(name).checked) core.function.cookie.set(name,1,60*60*24*365);
-				else core.function.cookie.unset(name);
+				if (el(name).checked) core.function.setting.set(name,1);
+				else core.function.setting.unset(name);
 			},
+
+			localStorage:function(){
+				try {
+					test=new Array('void','localStorageTest');
+					localStorage.setItem(test[0], test[1]);
+					localStorage.removeItem(test[0]);
+					return true;
+				} catch(e) {
+					return false;
+				}
+			},
+			set:function(name, value, expires){
+				if (this.localStorage()) {
+					window.localStorage.setItem(name,value);
+				}
+				else {
+					var now = new Date(), time = now.getTime()+ 3600*24*365*1000; now.setTime(time);
+					document.cookie = name + '=' + value + '; expires=' + now.toUTCString() + ';';
+				}
+			},
+			get:function(name){
+				if (this.localStorage()) {
+					if (window.localStorage.getItem(name)==null) return false;
+					else return window.localStorage.getItem(name);
+				}
+				else{
+					var x=document.cookie;
+					if (x.indexOf(name+'=')>-1) {
+						var c=x.substring(x.indexOf(name)), start=c.indexOf('=')+1, end=c.indexOf(';')>-1?c.indexOf(';'):false;
+						return end ? c.substring(start,end) : c.substring(start);
+					}
+					else return false;
+				}
+			},
+			unset: function(name){
+				if (this.localStorage()){
+					window.localStorage.removeItem(name);
+				}
+				else{
+					document.cookie = name + '=0; expires=Thu, 01 Jan 1970 00:00:00 UTC' + ';';
+				}
+			},
+			clear:function(){
+				if (this.localStorage()){
+					window.localStorage.clear();
+				}
+				else{
+					document.cookie.split(";").forEach(function(c) { console.log(c.replace(/^ +/g, "").replace(/=.*/g, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;"));
+					document.cookie = c.replace(/^ +/g, "").replace(/=.*/g, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;"); });
+				}
+			}
 		},
 		icon:{
 			//key[viewbox,transform scale, d-path]
@@ -304,7 +340,7 @@ function select_module(){
 	if (typeof(core.var.modules)!='undefined'){
 		el('menu').innerHTML+='<input type="radio" name="modulemenu" id="home" /><label for="setting" title="'+core.function.lang('homeMenuEntry')+'" onclick="location.reload();">'+core.function.icon.insert('home')+core.function.lang('homeMenuEntry')+'</label>';
 		Object.keys(core.var.modules).forEach(function(key){
-			if (typeof core.var.modules[key]==='object' && core.function.cookie.get('module_'+key)!=1){
+			if (typeof core.var.modules[key]==='object' && core.function.setting.get('module_'+key)!=1){
 			//create module-selector
 			opt='modules/' + key + '.js';
 			el('menu').innerHTML+='<input type="radio" name="modulemenu" id="module'+key+'" /><label for="module'+key+'" title="'+core.var.modules[key].display[core.var.selectedLanguage]+'" onclick="slider.slide(\''+key+'\'); core.function.loadScript(\''+opt+'\', \'module.function.'+key+'\', \''+core.var.modules[key].display[core.var.selectedLanguage]+'\'); return;">'+core.var.modules[key].icon+core.var.modules[key].display[core.var.selectedLanguage]+'</label>';
@@ -316,7 +352,7 @@ function select_module(){
 
 function selectText(element) {
 	if (typeof(disableOutputSelect)==="undefined" || !disableOutputSelect){
-		if (core.function.cookie.get('settingNewWindowCopy')) {
+		if (core.function.setting.get('settingNewWindowCopy')) {
 			var win=window.open("", "win"), doc=win.document;
 			doc.open("text/html", "replace");
 			doc.write('<html><head><title>'+core.function.lang('copycontentNewWindowCaption')+'</title><style>body {font-family:\''+core.var.corporateFontFace+'\'; font-size:'+core.var.corporateFontSize+'; background-color:'+window.getComputedStyle(document.body,"").getPropertyValue("background-color")+'; font-color:'+window.getComputedStyle(document.body,"").getPropertyValue("color")+';}</style></head><body onclick="window.self.close()"><div id="text">'+el(element).innerHTML+'</div></body></html>');

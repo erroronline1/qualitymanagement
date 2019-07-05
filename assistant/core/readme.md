@@ -24,12 +24,6 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.function.loadscript(url, callback)` appends url-file to the header and calls the callback function. used for importing / loading modules and data-files
 
-`core.function.cookie.set(name, value, expires)` sets a cookie that expires in *expires* seconds
-
-`core.function.cookie.get(name)` returns the value of cookie *name* or false
-
-`core.function.cookie.unset(name)` unsets cookie *name*
-
 `core.function.insert.checkbox(label, id, checked, event)` returns a html checkbox that can be prechecked, event can be an onchange property or similar
 
 `core.function.insert.radio(label, name, id, checked, event)` returns a html radio button that can be prechecked, event can be an onchange property or similar
@@ -43,6 +37,12 @@ a shortened overview of the core-functions that can be made use of in future mod
 `core.function.setting.switch(name)` toggles a cookie in terms of on by default
 
 `core.function.setting.reversedswitch(name)` toggles a cookie in terms of off by default
+
+`core.function.setting.set(name, value)` stores data in localstorage or cookie. in the latter case for about one year
+
+`core.function.setting.get(name)` returns the value of localstorage.item or cookie *name* or false
+
+`core.function.setting.unset(name)` unsets localstorage.item or cookie *name*
 
 `core.function.icon.insert(icon)` returns an inline svg according to the before declares properties within the parent property
 

@@ -112,7 +112,7 @@ var module={
 				'<form id="search" action="javascript:module.function.search();">'
 				+'<span onclick="module.function.search()">'+core.function.icon.insert('search')+'</span>'
 				+'<input type="text" pattern=".{3,}" required placeholder="'+core.function.lang('inputPlaceholder')+'" id="itemname" />'
-				+core.function.insert.select(module.function.translate.returnselect(),'stockfilter','stockfilter',(core.function.cookie.get('stockfilter') || 'all'),'onchange="core.function.cookie.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value,3600*24*365); module.function.search();"')
+				+core.function.insert.select(module.function.translate.returnselect(),'stockfilter','stockfilter',(core.function.setting.get('stockfilter') || 'all'),'onchange="core.function.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); module.function.search();"')
 				+'<input type="submit" id="submit" value="'+core.function.lang('formSubmit')+'" hidden="hidden" /> '
 				+'<span style="float:right;"><input type="button" id="searchname" value="'+core.function.lang('webSearch')+'" onclick="window.open(\'https://www.google.de/#q=\'+el(\'itemname\').value,\'_blank\');" title="'+core.function.lang('webSearchTitle')+'" /></span>';
 				+'</form>'

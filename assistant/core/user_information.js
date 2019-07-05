@@ -70,9 +70,9 @@ var updateTracker={
 	},
     alert:function(){
 //	display latest update hint on startup as long as it is not disabled
-		if (core.function.cookie.get('settingStarthinweis'+this.latestMajorUpdate())===false){
+		if (core.function.setting.get('settingStarthinweis'+this.latestMajorUpdate())===false){
             text=this.list[this.latestMajorUpdate()][1]+'<br /><br />'
-            +core.function.insert.checkbox(core.function.lang('settingNotificationSelector'),'sstarthinweis',(core.function.cookie.get('settingStarthinweis'+this.latestMajorUpdate())!=1),'onchange="core.function.cookie.set(\'settingStarthinweis'+this.latestMajorUpdate()+'\',1,3600*24*365)"')
+            +core.function.insert.checkbox(core.function.lang('settingNotificationSelector'),'sstarthinweis',(core.function.setting.get('settingStarthinweis'+this.latestMajorUpdate())!=1),'onchange="core.function.setting.set(\'settingStarthinweis'+this.latestMajorUpdate()+'\',1)"')
             +'<br /><small>'+core.function.lang('settingNotificationHint')+'</small>';
             core.function.popup(text);
         }

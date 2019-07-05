@@ -49,18 +49,18 @@ var module={
 				en:'recent favourites saved.',
 				de:'neue Favoritenliste gespeichert.'},
 			errorNothingFound:{
-				en:function(query){return 'Search for '+ (core.function.cookie.get('external')?'external':'internal') +' document searched by <span class="highlight">'+query+'</span> returned no results. Check spelling '+(core.function.cookie.get('settingFuzzySearch')?'':'or fuzzy-search-setting ')+', look for parts of query, '+ (core.function.cookie.get('external')?'internal':'external') +' or record documents.  Please adhere to mimimum 3 character length.'},
-				de:function(query){return 'Es konnte kein '+ (core.function.cookie.get('external')?'extern':'intern') +' geführtes Dokument mit dem Begriff <span class="highlight">'+query+'</span> gefunden werden. Bitte eventuell Schreibweise '+(core.function.cookie.get('settingFuzzySearch')?'':'oder Fuzzy-Search-Einstellung ')+'überprüfen, nach Wortteilen, '+ (core.function.cookie.get('external')?'internen':'externen') +' oder Nachweisdokumenten suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'},
+				en:function(query){return 'Search for '+ (core.function.setting.get('external')?'external':'internal') +' document searched by <span class="highlight">'+query+'</span> returned no results. Check spelling '+(core.function.setting.get('settingFuzzySearch')?'':'or fuzzy-search-setting ')+', look for parts of query, '+ (core.function.setting.get('external')?'internal':'external') +' or record documents.  Please adhere to mimimum 3 character length.'},
+				de:function(query){return 'Es konnte kein '+ (core.function.setting.get('external')?'extern':'intern') +' geführtes Dokument mit dem Begriff <span class="highlight">'+query+'</span> gefunden werden. Bitte eventuell Schreibweise '+(core.function.setting.get('settingFuzzySearch')?'':'oder Fuzzy-Search-Einstellung ')+'überprüfen, nach Wortteilen, '+ (core.function.setting.get('external')?'internen':'externen') +' oder Nachweisdokumenten suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'},
 			},
 		}
 	},
 	function:{
 		documentlookup:function(){
-			core.function.loadScript(module.var.packages[(core.function.cookie.get('external')||0)],'module.function.search');
+			core.function.loadScript(module.var.packages[(core.function.setting.get('external')||0)],'module.function.search');
 			el('input').innerHTML=
 				'<form id="search" action="javascript:module.function.search();">'
-				+'<span onclick="module.function.search()">'+core.function.icon.insert('search')+'</span>'+'<input type="text" pattern=".{3,}" required id="documentname" placeholder="'+(core.function.cookie.get('external')?core.function.lang('externalPlaceholder'):core.function.lang('internalPlaceholder'))+'" />'
-				+core.function.insert.checkbox(core.function.lang('optionSecondType'), 'external', (core.function.cookie.get('external') || 0), 'onchange="core.function.setting.reversedswitch(\'external\'); el(\'documentname\').placeholder=core.function.cookie.get(\'external\')?\''+core.function.lang('externalPlaceholder')+'\':\''+core.function.lang('internalPlaceholder')+'\'; core.function.loadScript(module.var.packages[(core.function.cookie.get(\'external\')||0)],\'module.function.search\');"')
+				+'<span onclick="module.function.search()">'+core.function.icon.insert('search')+'</span>'+'<input type="text" pattern=".{3,}" required id="documentname" placeholder="'+(core.function.setting.get('external')?core.function.lang('externalPlaceholder'):core.function.lang('internalPlaceholder'))+'" />'
+				+core.function.insert.checkbox(core.function.lang('optionSecondType'), 'external', (core.function.setting.get('external') || 0), 'onchange="core.function.setting.reversedswitch(\'external\'); el(\'documentname\').placeholder=core.function.setting.get(\'external\')?\''+core.function.lang('externalPlaceholder')+'\':\''+core.function.lang('internalPlaceholder')+'\'; core.function.loadScript(module.var.packages[(core.function.setting.get(\'external\')||0)],\'module.function.search\');"')
 				+'<input type="submit" id="submit" value="'+core.function.lang('formSubmit')+'" hidden="hidden" /> '
 				+'<a style="float:right" href="'+module.var.thirdDocumentCategoryPath+'">'+core.function.lang('optionThirdType')+'</a>'
 				+'</form>';
@@ -77,7 +77,7 @@ var module={
 				return value.substring(value.lastIndexOf('/'), value.lastIndexOf('.')).substring(1).replace(/[^a-z0-9]/gi,'');
 			},
 			set:function(value){
-				var output=core.function.cookie.get('favouritedocs');
+				var output=core.function.setting.get('favouritedocs');
 				if (output){
 					if (output.indexOf(value)>-1){
 						var tfav=output.split(','), favourites=new Array();
@@ -96,10 +96,10 @@ var module={
 					else output+=','+value+',1';
 				}
 				else output=value+',1';
-				core.function.cookie.set('favouritedocs', output, 3600*24*365);
+				core.function.setting.set('favouritedocs', output);
 			},
 			get:function(){
-				var output=core.function.cookie.get('favouritedocs');
+				var output=core.function.setting.get('favouritedocs');
 				if (output){
 					var tfav=tfav2=new Array();
 					//assign link to index as favourite handler
@@ -115,7 +115,7 @@ var module={
 					output='<br />'+core.function.lang('favouriteCaption')+':<span style="display:inline-block; vertical-align:middle; float:right;">'
 					+' <span class="button" title="'+core.function.lang('favouriteDeleteTitle')+'" onclick="module.function.favouriteHandler.reset(\'\')">'+core.function.icon.insert('delete')+'</span>'
 					+' <span class="button" title="'+core.function.lang('favouriteDefaultTitle')+'" onclick="module.function.favouriteHandler.reset(\''+defaults+'\')">'+core.function.icon.insert('clipboard')+'</span>'
-					+' <span class="button" title="'+core.function.lang('favouriteRestoreTitle')+'" onclick="module.function.favouriteHandler.reset(\''+core.function.cookie.get('customfavouritedocs')+'\')">'+core.function.icon.insert('refresh')+'</span>'
+					+' <span class="button" title="'+core.function.lang('favouriteRestoreTitle')+'" onclick="module.function.favouriteHandler.reset(\''+core.function.setting.get('customfavouritedocs')+'\')">'+core.function.icon.insert('refresh')+'</span>'
 					+' <span class="button" title="'+core.function.lang('favouriteSaveTitle')+'" onclick="module.function.favouriteHandler.customreset()">'+core.function.icon.insert('save')+'</span>'
 					+'</span><br /><br />';
 					for (var i=0; i<tfav2.length; i+=2){
@@ -125,11 +125,11 @@ var module={
 				return output||'';
 			},
 			reset:function(output){
-				core.function.cookie.set('favouritedocs', output, 3600*24*365);
+				core.function.setting.set('favouritedocs', output);
 				alert(core.function.lang('favouriteRestoreConfirm'));
 			},
 			customreset:function(){
-				core.function.cookie.set('customfavouritedocs', core.function.cookie.get('favouritedocs'), 3600*24*365);
+				core.function.setting.set('customfavouritedocs', core.function.setting.get('favouritedocs'));
 				alert(core.function.lang('favouriteSaveConfirm'));
 			}
 		},

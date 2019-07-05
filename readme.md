@@ -1,16 +1,13 @@
 # a quality management software
-while it makes way more sense to automate quality management using assistive technology, digitalizing everything and use a decent software for your processes, this is not always possible. so this quality management software has a very specific use case depending on your environment:
+while it makes way more sense to automate quality management using assistive technology and digitalizing everything, this is not always possible. so this quality management software has a very specific use case depending on your environment:
 
 * your quality managment and documentation is still mainly paper-based
 * your quality manager is fed up with manual version control, archiving, publishing and keeping the overview list of documents clean
 * your company does not have the ressources to test out different expensive qm-software-solutions until you find one to suit your needs
 * employees have access to the it-infrastructure and printers, e.g. via network and group-accounts
 * your it-department is stubborn and unflexible so you have to make use of the tools you have access to, even if you have to fasten screws with a hammer because you don't get a screwdriver
-* there's at least one responsible employee capable of web-developement, office scripting or at least better at looking things up that average joe (like myself)
 
 [by error on line 1](http://erroronline.one) but feel free to use and modify at your own risk according to the license outlined below.
-
-find this repo live on [http://erroronline.one/column3/aqms/assistant/QM-Assistant.html](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html). documents are not accessible, but the surface gives you an impression.
 
 this quality management software has been in use in context to [iso 13485:2015](https://www.iso.org/search.html?q=13485%3A2016)
 
@@ -74,11 +71,11 @@ there is a main file with core-functions, a config folder with config-file and t
 * the assistant is built using js-ecmascript 5 on purpose because of required compatibility to ms ie11. unfortunately this still is the default browser to date in many companies. the css is not compatible to previous versions of ie
 * the assistant is designed to handle multiple language support, comes with english and german and can be extended as desired. extend the lang-objects in every module, the config-file and register the languages in this config-file to make them available.
 * the core-object provides readable function-calls and globally usable variables. general configuration takes place in config/config.js. this file contains a variable that extents the core-object with global variables and commonly uses language-bricks.
-* built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, cookie-handler, repetitive design passtern implementation (icons, inputs, etc.) and some more. get access or extend these functions with `core.function.FUNCTIONNAME`, global variables with `core.var.VARNAME`. i recommend this pattern to modules as well, defining a module-object with `module.function.FUNCTIONNAME` and `module.var.VARNAME`. the handler for multi-language-support of the application  (`core.function.lang()`) makes built-in automated use of this pattern.
+* built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, local-storage- or cookie-handler, repetitive design passtern implementation (icons, inputs, etc.) and some more. get access or extend these functions with `core.function.FUNCTIONNAME`, global variables with `core.var.VARNAME`. i recommend this pattern to modules as well, defining a module-object with `module.function.FUNCTIONNAME` and `module.var.VARNAME`. the handler for multi-language-support of the application  (`core.function.lang()`) makes built-in automated use of this pattern.
 * data files are stored in a different folder hoping that changes to the backend don't mess up data that might be accessed through different persons than the maintainer of the application
 * users can be informed about changes using the changelog in config/user_information.js. add your own changes and the information will popup automatically on start
 * since most of my colleagues don't mind messing around to learn something, there is a short-tip function whose entries can be extended in accordance to your modules
-* settings will be stored in local cookies so everything depends on the local machine in addition to user login. if the browsers history is cleaned on exit all setting will be gone as well. there is an issue with cookie storage of local sites in chrome so this might be taken into consideration while selecting a suitable browser to handle the assistant
+* settings will be stored in local storage or cookies (depending on browser support) so everything depends on the local machine in addition to user login. in case everything is stored with cookies if the browsers history is cleaned on exit all setting will be gone as well. the storage method handles local-storage support with cookies as a fallback. this means there is finally support for chrome with an issue with cookie storage of local sites as well as ie11 without local storage
 
 *be aware that there are dependencies between the assistants datafiles, their objects and handling, and the documents vba and table-structure. it might become neccessary to change things on both sides.*
 
@@ -89,17 +86,15 @@ the provided modules are filled with dummies. the general multi-language support
 * predefined document packages
 * inventory / stock list
 * default texts for correspondence
-* mail tool
+* serial-mail tool
 * help (simplyfied for me not being english native and should be customized to your own companies comprehension of interwebz and nerd-stuff-thingies)
 
 # miscellaneous
-* the provided folder structure is not neccessarily your first choice and just a sample. but if you customize that you should change at least the default paths within the vba-macros. this repository also contains sample files for clarification.
+* the provided folder structure is not neccessarily your first choice and just a sample. but if you customize that you should change at least the default paths within the vba-macros
 * even if you don't want to use the assistant, the documents semiautomated version control might be useful for you. on the other hand the assistant is hardly possible to populate without the documents unless you write your own routines for that.
 * i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to pdfs and the assistant application should be granted for everyone.
 * before implementing this system to your company make sure your decisions for documenting the system itself are reliable (e.g. rows and columns in the list of documents in force in dependency to the vba-macro within the self registering docm-files). otherwise you might have to change a lot of code in a lot of documents. this isn't fun.
 * the assistant is designed to hopefully seamlessly transition into windows 10 fluent design that is still to come to my company as time of writing. styling and icon set was selected. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be.
-* if you have no use for all this, the project might be still interesting in terms of *javascript coding, object handling, creating another javascript framework, office vba with word/excel interaction, writing different file types, dynamic range handling and comparison*
-* this should work for demonstration purposes if you copy everything to a folder `Quality Managment` and open that on a drive assigned the letter e
 
 # disclaimer
 use at your own responsibility. as this system is or has been in real use with me being responsible, i did my best to make everything flawless. i also tried to make the documentation and comments as meaningful as i could. als always there might be parts that once seemed to be self-explanatory so a little bit of advanced javascript skills might come in handy.
@@ -110,7 +105,7 @@ but as the current deputy quality manager i strongly recommend to reconsider whi
 # license
 a quality management software - automate your paper based qms
 
-copyright (c) 2019  [by error on line 1](http://erroronline.one), distributed at [https://github.com/erroronline1/qualitymanagement](https://github.com/erroronline1/qualitymanagement)
+copyright (c) 2019  [by error on line 1](http://erroronline.one)
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version. 
 

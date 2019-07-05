@@ -67,9 +67,9 @@
 	document.title=core.function.lang('title');
 	el('temp').innerHTML=randomTip.show();
 	//load settings from cookies or defaults
-	var fontsize=document.body.style.fontSize=((core.function.cookie.get('settingFontsize') || 0)/10 + 1) + 'em';
-	el('colortheme').href='core/'+(core.function.cookie.get('settingTheme') || 'default')+'.css';
-	core.function.cookie.get('settingSmallmenu') && el('menu').classList.add('small');
+	var fontsize=document.body.style.fontSize=((core.function.setting.get('settingFontsize') || 0)/10 + 1) + 'em';
+	el('colortheme').href='core/'+(core.function.setting.get('settingTheme') || 'default')+'.css';
+	core.function.setting.get('settingSmallmenu') && el('menu').classList.add('small');
 
 	updateTracker.alert();
 </script>
