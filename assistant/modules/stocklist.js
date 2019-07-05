@@ -110,7 +110,7 @@ var module={
 			core.function.loadScript('data/stocklist.js','module.function.search');
 			el('input').innerHTML=
 				'<form id="search" action="javascript:module.function.search();">'
-				+'<span onclick="el(\'search\').submit()">'+core.function.icon.insert('search')+'</span>'
+				+'<span onclick="module.function.search()">'+core.function.icon.insert('search')+'</span>'
 				+'<input type="text" pattern=".{3,}" required placeholder="'+core.function.lang('inputPlaceholder')+'" id="itemname" />'
 				+core.function.insert.select(module.function.translate.returnselect(),'stockfilter','stockfilter',(core.function.cookie.get('stockfilter') || 'all'),'onchange="core.function.cookie.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value,3600*24*365); module.function.search();"')
 				+'<input type="submit" id="submit" value="'+core.function.lang('formSubmit')+'" hidden="hidden" /> '

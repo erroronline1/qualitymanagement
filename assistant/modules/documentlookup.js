@@ -59,7 +59,7 @@ var module={
 			core.function.loadScript(module.var.packages[(core.function.cookie.get('external')||0)],'module.function.search');
 			el('input').innerHTML=
 				'<form id="search" action="javascript:module.function.search();">'
-				+'<span onclick="el(\'search\').submit()">'+core.function.icon.insert('search')+'</span>'+'<input type="text" pattern=".{3,}" required id="documentname" placeholder="'+(core.function.cookie.get('external')?core.function.lang('externalPlaceholder'):core.function.lang('internalPlaceholder'))+'" />'
+				+'<span onclick="module.function.search()">'+core.function.icon.insert('search')+'</span>'+'<input type="text" pattern=".{3,}" required id="documentname" placeholder="'+(core.function.cookie.get('external')?core.function.lang('externalPlaceholder'):core.function.lang('internalPlaceholder'))+'" />'
 				+core.function.insert.checkbox(core.function.lang('optionSecondType'), 'external', (core.function.cookie.get('external') || 0), 'onchange="core.function.setting.reversedswitch(\'external\'); el(\'documentname\').placeholder=core.function.cookie.get(\'external\')?\''+core.function.lang('externalPlaceholder')+'\':\''+core.function.lang('internalPlaceholder')+'\'; core.function.loadScript(module.var.packages[(core.function.cookie.get(\'external\')||0)],\'module.function.search\');"')
 				+'<input type="submit" id="submit" value="'+core.function.lang('formSubmit')+'" hidden="hidden" /> '
 				+'<a style="float:right" href="'+module.var.thirdDocumentCategoryPath+'">'+core.function.lang('optionThirdType')+'</a>'

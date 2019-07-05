@@ -23,7 +23,7 @@ var module={
 			core.function.loadScript('data/help.js','module.function.search');
 			el('input').innerHTML=
 				'<form id="search" action="javascript:module.function.search();">'
-				+'<span onclick="el(\'search\').submit()">'+core.function.icon.insert('search')+'</span>'
+				+'<span onclick="module.function.search()">'+core.function.icon.insert('search')+'</span>'
 				+'<input type="text" pattern=".{3,}" required placeholder="'+core.function.lang('formInputPlaceholder')+'" id="faq" />'
 				+'<input type="submit" id="artikelsuche" value="'+core.function.lang('formSubmit')+'" hidden="hidden" /> '
 				+'</form>';
