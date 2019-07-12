@@ -201,15 +201,15 @@ var core = {
 
 		insert: {
 			//handle repetitive design patterns
-			checkbox: function (label, id, checked, event) {
-				return '<label class="custominput">' + label + '<input type="checkbox" id="' + id + '" ' + (checked ? 'checked="checked" ' : '') + (event ? event : '') + ' /><span class="checkmark"></span></label>';
+			checkbox: function (label, id, checked, additionalProperty, title) {
+				return '<label class="custominput"' + (title ? ' title="' + title + '"' : '') + '>' + label + '<input type="checkbox" id="' + id + '" ' + (checked ? 'checked="checked" ' : '') + (additionalProperty ? additionalProperty : '') + ' /><span class="checkmark"></span></label>';
 			},
-			radio: function (label, name, id, checked, event) {
-				return '<label class="custominput">' + label + '<input type="radio" name="' + name + '" id="' + id + '" ' + (checked ? 'checked="checked"' : '') + (event ? event : '') + ' /><span class="checkmark"></span></label>';
+			radio: function (label, name, id, checked, additionalProperty, title) {
+				return '<label class="custominput"' + (title ? ' title="' + title + '"' : '') + '>' + label + '<input type="radio" name="' + name + '" id="' + id + '" ' + (checked ? 'checked="checked"' : '') + (additionalProperty ? additionalProperty : '') + ' /><span class="checkmark"></span></label>';
 			},
-			select: function (options, name, id, selected, event) {
+			select: function (options, name, id, selected, additionalProperty) {
 				// output has to be object with optionId:[value,label] pairs
-				var output = '<select name="' + name + '" id="' + id + '" ' + (event ? event : '') + '>'
+				var output = '<select name="' + name + '" id="' + id + '" ' + (additionalProperty ? additionalProperty : '') + '>'
 				Object.keys(options).forEach(function (key) {
 					output += '<option value="' + options[key][0] + '" ' + (selected == key ? 'selected="selected" ' : '') + '>' + options[key][1] + '</option>';
 				});
@@ -229,7 +229,7 @@ var core = {
 						themeSelector = new Object();
 					//create module-selector
 					Object.keys(core.var.modules).forEach(function (key) {
-						moduleSelector += core.function.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.function.setting.get('module_' + key) != 1), 'onchange="core.function.setting.switch(\'module_' + key + '\')"') + '<br />';
+						moduleSelector += core.function.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.function.setting.get('module_' + key) != 1), 'onchange="core.function.setting.switch(\'module_' + key + '\')"', core.function.lang('settingRestartNeccessary')) + '<br />';
 					});
 					//create theme-selector
 					Object.keys(core.var.themes).forEach(function (key) {
@@ -239,17 +239,17 @@ var core = {
 
 				return '' +
 					core.function.lang('settingThemeCaption') + ':<br />' + core.function.insert.select(themeSelector, 'settingTheme', 'settingTheme', (core.function.setting.get('settingTheme') || null), 'onchange="core.function.setting.theme(this.value)"') +
-					'<br />' + core.function.lang('settingMenusizeCaption') + ':<br />' + core.function.insert.checkbox(core.function.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.function.setting.get('settingSmallmenu') || 0), 'onchange="core.function.setting.reversedswitch(\'settingSmallmenu\')"') +
+					'<br />' + core.function.lang('settingMenusizeCaption') + ':<br />' + core.function.insert.checkbox(core.function.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.function.setting.get('settingSmallmenu') || 0), 'onchange="core.function.setting.reversedswitch(\'settingSmallmenu\')"', core.function.lang('settingRestartNeccessary')) +
 					'<br />' + core.function.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (core.function.setting.get('settingFontsize') || 0) + '" id="fontsize" onchange="core.function.setting.fontsize(this.value)" />' +
 					'<br />' + core.function.lang('settingLanguageCaption') + ':<br />' + core.function.insert.select(core.var.registeredLanguages, 'settingLanguage', 'settingLanguage', (core.var.selectedLanguage || null), 'title="' + core.function.lang('settingRestartNeccessary') + '" onchange="core.function.setting.language(this.value)"') +
 					'<br /><br />' + core.function.insert.checkbox('Fuzzy-Search', 'settingFuzzySearch', (core.function.setting.get('settingFuzzySearch') || 0), 'onchange="core.function.setting.reversedswitch(\'settingFuzzySearch\')"') +
 					'<br /><small>' + core.function.lang('settingSearchOptionHint') + '</small>' +
 					'<br />' + core.function.insert.checkbox(core.function.lang('settingCopyOptionSelector'), 'settingNewWindowCopy', (core.function.setting.get('settingNewWindowCopy') || 0), 'onchange="core.function.setting.reversedswitch(\'settingNewWindowCopy\')"') +
 					'<br /><small>' + core.function.lang('settingCopyOptionHint') + '</small>' +
-					'<br />' + core.function.insert.checkbox(core.function.lang('settingNotificationSelector'), 'settingStarthinweis' + updateTracker.latestMajorUpdate(), (core.function.setting.get('settingStarthinweis' + updateTracker.latestMajorUpdate()) != 1), 'onchange="core.function.setting.switch(\'settingStarthinweis' + updateTracker.latestMajorUpdate() + '\')"') +
+					'<br />' + core.function.insert.checkbox(core.function.lang('settingNotificationSelector'), 'settingStarthinweis' + updateTracker.latestMajorUpdate(), (core.function.setting.get('settingStarthinweis' + updateTracker.latestMajorUpdate()) != 1), 'onchange="core.function.setting.switch(\'settingStarthinweis' + updateTracker.latestMajorUpdate() + '\')"', core.function.lang('settingRestartNeccessary')) +
 					'<br /><small>' + core.function.lang('settingNotificationHint') + '</small>' +
 					'<br /><br />' + core.function.lang('settingModuleselectorCaption') + ':<br />' + moduleSelector +
-					'<br /><br /><input type="button" onclick="core.function.setting.clear()" value="' + core.function.lang('settingResetApp') + '" />' +
+					'<br /><br /><input type="button" onclick="core.function.setting.clear()" value="' + core.function.lang('settingResetApp') + '" title="' + core.function.lang('settingRestartNeccessary') + '" />' +
 					'<br /><br />' + core.function.lang('settingGeneralHint');
 			},
 			theme: function (theme) {
