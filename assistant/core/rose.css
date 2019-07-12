@@ -1,31 +1,118 @@
-body,input,select {color:#333;}
-select option, select optgroup {color:#333}
-body {background-color:rgb(247, 191, 214);}
-::selection{background:rgb(0, 164, 201); color:#fff}
-input, select { background-color:transparent; border: 0 solid rgb(197, 43, 92); border-width: 0 0 1px 0;}
-textarea { background-color:transparent; border: 0 solid rgb(197, 43, 92); border-width: 1px;}
+body,
+input,
+select {
+	color: #333;
+}
 
-#temp {background-color:rgba(255,255,255,.7);}
-#output {background-color:rgba(255,255,255,.9);}
-.items {background-color:rgba(247, 191, 214,.2);}
-.itemresize, .itemresize::before {border-color:rgba(0,0,0,.5); background-color: #FEF9FB;}
+select option,
+select optgroup {
+	color: #333
+}
 
-#menu, .icon, #popuptext {background-color:rgba(248, 206, 224,.9); color:#111; fill:#111}
-.icon {background-color:transparent}
+body {
+	background-color: rgb(247, 191, 214);
+}
 
-input[type='button'], input[type='submit'], .button {fill:#fff; color: #fff; background-color:rgb(197, 43, 92);}
-.button svg {fill:#fff}
-.checkmark { border-color: rgba(0,0,0,.5); background-color: transparent;}
-.checkmark::after, .custominput input:checked ~ .checkmark {background-color:rgba(0,0,0,.6);}
-.custominput input:checked ~ .checkmark::after{ background-color:#FCE3ED;}
+::selection {
+	background: rgb(0, 164, 201);
+	color: #fff
+}
+
+input,
+select {
+	background-color: transparent;
+	border: 0 solid rgb(197, 43, 92);
+	border-width: 0 0 1px 0;
+}
+
+textarea {
+	background-color: transparent;
+	border: 0 solid rgb(197, 43, 92);
+	border-width: 1px;
+}
+
+#temp {
+	background-color: rgba(255, 255, 255, .7);
+}
+
+#output {
+	background-color: rgba(255, 255, 255, .9);
+}
+
+.items {
+	background-color: rgba(247, 191, 214, .2);
+}
+
+.itemresize,
+.itemresize::before {
+	border-color: rgba(0, 0, 0, .5);
+	background-color: #FEF9FB;
+}
+
+#menu,
+.icon,
+#popuptext {
+	background-color: rgba(248, 206, 224, .9);
+	color: #111;
+	fill: #111
+}
+
+.icon {
+	background-color: transparent
+}
+
+input[type='button'],
+input[type='submit'],
+.button {
+	fill: #fff;
+	color: #fff;
+	background-color: rgb(197, 43, 92);
+}
+
+.button svg {
+	fill: #fff
+}
+
+.checkmark {
+	border-color: rgba(0, 0, 0, .5);
+	background-color: transparent;
+}
+
+.checkmark::after,
+.custominput input:checked~.checkmark {
+	background-color: rgba(0, 0, 0, .6);
+}
+
+.custominput input:checked~.checkmark::after {
+	background-color: #FCE3ED;
+}
 
 
-.highlight {color:rgb(197, 43, 92)}
-hr{background-color: rgb(197, 43, 92);}
+.highlight {
+	color: rgb(197, 43, 92)
+}
 
-a:link {color:rgba(0, 164, 201, 1);}
-a:hover::after {color:rgb(197, 43, 92);}
+hr {
+	background-color: rgb(197, 43, 92);
+}
 
-#settings {float:right; display:block; margin:0 .5em; width:1em; height:1em; fill: #333; }
+a:link {
+	color: rgba(0, 164, 201, 1);
+}
 
-#popup {background-color:rgba(0,0,0,.5); }
+a:hover::after {
+	color: rgb(197, 43, 92);
+}
+
+#settings {
+	float: right;
+	display: block;
+	margin: 0 .5em;
+	width: 1em;
+	height: 1em;
+	fill: #333;
+}
+
+#popup {
+	background-color: rgba(0, 0, 0, .5);
+}
