@@ -3,7 +3,7 @@ function el(v) {return document.getElementById(v);}
 var core={
 	function:{
 		popup:function(text){ //toggle notification popup
-			otext='<span>&lt;/&gt; error on line 1 - <a href="mailto:'+core.var.adminMail+'?subject='+document.title+'">feedback/request</a></span><input type="button" style="float:right" value="&#x21E6; '+core.function.lang('popupCloseButton')+'" onclick="core.function.popup()" /><br /><br />' + text;
+			otext='<span><a href="javascript:core.function.popup(aboutNotification[core.var.selectedLanguage]);">&lt;/&gt; error on line 1</a> - <a href="mailto:'+core.var.adminMail+'?subject='+document.title+'">feedback/request</a></span><input type="button" style="float:right" value="&#x21E6; '+core.function.lang('popupCloseButton')+'" onclick="core.function.popup()" /><br /><br />' + text;
 			//if (el('popup').style.opacity=='0' || !el('popup').style.opacity){
 			if (el('popup').style.opacity=='1' && typeof text==='undefined'){
 				el('popup').style.opacity='0'; el('popuptext').style.left='-100vw';

@@ -51,6 +51,11 @@ var randomTip={
 	],
 };
 
+var aboutNotification={
+	en:'This application is part of a supportive system for quality management. It is a universal interface and can be modular extended.<br /><br />The complete system of application and depended documents can be used under GNU GENERAL PUBLIC LICENSE Version 3. The sourcecode with templates is available under <a href="https://github.com/erroronline1/qualitymanagement/" target="_blank">https://github.com/erroronline1/qualitymanagement/</a><br />&copy; 2019, <a href="http://erroronline.one" target="_blank">error on line 1</a>',
+	de:'Diese Anwendung ist Bestandteil eines Systems zur Unterstützung eines Qualitätsmanagement-Systems. Es dient als universelle Schnittstelle und kann modular erweitert werden.<br /><br />Das Gesamtsystem aus Anwendung und anhängigen Dokumenten ist unter der GNU GENERAL PUBLIC LICENSE Version 3 verwendbar. Quelltexte und Templates sind erhältlich unter <a href="https://github.com/erroronline1/qualitymanagement/" target="_blank">https://github.com/erroronline1/qualitymanagement/</a><br />&copy; 2019, <a href="http://erroronline.one" target="_blank">error on line 1</a>'
+};
+
 // in case of major updates something might happen to malfunction. this module keeps track of changes and informs every user abut new
 // features.
 
