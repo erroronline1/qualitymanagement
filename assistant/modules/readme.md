@@ -46,7 +46,7 @@ be aware of these rules to handle your modules properly. these rules apply to su
 ## module functions
 modules must contain functions to generate the modules output. some functions are in the main or dependent scripts like language synthesis, shortened document.getElementByID() or loading remote scripts. make use of the core-object, some things are fairly prepared:
 
-* cookie handling for inter module communication and storing settings
+* data handling for inter module communication and storing settings
 * html-escaping for urls and mailto:
 * search algorithm
 * language selection
@@ -61,7 +61,7 @@ all modules are depentent on the main module, only some may have dependencies of
 container for output are named 'input', 'temp' and 'output' and can be accessed via `el('input').innerHTML` or whatever.
 
 ## registering and loading of modules
-register and deregister modules in ROOT/config/config.js so they are accessible and listed on initial start. import js-files or other subscripts with `core.function.loadScript(url,callback);` files to be imported always have to be hardcoded (e.g. dropdown-list) because javascript having no indirect access to local file system (directory-listing etc.). this has to be done within modules as well. data-objects should be stored in data/ prefixed with modulename_. therefore these can remain untouched if any changes occur for the main module-file and won't be affected during file-transfers in reviews.
+register and deregister modules in ROOT/core/config.js so they are accessible and listed on initial start. import js-files or other subscripts with `core.function.loadScript(url,callback);` files to be imported always have to be hardcoded (e.g. dropdown-list) because javascript having no indirect access to local file system (directory-listing etc.). this has to be done within modules as well. data-objects should be stored in data/ prefixed with modulename_. therefore these can remain untouched if any changes occur for the main module-file and won't be affected during file-transfers in reviews.
 
 ## module initialization
 initialization of module has to be with function-name exactly like module-name and calling the initiating function at the end
@@ -90,7 +90,7 @@ core.function.languageSynthesis.property={
 	);
 ```
 
-the former oject structure absolutely makes sense in german. in english not really though but it is implemented that way, so if you want to reduce that you will have to make changes to the processing as well. you can make use of these properties by processing strings as e.g.
+the former object structure absolutely makes sense in german. in english not really though but it is implemented that way, so if you want to reduce that you will have to make changes to the processing as well. you can make use of these properties by processing strings as e.g.
 
 ```javascript
 'this is a text where the term $property$ will be replaced.'.replace(/\$(\w+?)\$/ig,function(match,group1){return core.function.languageSynthesis.output(group1)});
@@ -105,7 +105,7 @@ i have to admit i am a bit proud of this one. this method has to be handed over 
 output text is selected on click by default. to avoid this add `var disableOutputSelect=true;` to module script. this is considered not to be implemented global through registered-modules for being dynamically mutable if desired in future modules
 
 ## inter-module communication
-communication between modules is possible with use of cookies. this has to be observed strictly, because of possible failures and dependencies of js-data-files. there might be spaghetti! use the `core.function.cookie` method and always make sure to have proper default and error handling in case of missing cookies.
+communication between modules is possible with use of localstorage or cookies. this has to be observed strictly, because of possible failures and dependencies of js-data-files. there might be spaghetti! use the `core.function.setting` method and always make sure to have proper default and error handling in case of missing data.
 
 ## merely a matter of form
-i recommend not testing in production... this thing escalated a bit in regards of complexity. as this is a read-only application it is absolutely possible to adjust within a developement version and push to production later on. there might be some caution neccessary with overwriting the data-files but this is the reason for them to be stored within a different folder.
+i recommend not testing in production... this whole thing escalated a bit in regards of complexity. as this is a read-only application it is absolutely possible to adjust within a developement version and push to production later on. there might be some caution neccessary with overwriting the data-files but this is the reason for them to be stored within a different folder.

@@ -24,13 +24,13 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.function.loadscript(url, callback)` appends url-file to the header and calls the callback function. used for importing / loading modules and data-files
 
-`core.function.insert.checkbox(label, id, checked, event)` returns a html checkbox that can be prechecked, event can be an onchange property or similar
+`core.function.insert.checkbox(label, id, checked, additionalProperty, title)` returns a html checkbox that can be prechecked, event can be an onchange property or similar
 
-`core.function.insert.radio(label, name, id, checked, event)` returns a html radio button that can be prechecked, event can be an onchange property or similar
+`core.function.insert.radio(label, name, id, checked, additionalProperty, title)` returns a html radio button that can be prechecked, event can be an onchange property or similar
 
-`core.function.insert.select(options, name, id, selected, event)` returns a html select element that can be preselected, event can me an onchange property or similar. options have to be an object with optionId:[value,label]
+`core.function.insert.select(options, name, id, selected, additionalProperty)` returns a html select element that can be preselected, event can me an onchange property or similar. options have to be an object with optionId:[value,label]
 
-`core.function.insert.expand()` returns a html span that implcates whether a boy is expanded or shrunken
+`core.function.insert.expand()` returns a html span that implicates whether an box is expanded or shrunken
 
 `core.function.setting.setup()` returns the content of the settings to display within the popup modal. all the other setting methods are for this primarily but
 
@@ -44,7 +44,9 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.function.setting.unset(name)` unsets localstorage.item or cookie *name*
 
-`core.function.icon.insert(icon)` returns an inline svg according to the before declares properties within the parent property
+`core.function.setting.clear()` resets the whole application
+
+`core.function.icon.insert(icon)` returns an inline svg according to the before declared properties within the parent property
 
 ## core_langage_synthesis.js
 extends the core-object with the language synthesis. here you define textblocks that can be switched for $keyword$ within continuous text using the function `core.function.languageSynthesis.output(block)` called by `'string'.replace(/\$(\w+?)\$/ig,function(match,group1){return core.function.languageSynthesis.output(group1)})`

@@ -40,12 +40,14 @@ this tool provides your company with an application to have an easier access to 
 * global access to documentation for every employee
 * easy lookup methods for finding documents regardless of storage path
 * automated update of contents with built-in vba-interface
-* compatible to ms ie11 because it was built for it
+* compatible to ms ie11 because it was built for it, tested successfully with firefox, chrome and edge as well
+* extendable with modules for various custom data automation
 
 ## requirements
-* one webdeveloper to customize the application for your companies needs and provide you with modules fitted to your needs
+* one webdeveloper to customize the application for your companies needs and provide you with desired additional modules
 * network access for every employee to access the assistant only from one source
-* serial print of document packages requires active-x which is only available in ie11
+* serial print of document packages requires active-x which is only available in ie11. this option will not be shown if not accessible
+* patience with coworkers blaming 'your' assistant for every network failure, printer settings and their inability to read the literal hints and descriptions
 
 # details
 ## the documents
@@ -66,14 +68,14 @@ on save of excel-lists
 *caveat: since every document contains the code to register itself, changes of the vba-code have to be done in every file later on. an update of the codebase might be possible following [this tutorial by charles pearson](http://www.cpearson.com/excel/vbe.aspx) but i did not include this out of fear to have problems with our companies security and antivir settings.*
 
 ## the assistant
-there is a main file with core-functions, a config folder with config-file and themes. then there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-libraray](http://vanilla.js-com). in case you have restricted access to your it i can recommend [notepad++ portabale](https://notepad-plus-plus.org/download/) out of personal experience.
+there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. then there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-libraray](http://vanilla.js-com). in case you have restricted access to your it i can recommend [notepad++ portabale](https://notepad-plus-plus.org/download/) out of personal experience.
 
 * the assistant is built using js-ecmascript 5 on purpose because of required compatibility to ms ie11. unfortunately this still is the default browser to date in many companies. the css is not compatible to previous versions of ie
 * the assistant is designed to handle multiple language support, comes with english and german and can be extended as desired. extend the lang-objects in every module, the config-file and register the languages in this config-file to make them available.
-* the core-object provides readable function-calls and globally usable variables. general configuration takes place in config/config.js. this file contains a variable that extents the core-object with global variables and commonly uses language-bricks.
-* built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, local-storage- or cookie-handler, repetitive design passtern implementation (icons, inputs, etc.) and some more. get access or extend these functions with `core.function.FUNCTIONNAME`, global variables with `core.var.VARNAME`. i recommend this pattern to modules as well, defining a module-object with `module.function.FUNCTIONNAME` and `module.var.VARNAME`. the handler for multi-language-support of the application  (`core.function.lang()`) makes built-in automated use of this pattern.
+* the core-object provides readable function-calls and globally usable variables. general configuration takes place in core/config.js. this file contains a variable that extents the core-object with global variables and commonly uses language-bricks.
+* built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, local-storage- or cookie-handler, repetitive design pattern implementation (icons, inputs, etc.) and some more. get access or extend these functions with `core.function.FUNCTIONNAME`, global variables with `core.var.VARNAME`. i recommend this pattern to modules as well, defining a module-object with `module.function.FUNCTIONNAME` and `module.var.VARNAME`. the handler for multi-language-support of the application  (`core.function.lang()`) makes built-in automated use of this pattern.
 * data files are stored in a different folder hoping that changes to the backend don't mess up data that might be accessed through different persons than the maintainer of the application
-* users can be informed about changes using the changelog in config/user_information.js. add your own changes and the information will popup automatically on start
+* users can be informed about changes using the changelog in core/user_information.js. add your own changes and the information will popup automatically on start
 * since most of my colleagues don't mind messing around to learn something, there is a short-tip function whose entries can be extended in accordance to your modules
 * settings will be stored in local storage or cookies (depending on browser support) so everything depends on the local machine in addition to user login. in case everything is stored with cookies if the browsers history is cleaned on exit all setting will be gone as well. the storage method handles local-storage support with cookies as a fallback. this means there is finally support for chrome with an issue with cookie storage of local sites as well as ie11 without local storage
 
@@ -86,7 +88,7 @@ the provided modules are filled with dummies. the general multi-language support
 * predefined document packages
 * inventory / stock list
 * default texts for correspondence
-* serial-mail tool
+* mail tools for serial mails, signature composer and not-available-notice 
 * help (simplyfied for me not being english native and should be customized to your own companies comprehension of interwebz and nerd-stuff-thingies)
 
 # miscellaneous
@@ -94,12 +96,12 @@ the provided modules are filled with dummies. the general multi-language support
 * even if you don't want to use the assistant, the documents semiautomated version control might be useful for you. on the other hand the assistant is hardly possible to populate without the documents unless you write your own routines for that.
 * i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to pdfs and the assistant application should be granted for everyone.
 * before implementing this system to your company make sure your decisions for documenting the system itself are reliable (e.g. rows and columns in the list of documents in force in dependency to the vba-macro within the self registering docm-files). otherwise you might have to change a lot of code in a lot of documents. this isn't fun.
-* the assistant is designed to hopefully seamlessly transition into windows 10 fluent design that is still to come to my company as time of writing. styling and icon set was selected. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be.
+* the assistant is designed to hopefully seamlessly transition into windows 10 fluent design that is still to come to my company as time of writing. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be.
 
 # disclaimer
 use at your own responsibility. as this system is or has been in real use with me being responsible, i did my best to make everything flawless. i also tried to make the documentation and comments as meaningful as i could. als always there might be parts that once seemed to be self-explanatory so a little bit of advanced javascript skills might come in handy.
 
-this system does not provide you with the content of your quality management system or the neccessary structure. you will have to set this one up for yourself. but this system might be flexible enough to match your needs in regards of version control, publishing and company wide access. i really tried to make the best hammer for screwing i could. of course i sewed everything to fit my own companies needs and quality management system. if your company decides for more fields you might have to take a deeper look into vba programming to customize that.
+this system does neither provide you with the content of your quality management system nor the neccessary structure. you will have to set this one up for yourself. but this system might be flexible enough to match your needs in regards of version control, publishing and company wide access. i really tried to make the best hammer for screwing i could. of course i sewed everything to fit my own companies needs and quality management system. if your company decides for more fields you might have to take a deeper look into vba programming to customize that.
 but as the current deputy quality manager i strongly recommend to reconsider which type of information and extent your documentation must have to fit the norm.
 
 # license
