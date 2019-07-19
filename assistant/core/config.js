@@ -75,6 +75,10 @@ core.var = {
 		slate: {
 			en: 'slate',
 			de: 'schiefer'
+		},
+		nord: {
+			en: 'nord',
+			de: 'nord'
 		}
 	},
 	//	rootdir in case different handling of source files is necessary over developement and production sites
