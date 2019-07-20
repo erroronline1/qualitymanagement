@@ -101,9 +101,7 @@ var module = {
 			}
 		},
 		gen: function (treatment) {
-			var group = treatment.substring(0, treatment.indexOf('_')),
-				request = treatment.substring(treatment.indexOf('_') + 1),
-				pack = JSONDATA[group][request],
+			var pack = JSONDATA[treatment],
 				primary = '',
 				secondary = '';
 			serialPDFlist = '';
@@ -111,17 +109,17 @@ var module = {
 			// regular documents
 			Object.keys(pack.primary).forEach(function (index) {
 				primary += module.function.linkfile(pack.primary[index]);
-				if (EXCEPTIONS.noserialprint.indexOf(pack.primary[index]) < 0) serialPDFlist += ',' + pack.primary[index];
+				if (typeof(EXCEPTIONS.noserialprint) != "undefined" && EXCEPTIONS.noserialprint.indexOf(pack.primary[index]) < 0) serialPDFlist += ',' + pack.primary[index];
 			});
 			var serialPrintExceptions = '';
-			EXCEPTIONS.noserialprint.forEach(function (el) {
+			if (typeof(EXCEPTIONS.noserialprint) != "undefined") EXCEPTIONS.noserialprint.forEach(function (el) {
 				serialPrintExceptions += ', ' + el.substring(el.lastIndexOf('/'), el.lastIndexOf('.')).substring(1);
 			});
 			//exceptive documents according to additional data (inputs in form)
-			if (el('enableexceptions').checked && EXCEPTIONS.versorgt.notsuitable.indexOf(group) < 0) {
-				Object.keys(EXCEPTIONS.versorgt.docs).forEach(function (index) {
-					primary += module.function.linkfile(EXCEPTIONS.versorgt.docs[index]);
-					serialPDFlist += ',' + EXCEPTIONS.versorgt.docs[index];
+			if (el('enableexceptions').checked && typeof(EXCEPTIONS.addtopackage) != "undefined") {
+				Object.keys(EXCEPTIONS.addtopackage).forEach(function (index) {
+					primary += module.function.linkfile(EXCEPTIONS.addtopackage[index]);
+					serialPDFlist += ',' + EXCEPTIONS.addtopackage[index];
 				});
 			}
 			if (!!document.documentMode) primary += '<hr /><a href="javascript:module.function.serialPrint(\'' + serialPDFlist + '\')">' + core.function.lang('serialPrintLink', serialPrintExceptions.substring(2)) + '</a>';
@@ -137,11 +135,7 @@ var module = {
 				var out = core.function.icon.insert('search') +
 					'<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) module.function.gen(sel)"><option value="">' + core.function.lang('selectDefault') + '</option>';
 				Object.keys(JSONDATA).forEach(function (key) {
-					out += '<optgroup label="' + key + '">';
-					Object.keys(JSONDATA[key]).forEach(function (key2) {
-						out += '<option id="' + key + '_' + key2 + '" value="' + key + '_' + key2 + '">' + key2 + '</option>';
-					});
-					out += '</optgroup>';
+						out += '<option id="' + key +'" value="' + key + '">' + key.replace("_", " ") + '</option>';
 				});
 				out += '</select>';
 				el('input').innerHTML = out + core.function.insert.checkbox(core.function.lang('selectEnableExceptions'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) module.function.gen(sel)"');
