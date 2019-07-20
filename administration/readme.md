@@ -18,8 +18,10 @@ this list contains all documents in force, a link to the documents and the possi
 
 *as the docm-files register and update themselves, there is no checkout for documents that expire or go out of use. you will have to delete these lines manually*
 
-on save the list of checkpoints will update (for the dropdown option in assigning in sheet one) and all documents assigned will be written beside the checkpoints in sheet two. checkpoints on cheet one will be considered based on the header row.
-afterwards you can export the list of documents to the assistant. as the links for the files are processed for that you will have to input paths to be replaced and the equivalent insertions. you can set default paths for export and replacements within the macro to speed these things up.
+there are two more sheets where you can assign documents to bundles. sheet three contains a self updating list of documents from the first sheet and the same assignment matrix as for checkpoints. sheet four has the bundle-assigned documents listed and can contain additional document paths.
+
+on save the list of checkpoints will update (for the dropdown option in assigning in sheet one) and all documents assigned will be written beside the checkpoints in sheet two. checkpoints on sheet one will be considered based on the header row. the list of documents for bundle assignment updates itself (insertion and deletion) and the bundles will be written like in the first sheets.
+afterwards you can export the list of documents to the assistant. as the links for the files are processed for that you will have to input paths to be replaced and the equivalent insertions. you can set default paths for export and replacements within the macro to speed these things up. after this you can export the document bundles to the assistant as well.
 
 ## external documents in force.xlsm
 this list contains external documents in force. beside having them registeres you can export these as well to the assistant on saving. while inserting links as registration there might be relative paths. this can be tweaked within the macro where you can assign replacements to tify things up.
