@@ -135,7 +135,7 @@ var module = {
 				var out = core.function.icon.insert('search') +
 					'<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) module.function.gen(sel)"><option value="">' + core.function.lang('selectDefault') + '</option>';
 				Object.keys(JSONDATA).forEach(function (key) {
-						out += '<option id="' + key +'" value="' + key + '">' + key.replace("_", " ") + '</option>';
+						out += '<option id="' + key +'" value="' + key + '">' + key.replace(/_/g, ' ') + '</option>';
 				});
 				out += '</select>';
 				el('input').innerHTML = out + core.function.insert.checkbox(core.function.lang('selectEnableExceptions'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) module.function.gen(sel)"');
