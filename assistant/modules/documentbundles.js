@@ -52,7 +52,7 @@ var module = {
 	},
 	function: {
 		documentpackages: function () {
-			core.function.loadScript('data/documentpackages.js', 'module.function.input');
+			core.function.loadScript('data/documentbundles.js', 'module.function.input');
 			el('temp').innerHTML = '<br />' + core.function.lang('useCaseDescription');
 			el('output').innerHTML = '';
 		},
@@ -75,7 +75,7 @@ var module = {
 				shell.run(command);
 			}
 			catch (e) {
-				core.function.popup(core.function.lang('errorNoActiveX'));
+				core.function.popup('Bitte Oberfläche neu laden und ActiveX zulassen...');
 			}
 		
 			//	modules/packages.cmd could contain
@@ -103,23 +103,25 @@ var module = {
 		gen: function (treatment) {
 			var pack = JSONDATA[treatment],
 				primary = '',
-				secondary = '';
-			serialPDFlist = '';
+				secondary = '',
+				serialPDFlist = '';
 
 			// regular documents
 			Object.keys(pack.primary).forEach(function (index) {
 				primary += module.function.linkfile(pack.primary[index]);
-				if (typeof(EXCEPTIONS.noserialprint) != "undefined" && EXCEPTIONS.noserialprint.indexOf(pack.primary[index]) < 0) serialPDFlist += ',' + pack.primary[index];
+				if (EXCEPTIONS.noserialprint.indexOf(pack.primary[index]) < 0) serialPDFlist += ',' + pack.primary[index];
 			});
 			var serialPrintExceptions = '';
-			if (typeof(EXCEPTIONS.noserialprint) != "undefined") EXCEPTIONS.noserialprint.forEach(function (el) {
+			EXCEPTIONS.noserialprint.forEach(function (el) {
 				serialPrintExceptions += ', ' + el.substring(el.lastIndexOf('/'), el.lastIndexOf('.')).substring(1);
 			});
-			//exceptive documents according to additional data (inputs in form)
-			if (el('enableexceptions').checked && typeof(EXCEPTIONS.addtopackage) != "undefined") {
-				Object.keys(EXCEPTIONS.addtopackage).forEach(function (index) {
-					primary += module.function.linkfile(EXCEPTIONS.addtopackage[index]);
-					serialPDFlist += ',' + EXCEPTIONS.addtopackage[index];
+			//add exceptive documents according to additional data (inputs in form)
+			if (el('enableexceptions').checked) {
+				Object.keys(EXCEPTIONS.addtobundle).forEach(function (index) {
+					if (pack.primary.indexOf(EXCEPTIONS.addtobundle[index])<0) {
+						primary += module.function.linkfile(EXCEPTIONS.addtobundle[index]);
+						serialPDFlist += ',' + EXCEPTIONS.addtobundle[index];
+					}
 				});
 			}
 			if (!!document.documentMode) primary += '<hr /><a href="javascript:module.function.serialPrint(\'' + serialPDFlist + '\')">' + core.function.lang('serialPrintLink', serialPrintExceptions.substring(2)) + '</a>';
@@ -135,7 +137,7 @@ var module = {
 				var out = core.function.icon.insert('search') +
 					'<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) module.function.gen(sel)"><option value="">' + core.function.lang('selectDefault') + '</option>';
 				Object.keys(JSONDATA).forEach(function (key) {
-						out += '<option id="' + key +'" value="' + key + '">' + key.replace(/_/g, ' ') + '</option>';
+					out += '<option id="' + key + '" value="' + key + '">' + key.replace(/_/g," ") + '</option>';
 				});
 				out += '</select>';
 				el('input').innerHTML = out + core.function.insert.checkbox(core.function.lang('selectEnableExceptions'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) module.function.gen(sel)"');

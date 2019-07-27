@@ -14,7 +14,7 @@ core.var = {
 				de: "Dokumentensuche",
 			}
 		},
-		documentpackages: {
+		documentbundles: {
 			icon: core.function.icon.insert('folder'),
 			display: {
 				en: "Document Packages",
