@@ -6,6 +6,7 @@ while it makes way more sense to automate quality management using assistive tec
 * your company does not have the ressources to test out different expensive qm-software-solutions until you find one to suit your needs
 * employees have access to the it-infrastructure and printers, e.g. via network and group-accounts
 * your it-department is stubborn and unflexible so you have to make use of the tools you have access to, even if you have to fasten screws with a hammer because you don't get a screwdriver
+* your company relies on microsoft windows and microsoft office (not sure about use of the documents macros for other platforms)
 
 [by error on line 1](http://erroronline.one) but feel free to use and modify at your own risk according to the license outlined below.
 
@@ -13,7 +14,7 @@ this quality management software has been in use in context to [iso 13485:2015](
 
 # the core documents
 ## use case
-the documents come with built-in vba-macros to handle document version control, its overview and export-handling. employees use mainly unchangeable pdf-files to fill out during workflow. each document registers and manages itself (kind of).
+the office documents come with built-in vba-macros to handle document version control, its overview and export-handling. employees use mainly unchangeable pdf-files to fill out during workflow. each document registers and manages itself (kind of).
 
 ## what the documents do
 style the blueprints according to your desired corporate design whatever you like and however word allows you to. just make sure you don't delete the in-built fields.
@@ -103,6 +104,8 @@ use at your own responsibility. as this system is or has been in real use with m
 
 this system does neither provide you with the content of your quality management system nor the neccessary structure. you will have to set this one up for yourself. but this system might be flexible enough to match your needs in regards of version control, publishing and company wide access. i really tried to make the best hammer for screwing i could. of course i sewed everything to fit my own companies needs and quality management system. if your company decides for more fields you might have to take a deeper look into vba programming to customize that.
 but as the current deputy quality manager i strongly recommend to reconsider which type of information and extent your documentation must have to fit the norm.
+
+i will and can not guarantee this product suits all requirements for a certified quality management software. on the other hand this approach is not more than an assistive workflow to make version control and information access more easy. as this software supports your paper-based documentation it is up to your own document content, process definitions and reliable form completion by your employees to make sure your qm/documentation meets all regulatory requirements.
 
 # license
 a quality management software - automate your paper based qms
