@@ -147,13 +147,17 @@ core.var = {
 			en: 'Language',
 			de: 'Sprache'
 		},
-		settingSearchOptionHint: {
+		settingSearchOptionFuzzy: {
+			en: 'Fuzzy-search',
+			de: 'Fuzzy-Search'
+		},
+		settingSearchOptionFuzzyHint: {
 			en: 'Includes possible typos, but gets a bigger sample size.',
 			de: 'Berücksichtigt auch mögliche Tippfehler, führt aber zu größeren Ergebnismengen.'
 		},
 		settingCopyOptionSelector: {
-			en: 'open contents to be copied in new window',
-			de: 'zu kopierende Inhalte in neuem Fenster öffnen'
+			en: 'Open contents to be copied in new window',
+			de: 'Zu kopierende Inhalte in neuem Fenster öffnen'
 		},
 		settingCopyOptionHint: {
 			en: 'No need to adjust font. Left muse button closes window.',
