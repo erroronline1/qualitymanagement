@@ -52,11 +52,13 @@
 			<article id="temp"></article>
 			<aside id="output" onclick="selectText('output')">
 				<script>
-					document.write('<span class="highlight">' + core.function.lang('quickstart') + '</span><br />' + (core.var
-							.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '">' + core.function.icon.insert(
-								'word') + core.function.lang('openLetterTemplate') + '</a><br />' : '') +
-						(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function
-							.icon.insert('outlook') + core.function.lang('openOutlook') + '</a>' : ''));
+					if (core.var.letterTemplate || core.var.outlookWebUrl){
+						document.write('<span class="highlight">' + core.function.lang('quickstart') + '</span><br />'
+						+ (core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '">'
+						+ core.function.icon.insert('word') + core.function.lang('openLetterTemplate') + '</a><br />' : '')
+						+ (core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">'
+						+ core.function.icon.insert('outlook') + core.function.lang('openOutlook') + '</a>' : ''));
+					}
 					var disableOutputSelect = true;
 				</script>
 			</aside>
