@@ -92,6 +92,9 @@ the provided modules are filled with dummies. the general multi-language support
 * mail tools for serial mails, signature composer and not-available-notice 
 * help (simplyfied for me not being english native and should be customized to your own companies comprehension of interwebz and nerd-stuff-thingies)
 
+### thoughts and considerations
+i tried to implement a preview on search forms using datalists. while it is not a big problem to update these dynamically i ran into two major issues: the cross-browser behaviour is very different and quirky. and using this in combination with fuzzy search and 6k+ items in stock-list everything slows horribly down. it would have been nice to have but ended up in some hours wasted.
+
 # miscellaneous
 * the provided folder structure is not neccessarily your first choice and just a sample. but if you customize that you should change at least the default paths within the vba-macros
 * even if you don't want to use the assistant, the documents semiautomated version control might be useful for you. on the other hand the assistant is hardly possible to populate without the documents unless you write your own routines for that.
