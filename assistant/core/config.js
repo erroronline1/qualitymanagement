@@ -17,7 +17,7 @@ core.var = {
 		documentbundles: {
 			icon: core.function.icon.insert('folder'),
 			display: {
-				en: "Document Packages",
+				en: "Document Bundles",
 				de: "Dokumentenpakete"
 			}
 		},
@@ -160,7 +160,7 @@ core.var = {
 			de: 'Zu kopierende Inhalte in neuem Fenster öffnen'
 		},
 		settingCopyOptionHint: {
-			en: 'No need to adjust font. Left muse button closes window.',
+			en: 'No need to adjust font. Left mouse button closes window.',
 			de: 'Umgeht die Notwendigkeit die Schriftart anpassen zu müssen. Linke Maustaste schließt das Fenster.'
 		},
 		settingNotificationSelector: {
