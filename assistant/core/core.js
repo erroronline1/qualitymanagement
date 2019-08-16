@@ -60,7 +60,7 @@ var core = {
 				// data base will be searched for single words as well as a concatenated string
 
 				// assign single terms to query array splitting by whitespace, stripping ' ( ) and - without preceding whitespace
-				var query = userInput.toLowerCase().replace(/([\'\(\)]|\w-)/g, '').split(/[\s]/g),
+				var query = userInput.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '').split(/[\s]/g),
 					filter = new Array();
 				//sort -terms to filter
 				query.forEach(function (word) {
@@ -76,7 +76,6 @@ var core = {
 					if (query[del].replace(/[\s]/g, '').length < 3) query.splice(del, 1);
 				}
 				var found = new Array();
-
 				function fuzzy(haystack, needle, ratio) {
 					if (haystack.indexOf(needle) > -1) return 2; // covers basic partial matches
 					if (!core.function.setting.get('settingFuzzySearch')) return false;
@@ -100,11 +99,10 @@ var core = {
 						var a = dataBaseObject[key],
 							filtered = false;
 						if (typeof (a) == 'object') a = a.join();
-						a = a.toLowerCase().replace(/[\s-,\'\(\)]/g, '');
-						//filter filename in case of files else take normal string
-						if (a.split('').reverse().join('').match(/fdp\.(.+?)\//g)) a = a.split('').reverse().join('').match(/fdp\.(.+?)\//g)[0].split('').reverse().join('');
+						a = a.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
 
-						//filter and do not process -terms
+						//filter filename in case of pdf-files else take raw string
+						a = a.replace(/\S+\/.+\/(.+)\.pdf/g, "$1");
 						for (var i = 0; i < filter.length; i++) {
 							if (a.indexOf(filter[i]) > -1) {
 								filtered = true;
@@ -143,16 +141,16 @@ var core = {
 				}
 			}
 		},
-		lang: function (block, args) {
+		lang: function (block, module, args) {
 			// returns module bricks first
 			try {
-				if (typeof module.var.lang[block][core.var.selectedLanguage] === "function") return module.var.lang[block][core.var.selectedLanguage](args);
+				if (typeof eval(module).var.lang[block][core.var.selectedLanguage] === "function") return eval(module).var.lang[block][core.var.selectedLanguage](args);
 			} catch (e) {}
 			try {
 				if (typeof core.var.lang[block][core.var.selectedLanguage] === "function") return core.var.lang[block][core.var.selectedLanguage](args);
 			} catch (e) {}
 			try {
-				return module.var.lang[block][core.var.selectedLanguage]
+				return eval(module).var.lang[block][core.var.selectedLanguage]
 			} catch (e) {}
 			try {
 				return core.var.lang[block][core.var.selectedLanguage];
@@ -168,7 +166,6 @@ var core = {
 			});
 			return sel;
 		},
-
 		loadScript: function (url, callback, title) {
 			//load given script-files into scope a.k.a. load desired modules
 			if (url != '') {
@@ -178,24 +175,18 @@ var core = {
 					script = document.createElement('script');
 				script.type = 'text/javascript';
 				script.src = url;
-				script.async = true;
-				// Fire the loading
-				document.head.appendChild(script);
-				// Then bind the event to the callback function.
-				// There might be several events for cross browser compatibility.
-				// try / catch because of some loading issues, to avoid error message, but it still works somehow
-				try {
-					script.onload = eval(callback);
-					// script.onreadystatechange = eval(callback);
-
-					//this causes a reload of the update-tracker everytime a module is selected, therefore every user is informed during use
-					//of program even without reloading it. it does work fine, i suddenly was not so sure anymore if i wanted that for real.
-					//seemed a bit annoying but at least it is programmatically prepared
-					//enable following: if (url!='core/update_tracker.json') this.loadScript('core/update_tracker.json', 'updateTracker.alert()');
-					if (typeof (title) != 'undefined') document.title = core.function.lang('title') + ' - ' + title;
-				} catch (err) {
-					return;
+				if (typeof (callback) != 'undefined') {
+					script.onload = function () { //not ie
+						eval(callback);
+					};
+					script.onreadystatechange = function () { //ie
+						if (this.readyState == 'complete') {
+							eval(callback);
+						}
+					};
 				}
+				document.head.appendChild(script);
+				if (typeof (title) != 'undefined') document.title = core.function.lang('title') + ' - ' + title;
 			}
 		},
 
@@ -241,13 +232,14 @@ var core = {
 					core.function.lang('settingThemeCaption') + ':<br />' + core.function.insert.select(themeSelector, 'settingTheme', 'settingTheme', (core.function.setting.get('settingTheme') || null), 'onchange="core.function.setting.theme(this.value)"') +
 					'<br />' + core.function.lang('settingMenusizeCaption') + ':<br />' + core.function.insert.checkbox(core.function.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.function.setting.get('settingSmallmenu') || 0), 'onchange="core.function.setting.reversedswitch(\'settingSmallmenu\')"', core.function.lang('settingRestartNeccessary')) +
 					'<br />' + core.function.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (core.function.setting.get('settingFontsize') || 0) + '" id="fontsize" onchange="core.function.setting.fontsize(this.value)" />' +
-					'<br />' + core.function.lang('settingLanguageCaption') + ':<br />' + core.function.insert.select(core.var.registeredLanguages, 'settingLanguage', 'settingLanguage', (core.var.selectedLanguage || null), 'title="' + core.function.lang('settingRestartNeccessary') + '" onchange="core.function.setting.language(this.value)"') +
+					'<br />' + core.function.lang('settingLanguageCaption') + ':<br />' + core.function.insert.select(core.var.registeredLanguages, 'settingLanguage', 'settingLanguage', (core.var.selectedLanguage || null), 'title="' + core.function.lang('settingRestartNeccessary') + '" onchange="core.function.setting.set(\'settingLanguage\',(this.value))"') +
 					'<br /><br />' + core.function.insert.checkbox(core.function.lang('settingSearchOptionFuzzy'), 'settingFuzzySearch', (core.function.setting.get('settingFuzzySearch') || 0), 'onchange="core.function.setting.reversedswitch(\'settingFuzzySearch\')"') +
 					'<br /><small>' + core.function.lang('settingSearchOptionFuzzyHint') + '</small>' +
 					'<br />' + core.function.insert.checkbox(core.function.lang('settingCopyOptionSelector'), 'settingNewWindowCopy', (core.function.setting.get('settingNewWindowCopy') || 0), 'onchange="core.function.setting.reversedswitch(\'settingNewWindowCopy\')"') +
 					'<br /><small>' + core.function.lang('settingCopyOptionHint') + '</small>' +
 					'<br />' + core.function.insert.checkbox(core.function.lang('settingNotificationSelector'), 'settingStarthinweis' + updateTracker.latestMajorUpdate(), (core.function.setting.get('settingStarthinweis' + updateTracker.latestMajorUpdate()) != 1), 'onchange="core.function.setting.switch(\'settingStarthinweis' + updateTracker.latestMajorUpdate() + '\')"', core.function.lang('settingRestartNeccessary')) +
 					'<br /><small>' + core.function.lang('settingNotificationHint') + '</small>' +
+					'<br />' + core.function.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.function.setting.get('settingGlobalSearchTime') || 3) + '" id="fontsize" onchange="core.function.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
 					'<br /><br />' + core.function.lang('settingModuleselectorCaption') + ':<br />' + moduleSelector +
 					'<br /><br /><input type="button" onclick="core.function.setting.clear()" value="' + core.function.lang('settingResetApp') + '" title="' + core.function.lang('settingRestartNeccessary') + '" />' +
 					'<br /><br />' + core.function.lang('settingGeneralHint');
@@ -259,9 +251,6 @@ var core = {
 			fontsize: function (value) {
 				fontsize = document.body.style.fontSize = (value / 10 + 1) + 'em';
 				core.function.setting.set('settingFontsize', value);
-			},
-			language: function (value) {
-				core.function.setting.set('settingLanguage', value);
 			},
 			switch: function (name) { //on by default
 				if (el(name).checked) core.function.setting.unset(name);
@@ -324,6 +313,7 @@ var core = {
 				}
 			}
 		},
+
 		icon: {
 			//key[viewbox,transform scale, d-path]
 			home: ['0 0 2048 2048', '1,-1', 'M1024 1883l941 -942l-90 -90l-83 82v-805h-640v640h-256v-640h-640v805l-83 -82l-90 90zM1664 256v805l-640 640l-640 -640v-805h384v640h512v-640h384z'],
@@ -378,7 +368,7 @@ function select_module() {
 			if (typeof core.var.modules[key] === 'object' && core.function.setting.get('module_' + key) != 1) {
 				//create module-selector
 				opt = 'modules/' + key + '.js';
-				el('menu').innerHTML += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.function.loadScript(\'' + opt + '\', \'module.function.' + key + '\', \'' + core.var.modules[key].display[core.var.selectedLanguage] + '\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
+				el('menu').innerHTML += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.function.loadScript(\'' + opt + '\', \'' + key + '.function.init()\', \'' + core.var.modules[key].display[core.var.selectedLanguage] + '\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
 				slider.modules.push(key);
 			}
 		});
@@ -416,3 +406,46 @@ function selectText(element) {
 		}
 	}
 }
+
+var globalSearch = {
+	result: {},
+	contribute: function (property, value) {
+		if (typeof this.result[property] == 'undefined') this.result[property] = [value];
+		else this.result[property].push(value);
+	},
+	search: function (search) {
+		document.body.style.cursor = 'wait';
+		var delay = 0;
+		//clear result on search initialization
+		globalSearch.result = {};
+		//load every module and fire api. api appends its result to the global search result because of asynchronous loading.
+		Object.keys(core.var.modules).forEach(function (key) {
+			if (typeof core.var.modules[key] === 'object') {
+				//load every module and fire api function
+				opt = 'modules/' + key + '.js';
+				core.function.loadScript(opt, key + '.api.available(\'' + search + '\')');
+			}
+		});
+		setTimeout(function () {
+			globalSearch.display()
+		}, (core.function.setting.get('settingGlobalSearchTime') || 3) * 1000);
+	},
+	display: function () {
+		//		console.log(this.result);
+		if (Object.keys(this.result).length) {
+			var displayResult = '<br />';
+			Object.keys(this.result).forEach(function (mod) {
+				displayResult += '<div class="items items143" onclick="core.function.toggleHeight(this)">' +
+					core.function.insert.expand() +
+					core.var.modules[mod].icon + core.var.modules[mod].display[core.var.selectedLanguage] + '<br />';
+				globalSearch.result[mod].forEach(function (key) {
+					//console.log(mod,key);
+					displayResult += key + '<br />';
+				});
+				displayResult += '</div>';
+			});
+		} else var displayResult = core.function.lang('errorNothingFound', null, el('globalsearch').value);
+		el('output').innerHTML = displayResult;
+		document.body.style.cursor = 'default';
+	}
+};
