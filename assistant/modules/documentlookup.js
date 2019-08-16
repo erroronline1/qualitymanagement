@@ -10,26 +10,16 @@
 //
 //////////////////////////////////////////////////////////////
 
-var module = {
+var documentlookup = {
 	var: {
-		packages: ['data/documentlookup_int.js', 'data/documentlookup_ext.js'],
-		thirdDocumentCategoryPath: 'E:/Quality Management/TTD',
 		lang: {
-			optionSecondType: {
-				en: 'external documents',
-				de: 'externe Dokumente'
-			},
 			optionThirdType: {
 				en: 'record documents',
 				de: 'Nachweisdokumente'
 			},
-			internalPlaceholder: {
-				en: 'internal documents',
-				de: 'interne Dokumente FB, VA, AA'
-			},
-			externalPlaceholder: {
-				en: 'external documents',
-				de: 'externe Dokumente'
+			searchPlaceholder: {
+				en: 'search documents',
+				de: 'Dokumente durchsuchen'
 			},
 			favouriteCaption: {
 				en: 'last used documents',
@@ -61,33 +51,70 @@ var module = {
 			},
 			errorNothingFound: {
 				en: function (query) {
-					return 'Search for ' + (core.function.setting.get('external') ? 'external' : 'internal') + ' document searched by <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.function.setting.get('settingFuzzySearch') ? '' : 'or fuzzy-search-setting ') + ', look for parts of query, ' + (core.function.setting.get('external') ? 'internal' : 'external') + ' or record documents.  Please adhere to mimimum 3 character length.'
+					return 'Query for document searched by <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.function.setting.get('settingFuzzySearch') ? '' : 'or fuzzy-search-setting ') + ', look for parts of query, in another document group or within record documents.  Please adhere to mimimum 3 character length.'
 				},
 				de: function (query) {
-					return 'Es konnte kein ' + (core.function.setting.get('external') ? 'extern' : 'intern') + ' geführtes Dokument mit dem Begriff <span class="highlight">' + query + '</span> gefunden werden. Bitte eventuell Schreibweise ' + (core.function.setting.get('settingFuzzySearch') ? '' : 'oder Fuzzy-Search-Einstellung ') + 'überprüfen, nach Wortteilen, ' + (core.function.setting.get('external') ? 'internen' : 'externen') + ' oder Nachweisdokumenten suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
+					return 'Es konnte kein Dokument mit dem Begriff <span class="highlight">' + query + '</span> gefunden werden. Bitte eventuell Schreibweise ' + (core.function.setting.get('settingFuzzySearch') ? '' : 'oder Fuzzy-Search-Einstellung ') + 'überprüfen, nach Wortteilen, in einer anderen Dokumengruppe oder bei den Nachweisdokumenten suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
 				},
 			},
+		},
+		submodules: {
+			documentlookup_int: {en: 'internal documents', de: 'interne Dokumente'},
+			documentlookup_ext: {en: 'external documents', de: 'externe Dokumente'},
+			documentlookup_contract: {en: 'contracts', de: 'Verträge'},
+		},
+		selectedModule: function () {
+			return (core.function.setting.get('lookup_bundle') || 'documentlookup_int');
+		},
+		selectedObject: function () {
+			return eval(documentlookup.var.selectedModule() + '_data');
+		},
+		thirdDocumentCategoryPath: 'E:/Quality Management/TTD',
+	},
+	api: {
+		available: function (search) {
+			Object.keys(documentlookup.var.submodules).forEach(function (key) {
+				core.function.loadScript('data/' + key + '.js',
+					'documentlookup.api.processAfterImport(\'' + search + '\', eval(\'' + key + '_data\'))');
+			});
+		},
+		processAfterImport: function (search, object) {
+			var display = '';
+			if (typeof (object) != 'undefined') {
+				var found = core.function.smartSearch.lookup(search, object.content, true);
+				found.forEach(function (value) {
+					if (typeof (object.content[value[0]]) == 'object') display = documentlookup.function.linkfile(object.content[value[0]][0]);
+					else display = documentlookup.function.linkfile(object.content[value[0]]);
+					globalSearch.contribute('documentlookup', display);
+				});
+
+			}
 		}
 	},
 	function: {
-		documentlookup: function () {
-			core.function.loadScript(module.var.packages[(core.function.setting.get('external') || 0)], 'module.function.search');
+		init: function () {
+			core.function.loadScript('data/' + documentlookup.var.selectedModule() + '.js', 'documentlookup.function.search()');
+			//prepare selection
+			var selection={};
+			Object.keys(documentlookup.var.submodules).forEach(function(key){
+				selection[key]=[key,documentlookup.var.submodules[key][core.var.selectedLanguage]];
+			});
 			el('input').innerHTML =
-				'<form id="search" action="javascript:module.function.search();">' +
-				'<span onclick="module.function.search()">' + core.function.icon.insert('search') + '</span>' + '<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + (core.function.setting.get('external') ? core.function.lang('externalPlaceholder') : core.function.lang('internalPlaceholder')) + '" />' +
-				core.function.insert.checkbox(core.function.lang('optionSecondType'), 'external', (core.function.setting.get('external') || 0), 'onchange="core.function.setting.reversedswitch(\'external\'); el(\'documentname\').placeholder=core.function.setting.get(\'external\')?\'' + core.function.lang('externalPlaceholder') + '\':\'' + core.function.lang('internalPlaceholder') + '\'; core.function.loadScript(module.var.packages[(core.function.setting.get(\'external\')||0)],\'module.function.search\');"') +
-				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
-				'<a style="float:right" href="' + module.var.thirdDocumentCategoryPath + '">' + core.function.lang('optionThirdType') + '</a>' +
+				'<form id="search" action="javascript:documentlookup.function.search();">' +
+				'<span onclick="documentlookup.function.search();">' + core.function.icon.insert('search') + '</span>' + '<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.function.lang('searchPlaceholder', 'documentlookup') + '" />' +
+				core.function.insert.select(selection, 'lookup', 'lookup', (core.function.setting.get('lookup_bundle') || false), 'onchange="core.function.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.function.search()\');"') +
+				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
+				'<a style="float:right" href="' + documentlookup.var.thirdDocumentCategoryPath + '">' + core.function.lang('optionThirdType', 'documentlookup') + '</a>' +
 				'</form>';
 			el('temp').innerHTML = el('output').innerHTML = '';
 		},
 		linkfile: function (url) {
 			// bad filename or dynamic url
 			if (typeof (url) === 'object') {
-				return '<a href="' + url[0] + '" target="_blank">' + url[1] + '</a><br />';
+				return '<a href="' + url[0] + '" target="_blank">' + url[1] + '</a>';
 			}
 			// url with quality filename
-			else return '<a href="' + url + '" onclick="module.function.favouriteHandler.set(\'' + module.function.favouriteHandler.prepare(url) + '\'); return;" target="_blank">' + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.')).substring(1) + '</a><br />';
+			else return '<a href="' + url + '" onclick="documentlookup.function.favouriteHandler.set(\'' + documentlookup.function.favouriteHandler.prepare(url) + '\'); return;" target="_blank">' + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.')).substring(1) + '</a>';
 		},
 		favouriteHandler: {
 			prepare: function (value) {
@@ -119,47 +146,50 @@ var module = {
 				if (output) {
 					var tfav = tfav2 = new Array();
 					//assign link to index as favourite handler
-					Object.keys(docs.docs).forEach(function (key) {
-						tfav[module.function.favouriteHandler.prepare(docs.docs[key])] = module.function.linkfile(docs.docs[key]);
+					Object.keys(documentlookup.var.selectedObject().content).forEach(function (key) {
+						if (typeof (documentlookup.var.selectedObject().content[key]) == 'object')
+							tfav[documentlookup.function.favouriteHandler.prepare(documentlookup.var.selectedObject().content[key][0])] = documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key][0]);
+						else tfav[documentlookup.function.favouriteHandler.prepare(documentlookup.var.selectedObject().content[key])] = documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key]);
 					});
 
 					var tfav2 = output.split(',');
-					//sef defaul document titles without whitespaces, predefined clicks for hiher postion 
+					//sef default document titles without whitespaces, predefined clicks for hiher postion 
 					var defaults = 'Protocol,10,' +
 						'AttendanceList,5,';
 
-					output = '<br />' + core.function.lang('favouriteCaption') + ':<span style="display:inline-block; vertical-align:middle; float:right;">' +
-						' <span class="button" title="' + core.function.lang('favouriteDeleteTitle') + '" onclick="module.function.favouriteHandler.reset(\'\')">' + core.function.icon.insert('delete') + '</span>' +
-						' <span class="button" title="' + core.function.lang('favouriteDefaultTitle') + '" onclick="module.function.favouriteHandler.reset(\'' + defaults + '\')">' + core.function.icon.insert('clipboard') + '</span>' +
-						' <span class="button" title="' + core.function.lang('favouriteRestoreTitle') + '" onclick="module.function.favouriteHandler.reset(\'' + core.function.setting.get('customfavouritedocs') + '\')">' + core.function.icon.insert('refresh') + '</span>' +
-						' <span class="button" title="' + core.function.lang('favouriteSaveTitle') + '" onclick="module.function.favouriteHandler.customreset()">' + core.function.icon.insert('save') + '</span>' +
+						output = '<br />' + core.function.lang('favouriteCaption', 'documentlookup') + ':<span style="display:inline-block; vertical-align:middle; float:right;">' +
+						' <span class="button" title="' + core.function.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'\')">' + core.function.icon.insert('delete') + '</span>' +
+						' <span class="button" title="' + core.function.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + defaults + '\')">' + core.function.icon.insert('clipboard') + '</span>' +
+						' <span class="button" title="' + core.function.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + core.function.setting.get('customfavouritedocs') + '\')">' + core.function.icon.insert('refresh') + '</span>' +
+						' <span class="button" title="' + core.function.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.customreset()">' + core.function.icon.insert('save') + '</span>' +
 						'</span><br /><br />';
 					for (var i = 0; i < tfav2.length; i += 2) {
-						if (tfav[tfav2[i]] != undefined) output += tfav[tfav2[i]];
+						if (tfav[tfav2[i]] != undefined) output += tfav[tfav2[i]] + '<br />';
 					}
 				}
 				return output || '';
 			},
 			reset: function (output) {
 				core.function.setting.set('favouritedocs', output);
-				alert(core.function.lang('favouriteRestoreConfirm'));
+				alert(core.function.lang('favouriteRestoreConfirm', 'documentlookup'));
 			},
 			customreset: function () {
 				core.function.setting.set('customfavouritedocs', core.function.setting.get('favouritedocs'));
-				alert(core.function.lang('favouriteSaveConfirm'));
+				alert(core.function.lang('favouriteSaveConfirm', 'documentlookup'));
 			}
 		},
 		search: function () {
 			var list = '';
-			if (typeof (docs) != 'undefined') {
+			if (typeof (documentlookup.var.selectedObject()) != 'undefined') {
 				//list all items for overview
-				Object.keys(docs.docs).forEach(function (key) {
-					list += module.function.linkfile(docs.docs[key]);
+				Object.keys(documentlookup.var.selectedObject().content).forEach(function (key) {
+					if (typeof (documentlookup.var.selectedObject().content[key]) == 'object') list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key][0]) + '<br />';
+					else list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key]) + '<br />';
 				});
 				el('temp').innerHTML = list;
 
 				if (el('documentname').value != '') {
-					var found = core.function.smartSearch.lookup(el('documentname').value, docs.docs, true);
+					var found = core.function.smartSearch.lookup(el('documentname').value, documentlookup.var.selectedObject().content, true);
 
 					// check if search matches item-list and display result
 					if (found.length > 0) {
@@ -167,16 +197,15 @@ var module = {
 						core.function.smartSearch.relevance.init();
 						found.forEach(function (value) {
 							list += core.function.smartSearch.relevance.nextstep(value[1]);
-							list += module.function.linkfile(docs.docs[value[0]]);
+							if (typeof (documentlookup.var.selectedObject().content[value[0]]) == 'object') list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[value[0]][0]) + '<br />';
+							else list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[value[0]]) + '<br />';
 						});
 						el('output').innerHTML = list;
 						list = '';
-					} else el('output').innerHTML = core.function.lang('errorNothingFound', el('documentname').value);
-				} else el('output').innerHTML = module.function.favouriteHandler.get() || '';
+					} else el('output').innerHTML = core.function.lang('errorNothingFound', 'documentlookup', el('documentname').value);
+				} else el('output').innerHTML = documentlookup.function.favouriteHandler.get() || '';
 			}
 		}
 	}
 }
-
 var disableOutputSelect = true;
-module.function.documentlookup();
