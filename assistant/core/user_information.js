@@ -5,7 +5,7 @@
 var randomTip = {
 	show: function () {
 		// 	show random tip on startup
-		return '<span class="button" style="float:right" onclick="el(\'temp\').innerHTML=randomTip.show()">' + core.function.icon.insert('refresh') + '</span>' +
+		return '<span class="button" style="float:right" onclick="el(\'randomTip\').innerHTML=randomTip.show()">' + core.function.icon.insert('refresh') + '</span>' +
 			'<br /><span class="highlight">' + this.list[0][core.var.selectedLanguage] + ':</span>' +
 			'<br />' + this.list[Math.floor(Math.random() * (this.list.length - 1) + 1)][core.var.selectedLanguage] +
 			'';
@@ -79,6 +79,10 @@ var randomTip = {
 			en: 'Remember pointing our errors to the inventory control via email.',
 			de: 'Vergiss nicht dem Einkauf per eMail bescheid zu sagen, falls dir Fehler auffallen.'
 		},
+		{
+			en: 'Search and access module content right from the entry page. In accordance to the computers speed the time to deliver results can be set.',
+			de: 'Suche und nutze die Inhalte direkt von der Startseite aus. Je nach Geschwindigkeit des Computers kann die Zeit für die Bereitstellung der Ergebnisse eingestellt werden.'
+		},
 
 	],
 };
@@ -118,5 +122,6 @@ var updateTracker = {
 		//	list of updates in ascending order. this is considered not to be critical in terms of language so feel free to fill this list in you main oder native language
 		['Minor', '15.06.2019: Enjoy!'],
 		['Major', '16.06.2019: Welcome to the assistant. As the responsible person you can delete this message and later add your own announcements or update hints.'],
+		['Major', '16.08.2019: Welcome to the assistant. This is the next version. search less, find more...'],
 	],
 };

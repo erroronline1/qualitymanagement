@@ -111,6 +111,10 @@ core.var = {
 			en: 'Welcome to the QM-Assistant. How can i help you?',
 			de: 'Willkommen beim QM-Assistenten. Wobei kann ich unterstützen?'
 		},
+		globalSearchPlaceholder: {
+			en: 'SEARCH ALL',
+			de: 'ALLES DURCHSUCHEN'
+		},
 		copycontentNewWindowCaption: {
 			en: 'Copy text, close window with left mouse button',
 			de: 'Text kopieren, linke Maustaste schließt das Fenster wieder'
@@ -174,6 +178,10 @@ core.var = {
 		settingNotificationHint: {
 			en: 'New hints are shown on startup automatically. <a href="javascript:updateTracker.enlist();">Show all hints</a>',
 			de: 'Neue Hinweise werden immer automatisch beim Start angezeigt. <a href="javascript:updateTracker.enlist();">Alle Hinweise anzeigen</a>'
+		},
+		settingGlobalSearchCaption: {
+			en: 'Time to deliver global search results <small>depending on your machines speed</small>',
+			de: 'Zeit für die Bereitstellung von globalen Suchergebnissen <small>abhängig von der Rechnergeschwindigkeit</small>'
 		},
 		settingModuleselectorCaption: {
 			en: 'Displayed modules',
