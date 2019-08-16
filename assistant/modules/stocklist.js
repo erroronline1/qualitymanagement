@@ -8,7 +8,7 @@
 //
 //////////////////////////////////////////////////////////////
 
-var module = {
+var stocklist = {
 	var: {
 		inventoryControl: 'inventory.control@email.adr',
 		lang: {
@@ -18,11 +18,11 @@ var module = {
 			},
 			useCaseDescription: {
 				en: function () {
-					return (module.function.search() ? 'There are currently ' + module.function.search() + ' items listed. ' : '') +
-						'These are the products that have permission to be ordered and used in production. Look for sample entries from &quot;Manufacturer&quot; and mess around with keywords.';
+					return (stocklist.function.search() ? 'There are currently ' + stocklist.function.search() + ' items listed. ' : '') +
+						'These are the products that have permission to be ordered and used in production. Search for default items by &quot;manufacturer&quot and mess around with search terms.';
 				},
 				de: function () {
-					return (module.function.search() ? 'Aktuell hat die Artikelliste ' + module.function.search() + ' Einträge. ' : '') +
+					return (stocklist.function.search() ? 'Aktuell hat die Artikelliste ' + stocklist.function.search() + ' Einträge. ' : '') +
 						'An dieser Stelle könne alle zugelassenen Artikel eingesehen werden. Suche nach Standardeinträgen von &quot;Manufacturer&quot; und spiel mit Suchbegriffen.';
 				}
 			},
@@ -74,72 +74,97 @@ var module = {
 				en: 'Delete item from stock list',
 				de: 'Artikel aus dem Artikelstamm löschen'
 			},
+			apiItemsFound: {
+				en: ' articles found',
+				de: ' Artikel gefunden'
+			}
 		},
+	},
+	api: {
+		available: function (search) {
+			core.function.loadScript('data/stocklist.js',
+				'stocklist.api.processAfterImport(\'' + search + '\')');
+		},
+		processAfterImport: function (search) {
+			var display;
+			if (typeof (stocklist_data) != 'undefined') {
+				var found = core.function.smartSearch.lookup(search, stocklist_data.content, true);
+				//the following would return the found items, but i decided otherwise in this case
+				//found.forEach(function (value) {
+				//	display=display:stocklist_data.content[value[0]][1] + ' ' +stocklist_data.content[value[0]][2] + ' '+ stocklist_data.content[value[0]][3];
+				//	globalSearch.contribute('stocklist', display);
+				//});
+				if (found.length) {
+					display = '<a href="javascript:core.function.loadScript(\'modules/stocklist.js\',\'stocklist.function.init(\\\'' + search + '\\\')\',\'' + core.var.modules.stocklist.display[core.var.selectedLanguage] + '\')">' + found.length + core.function.lang('apiItemsFound', 'stocklist') + '</a>';
+					globalSearch.contribute('stocklist', display);
+				}
+			}
+		}
 	},
 	function: {
 		translate: {
 			filter: function () {
 				//id:[select value, select text, filter for smartsearch]
 				return {
-					all: ['all', core.function.lang('filterAll'), 'true'],
-					conf: ['conf', core.function.lang('filterReadymade'), 'stocklistdata.content[key][6]==\'ja\''],
-					nconf: ['nconf', core.function.lang('filterNoReadymade'), 'stocklistdata.content[key][6]==\'nein\''],
-					store: ['store', core.function.lang('filterStock'), 'stocklistdata.content[key][7]!=\'nein\''],
+					all: ['all', core.function.lang('filterAll', 'stocklist'), 'true'],
+					conf: ['conf', core.function.lang('filterReadymade', 'stocklist'), 'stocklist_data.content[key][6]==\'yes\''],
+					nconf: ['nconf', core.function.lang('filterNoReadymade', 'stocklist'), 'stocklist_data.content[key][6]==\'no\''],
+					store: ['store', core.function.lang('filterStock', 'stocklist'), 'stocklist_data.content[key][7]!=\'no\''],
 				};
 			},
 			returnselect: function () {
 				var output = new Object();
-				Object.keys(module.function.translate.filter()).forEach(function (key) {
-					output[key] = [module.function.translate.filter()[key][0], module.function.translate.filter()[key][1]];
+				Object.keys(stocklist.function.translate.filter()).forEach(function (key) {
+					output[key] = [stocklist.function.translate.filter()[key][0], stocklist.function.translate.filter()[key][1]];
 				});
 				return output;
 			},
 		},
-		search: function () {
+		search: function (query) {
 			var list = '';
-			if (typeof (stocklistdata) != 'undefined') {
-				if (el('itemname').value != '') {
-					var found = core.function.smartSearch.lookup(el('itemname').value, stocklistdata.content, module.function.translate.filter()[el('stockfilter').options[el('stockfilter').selectedIndex].value][2]);
+			if (typeof (stocklist_data) != 'undefined') {
+				query = query || el('itemname').value;
+				if (query != '') {
+					var found = core.function.smartSearch.lookup(query, stocklist_data.content, stocklist.function.translate.filter()[el('stockfilter').options[el('stockfilter').selectedIndex].value][2]);
 					// check if search matches item-list
 					if (found.length > 0) {
 						core.function.smartSearch.relevance.init();
 						found.forEach(function (value) {
 							list += core.function.smartSearch.relevance.nextstep(value[1]);
-							var tresult = '<div class="items items70" onclick="core.function.toggleHeight(this)">' + core.function.insert.expand(),
+							var tresult = '<div class="items items71" onclick="core.function.toggleHeight(this)">' + core.function.insert.expand(),
 								mailbody = '';
-							for (var h = 0; h < stocklistdata.content[0].length; h++) {
-								tresult += '<p><span class="highlight">' + stocklistdata.content[0][h] + ':</span> ' + stocklistdata.content[value[0]][h] + '</p>';
-								mailbody += stocklistdata.content[0][h] + ': ' + stocklistdata.content[value[0]][h] + "\n";
+							for (var h = 0; h < stocklist_data.content[0].length; h++) {
+								tresult += '<p><span class="highlight">' + stocklist_data.content[0][h] + ':</span> ' + stocklist_data.content[value[0]][h] + '</p>';
+								mailbody += stocklist_data.content[0][h] + ': ' + stocklist_data.content[value[0]][h] + "\n";
 							}
 							list += tresult +
-								'<a title="' + core.function.lang('helpChangeItemTitle') + '" onclick="return confirm(\'' + core.function.lang('helpChangeItemPopup') + '\');" href="mailto:' + module.var.inventoryControl + '?subject=' + core.function.escapeHTML(core.function.lang('helpChangeItemSubject')) + '&body=' + core.function.escapeHTML(mailbody) + '">' + core.function.lang('helpChangeItemCaption') + '</a> ' +
-								'<a title="' + core.function.lang('helpDeleteItemTitle') + '" onclick="return confirm(\'' + core.function.lang('helpDeleteItemPopup') + '\');" href="mailto:' + module.var.inventoryControl + '?subject=' + core.function.escapeHTML(core.function.lang('helpDeleteItemSubject')) + '&body=' + core.function.escapeHTML(mailbody) + '">' + core.function.lang('helpDeleteItemCaption') + '</a>' +
+								'<a title="' + core.function.lang('helpChangeItemTitle', 'stocklist') + '" onclick="return confirm(\'' + core.function.lang('helpChangeItemPopup', 'stocklist') + '\');" href="mailto:' + stocklist.var.inventoryControl + '?subject=' + core.function.escapeHTML(core.function.lang('helpChangeItemSubject', 'stocklist')) + '&body=' + core.function.escapeHTML(mailbody) + '">' + core.function.lang('helpChangeItemCaption', 'stocklist') + '</a> ' +
+								'<a title="' + core.function.lang('helpDeleteItemTitle', 'stocklist') + '" onclick="return confirm(\'' + core.function.lang('helpDeleteItemPopup', 'stocklist') + '\');" href="mailto:' + stocklist.var.inventoryControl + '?subject=' + core.function.escapeHTML(core.function.lang('helpDeleteItemSubject', 'stocklist')) + '&body=' + core.function.escapeHTML(mailbody) + '">' + core.function.lang('helpDeleteItemCaption', 'stocklist') + '</a>' +
 								'</div>';
 						});
-					} else list = core.function.lang('errorNothingFound', el('itemname').value);
+					} else list = core.function.lang('errorNothingFound', 'stocklist', query);
 					el('output').innerHTML = list;
 					list = '';
 				} else {
-					return stocklistdata.content.length - 1;
+					return stocklist_data.content.length - 1;
 				}
 			}
 		},
-		stocklist: function () {
-			core.function.loadScript('data/stocklist.js', 'module.function.search');
+		init: function (query) {
+			core.function.loadScript('data/stocklist.js', 'stocklist.function.search(\'' + (query || '') + '\')');
 			el('input').innerHTML =
-				'<form id="search" action="javascript:module.function.search();">' +
-				'<span onclick="module.function.search()">' + core.function.icon.insert('search') + '</span>' +
-				'<input type="text" pattern=".{3,}" required placeholder="' + core.function.lang('inputPlaceholder') + '" id="itemname" />' +
-				core.function.insert.select(module.function.translate.returnselect(), 'stockfilter', 'stockfilter', (core.function.setting.get('stockfilter') || 'all'), 'onchange="core.function.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); module.function.search();"') +
-				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
-				'<span style="float:right;"><input type="button" id="searchname" value="' + core.function.lang('webSearch') + '" onclick="window.open(\'https://www.google.de/#q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.function.lang('webSearchTitle') + '" /></span>'; +
-			'</form>'
+				'<form id="search" action="javascript:stocklist.function.search();">' +
+				'<span onclick="stocklist.function.search();">' + core.function.icon.insert('search') + '</span>' +
+				'<input type="text" pattern=".{3,}" required value="' + (query || '') + '" placeholder="' + core.function.lang('inputPlaceholder', 'stocklist') + '" id="itemname" />' +
+				core.function.insert.select(stocklist.function.translate.returnselect(), 'stockfilter', 'stockfilter', (core.function.setting.get('stockfilter') || 'all'), 'onchange="core.function.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.function.search();"') +
+				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
+				'<span style="float:right;"><input type="button" id="searchname" value="' + core.function.lang('webSearch', 'stocklist') + '" onclick="window.open(\'https://www.google.de/#q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.function.lang('webSearchTitle', 'stocklist') + '" /></span>'; +
+			'</form>';
 			el('output').innerHTML = el('temp').innerHTML = '';
-			el('temp').innerHTML = core.function.lang('useCaseDescription');
+			el('temp').innerHTML = core.function.lang('useCaseDescription', 'stocklist');
 		},
 
 	}
 }
 
 var disableOutputSelect = true;
-module.function.stocklist();

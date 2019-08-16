@@ -8,7 +8,7 @@
 //
 //////////////////////////////////////////////////////////////
 
-var module = {
+var documentbundles = {
 	var: {
 		serialPrintShellCommand: '"' + 'C:/Program Files/Adobe/Reader 11.0/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t',
 		lang: {
@@ -50,10 +50,30 @@ var module = {
 			},
 		}
 	},
+	api: {
+		available: function (search) {
+			core.function.loadScript('data/documentbundles.js',
+				'documentbundles.api.processAfterImport(\'' + search + '\')');
+		},
+		processAfterImport: function (search) {
+			var searchobject = [],
+				display;
+			if (typeof (documentbundles_data) != 'undefined') {
+				Object.keys(documentbundles_data).forEach(function (key) {
+					searchobject.push([key, key]);
+				});
+				var found = core.function.smartSearch.lookup(search, searchobject, true);
+				found.forEach(function (value) {
+					display = '<a href="javascript:core.function.loadScript(\'modules/documentbundles.js\',\'documentbundles.function.init(\\\'' + searchobject[value[0]][0] + '\\\')\',\'' + core.var.modules.documentbundles.display[core.var.selectedLanguage] + '\')">' + searchobject[value[0]][0].replace(/_/g, " ") + '</a>';
+					globalSearch.contribute('documentbundles', display);
+				});
+			}
+		}
+	},
 	function: {
-		documentpackages: function () {
-			core.function.loadScript('data/documentbundles.js', 'module.function.input');
-			el('temp').innerHTML = '<br />' + core.function.lang('useCaseDescription');
+		init: function (query) {
+			core.function.loadScript('data/documentbundles.js', 'documentbundles.function.input(\'' + query + '\')');
+			el('temp').innerHTML = '<br />' + core.function.lang('useCaseDescription', 'documentbundles');
 			el('output').innerHTML = '';
 		},
 		linkfile: function (url) {
@@ -93,22 +113,22 @@ var module = {
 				var shell = new ActiveXObject("WScript.Shell");
 				var command = 'cmd /c';
 				files.forEach(function (el) {
-					command += ' start "" ' + module.var.serialPrintShellCommand + ' "' + el + '" &';
+					command += ' start "" ' + documentbundles.var.serialPrintShellCommand + ' "' + el + '" &';
 				});
 				shell.run(command.slice(0, -2) + ' & exit');
 			} catch (e) {
-				core.function.popup(core.function.lang('errorNoActiveX'));
+				core.function.popup(core.function.lang('errorNoActiveX', 'documentbundles'));
 			}
 		},
 		gen: function (treatment) {
-			var pack = JSONDATA[treatment],
+			var pack = documentbundles_data[treatment],
 				primary = '',
 				secondary = '',
 				serialPDFlist = '';
 
 			// regular documents
 			Object.keys(pack.primary).forEach(function (index) {
-				primary += module.function.linkfile(pack.primary[index]);
+				primary += documentbundles.function.linkfile(pack.primary[index]);
 				if (EXCEPTIONS.noserialprint.indexOf(pack.primary[index]) < 0) serialPDFlist += ',' + pack.primary[index];
 			});
 			var serialPrintExceptions = '';
@@ -118,33 +138,33 @@ var module = {
 			//add exceptive documents according to additional data (inputs in form)
 			if (el('enableexceptions').checked) {
 				Object.keys(EXCEPTIONS.addtobundle).forEach(function (index) {
-					if (pack.primary.indexOf(EXCEPTIONS.addtobundle[index])<0) {
-						primary += module.function.linkfile(EXCEPTIONS.addtobundle[index]);
+					if (pack.primary.indexOf(EXCEPTIONS.addtobundle[index]) < 0) {
+						primary += documentbundles.function.linkfile(EXCEPTIONS.addtobundle[index]);
 						serialPDFlist += ',' + EXCEPTIONS.addtobundle[index];
 					}
 				});
 			}
-			if (!!document.documentMode) primary += '<hr /><a href="javascript:module.function.serialPrint(\'' + serialPDFlist + '\')">' + core.function.lang('serialPrintLink', serialPrintExceptions.substring(2)) + '</a>';
-			primary += '<br /><br />' + core.function.lang('additionalInfo');
+			if (!!document.documentMode) primary += '<hr /><a href="javascript:documentbundles.function.serialPrint(\'' + serialPDFlist + '\')">' + core.function.lang('serialPrintLink', 'documentbundles', serialPrintExceptions.substring(2)) + '</a>';
+			primary += '<br /><br />' + core.function.lang('additionalInfo', 'documentbundles');
 			Object.keys(pack.secondary).forEach(function (index) {
-				secondary += module.function.linkfile(pack.secondary[index]);
+				secondary += documentbundles.function.linkfile(pack.secondary[index]);
 			});
-			el('temp').innerHTML = '<span class="highlight">' + core.function.lang('primaryCaption') + '</span><br />' + primary;
-			el('output').innerHTML = '<span class="highlight">' + core.function.lang('secondaryCaption') + '</span><br />' + secondary;
+			el('temp').innerHTML = '<span class="highlight">' + core.function.lang('primaryCaption', 'documentbundles') + '</span><br />' + primary;
+			el('output').innerHTML = '<span class="highlight">' + core.function.lang('secondaryCaption', 'documentbundles') + '</span><br />' + secondary;
 		},
-		input: function () {
-			if (typeof (JSONDATA) != 'undefined') {
+		input: function (query) {
+			if (typeof (documentbundles_data) != 'undefined') {
 				var out = core.function.icon.insert('search') +
-					'<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) module.function.gen(sel)"><option value="">' + core.function.lang('selectDefault') + '</option>';
-				Object.keys(JSONDATA).forEach(function (key) {
-					out += '<option id="' + key + '" value="' + key + '">' + key.replace(/_/g," ") + '</option>';
+					'<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.function.gen(sel)"><option value="">' + core.function.lang('selectDefault', 'documentbundles') + '</option>';
+				Object.keys(documentbundles_data).forEach(function (key) {
+					out += '<option id="' + key + '" value="' + key + '" '+(query==key?'selected':'')+'>' + key.replace(/_/g, " ") + '</option>';
 				});
 				out += '</select>';
-				el('input').innerHTML = out + core.function.insert.checkbox(core.function.lang('selectEnableExceptions'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) module.function.gen(sel)"');
+				el('input').innerHTML = out + core.function.insert.checkbox(core.function.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.function.gen(sel)"');
+				if (typeof query != 'undefined') documentbundles.function.gen(query);
 			}
 		},
 	}
 }
 
 var disableOutputSelect = true;
-module.function.documentpackages()

@@ -3,11 +3,11 @@
 //
 //  module for searching the frequently asked questions
 //
-//  dependencies:	data/faq.js
+//  dependencies:	data/help.js
 //
 //////////////////////////////////////////////////////////////
 
-var module = {
+var help = {
 	var: {
 		lang: {
 			formInputPlaceholder: {
@@ -20,28 +20,44 @@ var module = {
 			},
 		}
 	},
+	api: {
+		available: function (search) {
+			core.function.loadScript('data/help.js',
+				'help.api.processAfterImport(\'' + search + '\')');
+		},
+		processAfterImport: function (search) {
+			var display;
+			if (typeof (help_data) != 'undefined') {
+				var found = core.function.smartSearch.lookup(search, help_data.content, true);
+				found.forEach(function (value) {
+					display = '<a href="javascript:core.function.loadScript(\'modules/help.js\',\'help.function.init(\\\'' + help_data.content[value[0]][0] + '\\\')\',\'' + core.var.modules.help.display[core.var.selectedLanguage] + '\')">' + help_data.content[value[0]][0] + '</a>';
+					globalSearch.contribute('help', display);
+				});
+			}
+		}
+	},
 	function: {
-		help: function () {
-			core.function.loadScript('data/help.js', 'module.function.search');
+		init: function (query) {
+			core.function.loadScript('data/help.js', 'help.function.search(\'' + (query || '') + '\')');
 			el('input').innerHTML =
-				'<form id="search" action="javascript:module.function.search();">' +
-				'<span onclick="module.function.search()">' + core.function.icon.insert('search') + '</span>' +
-				'<input type="text" pattern=".{3,}" required placeholder="' + core.function.lang('formInputPlaceholder') + '" id="faq" />' +
-				'<input type="submit" id="artikelsuche" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
+				'<form id="search" action="javascript:help.function.search();">' +
+				'<span onclick="help.function.search();">' + core.function.icon.insert('search') + '</span>' +
+				'<input type="text" pattern=".{3,}" required value="' + (query || '') + '" placeholder="' + core.function.lang('formInputPlaceholder', 'help') + '" id="helpquery" />' +
+				'<input type="submit" id="artikelsuche" value="' + core.function.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
 				'</form>';
 			el('temp').innerHTML = el('output').innerHTML = " ";
 		},
-		search: function () {
-			if (typeof (faq) != 'undefined') {
+		search: function (query) {
+			if (typeof (help_data) != 'undefined') {
 				var list = '';
-				Object.keys(faq.faq).forEach(function (key) {
-					if (faq.faq[key][0]) list += '<a style="cursor:pointer" onclick="el(\'faq\').value=\'' + faq.faq[key][0] + '\'; el(\'search\').submit();">' + faq.faq[key][0] + '</a><br />';
+				Object.keys(help_data.content).forEach(function (key) {
+					if (help_data.content[key][0]) list += '<a style="cursor:pointer" onclick="el(\'helpquery\').value=\'' + help_data.content[key][0] + '\'; el(\'search\').submit();">' + help_data.content[key][0] + '</a><br />';
 					else list += '<br />';
 				});
-				el('temp').innerHTML = '<span class="highlight">' + core.function.lang('tableOfContents') + ':</span><br />' + list;
-
-				if (el('faq').value != '') {
-					var found = core.function.smartSearch.lookup(el('faq').value, faq.faq, true);
+				el('temp').innerHTML = '<span class="highlight">' + core.function.lang('tableOfContents', 'help') + ':</span><br />' + list;
+				query = query || el('helpquery').value;
+				if (query != '') {
+					var found = core.function.smartSearch.lookup(query, help_data.content, true);
 
 					// check if search matches item-list
 					if (found.length > 0) {
@@ -49,13 +65,13 @@ var module = {
 						core.function.smartSearch.relevance.init();
 						found.forEach(function (value) {
 							list += core.function.smartSearch.relevance.nextstep(value[1]);
-							var tresult = '<div class="items items70" onclick="core.function.toggleHeight(this)">' + core.function.insert.expand() +
-								'<span class="highlight">' + faq.faq[value[0]][0] + ':</span> ' + faq.faq[value[0]][1];
+							var tresult = '<div class="items items71" onclick="core.function.toggleHeight(this)">' + core.function.insert.expand() +
+								'<span class="highlight">' + help_data.content[value[0]][0] + ':</span> ' + help_data.content[value[0]][1];
 
 							list += tresult +
 								'</div>';
 						});
-					} else list = core.function.lang('errorNothingFound', el('faq').value);
+					} else list = core.function.lang('errorNothingFound', 'help', query);
 					el('output').innerHTML = list;
 				}
 			}
@@ -64,4 +80,3 @@ var module = {
 }
 
 var disableOutputSelect = true;
-module.function.help();

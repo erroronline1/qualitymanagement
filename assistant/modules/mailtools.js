@@ -12,7 +12,7 @@
 //
 //////////////////////////////////////////////////////////////
 
-var module = {
+var mailtools = {
 	var: {
 		lang: {
 			selectSubmodule: {
@@ -20,7 +20,7 @@ var module = {
 				de: 'Bitte Funktion wählen'
 			},
 			errorMatchingRows: {
-				en: 'The numbers of names and email-adresses doesn\'t match.',
+				en: 'The numbers of names and email-adresses don\'t match.',
 				de: 'Die Anzahl der Namen und der eMailadressen stimmt nicht überein!'
 			},
 			buttonTestCaption: {
@@ -184,21 +184,21 @@ var module = {
 			notavailableResponse: {
 				en: function (dates) {
 					return 'I am not available from ' +
-						module.var.lang.notavailableMonth.en(Number(dates.from[1])) + ' ' +
-						module.var.lang.notavailableDay.en(dates.from[0]) + ' ' + dates.from[2] + ' to ' +
-						module.var.lang.notavailableMonth.en(Number(dates.to[1])) + ' ' +
-						module.var.lang.notavailableDay.en(dates.to[0]) + ' ' + dates.to[2] + '. ' +
-						'In urgent cases please contact our office by mail (email@adress.tld) ' +
-						'or phone (+49 1234 56789).<br /><br />';
+						mailtools.var.lang.notavailableMonth.en(Number(dates.from[1])) + ' ' +
+						mailtools.var.lang.notavailableDay.en(dates.from[0]) + ' ' + dates.from[2] + ' to ' +
+						mailtools.var.lang.notavailableMonth.en(Number(dates.to[1])) + ' ' +
+						mailtools.var.lang.notavailableDay.en(dates.to[0]) + ' ' + dates.to[2] + '. ' +
+						'In urgent cases please contact our office by mail (info.ot@med.uni-heidelberg.de) ' +
+						'or phone (+49 6221 562 6414).<br /><br />';
 				},
 				de: function (dates) {
 					return 'In der Zeit vom ' +
-						module.var.lang.notavailableDay.de(dates.from[0]) + '. ' +
-						module.var.lang.notavailableMonth.de(Number(dates.from[1])) + ' ' + dates.from[2] + ' bis ' +
-						module.var.lang.notavailableDay.de(dates.to[0]) + '. ' +
-						module.var.lang.notavailableMonth.de(Number(dates.to[1])) + ' ' + dates.to[2] + ' bin ich nicht im Hause. ' +
-						'In dringenden Fällen wenden Sie sich bitte an unsere Verwaltung per eMail (email@adress.tld) ' +
-						'oder telefonisch (+49 (0) 1234 56789).<br /><br />';
+						mailtools.var.lang.notavailableDay.de(dates.from[0]) + '. ' +
+						mailtools.var.lang.notavailableMonth.de(Number(dates.from[1])) + ' ' + dates.from[2] + ' bis ' +
+						mailtools.var.lang.notavailableDay.de(dates.to[0]) + '. ' +
+						mailtools.var.lang.notavailableMonth.de(Number(dates.to[1])) + ' ' + dates.to[2] + ' bin ich nicht im Hause. ' +
+						'In dringenden Fällen wenden Sie sich bitte an unsere Verwaltung per eMail (info.ot@med.uni-heidelberg.de) ' +
+						'oder telefonisch (+49 (0) 6221 562 6414).<br /><br />';
 				}
 			}
 		},
@@ -217,32 +217,46 @@ var module = {
 			},
 		},
 	},
+	api: {
+		available: function (search) {
+			var searchobject = [],
+				display;
+			Object.keys(mailtools.var.submodules).forEach(function (key) {
+				searchobject.push([mailtools.var.submodules[key][core.var.selectedLanguage], key]);
+			});
+			var found = core.function.smartSearch.lookup(search, searchobject, true);
+			found.forEach(function (value) {
+				display = '<a href="javascript:core.function.loadScript(\'modules/mailtools.js\',\'mailtools.function.init(\\\'' + searchobject[value[0]][1] + '\\\')\',\'' + core.var.modules.mailtools.display[core.var.selectedLanguage] + '\')">' + searchobject[value[0]][0] + '</a>';
+				globalSearch.contribute('mailtools', display);
+			});
+		},
+	},
 	function: {
 		serialmailinput: function () {
-			el('mailtoolgen').innerHTML = '<input type="button" onclick="module.function.serialmailgen()" value="' + core.function.lang('buttonGenCaption') + '" title="' + core.function.lang('buttonGenTitle') + '" />';
-			el('temp').innerHTML = '<input type="button" value="' + core.function.lang('buttonTestCaption') + '" title="' + core.function.lang('buttonTestTitle') + '" onclick="module.function.serialtest()" /><br /><br />' +
-				core.function.lang('formRecipientListCaption') + ':<br /><textarea id="names" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.function.lang('formRecipientListPlaceholder') + '"></textarea> ' +
-				'<textarea id="adresses" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.function.lang('formRecipientMailPlaceholder') + '"></textarea><br />' +
-				core.function.lang('formContentCaption') + ':<br /><input type="text" style="width:98%" id="subject" placeholder="' + core.function.lang('formSubjectPlaceholder') + '"><br />' +
-				'<textarea id="body" rows="10" style="width:98%;" placeholder="' + core.function.lang('formBodyPlaceholder') + '"></textarea>';
+			el('mailtoolgen').innerHTML = '<input type="button" onclick="mailtools.function.serialmailgen()" value="' + core.function.lang('buttonGenCaption', 'mailtools') + '" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '" />';
+			el('temp').innerHTML = '<input type="button" value="' + core.function.lang('buttonTestCaption', 'mailtools') + '" title="' + core.function.lang('buttonTestTitle', 'mailtools') + '" onclick="mailtools.function.serialtest()" /><br /><br />' +
+				core.function.lang('formRecipientListCaption', 'mailtools') + ':<br /><textarea id="names" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.function.lang('formRecipientListPlaceholder', 'mailtools') + '"></textarea> ' +
+				'<textarea id="adresses" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.function.lang('formRecipientMailPlaceholder', 'mailtools') + '"></textarea><br />' +
+				core.function.lang('formContentCaption', 'mailtools') + ':<br /><input type="text" style="width:98%" id="subject" placeholder="' + core.function.lang('formSubjectPlaceholder', 'mailtools') + '"><br />' +
+				'<textarea id="body" rows="10" style="width:98%;" placeholder="' + core.function.lang('formBodyPlaceholder', 'mailtools') + '"></textarea>';
 			el('output').innerHTML = '';
 		},
 		serialtest: function () {
-			el('names').value = core.function.lang('sampleNameValue');
-			el('adresses').value = core.function.lang('sampleMailValue');
-			el('subject').value = core.function.lang('sampleSubjectValue');
-			el('body').value = core.function.lang('sampleBodyValue');
+			el('names').value = core.function.lang('sampleNameValue', 'mailtools');
+			el('adresses').value = core.function.lang('sampleMailValue', 'mailtools');
+			el('subject').value = core.function.lang('sampleSubjectValue', 'mailtools');
+			el('body').value = core.function.lang('sampleBodyValue', 'mailtools');
 		},
 		serialmailgen: function () {
-			if (!el('names').value || !el('adresses').value || !el('body').value || !el('subject').value) core.function.popup(core.function.lang('errorNoContent'));
+			if (!el('names').value || !el('adresses').value || !el('body').value || !el('subject').value) core.function.popup(core.function.lang('errorNoContent', 'mailtools'));
 			else {
 				var names = el('names').value.split(/\n/g),
 					adresses = el('adresses').value.split(/\s/g);
-				if (names.length != adresses.length) core.function.popup(core.function.lang('errorMatchingRows'));
+				if (names.length != adresses.length) core.function.popup(core.function.lang('errorMatchingRows', 'mailtools'));
 				else {
 					var output = '';
 					for (var i = 0; i < names.length; i++) {
-						output += '<a href="mailto:' + adresses[i] + '?subject=' + el('subject').value + '&body=' + core.function.lang('outputSalutation')(names[i]) + '%20' + encodeURI(names[i]) + ',%0A%0A' + encodeURI(el('body').value) + '">' + core.function.lang('outputMailTo') + ' ' + names[i] + ' &lt;' + adresses[i] + '&gt;</a><br />';
+						output += '<a href="mailto:' + adresses[i] + '?subject=' + el('subject').value + '&body=' + core.function.lang('outputSalutation', 'mailtools')(names[i]) + '%20' + encodeURI(names[i]) + ',%0A%0A' + encodeURI(el('body').value) + '">' + core.function.lang('outputMailTo', 'mailtools') + ' ' + names[i] + ' &lt;' + adresses[i] + '&gt;</a><br />';
 					}
 					disableOutputSelect = true;
 					el('output').innerHTML = output;
@@ -250,11 +264,11 @@ var module = {
 			}
 		},
 		signatureinput: function () {
-			el('mailtoolgen').innerHTML = '<input type="button" onclick="module.function.signaturegen[core.function.languageSynthesis.outputLanguage()]()" value="' + core.function.lang('buttonGenCaption') + '" title="' + core.function.lang('buttonGenTitle') + '" />';
-			el('temp').innerHTML = module.function.signaturegen[core.function.languageSynthesis.outputLanguage()](1) +
+			el('mailtoolgen').innerHTML = '<input type="button" onclick="mailtools.function.signaturegen[core.function.languageSynthesis.outputLanguage()]()" value="' + core.function.lang('buttonGenCaption', 'mailtools') + '" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '" />';
+			el('temp').innerHTML = mailtools.function.signaturegen[core.function.languageSynthesis.outputLanguage()](1) +
 				'<br /><br />' +
-				core.function.languageSelection('onchange="module.function.signaturegen[core.function.languageSynthesis.outputLanguage()]()"').join('<br />') +
-				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook') + '</a>' : '');
+				core.function.languageSelection('onchange="mailtools.function.signaturegen[core.function.languageSynthesis.outputLanguage()]()"').join('<br />') +
+				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'mailtools') + '</a>' : '');
 			el('output').innerHTML = '';
 			disableOutputSelect = false;
 		},
@@ -288,7 +302,7 @@ var module = {
 					' </tr>' +
 					'</table>' +
 					'</div>';
-				if (!form && (!el('name').value || !el('funktion').value || !el('email').value)) core.function.popup(core.function.lang('errorNoContent'));
+				if (!form && (!el('name').value || !el('funktion').value || !el('email').value)) core.function.popup(core.function.lang('errorNoContent', 'mailtools'));
 				else {
 					if (!form) {
 						el('output').innerHTML = html;
@@ -323,7 +337,7 @@ var module = {
 					' </tr>' +
 					'</table>' +
 					'</div>';
-				if (!form && (!el('name').value || !el('funktion').value || !el('email').value)) core.function.popup(core.function.lang('errorNoContent'));
+				if (!form && (!el('name').value || !el('funktion').value || !el('email').value)) core.function.popup(core.function.lang('errorNoContent', 'mailtools'));
 				else {
 					if (!form) {
 						el('output').innerHTML = html;
@@ -332,9 +346,10 @@ var module = {
 			}
 		},
 		notavailableinput: function () {
-			el('mailtoolgen').innerHTML = '<input type="button" onclick="module.function.notavailablegen()" value="' + core.function.lang('buttonGenCaption') + '" title="' + core.function.lang('buttonGenTitle') + '" />';
-			el('temp').innerHTML = core.function.lang('notavailableFrom') + ': <input type="date" id="notfrom" placeholder="DD.MM.YYYY" /><br />' +
-				core.function.lang('notavailableTo') + ': <input type="date" id="notto" placeholder="DD.MM.YYYY" />';
+			el('mailtoolgen').innerHTML = '<input type="button" onclick="mailtools.function.notavailablegen()" value="' + core.function.lang('buttonGenCaption', 'mailtools') + '" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '" />';
+			el('temp').innerHTML = core.function.lang('notavailableFrom', 'mailtools') + ': <input type="date" id="notfrom" placeholder="DD.MM.YYYY" /><br />' +
+				core.function.lang('notavailableTo', 'mailtools') + ': <input type="date" id="notto" placeholder="DD.MM.YYYY" />' +
+				(core.var.outlookWebUrl ? '<br /><br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'mailtools') + '</a>' : '');
 			el('output').innerHTML = '';
 		},
 		notavailablegen: function () {
@@ -350,18 +365,19 @@ var module = {
 
 			disableOutputSelect = false;
 
-			el('output').innerHTML = module.var.lang.notavailableResponse['de'](dates) +
-				module.var.lang.notavailableResponse['en'](dates);
+			el('output').innerHTML = mailtools.var.lang.notavailableResponse['de'](dates) +
+				mailtools.var.lang.notavailableResponse['en'](dates);
 		},
-		mailtools: function () {
+		init: function (query) {
 			var options = new Object();
-			options['null'] = ['', core.function.lang('selectSubmodule')];
-			Object.keys(module.var.submodules).forEach(function (key) {
-				options[key] = [key, module.var.submodules[key][core.var.selectedLanguage]];
+			options['null'] = ['', core.function.lang('selectSubmodule', 'mailtools')];
+			Object.keys(mailtools.var.submodules).forEach(function (key) {
+				options[key] = [key, mailtools.var.submodules[key][core.var.selectedLanguage]];
 			});
-			el('input').innerHTML = core.function.insert.select(options, 'mailtoolsselection', 'mailtoolsselection', null, 'onchange="module.function[this.options[this.selectedIndex].value+\'input\']()"') +
+			el('input').innerHTML = core.function.insert.select(options, 'mailtoolsselection', 'mailtoolsselection', query, 'onchange="mailtools.function[this.options[this.selectedIndex].value+\'input\']()"') +
 				'<span id="mailtoolgen" style="float:right"></span>';
 			el('temp').innerHTML = el('output').innerHTML = '';
+			if (typeof query != 'undefined') eval('mailtools.function.' + query + 'input()');
 		},
 
 
@@ -369,4 +385,3 @@ var module = {
 }
 
 var disableOutputSelect = true;
-module.function.mailtools();

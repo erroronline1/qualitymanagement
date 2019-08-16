@@ -8,13 +8,8 @@
 //
 //////////////////////////////////////////////////////////////
 
-var module = {
+var correspondence = {
 	var: {
-		submodules: {
-			wahl: ['', ''],
-			allgemein: ['data/correspondence_common.js', 'common'],
-			//extend with additional files. this makes for a clearer categorization. 
-		},
 		lang: {
 			inputLoadSubmoduleDefault: {
 				en: 'select department...',
@@ -52,14 +47,49 @@ var module = {
 				en: 'informal',
 				de: 'persönlich'
 			},
+		},
+		submodules: {
+			wahl: ['', ''],
+			common: ['correspondence_common', 'common'],
+			//extend with additional files. this makes for a clearer categorization. 
+		},
+		selectedModule: function () {
+			return el('submodule').options[el('submodule').selectedIndex].value || this.presetModule;
+		},
+		selectedObject: function () {
+			return eval(correspondence.var.selectedModule() + '_data');
+		},
+	},
+	api: {
+		available: function (search) {
+			var delay = 0;
+			Object.keys(correspondence.var.submodules).forEach(function (key) {
+				if (correspondence.var.submodules[key][0] != '') {
+					core.function.loadScript('data/' + correspondence.var.submodules[key][0] + '.js',
+						'correspondence.api.processAfterImport(\'' + search + '\', \'' + correspondence.var.submodules[key][0] + '\', eval(\'' + correspondence.var.submodules[key][0] + '_data\'))');
+				}
+			});
+		},
+		processAfterImport: function (search, submodule, object) {
+			var searchobject = [],
+				display;
+			Object.keys(object).forEach(function (key) {
+				searchobject.push([object[key]['title'], key]);
+			});
+			var found = core.function.smartSearch.lookup(search, searchobject, true);
+			found.forEach(function (value) {
+				display = '<a href="javascript:core.function.loadScript(\'modules/correspondence.js\',\'correspondence.function.init(\\\'' + submodule + '|' + searchobject[value[0]][1] + '\\\')\',\'' + core.var.modules.correspondence.display[core.var.selectedLanguage] + '\')">' + searchobject[value[0]][0] + '</a>';
+				globalSearch.contribute('correspondence', display);
+			});
 		}
 	},
 	function: {
-		gen: function () { //create user output
-			if (typeof (JSONDATA) != 'undefined') {
+		gen: function (query) { //create user output
+			if (typeof (correspondence.var.selectedObject()) != 'undefined') {
 				//read selected checkboxes or set to default
 				var checkbox = new Array();
-				var contents = JSONDATA[el('textTheme').options[el('textTheme').selectedIndex].value].contents;
+				query = query || el('textTheme').options[el('textTheme').selectedIndex].value;
+				var contents = correspondence.var.selectedObject()[query].contents;
 				Object.keys(contents).forEach(function (value) {
 					checkbox[value] = el('c' + value) ? (el('c' + value).checked ? 1 : 0) : 1;
 				});
@@ -88,51 +118,55 @@ var module = {
 				el('output').innerHTML = output;
 				el('mailto').href = 'mailto:?body=' + core.function.escapeHTML(el('output').innerHTML, true);
 
-			} else core.function.popup(core.function.lang('errorSelectModules'));
+			} else core.function.popup(core.function.lang('errorSelectModules', 'correspondence'));
 		},
 
-		start: function () {
-			if (typeof (JSONDATA) != 'undefined') {
-
+		start: function (query) {
+			if (typeof (correspondence.var.selectedObject()) != 'undefined') {
 				var sel = new Object();
-				Object.keys(JSONDATA).forEach(function (key) {
-					sel[key] = [key, JSONDATA[key].title];
+				Object.keys(correspondence.var.selectedObject()).forEach(function (key) {
+					sel[key] = [key, correspondence.var.selectedObject()[key].title];
 				});
-
-				var output = core.function.insert.select(sel, 'textTheme', 'textTheme', null, 'onchange="module.function.gen()"') +
+				var output = core.function.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.function.gen()"') +
 					'<br /><br />' +
-					'<input type="text" placeholder="' + core.function.lang('inputPlaceholder') + '" id="name" onblur="module.function.gen()" /> <input type="button" id="searchname" value="' + core.function.lang('webSearch') + '" onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.function.lang('webSearchTitle') + '" /><br /><br />' +
+					'<input type="text" placeholder="' + core.function.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.function.gen()" /> <input type="button" id="searchname" value="' + core.function.lang('webSearch', 'correspondence') + '" onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.function.lang('webSearchTitle', 'correspondence') + '" /><br /><br />' +
 					'<div class="inline">' +
-					core.function.insert.radio(core.function.lang('inputOptionMale'), 'sex', 'male', 1, 'onchange="module.function.gen()"') + '<br />' +
-					core.function.insert.radio(core.function.lang('inputOptionFemale'), 'sex', 'female', false, 'onchange="module.function.gen()"') + ' ' +
+					core.function.insert.radio(core.function.lang('inputOptionMale', 'correspondence'), 'sex', 'male', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
+					core.function.insert.radio(core.function.lang('inputOptionFemale', 'correspondence'), 'sex', 'female', false, 'onchange="correspondence.function.gen()"') + ' ' +
 					'</div><div class="inline">' +
-					core.function.insert.radio(core.function.lang('inputOptionFirstperson'), 'person', 'firstperson', 1, 'onchange="module.function.gen()"') + '<br />' +
-					core.function.insert.radio(core.function.lang('inputOptionThirdperson'), 'person', 'thirdperson', false, 'onchange="module.function.gen()"') + ' ' +
+					core.function.insert.radio(core.function.lang('inputOptionFirstperson', 'correspondence'), 'person', 'firstperson', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
+					core.function.insert.radio(core.function.lang('inputOptionThirdperson', 'correspondence'), 'person', 'thirdperson', false, 'onchange="correspondence.function.gen()"') + ' ' +
 					'</div><div class="inline">' +
-					core.function.languageSelection('onchange="module.function.gen()"').join('<br />') +
+					core.function.languageSelection('onchange="correspondence.function.gen()"').join('<br />') +
 					'</div><div class="inline">' +
-					core.function.insert.radio(core.function.lang('inputOptionFormal'), 'age', 'adult', 1, 'onchange="module.function.gen()"') + '<br />' +
-					core.function.insert.radio(core.function.lang('inputOptionInformal'), 'age', 'child', false, 'onchange="module.function.gen()"') + '' +
+					core.function.insert.radio(core.function.lang('inputOptionFormal', 'correspondence'), 'age', 'adult', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
+					core.function.insert.radio(core.function.lang('inputOptionInformal', 'correspondence'), 'age', 'child', false, 'onchange="correspondence.function.gen()"') + '' +
 					'</div>' +
-					(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '">' + core.function.icon.insert('word') + core.function.lang('openLetterTemplate') + '</a><br /><small>' + core.function.lang('openLetterTemplateHint') + '</small>' : '') +
-					'<br /><br /><a id="mailto" href="mailto:">' + core.function.icon.insert('email') + core.function.lang('openMailApp') + '</a>' +
-					(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook') + '</a>' : '');
-				if (typeof (additionalOptions) !== "undefined" && additionalOptions) output += '<br />' + additionalOptions;
+					(typeof (additionalOptions) !== "undefined" && additionalOptions ? '<br />' + additionalOptions : '') +
+					(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '" target="_blank">' + core.function.icon.insert('word') + core.function.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.function.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
+					'<br /><br /><a id="mailto" href="mailto:">' + core.function.icon.insert('email') + core.function.lang('openMailApp', 'correspondence') + '</a>' +
+					(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'correspondence') + '</a>' : '');
 				el('temp').innerHTML = output;
-			} else core.function.popup(core.function.lang('errorSelectModules'));
+				if (typeof query != 'undefined') correspondence.function.gen(query);
+			} else core.function.popup(core.function.lang('errorSelectModules', 'correspondence'));
 		},
 
-		correspondence: function () {
-			module.var.submodules.wahl[1] = core.function.lang('inputLoadSubmoduleDefault');
-			el('input').innerHTML = core.function.insert.select(module.var.submodules,
-					'submodule', 'submodule', null, 'onchange="core.function.loadScript(this.options[this.selectedIndex].value,\'module.function.start\')"') +
-				'<span style="float:right"><input type="button" onclick="module.function.gen()" value="' + core.function.lang('buttonGenCaption') + '" title="' + core.function.lang('buttonGenTitle') + '" /></span>';
+		init: function (query) {
+			correspondence.var.submodules.wahl[1] = core.function.lang('inputLoadSubmoduleDefault', 'correspondence');
+			if (typeof query != 'undefined') {
+				preset = query.split('|');
+			}
+			el('input').innerHTML = core.function.insert.select(correspondence.var.submodules,
+					'submodule', 'submodule', (typeof preset != 'undefined' ? preset[0].substring(preset[0].indexOf('_')+1) : null), 'onchange="core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
+				'<span style="float:right"><input type="button" onclick="correspondence.function.gen()" value="' + core.function.lang('buttonGenCaption', 'correspondence') + '" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '" /></span>';
 			el('temp').innerHTML = '';
 			el('output').innerHTML = '';
+			if (typeof query != 'undefined') {
+				correspondence.var['presetModule'] = preset[0];
+				core.function.loadScript('data/' + preset[0] + '.js', 'correspondence.function.start(\'' + preset[1] + '\')');
+			}
 		}
-
 	}
 }
 
 var disableOutputSelect = false;
-module.function.correspondence();
