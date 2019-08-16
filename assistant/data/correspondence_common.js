@@ -2,7 +2,7 @@
 
 var additionalOptions = false;
 
-var JSONDATA = {
+var correspondence_common_data= {
 	//contents.property:{language:['first person', 'third person']}
 	null: {
 		title: "Select Topic...",
