@@ -16,16 +16,13 @@
 		//  unfortunately written for ie11 on purpose
 		//  tested with ie11, firefox, edge and chrome
 		//
-		//  chrome has an issue with cookies from local files, this is
-		//  an issue that might need some tweaks.
-		//  see https://bugs.chromium.org/p/chromium/issues/detail?id=535
-		//
 		//	add changes to the changelog in config/user_information.js
 		//
 		//////////////////////////////////////////////////////////////
 	</script>
 	<script src="core/config.js"></script>
 	<script src="core/core_language_synthesis.js"></script>
+	<script src="core/user_information.js"></script>
 
 	<link href="core/core.css" rel="stylesheet" type="text/css" />
 	<link id="colortheme" rel="stylesheet" type="text/css" />
@@ -49,18 +46,30 @@
 			</script>
 		</header>
 		<main class="content">
-			<article id="temp"></article>
-			<aside id="output" onclick="selectText('output')">
+			<article id="temp">
 				<script>
-					if (core.var.letterTemplate || core.var.outlookWebUrl){
-						document.write('<span class="highlight">' + core.function.lang('quickstart') + '</span><br />'
-						+ (core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '">'
-						+ core.function.icon.insert('word') + core.function.lang('openLetterTemplate') + '</a><br />' : '')
-						+ (core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">'
-						+ core.function.icon.insert('outlook') + core.function.lang('openOutlook') + '</a>' : ''));
-					}
+					document.write(
+						'<span class="highlight">' + core.function.lang('quickstart') + '</span><br />' +
+						'<br /><span class="highlight">' + core.function.lang('globalSearchPlaceholder') + '</span>' +
+						'<br /><form id="search" style="font-size:150%" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
+						'<span onclick="globalSearch.search(el(\'globalsearch\').value);">' + core.function.icon.insert('search') +
+						'</span>' +
+						'<input type="text" style="min-width:0; width:calc(100% - 3em)" pattern=".{3,}"  id="globalsearch" placeholder="' +
+						core.function.lang('globalSearchPlaceholder') + '" autofocus />' +
+						'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
+						'</form>' +
+						(core.var.letterTemplate ? '<br /><a href="' + core.var.letterTemplate + '" target="_blank">' +
+							core.function.icon.insert('word') + core.function.lang('openLetterTemplate') + '</a><br />' : '') +
+						(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' +
+							core.function.icon.insert('outlook') + core.function.lang('openOutlook') + '</a><br />' : '') +
+						'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>'
+					);
+
 					var disableOutputSelect = true;
 				</script>
+
+			</article>
+			<aside id="output" onclick="selectText('output')">
 			</aside>
 		</main>
 	</div>
@@ -68,11 +77,9 @@
 		<div id="popuptext"></div>
 	</div>
 
-	<script src="core/user_information.js"></script>
 	<script>
 		select_module();
 		document.title = core.function.lang('title');
-		el('temp').innerHTML = randomTip.show();
 		//load settings from cookies or defaults
 		var fontsize = document.body.style.fontSize = ((core.function.setting.get('settingFontsize') || 0) / 10 + 1) + 'em';
 		el('colortheme').href = 'core/' + (core.function.setting.get('settingTheme') || 'default') + '.css';
