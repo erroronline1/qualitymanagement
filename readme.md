@@ -12,6 +12,8 @@ while it makes way more sense to automate quality management using assistive tec
 
 this quality management software has been in use in context to [iso 13485:2015](https://www.iso.org/search.html?q=13485%3A2016)
 
+there have been some significant changes to the core documents as well as to the assistant. i decided to make this a new version. in case you need previous sourcecodes these can be found as a branch in the public repository.
+
 # the core documents
 ## use case
 the office documents come with built-in vba-macros to handle document version control, its overview and export-handling. employees use mainly unchangeable pdf-files to fill out during workflow. each document registers and manages itself (kind of).
@@ -29,7 +31,7 @@ in general this system
 
 ## requirements
 * one somewhat experienced office user to customize the document-blueprints and vba-macros
-* microsoft office 2010+ (tested with office 2010 and 2016, word and excel)
+* microsoft office 2010+ (tested with office 2010, 2016 and 2019 professional, word and excel)
 
 # the assistant
 ## use case
@@ -39,10 +41,10 @@ this tool serves as an assitive layer to access your companies documents in form
 this tool provides your company with an application to have an easier access to your quality management system. if you provide your employees with access via this assistant it might be way more easy to have them use only the latest documentation version. it does access files that could be reached by file-explorer as well, but avoiding the latter way prevents the employees to make copies that may become obsolete, at least to some degree.
 
 * global access to documentation for every employee
-* easy lookup methods for finding documents regardless of storage path
+* easy lookup methods for finding documents regardless of storage path, in case alternative search term are provided it is even more easy to find these
 * automated update of contents with built-in vba-interface
 * compatible to ms ie11 because it was built for it, tested successfully with firefox, chrome and edge as well
-* extendable with modules for various custom data automation
+* easily extendable with modules for various custom data automation
 
 ## requirements
 * one webdeveloper to customize the application for your companies needs and provide you with desired additional modules
@@ -55,7 +57,7 @@ this tool provides your company with an application to have an easier access to 
 the vba-macros can be customized quite easily for i tried to have all important parts split to functions to be able to enable/disable these on demand as well as using variables to customize easily. in the best case all you have to do is to change the variables at the beginning of the macro-code. this applies to both docm and xlsm files.
 
 * customize the variables for prompts to your language
-* you can provide default paths within the macro but paths will always be selectable
+* you can provide default paths within the macro - but paths will always be selectable
 * you can change rows and columns within the macro-setup of tables in case you want to provide different information on save of word-files
 * you will be guided through version control and can choose whether to auto-update version and release date or set these manually
 * archiving files with latest version number
@@ -74,7 +76,7 @@ there is a main html-file in the root folder, a core folder with the core functi
 * the assistant is built using js-ecmascript 5 on purpose because of required compatibility to ms ie11. unfortunately this still is the default browser to date in many companies. the css is not compatible to previous versions of ie
 * the assistant is designed to handle multiple language support, comes with english and german and can be extended as desired. extend the lang-objects in every module, the config-file and register the languages in this config-file to make them available.
 * the core-object provides readable function-calls and globally usable variables. general configuration takes place in core/config.js. this file contains a variable that extents the core-object with global variables and commonly uses language-bricks.
-* built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, local-storage- or cookie-handler, repetitive design pattern implementation (icons, inputs, etc.) and some more. get access or extend these functions with `core.function.FUNCTIONNAME`, global variables with `core.var.VARNAME`. i recommend this pattern to modules as well, defining a module-object with `module.function.FUNCTIONNAME` and `module.var.VARNAME`. the handler for multi-language-support of the application  (`core.function.lang()`) makes built-in automated use of this pattern.
+* built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, local-storage- or cookie-handler, repetitive design pattern implementation (icons, inputs, etc.) and some more. get access or extend these functions with `core.function.FUNCTIONNAME`, global variables with `core.var.VARNAME`. i recommend this pattern to modules as well, defining a module-object with `{moduleFileName}.function.FUNCTIONNAME` and `{moduleFileName}.var.VARNAME`. the handler for multi-language-support of the application  (`core.function.lang()`) makes built-in automated use of this pattern.
 * data files are stored in a different folder hoping that changes to the backend don't mess up data that might be accessed through different persons than the maintainer of the application
 * users can be informed about changes using the changelog in core/user_information.js. add your own changes and the information will popup automatically on start
 * since most of my colleagues don't mind messing around to learn something, there is a short-tip function whose entries can be extended in accordance to your modules
@@ -102,13 +104,17 @@ i tried to implement a preview on search forms using datalists. while it is not 
 * before implementing this system to your company make sure your decisions for documenting the system itself are reliable (e.g. rows and columns in the list of documents in force in dependency to the vba-macro within the self registering docm-files). otherwise you might have to change a lot of code in a lot of documents. this isn't fun.
 * the assistant is designed to hopefully seamlessly transition into windows 10 fluent design that is still to come to my company as time of writing. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be.
 
+# but i am no programmer!
+to customize this software to your needs it is definitely neccessary to have someone change values within the vba-macros as well as the javascript configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
+if you are worried your coding employee leaves, at least the assistant can be maintained by any webdeveloper/webdeveloping agency that knows javascript. also there is no need of compiling since all source codes are openly accessible.
+
 # disclaimer
 use at your own responsibility. as this system is or has been in real use with me being responsible, i did my best to make everything flawless. i also tried to make the documentation and comments as meaningful as i could. als always there might be parts that once seemed to be self-explanatory so a little bit of advanced javascript skills might come in handy.
 
 this system does neither provide you with the content of your quality management system nor the neccessary structure. you will have to set this one up for yourself. but this system might be flexible enough to match your needs in regards of version control, publishing and company wide access. i really tried to make the best hammer for screwing i could. of course i sewed everything to fit my own companies needs and quality management system. if your company decides for more fields you might have to take a deeper look into vba programming to customize that.
 but as the current deputy quality manager i strongly recommend to reconsider which type of information and extent your documentation must have to fit the norm.
 
-i will and can not guarantee this product suits all requirements for a certified quality management software. on the other hand this approach is not more than an assistive workflow to make version control and information access more easy. as this software supports your paper-based documentation it is up to your own document content, process definitions and reliable form completion by your employees to make sure your qm/documentation meets all regulatory requirements.
+i was not able to find information if there are special requirements for a quality management software. regarding iso 13485 there are no restrictions what to use. you will have to take your own responsibility for any kind of software - even an amateurs work. you will just have to rate the risk, how to handle that and set up the process of validation of software application for this. as this software supports your paper-based documentation it is up to your own document content, process definitions and reliable form completion by your employees to make sure your qm/documentation meets all regulatory requirements.
 
 # license
 a quality management software - automate your paper based qms
