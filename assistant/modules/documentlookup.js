@@ -85,7 +85,8 @@ var documentlookup = {
 				found.forEach(function (value) {
 					if (typeof (object.content[value[0]]) == 'object') display = documentlookup.function.linkfile(object.content[value[0]][0]);
 					else display = documentlookup.function.linkfile(object.content[value[0]]);
-					globalSearch.contribute('documentlookup', display);
+					//add value and relevance
+					globalSearch.contribute('documentlookup', [display, value[1]]);
 				});
 
 			}

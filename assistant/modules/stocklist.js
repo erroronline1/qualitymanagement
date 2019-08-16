@@ -96,7 +96,8 @@ var stocklist = {
 				//});
 				if (found.length) {
 					display = '<a href="javascript:core.function.loadScript(\'modules/stocklist.js\',\'stocklist.function.init(\\\'' + search + '\\\')\',\'' + core.var.modules.stocklist.display[core.var.selectedLanguage] + '\')">' + found.length + core.function.lang('apiItemsFound', 'stocklist') + '</a>';
-					globalSearch.contribute('stocklist', display);
+					//add value and relevance
+					globalSearch.contribute('stocklist', [display, 1]);
 				}
 			}
 		}

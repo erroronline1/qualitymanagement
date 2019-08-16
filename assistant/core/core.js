@@ -6,7 +6,6 @@ var core = {
 	function: {
 		popup: function (text) { //toggle notification popup
 			otext = '<span><a href="javascript:core.function.popup(aboutNotification[core.var.selectedLanguage]);">&lt;/&gt; error on line 1</a> - <a href="mailto:' + core.var.adminMail + '?subject=' + document.title + '">feedback/request</a></span><input type="button" style="float:right" value="&#x21E6; ' + core.function.lang('popupCloseButton') + '" onclick="core.function.popup()" /><br /><br />' + text;
-			//if (el('popup').style.opacity=='0' || !el('popup').style.opacity){
 			if (el('popup').style.opacity == '1' && typeof text === 'undefined') {
 				el('popup').style.opacity = '0';
 				el('popuptext').style.left = '-100vw';
@@ -176,10 +175,12 @@ var core = {
 				script.type = 'text/javascript';
 				script.src = url;
 				if (typeof (callback) != 'undefined') {
+					var skip=false;
 					script.onload = function () { //not ie
 						eval(callback);
+						skip=true;
 					};
-					script.onreadystatechange = function () { //ie
+					if (!skip) script.onreadystatechange = function () { //ie
 						if (this.readyState == 'complete') {
 							eval(callback);
 						}
@@ -431,16 +432,16 @@ var globalSearch = {
 		}, (core.function.setting.get('settingGlobalSearchTime') || 3) * 1000);
 	},
 	display: function () {
-		//		console.log(this.result);
 		if (Object.keys(this.result).length) {
 			var displayResult = '<br />';
 			Object.keys(this.result).forEach(function (mod) {
 				displayResult += '<div class="items items143" onclick="core.function.toggleHeight(this)">' +
 					core.function.insert.expand() +
 					core.var.modules[mod].icon + core.var.modules[mod].display[core.var.selectedLanguage] + '<br />';
+				globalSearch.result[mod].sort(core.function.sortBySecondColumn);
 				globalSearch.result[mod].forEach(function (key) {
 					//console.log(mod,key);
-					displayResult += key + '<br />';
+					displayResult += key[0] + '<br />';
 				});
 				displayResult += '</div>';
 			});

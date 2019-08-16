@@ -65,7 +65,8 @@ var documentbundles = {
 				var found = core.function.smartSearch.lookup(search, searchobject, true);
 				found.forEach(function (value) {
 					display = '<a href="javascript:core.function.loadScript(\'modules/documentbundles.js\',\'documentbundles.function.init(\\\'' + searchobject[value[0]][0] + '\\\')\',\'' + core.var.modules.documentbundles.display[core.var.selectedLanguage] + '\')">' + searchobject[value[0]][0].replace(/_/g, " ") + '</a>';
-					globalSearch.contribute('documentbundles', display);
+					//add value and relevance
+					globalSearch.contribute('documentbundles', [display, value[1]]);
 				});
 			}
 		}

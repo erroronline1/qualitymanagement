@@ -227,7 +227,8 @@ var mailtools = {
 			var found = core.function.smartSearch.lookup(search, searchobject, true);
 			found.forEach(function (value) {
 				display = '<a href="javascript:core.function.loadScript(\'modules/mailtools.js\',\'mailtools.function.init(\\\'' + searchobject[value[0]][1] + '\\\')\',\'' + core.var.modules.mailtools.display[core.var.selectedLanguage] + '\')">' + searchobject[value[0]][0] + '</a>';
-				globalSearch.contribute('mailtools', display);
+					//add value and relevance
+					globalSearch.contribute('mailtools', [display, value[1]]);
 			});
 		},
 	},

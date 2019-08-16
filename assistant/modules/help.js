@@ -31,7 +31,8 @@ var help = {
 				var found = core.function.smartSearch.lookup(search, help_data.content, true);
 				found.forEach(function (value) {
 					display = '<a href="javascript:core.function.loadScript(\'modules/help.js\',\'help.function.init(\\\'' + help_data.content[value[0]][0] + '\\\')\',\'' + core.var.modules.help.display[core.var.selectedLanguage] + '\')">' + help_data.content[value[0]][0] + '</a>';
-					globalSearch.contribute('help', display);
+					//add value and relevance
+					globalSearch.contribute('help', [display, value[1]]);
 				});
 			}
 		}
