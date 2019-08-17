@@ -188,8 +188,8 @@ var mailtools = {
 						mailtools.var.lang.notavailableDay.en(dates.from[0]) + ' ' + dates.from[2] + ' to ' +
 						mailtools.var.lang.notavailableMonth.en(Number(dates.to[1])) + ' ' +
 						mailtools.var.lang.notavailableDay.en(dates.to[0]) + ' ' + dates.to[2] + '. ' +
-						'In urgent cases please contact our office by mail (info.ot@med.uni-heidelberg.de) ' +
-						'or phone (+49 6221 562 6414).<br /><br />';
+						'In urgent cases please contact our office by mail (email@company.tld) ' +
+						'or phone (+49 1234 567 890).<br /><br />';
 				},
 				de: function (dates) {
 					return 'In der Zeit vom ' +
@@ -197,8 +197,8 @@ var mailtools = {
 						mailtools.var.lang.notavailableMonth.de(Number(dates.from[1])) + ' ' + dates.from[2] + ' bis ' +
 						mailtools.var.lang.notavailableDay.de(dates.to[0]) + '. ' +
 						mailtools.var.lang.notavailableMonth.de(Number(dates.to[1])) + ' ' + dates.to[2] + ' bin ich nicht im Hause. ' +
-						'In dringenden Fällen wenden Sie sich bitte an unsere Verwaltung per eMail (info.ot@med.uni-heidelberg.de) ' +
-						'oder telefonisch (+49 (0) 6221 562 6414).<br /><br />';
+						'In dringenden Fällen wenden Sie sich bitte an unsere Verwaltung per eMail (email@company.tld) ' +
+						'oder telefonisch (+49 (1) 234 567 890).<br /><br />';
 				}
 			}
 		},
