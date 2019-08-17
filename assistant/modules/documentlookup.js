@@ -75,12 +75,14 @@ var documentlookup = {
 		available: function (search) {
 			Object.keys(documentlookup.var.submodules).forEach(function (key) {
 				core.function.loadScript('data/' + key + '.js',
-					'documentlookup.api.processAfterImport(\'' + search + '\', eval(\'' + key + '_data\'))');
+				'documentlookup.api.processAfterImport(\'' + search + '\', \'' + key + '_data\')');
 			});
+			core.performance.stop('documentlookup.api.available(\''+search+'\')');
 		},
-		processAfterImport: function (search, object) {
+		processAfterImport: function (search, objectname) {
 			var display = '';
-			if (typeof (object) != 'undefined') {
+			if (typeof (objectname) != 'undefined') {
+				object=eval(objectname);
 				var found = core.function.smartSearch.lookup(search, object.content, true);
 				found.forEach(function (value) {
 					if (typeof (object.content[value[0]]) == 'object') display = documentlookup.function.linkfile(object.content[value[0]][0]);
@@ -88,8 +90,8 @@ var documentlookup = {
 					//add value and relevance
 					globalSearch.contribute('documentlookup', [display, value[1]]);
 				});
-
 			}
+			core.performance.stop('documentlookup.api.processAfterImport(\''+search+'\', \''+objectname+'\')',found);
 		}
 	},
 	function: {
@@ -108,6 +110,7 @@ var documentlookup = {
 				'<a style="float:right" href="' + documentlookup.var.thirdDocumentCategoryPath + '">' + core.function.lang('optionThirdType', 'documentlookup') + '</a>' +
 				'</form>';
 			el('temp').innerHTML = el('output').innerHTML = '';
+			core.performance.stop('documentlookup.function.init()');
 		},
 		linkfile: function (url) {
 			// bad filename or dynamic url
@@ -180,6 +183,7 @@ var documentlookup = {
 			}
 		},
 		search: function () {
+			core.performance.start('documentlookup.function.search()'); //possible duplicate
 			var list = '';
 			if (typeof (documentlookup.var.selectedObject()) != 'undefined') {
 				//list all items for overview
@@ -206,6 +210,7 @@ var documentlookup = {
 					} else el('output').innerHTML = core.function.lang('errorNothingFound', 'documentlookup', el('documentname').value);
 				} else el('output').innerHTML = documentlookup.function.favouriteHandler.get() || '';
 			}
+			core.performance.stop('documentlookup.function.search()', found);
 		}
 	}
 }

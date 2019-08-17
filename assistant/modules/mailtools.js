@@ -230,6 +230,7 @@ var mailtools = {
 					//add value and relevance
 					globalSearch.contribute('mailtools', [display, value[1]]);
 			});
+			core.performance.stop('mailtools.api.available(\''+search+'\')');
 		},
 	},
 	function: {
@@ -379,9 +380,8 @@ var mailtools = {
 				'<span id="mailtoolgen" style="float:right"></span>';
 			el('temp').innerHTML = el('output').innerHTML = '';
 			if (typeof query != 'undefined') eval('mailtools.function.' + query + 'input()');
+			core.performance.stop('mailtools.function.init()');
 		},
-
-
 	}
 }
 

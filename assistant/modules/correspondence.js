@@ -62,17 +62,19 @@ var correspondence = {
 	},
 	api: {
 		available: function (search) {
-			var delay = 0;
+			//loop through registered submodules, load them individually and let processAfterImport add smartSearch-results to globalSearch
 			Object.keys(correspondence.var.submodules).forEach(function (key) {
 				if (correspondence.var.submodules[key][0] != '') {
 					core.function.loadScript('data/' + correspondence.var.submodules[key][0] + '.js',
-						'correspondence.api.processAfterImport(\'' + search + '\', \'' + correspondence.var.submodules[key][0] + '\', eval(\'' + correspondence.var.submodules[key][0] + '_data\'))');
+						'correspondence.api.processAfterImport(\'' + search + '\', \'' + correspondence.var.submodules[key][0] + '\', \'' + correspondence.var.submodules[key][0] + '_data\')');
 				}
 			});
+			core.performance.stop('correspondence.api.available(\''+search+'\')');
 		},
-		processAfterImport: function (search, submodule, object) {
+		processAfterImport: function (search, submodule, objectname) {
 			var searchobject = [],
 				display;
+			object=eval(objectname);
 			Object.keys(object).forEach(function (key) {
 				searchobject.push([object[key]['title'], key]);
 			});
@@ -82,6 +84,7 @@ var correspondence = {
 					//add value and relevance
 					globalSearch.contribute('correspondence', [display, value[1]]);
 			});
+			core.performance.stop('correspondence.api.processAfterImport(\''+search+'\', \''+submodule+'\', \''+objectname+'\')');
 		}
 	},
 	function: {
@@ -150,6 +153,7 @@ var correspondence = {
 				el('temp').innerHTML = output;
 				if (typeof query != 'undefined') correspondence.function.gen(query);
 			} else core.function.popup(core.function.lang('errorSelectModules', 'correspondence'));
+			core.performance.stop('correspondence.function.start(' + (typeof query != 'undefined' ? '\'' + query + '\'' : '') + ')');
 		},
 
 		init: function (query) {
@@ -166,6 +170,7 @@ var correspondence = {
 				correspondence.var['presetModule'] = preset[0];
 				core.function.loadScript('data/' + preset[0] + '.js', 'correspondence.function.start(\'' + preset[1] + '\')');
 			}
+			core.performance.stop('correspondence.function.init(' + (typeof query != 'undefined' ? '\'' + query + '\'' : '') + ')');
 		}
 	}
 }

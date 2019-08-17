@@ -24,7 +24,8 @@ var help = {
 		available: function (search) {
 			core.function.loadScript('data/help.js',
 				'help.api.processAfterImport(\'' + search + '\')');
-		},
+			core.performance.stop('help.api.available(\''+search+'\')');
+			},
 		processAfterImport: function (search) {
 			var display;
 			if (typeof (help_data) != 'undefined') {
@@ -35,6 +36,7 @@ var help = {
 					globalSearch.contribute('help', [display, value[1]]);
 				});
 			}
+			core.performance.stop('help.api.processAfterImport(\''+search+'\')');
 		}
 	},
 	function: {
@@ -47,8 +49,11 @@ var help = {
 				'<input type="submit" id="artikelsuche" value="' + core.function.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
 				'</form>';
 			el('temp').innerHTML = el('output').innerHTML = " ";
+			core.performance.stop('help.function.init(' + (typeof query != 'undefined' ? '\'' + query + '\'' : '') + ')');
 		},
 		search: function (query) {
+			query = query || el('helpquery').value;
+			core.performance.start('help.function.input(\'' + (query || '') + '\')'); //possible duplicate
 			if (typeof (help_data) != 'undefined') {
 				var list = '';
 				Object.keys(help_data.content).forEach(function (key) {
@@ -56,7 +61,6 @@ var help = {
 					else list += '<br />';
 				});
 				el('temp').innerHTML = '<span class="highlight">' + core.function.lang('tableOfContents', 'help') + ':</span><br />' + list;
-				query = query || el('helpquery').value;
 				if (query != '') {
 					var found = core.function.smartSearch.lookup(query, help_data.content, true);
 
@@ -76,6 +80,7 @@ var help = {
 					el('output').innerHTML = list;
 				}
 			}
+			core.performance.stop('help.function.input(\'' + (query || '') + '\')');
 		},
 	}
 }

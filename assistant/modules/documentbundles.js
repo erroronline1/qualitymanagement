@@ -54,7 +54,8 @@ var documentbundles = {
 		available: function (search) {
 			core.function.loadScript('data/documentbundles.js',
 				'documentbundles.api.processAfterImport(\'' + search + '\')');
-		},
+			core.performance.stop('documentbundles.api.available(\''+search+'\')');
+			},
 		processAfterImport: function (search) {
 			var searchobject = [],
 				display;
@@ -69,13 +70,15 @@ var documentbundles = {
 					globalSearch.contribute('documentbundles', [display, value[1]]);
 				});
 			}
+			core.performance.stop('documentbundles.api.processAfterImport(\'' + search + '\')');
 		}
 	},
 	function: {
 		init: function (query) {
-			core.function.loadScript('data/documentbundles.js', 'documentbundles.function.input(\'' + query + '\')');
+			core.function.loadScript('data/documentbundles.js', 'documentbundles.function.input(\'' + (query || '') + '\')');
 			el('temp').innerHTML = '<br />' + core.function.lang('useCaseDescription', 'documentbundles');
 			el('output').innerHTML = '';
+			core.performance.stop('documentbundles.function.init(' + (typeof query != 'undefined' ? '\'' + query + '\'' : '') + ')');
 		},
 		linkfile: function (url) {
 			// bad filename or dynamic url
@@ -128,32 +131,35 @@ var documentbundles = {
 				serialPDFlist = '';
 
 			// regular documents
-			Object.keys(pack.primary).forEach(function (index) {
-				primary += documentbundles.function.linkfile(pack.primary[index]);
-				if (EXCEPTIONS.noserialprint.indexOf(pack.primary[index]) < 0) serialPDFlist += ',' + pack.primary[index];
-			});
-			var serialPrintExceptions = '';
-			EXCEPTIONS.noserialprint.forEach(function (el) {
-				serialPrintExceptions += ', ' + el.substring(el.lastIndexOf('/'), el.lastIndexOf('.')).substring(1);
-			});
-			//add exceptive documents according to additional data (inputs in form)
-			if (el('enableexceptions').checked) {
-				Object.keys(EXCEPTIONS.addtobundle).forEach(function (index) {
-					if (pack.primary.indexOf(EXCEPTIONS.addtobundle[index]) < 0) {
-						primary += documentbundles.function.linkfile(EXCEPTIONS.addtobundle[index]);
-						serialPDFlist += ',' + EXCEPTIONS.addtobundle[index];
-					}
+			if (typeof pack != 'undefined') {
+				Object.keys(pack.primary).forEach(function (index) {
+					primary += documentbundles.function.linkfile(pack.primary[index]);
+					if (EXCEPTIONS.noserialprint.indexOf(pack.primary[index]) < 0) serialPDFlist += ',' + pack.primary[index];
 				});
+				var serialPrintExceptions = '';
+				EXCEPTIONS.noserialprint.forEach(function (el) {
+					serialPrintExceptions += ', ' + el.substring(el.lastIndexOf('/'), el.lastIndexOf('.')).substring(1);
+				});
+				//add exceptive documents according to additional data (inputs in form)
+				if (el('enableexceptions').checked) {
+					Object.keys(EXCEPTIONS.addtobundle).forEach(function (index) {
+						if (pack.primary.indexOf(EXCEPTIONS.addtobundle[index]) < 0) {
+							primary += documentbundles.function.linkfile(EXCEPTIONS.addtobundle[index]);
+							serialPDFlist += ',' + EXCEPTIONS.addtobundle[index];
+						}
+					});
+				}
+				if (!!document.documentMode) primary += '<hr /><a href="javascript:documentbundles.function.serialPrint(\'' + serialPDFlist + '\')">' + core.function.lang('serialPrintLink', 'documentbundles', serialPrintExceptions.substring(2)) + '</a>';
+				primary += '<br /><br />' + core.function.lang('additionalInfo', 'documentbundles');
+				Object.keys(pack.secondary).forEach(function (index) {
+					secondary += documentbundles.function.linkfile(pack.secondary[index]);
+				});
+				el('temp').innerHTML = '<span class="highlight">' + core.function.lang('primaryCaption', 'documentbundles') + '</span><br />' + primary;
+				el('output').innerHTML = '<span class="highlight">' + core.function.lang('secondaryCaption', 'documentbundles') + '</span><br />' + secondary;
 			}
-			if (!!document.documentMode) primary += '<hr /><a href="javascript:documentbundles.function.serialPrint(\'' + serialPDFlist + '\')">' + core.function.lang('serialPrintLink', 'documentbundles', serialPrintExceptions.substring(2)) + '</a>';
-			primary += '<br /><br />' + core.function.lang('additionalInfo', 'documentbundles');
-			Object.keys(pack.secondary).forEach(function (index) {
-				secondary += documentbundles.function.linkfile(pack.secondary[index]);
-			});
-			el('temp').innerHTML = '<span class="highlight">' + core.function.lang('primaryCaption', 'documentbundles') + '</span><br />' + primary;
-			el('output').innerHTML = '<span class="highlight">' + core.function.lang('secondaryCaption', 'documentbundles') + '</span><br />' + secondary;
 		},
 		input: function (query) {
+			core.performance.start('documentbundles.function.input(\'' + (query || '') + '\')'); //possible duplicate
 			if (typeof (documentbundles_data) != 'undefined') {
 				var out = core.function.icon.insert('search') +
 					'<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.function.gen(sel)"><option value="">' + core.function.lang('selectDefault', 'documentbundles') + '</option>';
@@ -164,6 +170,7 @@ var documentbundles = {
 				el('input').innerHTML = out + core.function.insert.checkbox(core.function.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.function.gen(sel)"');
 				if (typeof query != 'undefined') documentbundles.function.gen(query);
 			}
+			core.performance.stop('documentbundles.function.input(\'' + (query || '') + '\')');
 		},
 	}
 }
