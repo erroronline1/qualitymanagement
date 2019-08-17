@@ -52,6 +52,10 @@ this tool provides your company with an application to have an easier access to 
 * serial print of document packages requires active-x which is only available in ie11. this option will not be shown if not accessible
 * patience with coworkers blaming 'your' assistant for every network failure, printer settings and their inability to read the literal hints and descriptions
 
+# but i am no programmer!
+to customize this software to your needs it is definitely neccessary to have someone change values within the vba-macros as well as the javascript configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
+if you are worried your coding employee leaves, at least the assistant can be maintained by any webdeveloper/webdeveloping agency that knows javascript. also there is no need of compiling since all source codes are openly accessible.
+
 # details
 ## the documents
 the vba-macros can be customized quite easily for i tried to have all important parts split to functions to be able to enable/disable these on demand as well as using variables to customize easily. in the best case all you have to do is to change the variables at the beginning of the macro-code. this applies to both docm and xlsm files.
@@ -81,6 +85,7 @@ there is a main html-file in the root folder, a core folder with the core functi
 * users can be informed about changes using the changelog in core/user_information.js. add your own changes and the information will popup automatically on start
 * since most of my colleagues don't mind messing around to learn something, there is a short-tip function whose entries can be extended in accordance to your modules
 * settings will be stored in local storage or cookies (depending on browser support) so everything depends on the local machine in addition to user login. in case everything is stored with cookies if the browsers history is cleaned on exit all setting will be gone as well. the storage method handles local-storage support with cookies as a fallback. this means there is finally support for chrome with an issue with cookie storage of local sites as well as ie11 without local storage
+* you can monitor the performance (currently implemented for tracking asynchronous loading and processing) in the console if you enable it in the settings
 
 *be aware that there are dependencies between the assistants datafiles, their objects and handling, and the documents vba and table-structure. it might become neccessary to change things on both sides.*
 
@@ -103,10 +108,6 @@ i tried to implement a preview on search forms using datalists. while it is not 
 * i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to pdfs and the assistant application should be granted for everyone.
 * before implementing this system to your company make sure your decisions for documenting the system itself are reliable (e.g. rows and columns in the list of documents in force in dependency to the vba-macro within the self registering docm-files). otherwise you might have to change a lot of code in a lot of documents. this isn't fun.
 * the assistant is designed to hopefully seamlessly transition into windows 10 fluent design that is still to come to my company as time of writing. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be.
-
-# but i am no programmer!
-to customize this software to your needs it is definitely neccessary to have someone change values within the vba-macros as well as the javascript configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
-if you are worried your coding employee leaves, at least the assistant can be maintained by any webdeveloper/webdeveloping agency that knows javascript. also there is no need of compiling since all source codes are openly accessible.
 
 # disclaimer
 use at your own responsibility. as this system is or has been in real use with me being responsible, i did my best to make everything flawless. i also tried to make the documentation and comments as meaningful as i could. als always there might be parts that once seemed to be self-explanatory so a little bit of advanced javascript skills might come in handy.
