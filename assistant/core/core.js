@@ -168,6 +168,7 @@ var core = {
 		loadScript: function (url, callback, title) {
 			//load given script-files into scope a.k.a. load desired modules
 			if (url != '') {
+				core.performance.start(callback);
 				if (typeof (reset) != 'undefined') el('input').innerHTML = '';
 				// Adding the script tag to the head as suggested before
 				var head = document.getElementsByTagName('head')[0],
@@ -243,6 +244,7 @@ var core = {
 					'<br />' + core.function.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.function.setting.get('settingGlobalSearchTime') || 3) + '" id="fontsize" onchange="core.function.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
 					'<br /><br />' + core.function.lang('settingModuleselectorCaption') + ':<br />' + moduleSelector +
 					'<br /><br /><input type="button" onclick="core.function.setting.clear()" value="' + core.function.lang('settingResetApp') + '" title="' + core.function.lang('settingRestartNeccessary') + '" />' +
+					'<br /><br />' + core.function.insert.checkbox('Performance Monitor', 'settingPerformanceMonitor', (core.function.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
 					'<br /><br />' + core.function.lang('settingGeneralHint');
 			},
 			theme: function (theme) {
@@ -343,6 +345,31 @@ var core = {
 			}
 		},
 	},
+	performance:{
+		start:function(track, group){
+			if (core.function.setting.get('settingPerformanceMonitor')){
+				if (typeof group!= 'undefined') console.group(track);
+				console.time(track);
+			}
+		},
+		stop:function(track, info, group){
+			if (core.function.setting.get('settingPerformanceMonitor')){
+				console.timeEnd(track);
+				if (typeof info!= 'undefined' && info){
+					if (!!document.documentMode) console.log(info);
+					else {
+						if (typeof info == 'object') {
+							console.groupCollapsed('\u2b91 data:');
+							console.table(info);
+							console.groupEnd();
+						}
+						else console.log('\u2b91 '+info);
+					}
+				}
+				if (typeof group!= 'undefined') console.groupEnd();
+			}
+		},
+	}
 };
 
 // mainfile functions and objects
@@ -415,7 +442,8 @@ var globalSearch = {
 		else this.result[property].push(value);
 	},
 	search: function (search) {
-		document.body.style.cursor = 'wait';
+		core.performance.start('globalSearch','group');
+		document.body.style.cursor = 'progress';
 		var delay = 0;
 		//clear result on search initialization
 		globalSearch.result = {};
@@ -448,5 +476,6 @@ var globalSearch = {
 		} else var displayResult = core.function.lang('errorNothingFound', null, el('globalsearch').value);
 		el('output').innerHTML = displayResult;
 		document.body.style.cursor = 'default';
+		core.performance.stop('globalSearch', null, 'endgroup');
 	}
 };
