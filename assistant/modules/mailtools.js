@@ -258,7 +258,7 @@ var mailtools = {
 				else {
 					var output = '';
 					for (var i = 0; i < names.length; i++) {
-						output += '<a href="mailto:' + adresses[i] + '?subject=' + el('subject').value + '&body=' + core.function.lang('outputSalutation', 'mailtools')(names[i]) + '%20' + encodeURI(names[i]) + ',%0A%0A' + encodeURI(el('body').value) + '">' + core.function.lang('outputMailTo', 'mailtools') + ' ' + names[i] + ' &lt;' + adresses[i] + '&gt;</a><br />';
+						output += '<a href="mailto:' + adresses[i] + '?subject=' + el('subject').value + '&body=' + core.function.lang('outputSalutation', 'mailtools', names[i]) + '%20' + encodeURI(names[i]) + ',%0A%0A' + encodeURI(el('body').value) + '">' + core.function.lang('outputMailTo', 'mailtools') + ' ' + names[i] + ' &lt;' + adresses[i] + '&gt;</a><br />';
 					}
 					disableOutputSelect = true;
 					el('output').innerHTML = output;
@@ -296,7 +296,7 @@ var mailtools = {
 					'  <br>' +
 					'  ' + (!form && el('funktion') ? el('funktion').value : '<input type="text" placeholder="Position" id="funktion" title="Position" />') +
 					' | Department<br><br>' +
-					'  Company | Adsress<br>' +
+					'  Company | Address<br>' +
 					'  Tel. +49 1234 56789 | Fax. +49 1234 56789 | eMail: ' + (!form && el('email') ? '<a' +
 						'  href="mailto:' + el('email').value + '@email.tld">' + el('email').value : '<input type="text" placeholder="eMail" id="email" title="eMail" />') + '@email.tld</a><br>' +
 					'  <a href="http://www.website.tld">http://www.website.tld</a> </p>' +
