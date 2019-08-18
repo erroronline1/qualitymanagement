@@ -297,7 +297,7 @@ var mailtools = {
 					'  ' + (!form && el('funktion') ? el('funktion').value : '<input type="text" placeholder="Position" id="funktion" title="Position" />') +
 					' | Department<br><br>' +
 					'  Company | Adsress<br>' +
-					'  Tel. +49 6221 562 6414 | Fax. +49 6221 562 6419 | eMail: ' + (!form && el('email') ? '<a' +
+					'  Tel. +49 1234 56789 | Fax. +49 1234 56789 | eMail: ' + (!form && el('email') ? '<a' +
 						'  href="mailto:' + el('email').value + '@email.tld">' + el('email').value : '<input type="text" placeholder="eMail" id="email" title="eMail" />') + '@email.tld</a><br>' +
 					'  <a href="http://www.website.tld">http://www.website.tld</a> </p>' +
 					'  </td>' +
