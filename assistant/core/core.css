@@ -204,6 +204,7 @@ aside {
 .items.expand {
 	max-height: 1500px;
 	transition: max-height 1s ease-in-out;
+	overflow:auto;
 }
 
 .itemalign {

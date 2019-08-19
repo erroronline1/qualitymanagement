@@ -1,6 +1,7 @@
 function el(v) {
 	return document.getElementById(v);
 }
+function isIE(){ return !!document.documentMode;}
 
 var core = {
 	function: {
@@ -26,6 +27,8 @@ var core = {
 			var notoggle = new Array('label', 'input', 'select', 'textarea', 'a');
 			if (toggleel.classList.contains('items') && (toggleel.querySelectorAll(':hover').length == 0 || notoggle.indexOf(toggleel.querySelectorAll(':hover')[0].nodeName.toLowerCase()) < 0))
 				toggleel.classList.toggle('expand');
+			if (isIE())toggleel.scrollTop=0;
+			else toggleel.scroll({top:0,behavior:'smooth'});
 			//override for anchor node in ie11 is not recognized because of reasons
 		},
 
@@ -356,7 +359,7 @@ var core = {
 			if (core.function.setting.get('settingPerformanceMonitor')){
 				console.timeEnd(track);
 				if (typeof info!= 'undefined' && info){
-					if (!!document.documentMode) console.log(info);
+					if (isIE()) console.log(info);
 					else {
 						if (typeof info == 'object') {
 							console.groupCollapsed('\u2b91 data:');
