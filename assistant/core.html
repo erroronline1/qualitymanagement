@@ -42,29 +42,29 @@
 	<div id="content">
 		<header id="input">
 			<script>
-				document.write(core.function.lang('greeting'));
+				document.write(
+					'<span class="highlight">' + core.function.lang('globalSearchPlaceholder') + '</span>' +
+					'<form id="search" style="font-size:150%" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
+					'<span onclick="globalSearch.search(el(\'globalsearch\').value);">' + core.function.icon.insert('search') +
+					'</span>' +
+					'<input type="text" pattern=".{3,}"  id="globalsearch" placeholder="' +
+					core.function.lang('globalSearchPlaceholder') + '" autofocus />' +
+					'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
+					'</form>'
+				);
 			</script>
 		</header>
 		<main class="content">
 			<article id="temp">
 				<script>
 					document.write(
-						'<span class="highlight">' + core.function.lang('quickstart') + '</span><br />' +
-						'<br /><span class="highlight">' + core.function.lang('globalSearchPlaceholder') + '</span>' +
-						'<br /><form id="search" style="font-size:150%" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
-						'<span onclick="globalSearch.search(el(\'globalsearch\').value);">' + core.function.icon.insert('search') +
-						'</span>' +
-						'<input type="text" style="min-width:0; width:calc(100% - 3em)" pattern=".{3,}"  id="globalsearch" placeholder="' +
-						core.function.lang('globalSearchPlaceholder') + '" autofocus />' +
-						'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
-						'</form>' +
+						core.function.lang('greeting') + '<br />' +
 						(core.var.letterTemplate ? '<br /><a href="' + core.var.letterTemplate + '" target="_blank">' +
 							core.function.icon.insert('word') + core.function.lang('openLetterTemplate') + '</a><br />' : '') +
 						(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' +
 							core.function.icon.insert('outlook') + core.function.lang('openOutlook') + '</a><br />' : '') +
 						'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>'
 					);
-
 					var disableOutputSelect = true;
 				</script>
 
