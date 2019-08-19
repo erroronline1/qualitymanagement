@@ -21,6 +21,10 @@ var documentlookup = {
 				en: 'search documents',
 				de: 'Dokumente durchsuchen'
 			},
+			searchTitle:{
+				en: 'alternative terms: ',
+				de: 'alternative Suchbegriffe: '
+			},
 			favouriteCaption: {
 				en: 'last used documents',
 				de: 'zuletzt genutzte Dokumente'
@@ -85,7 +89,7 @@ var documentlookup = {
 				object=eval(objectname);
 				var found = core.function.smartSearch.lookup(search, object.content, true);
 				found.forEach(function (value) {
-					if (typeof (object.content[value[0]]) == 'object') display = documentlookup.function.linkfile(object.content[value[0]][0]);
+					if (typeof (object.content[value[0]]) == 'object') display = documentlookup.function.linkfile(object.content[value[0]][0], core.function.lang('searchTitle','documentlookup') + object.content[value[0]][1]);
 					else display = documentlookup.function.linkfile(object.content[value[0]]);
 					//add value and relevance
 					globalSearch.contribute('documentlookup', [display, value[1]]);
@@ -112,13 +116,14 @@ var documentlookup = {
 			el('temp').innerHTML = el('output').innerHTML = '';
 			core.performance.stop('documentlookup.function.init()');
 		},
-		linkfile: function (url) {
+		linkfile: function (url, title) {
+			title = typeof title != 'undefined' ? ' title="'+title+'" ' : '';
 			// bad filename or dynamic url
 			if (typeof (url) === 'object') {
-				return '<a href="' + url[0] + '" target="_blank">' + url[1] + '</a>';
+				return '<a href="' + url[0] + '" ' + title + ' target="_blank">' + url[1] + '</a>';
 			}
 			// url with quality filename
-			else return '<a href="' + url + '" onclick="documentlookup.function.favouriteHandler.set(\'' + documentlookup.function.favouriteHandler.prepare(url) + '\'); return;" target="_blank">' + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.')).substring(1) + '</a>';
+			else return '<a href="' + url + '" ' + title + ' onclick="documentlookup.function.favouriteHandler.set(\'' + documentlookup.function.favouriteHandler.prepare(url) + '\'); return;" target="_blank">' + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.')).substring(1) + '</a>';
 		},
 		favouriteHandler: {
 			prepare: function (value) {
