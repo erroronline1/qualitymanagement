@@ -108,7 +108,8 @@ var documentlookup = {
 			});
 			el('input').innerHTML =
 				'<form id="search" action="javascript:documentlookup.function.search();">' +
-				'<span onclick="documentlookup.function.search();">' + core.function.icon.insert('search') + '</span>' + '<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.function.lang('searchPlaceholder', 'documentlookup') + '" />' +
+				'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.function.lang('searchPlaceholder', 'documentlookup') + '" class="search" />' +
+				'<span onclick="documentlookup.function.search();" class="search">' + core.function.icon.insert('search') + '</span> ' + 
 				core.function.insert.select(selection, 'lookup', 'lookup', (core.function.setting.get('lookup_bundle') || false), 'onchange="core.function.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.function.search()\');"') +
 				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
 				'<a style="float:right" href="' + documentlookup.var.thirdDocumentCategoryPath + '">' + core.function.lang('optionThirdType', 'documentlookup') + '</a>' +
@@ -167,10 +168,10 @@ var documentlookup = {
 						'AttendanceList,5,';
 
 						output = '<br />' + core.function.lang('favouriteCaption', 'documentlookup') + ':<span style="display:inline-block; vertical-align:middle; float:right;">' +
-						' <span class="button" title="' + core.function.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'\')">' + core.function.icon.insert('delete') + '</span>' +
-						' <span class="button" title="' + core.function.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + defaults + '\')">' + core.function.icon.insert('clipboard') + '</span>' +
-						' <span class="button" title="' + core.function.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + core.function.setting.get('customfavouritedocs') + '\')">' + core.function.icon.insert('refresh') + '</span>' +
-						' <span class="button" title="' + core.function.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.customreset()">' + core.function.icon.insert('save') + '</span>' +
+						' <span title="' + core.function.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'\')">' + core.function.icon.insert('delete') + '</span>' +
+						' <span title="' + core.function.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + defaults + '\')">' + core.function.icon.insert('clipboard') + '</span>' +
+						' <span title="' + core.function.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + core.function.setting.get('customfavouritedocs') + '\')">' + core.function.icon.insert('refresh') + '</span>' +
+						' <span title="' + core.function.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.customreset()">' + core.function.icon.insert('save') + '</span>' +
 						'</span><br /><br />';
 					for (var i = 0; i < tfav2.length; i += 2) {
 						if (tfav[tfav2[i]] != undefined) output += tfav[tfav2[i]] + '<br />';

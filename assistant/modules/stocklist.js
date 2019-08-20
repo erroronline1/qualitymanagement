@@ -159,11 +159,11 @@ var stocklist = {
 			core.function.loadScript('data/stocklist.js', 'stocklist.function.search(\'' + (query || '') + '\')');
 			el('input').innerHTML =
 				'<form id="search" action="javascript:stocklist.function.search();">' +
-				'<span onclick="stocklist.function.search();">' + core.function.icon.insert('search') + '</span>' +
-				'<input type="text" pattern=".{3,}" required value="' + (query || '') + '" placeholder="' + core.function.lang('inputPlaceholder', 'stocklist') + '" id="itemname" />' +
+				'<input type="text" pattern=".{3,}" required value="' + (query || '') + '" placeholder="' + core.function.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search" />' +
+				'<span onclick="stocklist.function.search();" class="search">' + core.function.icon.insert('search') + '</span> ' +
 				core.function.insert.select(stocklist.function.translate.returnselect(), 'stockfilter', 'stockfilter', (core.function.setting.get('stockfilter') || 'all'), 'onchange="core.function.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.function.search();"') +
 				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
-				'<span style="float:right;"><input type="button" id="searchname" value="' + core.function.lang('webSearch', 'stocklist') + '" onclick="window.open(\'https://www.google.de/#q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.function.lang('webSearchTitle', 'stocklist') + '" /></span>'; +
+				'<span style="float:right;" id="searchname" onclick="window.open(\'https://www.google.de/#q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.function.lang('webSearchTitle', 'stocklist') + '">'+core.function.icon.insert('websearch')+'</span>'; +
 			'</form>';
 			el('output').innerHTML = el('temp').innerHTML = '';
 			el('temp').innerHTML = core.function.lang('useCaseDescription', 'stocklist');

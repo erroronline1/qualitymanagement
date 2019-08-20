@@ -133,7 +133,7 @@ var correspondence = {
 				});
 				var output = core.function.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.function.gen()"') +
 					'<br /><br />' +
-					'<input type="text" placeholder="' + core.function.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.function.gen()" /> <input type="button" id="searchname" value="' + core.function.lang('webSearch', 'correspondence') + '" onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.function.lang('webSearchTitle', 'correspondence') + '" /><br /><br />' +
+					'<input type="text" placeholder="' + core.function.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.function.gen()" /> <span id="searchname" onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.function.lang('webSearchTitle', 'correspondence') + '">'+core.function.icon.insert('websearch')+'</span><br /><br />' +
 					'<div class="inline">' +
 					core.function.insert.radio(core.function.lang('inputOptionMale', 'correspondence'), 'sex', 'male', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
 					core.function.insert.radio(core.function.lang('inputOptionFemale', 'correspondence'), 'sex', 'female', false, 'onchange="correspondence.function.gen()"') + ' ' +
@@ -163,7 +163,7 @@ var correspondence = {
 			}
 			el('input').innerHTML = core.function.insert.select(correspondence.var.submodules,
 					'submodule', 'submodule', (typeof preset != 'undefined' ? preset[0].substring(preset[0].indexOf('_')+1) : null), 'onchange="core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
-				'<span style="float:right"><input type="button" onclick="correspondence.function.gen()" value="' + core.function.lang('buttonGenCaption', 'correspondence') + '" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '" /></span>';
+					'<span style="float:right" onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '" />'+core.function.icon.insert('refresh')+'</span>';
 			el('temp').innerHTML = '';
 			el('output').innerHTML = '';
 			if (typeof query != 'undefined') {

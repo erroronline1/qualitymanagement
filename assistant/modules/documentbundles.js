@@ -161,8 +161,7 @@ var documentbundles = {
 		input: function (query) {
 			core.performance.start('documentbundles.function.input(\'' + (query || '') + '\')'); //possible duplicate
 			if (typeof (documentbundles_data) != 'undefined') {
-				var out = core.function.icon.insert('search') +
-					'<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.function.gen(sel)"><option value="">' + core.function.lang('selectDefault', 'documentbundles') + '</option>';
+				var out = '<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.function.gen(sel)"><option value="">' + core.function.lang('selectDefault', 'documentbundles') + '</option>';
 				Object.keys(documentbundles_data).forEach(function (key) {
 					out += '<option id="' + key + '" value="' + key + '" '+(query==key?'selected':'')+'>' + key.replace(/_/g, " ") + '</option>';
 				});

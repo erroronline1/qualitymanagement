@@ -44,8 +44,8 @@ var help = {
 			core.function.loadScript('data/help.js', 'help.function.search(\'' + (query || '') + '\')');
 			el('input').innerHTML =
 				'<form id="search" action="javascript:help.function.search();">' +
-				'<span onclick="help.function.search();">' + core.function.icon.insert('search') + '</span>' +
-				'<input type="text" pattern=".{3,}" required value="' + (query || '') + '" placeholder="' + core.function.lang('formInputPlaceholder', 'help') + '" id="helpquery" />' +
+				'<input type="text" pattern=".{3,}" required value="' + (query || '') + '" placeholder="' + core.function.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search" />' +
+				'<span onclick="help.function.search();" class="search">' + core.function.icon.insert('search') + '</span> ' +
 				'<input type="submit" id="artikelsuche" value="' + core.function.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
 				'</form>';
 			el('temp').innerHTML = el('output').innerHTML = " ";
