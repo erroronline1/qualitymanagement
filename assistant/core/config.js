@@ -131,6 +131,18 @@ core.var = {
 			en: 'Settings',
 			de: 'Einstellungen'
 		},
+		settingModuleselectorCaption: {
+			en: 'Displayed modules',
+			de: 'angezeigte Module'
+		},
+		settingMainCaption: {
+			en: 'Common settings',
+			de: 'Allgemein'
+		},
+		settingAdvancedCaption: {
+			en: 'Advanced settings',
+			de: 'Erweitert'
+		},
 		settingThemeCaption: {
 			en: 'Color-Theme',
 			de: 'Farbschema'
@@ -176,16 +188,12 @@ core.var = {
 			}
 		},
 		settingNotificationHint: {
-			en: 'New hints are shown on startup automatically. <a href="javascript:updateTracker.enlist();">Show all hints</a>',
-			de: 'Neue Hinweise werden immer automatisch beim Start angezeigt. <a href="javascript:updateTracker.enlist();">Alle Hinweise anzeigen</a>'
+			en: 'New hints are shown on startup automatically. <a href="javascript:core.function.popup(updateTracker.enlist());">Show all hints</a>',
+			de: 'Neue Hinweise werden immer automatisch beim Start angezeigt. <a href="javascript:core.function.popup(updateTracker.enlist());">Alle Hinweise anzeigen</a>'
 		},
 		settingGlobalSearchCaption: {
 			en: 'Time to deliver global search results <small>depending on your machines speed</small>',
 			de: 'Zeit für die Bereitstellung von globalen Suchergebnissen <small>abhängig von der Rechnergeschwindigkeit</small>'
-		},
-		settingModuleselectorCaption: {
-			en: 'Displayed modules',
-			de: 'angezeigte Module'
 		},
 		settingGeneralHint: {
 			en: 'Local security settings can result in loss of settings on closing browser window.',
@@ -226,8 +234,8 @@ core.var = {
 			de: 'generieren / aktualisieren'
 		},
 		buttonGenTitle: {
-			en: 'output with given values',
-			de: 'Aufgabe gemäß der gewählten Optionen'
+			en: 'refresh output with given values',
+			de: 'aktualisiere Ausgabe gemäß der gewählten Optionen'
 		},
 		buttonResetCaption: {
 			en: 'reset',
