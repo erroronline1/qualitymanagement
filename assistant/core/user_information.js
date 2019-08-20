@@ -5,7 +5,7 @@
 var randomTip = {
 	show: function () {
 		// 	show random tip on startup
-		return '<span class="button" style="float:right" onclick="el(\'randomTip\').innerHTML=randomTip.show()">' + core.function.icon.insert('refresh') + '</span>' +
+		return '<span style="float:right" onclick="el(\'randomTip\').innerHTML=randomTip.show()">' + core.function.icon.insert('refresh') + '</span>' +
 			'<br /><span class="highlight">' + this.list[0][core.var.selectedLanguage] + ':</span>' +
 			'<br />' + this.list[Math.floor(Math.random() * (this.list.length - 1) + 1)][core.var.selectedLanguage] +
 			'';
@@ -102,7 +102,7 @@ var updateTracker = {
 		for (var i = this.list.length - 1; i > -1; i--) {
 			tracker += '<span class="highlight">' + this.list[i][0] + ':</span> ' + this.list[i][1] + '<br /><hr /><br />';
 		}
-		core.function.popup('Update Tracker:<br /><br />' + tracker);
+		return'Update Tracker:<br /><br />' + tracker;
 	},
 	latestMajorUpdate: function () {
 		for (var i = updateTracker.list.length - 1; i > -1; i--) {
