@@ -20,10 +20,10 @@ body {
 }
 
 input,
-select {
+select,
+span.search {
 	background-color: transparent;
-	border: 0 solid rgb(191, 97, 106);
-	border-width: 0 0 1px 0;
+	border-color: rgb(191, 97, 106);
 }
 
 textarea {
@@ -52,13 +52,13 @@ textarea {
 
 #menu,
 .icon,
-#popuptext {
+#popuptext, #popuptext svg {
 	background-color: rgba(46, 52, 64, .9);
 	color: #fff;
 	fill: #fff
 }
 
-.icon {
+.icon, #popuptext svg {
 	background-color: transparent
 }
 
