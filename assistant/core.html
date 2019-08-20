@@ -30,31 +30,34 @@
 </head>
 
 <body>
-	<nav id="menu">
-		<span id="title">
-			<script>
-				document.write(core.var.logo + '<div style="display:inline-block">' + core.function.lang('title') + '&nbsp;</div>');
-			</script>
-		</span><br /><br />
-		<!-- since javascript doesn´t have access to local file system there is no automatic detection of json files available
-	hence the need to read explicit from registered_modules.json-->
-	</nav>
-	<div id="content">
-		<header id="input">
-			<script>
-				document.write(
-					'<span class="highlight">' + core.function.lang('globalSearchPlaceholder') + '</span>' +
-					'<form id="search" style="font-size:150%" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
-					'<span onclick="globalSearch.search(el(\'globalsearch\').value);">' + core.function.icon.insert('search') +
-					'</span>' +
-					'<input type="text" pattern=".{3,}"  id="globalsearch" placeholder="' +
-					core.function.lang('globalSearchPlaceholder') + '" autofocus />' +
-					'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
-					'</form>'
-				);
-			</script>
-		</header>
-		<main class="content">
+	<header>
+		<script>
+			document.write('<nav class="home" title="' + core.function.lang('homeMenuEntry') + '" onclick="location.reload()">' + core.function.icon.insert('home') + '</nav>');
+			document.write('<article id="input">');
+			document.write(
+				'<form id="search" style="display:inline-block; font-size:150%" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
+				'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
+				core.function.lang('globalSearchPlaceholder') + '" autofocus class="search" />' +
+				'<span onclick="globalSearch.search(el(\'globalsearch\').value);" style="padding:.05em 0;" class="search">' + core.function.icon.insert('search') +	'</span>' +
+				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
+				'</form>'
+			);
+			document.write('</article>');
+			document.write('<aside class="setting" title="' + core.function.lang('settingMenuEntry') + '" onclick="core.function.popup(core.function.setting.setup()); return;">' + core.function.icon.insert('settings') + '</aside>');
+		</script>
+	</header>
+
+	<main>
+		<nav id="menu">
+			<span id="title">
+				<script>
+					document.write(core.var.logo + '<div style="display:inline-block">' + core.function.lang('title') + '&nbsp;</div>');
+				</script>
+			</span><br /><br />
+			<!-- since javascript doesn´t have access to local file system there is no automatic detection of json files available
+		hence the need to read explicit from config.js-->
+		</nav>
+		<div id="content">
 			<article id="temp">
 				<script>
 					document.write(
@@ -71,8 +74,8 @@
 			</article>
 			<aside id="output" onclick="selectText('output')">
 			</aside>
-		</main>
-	</div>
+		</div>
+	</main>
 	<div id="popup">
 		<div id="popuptext"></div>
 	</div>
@@ -80,10 +83,10 @@
 	<script>
 		select_module();
 		document.title = core.function.lang('title');
-		//load settings from cookies or defaults
+		//load settings or defaults
 		var fontsize = document.body.style.fontSize = ((core.function.setting.get('settingFontsize') || 0) / 10 + 1) + 'em';
 		el('colortheme').href = 'core/' + (core.function.setting.get('settingTheme') || 'default') + '.css';
-		core.function.setting.get('settingSmallmenu') && el('menu').classList.add('small');
+		core.function.setting.get('settingSmallmenu') && el('menu').classList.add('small') && el('menuwidth').classList.add('small');
 
 		updateTracker.alert();
 	</script>

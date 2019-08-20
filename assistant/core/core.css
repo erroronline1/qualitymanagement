@@ -17,11 +17,42 @@ select {
 
 body {
 	height: 100vh;
-	overflow-y: hidden;
+	max-height: 100vh;
+	overflow: hidden;
 	line-height: 1.6em;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 }
+
+header, main, #popupcontent {
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+}
+
+header, #popupcontent {
+	flex:1 0 3.5em;
+}
+
+main {
+	flex:0 1 100vh;
+	overflow:hidden;
+}
+
+nav,
+article,
+aside {
+	flex: 1;
+	flex-direction: column;
+	align-items: stretch;
+	overflow-y: auto;
+	padding: 1em;
+}
+
+.home {flex:3; cursor:pointer;}
+#input {flex:8;}
+.setting {flex:.5; cursor:pointer; text-align: right;}
+#settingsMenu{flex: 0 1 13em; border-right: 1px solid}
 
 #menu,
 #content {
@@ -29,13 +60,21 @@ body {
 	vertical-align: top;
 }
 
+#content {
+	display: flex;
+	flex-direction: row;
+	flex: 5;
+}
+
 #menu {
 	flex: 1 1 10em;
+	height: 100%;
+	overflow-x: hidden;
+}
+
+#menu, .home {
 	max-width: 60em;
 	min-width: 10em;
-	height: 100vh;
-	overflow-x: hidden;
-	overflow-y: auto;
 }
 
 @media screen and (-ms-high-contrast: active),
@@ -44,53 +83,15 @@ body {
 	/*ms-specific media query, will only parsed in internet explorer, flex is interpreted different, this part is for future use*/
 	#menu {
 		flex: 1;
-		max-width: 30em;
-		min-width: 10em;
 		height: 100vh;
 		overflow-x: hidden;
 		overflow-y: auto;
 	}
-
-	input[type=range] {
-		height: 1.5em;
-		padding: 0;
-		border: none;
+	#menu, .home {
+		max-width: 30em;
+		min-width: 10em;
 	}
 
-	input[type=range]::-ms-track {
-		width: 20em;
-		height: 5px;
-		background: transparent;
-		border-color: transparent;
-		border-width: 6px 0;
-		color: transparent;
-	}
-
-	input[type=range]::-ms-fill-lower {
-		background: rgba(179, 177, 16, .8);
-		border-radius: 10px;
-	}
-
-	input[type=range]::-ms-fill-upper {
-		background: rgba(255, 255, 255, .8);
-		border-radius: 10px;
-	}
-
-	input[type=range]::-ms-thumb {
-		border: none;
-		height: .8em;
-		width: .8em;
-		border-radius: 50%;
-		background: rgba(0, 164, 201, 1);
-	}
-
-	input[type=range]:focus::-ms-fill-lower {
-		background: rgba(179, 177, 16, .8);
-	}
-
-	input[type=range]:focus::-ms-fill-upper {
-		background: rgba(255, 255, 255, .8);
-	}
 }
 
 @media (max-width:75em) {
@@ -100,6 +101,11 @@ body {
 		width: 4em;
 		white-space: nowrap;
 	}
+	#menu, .home {
+		max-width: 4em;
+		min-width: 4em;
+		width: 4em;
+	}
 
 	#menu label {
 		color: transparent;
@@ -107,7 +113,7 @@ body {
 }
 
 /* small menu like responsive version by user demand */
-#menu.small {
+#menu.small, .home.small {
 	max-width: 4em;
 	min-width: 4em;
 	width: 4em;
@@ -140,37 +146,6 @@ body {
 	font-size: 2em;
 	vertical-align: middle;
 	white-space: nowrap;
-}
-
-#content {
-	display: flex;
-	flex-direction: column;
-	flex: 5;
-}
-
-header {
-	height: 7em;
-	overflow: hidden;
-	padding: 2em;
-}
-
-.content {
-	display: flex;
-	flex-direction: row;
-	align-items: stretch;
-}
-
-.content>article,
-.content>aside {
-	flex: 1;
-	height: calc(100vh - 7em);
-	overflow-y: auto;
-}
-
-nav,
-article,
-aside {
-	padding: 1em;
 }
 
 .icon {
@@ -300,11 +275,19 @@ aside {
 
 
 input[type='text'],
-select {
+input[type='date'],
+select,
+span.search {
 	font-size: 1em;
-	min-width: 20em;
+	width: 20em;
+	max-width:90%;
 	margin-right: 1em;
+	border-width: 0 0 1px 0;
+	border-style:solid;
 }
+
+input[type='text'].search { margin-right:0; width:18em; max-width:calc(90% - 2em);}
+span.search{ padding:.07em 0;}
 
 input[type='button'],
 input[type='submit'],
@@ -312,6 +295,7 @@ input[type='submit'],
 	padding: .3em 1.2em;
 	border: none;
 	cursor: default;
+	margin:0;
 }
 
 .button svg {
@@ -363,11 +347,11 @@ hr {
 #popuptext {
 	white-space: normal;
 	width: 44vw;
-	min-width: 31em;
+	min-width: 45em;
 	height: 100%;
-	padding: 1em 2em;
+	padding: 1em 1em;
 	top: 0;
-	left: -100vw;
+	right: -100vw;
 	position: absolute;
 	overflow-x: auto;
 }
