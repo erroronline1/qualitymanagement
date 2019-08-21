@@ -79,6 +79,7 @@ var stocklist = {
 				de: ' Artikel gefunden'
 			}
 		},
+		disableOutputSelect: true,
 	},
 	api: {
 		available: function (search) {
@@ -96,7 +97,7 @@ var stocklist = {
 				//	globalSearch.contribute('stocklist', display);
 				//});
 				if (found.length) {
-					display = '<a href="javascript:core.function.loadScript(\'modules/stocklist.js\',\'stocklist.function.init(\\\'' + search + '\\\')\',\'' + core.var.modules.stocklist.display[core.var.selectedLanguage] + '\')">' + found.length + core.function.lang('apiItemsFound', 'stocklist') + '</a>';
+					display = '<a href="javascript:core.function.loadScript(\'modules/stocklist.js\',\'stocklist.function.init(\\\'' + search + '\\\')\')">' + found.length + core.function.lang('apiItemsFound', 'stocklist') + '</a>';
 					//add value and relevance
 					globalSearch.contribute('stocklist', [display, 1]);
 				}
@@ -171,5 +172,3 @@ var stocklist = {
 		},
 	}
 }
-
-var disableOutputSelect = true;

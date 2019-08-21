@@ -74,6 +74,7 @@ var documentlookup = {
 			return eval(documentlookup.var.selectedModule() + '_data');
 		},
 		thirdDocumentCategoryPath: 'E:/Quality Management/TTD',
+		disableOutputSelect: true,
 	},
 	api: {
 		available: function (search) {
@@ -220,4 +221,3 @@ var documentlookup = {
 		}
 	}
 }
-var disableOutputSelect = true;

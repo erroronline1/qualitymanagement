@@ -18,7 +18,8 @@ var help = {
 				en: 'Contents',
 				de: 'Themen'
 			},
-		}
+		},
+		disableOutputSelect: true,
 	},
 	api: {
 		available: function (search) {
@@ -31,7 +32,7 @@ var help = {
 			if (typeof (help_data) != 'undefined') {
 				var found = core.function.smartSearch.lookup(search, help_data.content, true);
 				found.forEach(function (value) {
-					display = '<a href="javascript:core.function.loadScript(\'modules/help.js\',\'help.function.init(\\\'' + help_data.content[value[0]][0] + '\\\')\',\'' + core.var.modules.help.display[core.var.selectedLanguage] + '\')">' + help_data.content[value[0]][0] + '</a>';
+					display = '<a href="javascript:core.function.loadScript(\'modules/help.js\',\'help.function.init(\\\'' + help_data.content[value[0]][0] + '\\\')\')">' + help_data.content[value[0]][0] + '</a>';
 					//add value and relevance
 					globalSearch.contribute('help', [display, value[1]]);
 				});
@@ -84,5 +85,3 @@ var help = {
 		},
 	}
 }
-
-var disableOutputSelect = true;

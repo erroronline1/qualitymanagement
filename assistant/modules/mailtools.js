@@ -216,6 +216,7 @@ var mailtools = {
 				de: 'Abwesenheitsnotiz'
 			},
 		},
+		disableOutputSelect: true,
 	},
 	api: {
 		available: function (search) {
@@ -226,7 +227,7 @@ var mailtools = {
 			});
 			var found = core.function.smartSearch.lookup(search, searchobject, true);
 			found.forEach(function (value) {
-				display = '<a href="javascript:core.function.loadScript(\'modules/mailtools.js\',\'mailtools.function.init(\\\'' + searchobject[value[0]][1] + '\\\')\',\'' + core.var.modules.mailtools.display[core.var.selectedLanguage] + '\')">' + searchobject[value[0]][0] + '</a>';
+				display = '<a href="javascript:core.function.loadScript(\'modules/mailtools.js\',\'mailtools.function.init(\\\'' + searchobject[value[0]][1] + '\\\')\')">' + searchobject[value[0]][0] + '</a>';
 					//add value and relevance
 					globalSearch.contribute('mailtools', [display, value[1]]);
 			});
@@ -263,6 +264,7 @@ var mailtools = {
 					disableOutputSelect = true;
 					el('output').innerHTML = output;
 				}
+				mailtools.var.disableOutputSelect=true;
 			}
 		},
 		signatureinput: function () {
@@ -272,7 +274,7 @@ var mailtools = {
 				core.function.languageSelection('onchange="mailtools.function.signaturegen[core.function.languageSynthesis.outputLanguage()]()"').join('<br />') +
 				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'mailtools') + '</a>' : '');
 			el('output').innerHTML = '';
-			disableOutputSelect = false;
+			mailtools.var.disableOutputSelect=false;
 		},
 		signaturegen: {
 			en: function (form) {
@@ -365,7 +367,7 @@ var mailtools = {
 				to: to
 			};
 
-			disableOutputSelect = false;
+			mailtools.var.disableOutputSelect=false;
 
 			el('output').innerHTML = mailtools.var.lang.notavailableResponse['de'](dates) +
 				mailtools.var.lang.notavailableResponse['en'](dates);
@@ -384,5 +386,3 @@ var mailtools = {
 		},
 	}
 }
-
-var disableOutputSelect = true;

@@ -48,7 +48,8 @@ var documentbundles = {
 				en: 'Additional information: can be displayed here if neccessary',
 				de: 'Zusatzinformation: können hier angegeben werden, falls erforderlich'
 			},
-		}
+		},
+		disableOutputSelect: true,
 	},
 	api: {
 		available: function (search) {
@@ -65,7 +66,7 @@ var documentbundles = {
 				});
 				var found = core.function.smartSearch.lookup(search, searchobject, true);
 				found.forEach(function (value) {
-					display = '<a href="javascript:core.function.loadScript(\'modules/documentbundles.js\',\'documentbundles.function.init(\\\'' + searchobject[value[0]][0] + '\\\')\',\'' + core.var.modules.documentbundles.display[core.var.selectedLanguage] + '\')">' + searchobject[value[0]][0].replace(/_/g, " ") + '</a>';
+					display = '<a href="javascript:core.function.loadScript(\'modules/documentbundles.js\',\'documentbundles.function.init(\\\'' + searchobject[value[0]][0] + '\\\')\')">' + searchobject[value[0]][0].replace(/_/g, " ") + '</a>';
 					//add value and relevance
 					globalSearch.contribute('documentbundles', [display, value[1]]);
 				});
@@ -173,5 +174,3 @@ var documentbundles = {
 		},
 	}
 }
-
-var disableOutputSelect = true;

@@ -59,6 +59,7 @@ var correspondence = {
 		selectedObject: function () {
 			return eval(correspondence.var.selectedModule() + '_data');
 		},
+		disableOutputSelect: false,
 	},
 	api: {
 		available: function (search) {
@@ -80,7 +81,7 @@ var correspondence = {
 			});
 			var found = core.function.smartSearch.lookup(search, searchobject, true);
 			found.forEach(function (value) {
-				display = '<a href="javascript:core.function.loadScript(\'modules/correspondence.js\',\'correspondence.function.init(\\\'' + submodule + '|' + searchobject[value[0]][1] + '\\\')\',\'' + core.var.modules.correspondence.display[core.var.selectedLanguage] + '\')">' + searchobject[value[0]][0] + '</a>';
+				display = '<a href="javascript:core.function.loadScript(\'modules/correspondence.js\',\'correspondence.function.init(\\\'' + submodule + '|' + searchobject[value[0]][1] + '\\\')\')">' + searchobject[value[0]][0] + '</a>';
 					//add value and relevance
 					globalSearch.contribute('correspondence', [display, value[1]]);
 			});
@@ -162,8 +163,8 @@ var correspondence = {
 				preset = query.split('|');
 			}
 			el('input').innerHTML = core.function.insert.select(correspondence.var.submodules,
-					'submodule', 'submodule', (typeof preset != 'undefined' ? preset[0].substring(preset[0].indexOf('_')+1) : null), 'onchange="core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
-					'<span style="float:right" onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '" />'+core.function.icon.insert('refresh','bigger')+'</span>';
+				'submodule', 'submodule', (typeof preset != 'undefined' ? preset[0].substring(preset[0].indexOf('_')+1) : null), 'onchange="core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
+				'<span style="float:right" onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '" />'+core.function.icon.insert('refresh','bigger')+'</span>';
 			el('temp').innerHTML = '';
 			el('output').innerHTML = '';
 			if (typeof query != 'undefined') {
@@ -174,5 +175,3 @@ var correspondence = {
 		}
 	}
 }
-
-var disableOutputSelect = false;
