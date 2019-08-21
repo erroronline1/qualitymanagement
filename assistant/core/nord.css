@@ -4,7 +4,7 @@ font/foreground colors
 
 body,
 input,
-select {
+select{
 	color: #eee;
 }
 
@@ -30,12 +30,15 @@ select optgroup {
 
 input[type='text'],
 select,
-.modulesearch,
 span.search,
 span.search .icon,
 [placeholder] {
 	color: #666;
 	fill: #666;
+}
+
+textarea{
+	color: #eee !important;
 }
 
 input[type='button'],

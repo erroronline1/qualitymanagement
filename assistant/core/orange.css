@@ -30,12 +30,15 @@ select optgroup {
 
 input[type='text'],
 select,
-.modulesearch,
 span.search,
 span.search .icon,
 [placeholder] {
 	color: #666;
 	fill: #666;
+}
+
+textarea{
+	color: #333 !important;
 }
 
 input[type='button'],
