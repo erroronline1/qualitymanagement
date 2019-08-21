@@ -85,7 +85,7 @@
 		document.title = core.function.lang('title');
 		//load settings or defaults
 		var fontsize = document.body.style.fontSize = ((core.function.setting.get('settingFontsize') || 0) / 10 + 1) + 'em';
-		el('colortheme').href = 'core/' + (core.function.setting.get('settingTheme') || 'default') + '.css';
+		el('colortheme').href = 'core/' + ((core.function.setting.get('settingTheme') in core.var.themes?core.function.setting.get('settingTheme'):'default') || 'default') + '.css';
 		core.function.setting.get('settingSmallmenu') && el('menu').classList.add('small') && el('menuwidth').classList.add('small');
 
 		updateTracker.alert();
