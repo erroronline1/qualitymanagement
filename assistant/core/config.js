@@ -79,7 +79,8 @@ core.var = {
 	},
 	//	rootdir in case different handling of source files is necessary over developement and production sites
 	rootdir: location.pathname.substring(1, location.pathname.lastIndexOf('/')).replace(/%20/g, " ") + '/',
-
+	// this will be automatically set to the last loaded module
+	currentScope: null,
 	//	logo as shown in upper left corner
 	logo: '<svg xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle; transform:scale(1,-1);" class="icon" viewBox="0 0 2048 2048"><path d="M1024 2048l1024 -1024l-1024 -1024l-1024 1024zM768 437l256 -256l843 843l-843 843l-843 -843l459 -459v587h549l-210 211l90 90l365 -365l-365 -365l-90 90l210 211h-421v-587z" /></svg>',
 	//	register all languages to be selectable within settings menu. if a language is not extended properly there might be object errors!
