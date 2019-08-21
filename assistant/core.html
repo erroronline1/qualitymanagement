@@ -32,7 +32,7 @@
 <body>
 	<header>
 		<script>
-			document.write('<nav class="home" title="' + core.function.lang('homeMenuEntry') + '" onclick="location.reload()">' + core.function.icon.insert('home') + '</nav>');
+			document.write('<nav class="home" title="' + core.function.lang('homeMenuEntry') + '" onclick="location.reload()">' + core.function.icon.insert('home', 'bigger') + '</nav>');
 			document.write('<article id="input">');
 			document.write(
 				'<form id="search" style="display:inline-block; font-size:150%" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
@@ -43,7 +43,7 @@
 				'</form>'
 			);
 			document.write('</article>');
-			document.write('<aside class="setting" title="' + core.function.lang('settingMenuEntry') + '" onclick="core.function.popup(core.function.setting.setup()); return;">' + core.function.icon.insert('settings') + '</aside>');
+			document.write('<aside class="setting" title="' + core.function.lang('settingMenuEntry') + '" onclick="core.function.popup(core.function.setting.setup()); return;">' + core.function.icon.insert('settings', 'bigger') + '</aside>');
 		</script>
 	</header>
 
