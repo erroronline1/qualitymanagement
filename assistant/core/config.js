@@ -72,10 +72,6 @@ core.var = {
 			en: 'orange',
 			de: 'fox'
 		},
-		slate: {
-			en: 'slate',
-			de: 'schiefer'
-		},
 		nord: {
 			en: 'nord',
 			de: 'nord'
