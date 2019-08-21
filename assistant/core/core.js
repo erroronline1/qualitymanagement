@@ -6,7 +6,7 @@ function isIE(){ return !!document.documentMode;}
 var core = {
 	function: {
 		popup: function (text) { //toggle notification popup
-			otext = '<span style="display:block; width:100%;"><a href="mailto:' + core.var.adminMail + '?subject=' + document.title + '">feedback/request</a><span style="float:right; width:2em; height:2em;" title="' + core.function.lang('popupCloseButton') + '" onclick="core.function.popup()">'+core.function.icon.insert('closepopup')+'</span></span>' + text;
+			otext = '<span style="display:block; width:100%;"><a href="mailto:' + core.var.adminMail + '?subject=' + document.title + '">feedback/request</a><span style="float:right; width:2em; height:2em;" title="' + core.function.lang('popupCloseButton') + '" onclick="core.function.popup()">'+core.function.icon.insert('closepopup','bigger')+'</span></span>' + text;
 			if (el('popup').style.opacity == '1' && typeof text === 'undefined') {
 				el('popup').style.opacity = '0';
 				el('popuptext').style.right = '-100vw';
@@ -367,8 +367,9 @@ var core = {
 			closepopup: ['0 0 2048 2048', '1,-1', 'M0 1664h2048v-1152h-2048v1152zM128 1536v-896h1280v896h-1280zM1920 640v896h-384v-896h384zM989 1405l317 -317l-317 -317l-90 90l162 163h-421v128h421l-162 163z'],
 			info: ['0 0 2048 2048', '1,-1', 'M960 128q-133 0 -255.5 34t-229.5 96.5t-194.5 150t-150 194.5t-96.5 229.5t-34 255.5t34 255.5t96.5 229.5t150 194.5t194.5 150t229.5 96.5t255.5 34t255.5 -34t229.5 -96.5t194.5 -150t150 -194.5t96.5 -229.5t34 -255.5t-34 -255.5t-96.5 -229.5t-150 -194.5t-194.5 -150t-229.5 -96.5t-255.5 -34zM960 1920q-115 0 -221 -30t-198.5 -84t-168.5 -130t-130 -168.5t-84 -199t-30 -220.5t30 -220.5t84 -199t130 -168.5t168.5 -130t198.5 -84t221 -30q114 0 220.5 30t199 84t168.5 130t130 168.5t84 198.5t30 221q0 114 -30 220.5t-84 199t-130 168.5t-168.5 130t-199 84t-220.5 30zM896 1280h128v-640h-128v640zM896 1536h128v-128h-128v128z'],
 
-			insert: function (icon) {
-				return '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + this[icon][0] + '\" style=\"transform: scale(' + this[icon][1] + ');\" class=\"icon\"><path d=\"' + this[icon][2] + '\"/></svg>';
+			insert: function (icon, addclass) {
+				addclass = addclass || false;
+				return '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + this[icon][0] + '\" style=\"transform: scale(' + this[icon][1] + ');\" class=\"icon ' + addclass + '\"><path d=\"' + this[icon][2] + '\"/></svg>';
 			}
 		},
 	},
