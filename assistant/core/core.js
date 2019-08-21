@@ -62,14 +62,14 @@ var core = {
 				// data base will be searched for single words as well as a concatenated string
 
 				// assign single terms to query array splitting by whitespace, stripping ' ( ) and - without preceding whitespace
-				var query = userInput.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '').split(/[\s]/g),
+				var initial_query = userInput.toLowerCase().replace(/[^a-zA-Z0-9-\s]/g, '').split(/[\s]/g),
+					query = new Array(),
 					filter = new Array();
 				//sort -terms to filter
-				query.forEach(function (word) {
-					if (word.substring(0, 1) == '-') {
-						filter.push(word.substring(1));
-						query.splice(query.indexOf(word), 1);
-					}
+				//i once spliced the query array but that directly influenced the foreach
+				initial_query.forEach(function (word) {
+					if (word.substring(0, 1) == '-') filter.push(word.substring(1));
+					else query.push(word);
 				});
 				//add concatenated query of remaining terms
 				if (query.length > 1 && query.join('').length > 2) query.push(query.join(''));
@@ -368,7 +368,7 @@ var core = {
 			info: ['0 0 2048 2048', '1,-1', 'M960 128q-133 0 -255.5 34t-229.5 96.5t-194.5 150t-150 194.5t-96.5 229.5t-34 255.5t34 255.5t96.5 229.5t150 194.5t194.5 150t229.5 96.5t255.5 34t255.5 -34t229.5 -96.5t194.5 -150t150 -194.5t96.5 -229.5t34 -255.5t-34 -255.5t-96.5 -229.5t-150 -194.5t-194.5 -150t-229.5 -96.5t-255.5 -34zM960 1920q-115 0 -221 -30t-198.5 -84t-168.5 -130t-130 -168.5t-84 -199t-30 -220.5t30 -220.5t84 -199t130 -168.5t168.5 -130t198.5 -84t221 -30q114 0 220.5 30t199 84t168.5 130t130 168.5t84 198.5t30 221q0 114 -30 220.5t-84 199t-130 168.5t-168.5 130t-199 84t-220.5 30zM896 1280h128v-640h-128v640zM896 1536h128v-128h-128v128z'],
 
 			insert: function (icon, addclass) {
-				addclass = addclass || false;
+				addclass = addclass || '';
 				return '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + this[icon][0] + '\" style=\"transform: scale(' + this[icon][1] + ');\" class=\"icon ' + addclass + '\"><path d=\"' + this[icon][2] + '\"/></svg>';
 			}
 		},
