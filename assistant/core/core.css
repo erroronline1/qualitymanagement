@@ -24,19 +24,22 @@ body {
 	flex-direction: column;
 }
 
-header, main, #popupcontent {
+header,
+main,
+#popupcontent {
 	display: flex;
 	flex-direction: row;
 	align-items: stretch;
 }
 
-header, #popupcontent {
-	flex:1 0 3.5em;
+header,
+#popupcontent {
+	flex: 1 0 3.5em;
 }
 
 main {
-	flex:0 1 100vh;
-	overflow:hidden;
+	flex: 0 1 100vh;
+	overflow: hidden;
 }
 
 nav,
@@ -49,10 +52,25 @@ aside {
 	padding: 1em;
 }
 
-.home {flex:3; cursor:pointer;}
-#input {flex:8;}
-.setting {flex:.5; cursor:pointer; text-align: right;}
-#settingsMenu{flex: 0 1 13em; border-right: 1px solid}
+.home {
+	flex: 3;
+	cursor: pointer;
+}
+
+#input {
+	flex: 8;
+}
+
+.setting {
+	flex: .5;
+	cursor: pointer;
+	text-align: right;
+}
+
+#settingsMenu {
+	flex: 0 1 13em;
+	border-right: 1px solid
+}
 
 #menu,
 #content {
@@ -72,7 +90,8 @@ aside {
 	overflow-x: hidden;
 }
 
-#menu, .home {
+#menu,
+.home {
 	max-width: 60em;
 	min-width: 10em;
 }
@@ -87,7 +106,9 @@ aside {
 		overflow-x: hidden;
 		overflow-y: auto;
 	}
-	#menu, .home {
+
+	#menu,
+	.home {
 		max-width: 30em;
 		min-width: 10em;
 	}
@@ -101,7 +122,9 @@ aside {
 		width: 4em;
 		white-space: nowrap;
 	}
-	#menu, .home {
+
+	#menu,
+	.home {
 		max-width: 4em;
 		min-width: 4em;
 		width: 4em;
@@ -113,7 +136,8 @@ aside {
 }
 
 /* small menu like responsive version by user demand */
-#menu.small, .home.small {
+#menu.small,
+.home.small {
 	max-width: 4em;
 	min-width: 4em;
 	width: 4em;
@@ -155,6 +179,11 @@ aside {
 	transform: scale(1, -1);
 }
 
+.bigger {
+	width: 1.3em;
+	height: 1.3em
+}
+
 .items {
 	margin-bottom: .5em;
 	padding: .5em;
@@ -179,7 +208,7 @@ aside {
 .items.expand {
 	max-height: 1500px;
 	transition: max-height 1s ease-in-out;
-	overflow:auto;
+	overflow: auto;
 }
 
 .itemalign {
@@ -273,21 +302,27 @@ aside {
 	left: 55%;
 }
 
-
 input[type='text'],
 input[type='date'],
 select,
 span.search {
 	font-size: 1em;
 	width: 20em;
-	max-width:90%;
+	max-width: 90%;
 	margin-right: 1em;
 	border-width: 0 0 1px 0;
-	border-style:solid;
+	border-style: solid;
 }
 
-input[type='text'].search { margin-right:0; width:18em; max-width:calc(90% - 2em);}
-span.search{ padding:.07em 0;}
+input[type='text'].search {
+	margin-right: 0;
+	width: 18em;
+	max-width: calc(90% - 2em);
+}
+
+span.search {
+	padding: .07em 0;
+}
 
 input[type='button'],
 input[type='submit'],
@@ -295,7 +330,7 @@ input[type='submit'],
 	padding: .3em 1.2em;
 	border: none;
 	cursor: default;
-	margin:0;
+	margin: 0;
 }
 
 .button svg {
@@ -354,18 +389,6 @@ hr {
 	right: -100vw;
 	position: absolute;
 	overflow-x: auto;
-}
-
-#feedbackrequest {
-	position: absolute;
-	bottom: 0;
-	opacity: .3;
-	margin: 0;
-	display: block;
-}
-
-#feedbackrequest a {
-	color: inherit;
 }
 
 /* add a little fancyness */
