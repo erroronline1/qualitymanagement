@@ -168,7 +168,7 @@ var core = {
 			});
 			return sel;
 		},
-		loadScript: function (url, callback, title) {
+		loadScript: function (url, callback) {
 			//load given script-files into scope a.k.a. load desired modules
 			if (url != '') {
 				core.performance.start(callback);
@@ -191,7 +191,10 @@ var core = {
 					};
 				}
 				document.head.appendChild(script);
-				if (typeof (title) != 'undefined') document.title = core.function.lang('title') + ' - ' + title;
+				if (callback.indexOf('init')>-1) {
+					core.var.currentScope=url.match(/\/(.*?)\./)[1];
+					document.title = core.function.lang('title') + ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage];
+				}
 			}
 		},
 
@@ -263,7 +266,7 @@ var core = {
 			},
 			setupAdvanced:function(){
 				return '<input type="button" onclick="core.function.setting.clear()" value="' + core.function.lang('settingResetApp') + '" title="' + core.function.lang('settingRestartNeccessary') + '" />' +
-				'<br /><br />' + core.function.insert.checkbox('Performance Monitor', 'settingPerformanceMonitor', (core.function.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
+				'<br /><br />' + core.function.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.function.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
 				'<br /><br />' + aboutNotification[core.var.selectedLanguage] +
 				'<br /><br />' + core.function.lang('settingGeneralHint');
 			},
@@ -423,7 +426,7 @@ function select_module() {
 			if (typeof core.var.modules[key] === 'object' && core.function.setting.get('module_' + key) != 1) {
 				//create module-selector
 				opt = 'modules/' + key + '.js';
-				el('menu').innerHTML += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.function.loadScript(\'' + opt + '\', \'' + key + '.function.init()\', \'' + core.var.modules[key].display[core.var.selectedLanguage] + '\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
+				el('menu').innerHTML += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.function.loadScript(\'' + opt + '\', \'' + key + '.function.init()\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
 				slider.modules.push(key);
 			}
 		});
@@ -431,7 +434,7 @@ function select_module() {
 }
 
 function selectText(element) {
-	if (typeof (disableOutputSelect) === "undefined" || !disableOutputSelect) {
+	if ( core.var.currentScope != null && (eval(core.var.currentScope).var.disableOutputSelect === "undefined" || !(eval(core.var.currentScope).var.disableOutputSelect))) {
 		if (core.function.setting.get('settingNewWindowCopy')) {
 			var win = window.open("", "win"),
 				doc = win.document;
