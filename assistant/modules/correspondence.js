@@ -163,7 +163,7 @@ var correspondence = {
 			}
 			el('input').innerHTML = core.function.insert.select(correspondence.var.submodules,
 					'submodule', 'submodule', (typeof preset != 'undefined' ? preset[0].substring(preset[0].indexOf('_')+1) : null), 'onchange="core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
-					'<span style="float:right" onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '" />'+core.function.icon.insert('refresh')+'</span>';
+					'<span style="float:right" onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '" />'+core.function.icon.insert('refresh','bigger')+'</span>';
 			el('temp').innerHTML = '';
 			el('output').innerHTML = '';
 			if (typeof query != 'undefined') {
