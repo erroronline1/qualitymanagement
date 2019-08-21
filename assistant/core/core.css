@@ -131,7 +131,7 @@ aside {
 	}
 
 	#menu label {
-		color: transparent;
+		color: transparent !important;
 	}
 }
 
