@@ -1,14 +1,111 @@
+/*///////////////////////////////////////////// 
+font/foreground colors
+/////////////////////////////////////////////*/
+
 body,
 input,
 select {
 	color: #eee;
 }
 
-#input,
 select option,
 select optgroup {
-	color: #333;
+	color: #333
 }
+
+#menu,
+#menu label,
+#menu .icon,
+#popuptext,
+#popuptext label,
+#popuptext svg,
+::selection {
+	color: #fff;
+	fill: #fff
+}
+
+.icon {
+	fill: #fff;
+}
+
+input[type='text'],
+select,
+.modulesearch,
+span.search,
+span.search .icon,
+[placeholder] {
+	color: #666;
+	fill: #666;
+}
+
+input[type='button'],
+#popuptext input[type='button'],
+input[type='submit'],
+#popuptext input[type='submit'],
+.button,
+.button svg {
+	fill: #fff;
+	color: #fff;
+}
+
+.highlight,
+a:hover::after {
+	color: rgb(197, 43, 92)
+}
+
+a:link {
+	color: rgba(0, 164, 201, 1);
+}
+
+a:visited {
+	color: rgba(179,177,16,.8);
+}
+
+/*///////////////////////////////////////////// 
+borders
+/////////////////////////////////////////////*/
+
+input,
+select,
+span.search,
+textarea {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #bbb;
+}
+
+input.search {
+	border-right: none
+}
+
+span.search {
+	border-left: none
+}
+
+input[type='range'] {
+	border: none;
+}
+
+.itemresize,
+.itemresize::before {
+	border-color: rgba(255, 255, 255, .7);
+}
+
+.checkmark {
+	border-color: rgba(255, 255, 255, .7);
+}
+
+#popuptext .checkmark {
+	border-color: rgba(255, 255, 255, 1);
+}
+
+#popuptext {
+	box-shadow: 0 0 1em .125em rgba(0, 0, 0, .5)
+}
+
+/*///////////////////////////////////////////// 
+background colors
+/////////////////////////////////////////////*/
 
 body {
 	background-color: #000;
@@ -16,20 +113,12 @@ body {
 
 ::selection {
 	background: rgb(0, 164, 201);
-	color: #fff
 }
 
 input,
 select,
 span.search {
-	background-color: transparent;
-	border-color: rgb(197, 43, 92);
-}
-
-textarea {
-	background-color: transparent;
-	border: 0 solid rgb(197, 43, 92);
-	border-width: 1px;
+	background-color: #fff;
 }
 
 #temp {
@@ -46,47 +135,28 @@ textarea {
 
 .itemresize,
 .itemresize::before {
-	border-color: #fff;
 	background-color: #333;
 }
 
 #menu,
-.icon,
-#popuptext, #popuptext svg {
+#popuptext {
 	background-color: rgba(0, 0, 0, .8);
-	color: #fff;
-	fill: #fff
 }
 
- .icon, #popuptext svg {
+svg,
+input[type='range'],
+.checkmark,
+textarea {
 	background-color: transparent
 }
 
-#input,
-#input input[type='text'],
-#input select,
-.modulesearch,
-label,
-[placeholder] {
-	color: #ddd;
-	fill: #ddd
-}
-
 input[type='button'],
+#popuptext input[type='button'],
 input[type='submit'],
-.button {
-	fill: #fff;
-	color: #fff;
+#popuptext input[type='submit'],
+.button,
+hr {
 	background-color: rgb(197, 43, 92);
-}
-
-.button svg {
-	fill: #fff
-}
-
-.checkmark {
-	border-color: rgba(255, 255, 255, .7);
-	background-color: transparent;
 }
 
 .checkmark::after,
@@ -98,30 +168,13 @@ input[type='submit'],
 	background-color: rgba(0, 0, 0, .8);
 }
 
-
-.highlight {
-	color: rgb(255, 0, 81)
+#popuptext .checkmark::after,
+#popuptext .custominput input:checked~.checkmark {
+	background-color: rgba(255, 255, 255, .8);
 }
 
-hr {
-	background-color: rgb(255, 0, 81);
-}
-
-a:link {
-	color: rgb(0, 208, 255);
-}
-
-a:hover::after {
-	color: rgb(197, 43, 92);
-}
-
-#settings {
-	float: right;
-	display: block;
-	margin: 0 .5em;
-	width: 1em;
-	height: 1em;
-	fill: rgba(255, 255, 255, .9);
+#popuptext .custominput input:checked~.checkmark::after {
+	background-color: rgba(0, 0, 0, .8);
 }
 
 #popup {
