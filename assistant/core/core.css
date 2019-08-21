@@ -34,7 +34,7 @@ main,
 
 header,
 #popupcontent {
-	flex: 1 0 3.5em;
+	flex: 1 0 4em;
 }
 
 main {
@@ -309,9 +309,8 @@ span.search {
 	font-size: 1em;
 	width: 20em;
 	max-width: 90%;
+	margin-bottom: .5em;
 	margin-right: 1em;
-	border-width: 0 0 1px 0;
-	border-style: solid;
 }
 
 input[type='text'].search {
