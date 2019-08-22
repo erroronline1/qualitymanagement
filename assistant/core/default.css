@@ -124,7 +124,7 @@ span.search {
 	background-color: #fff;
 }
 
-#temp {
+#temp, .bigger:hover {
 	background-color: rgba(255, 255, 255, .7);
 }
 
@@ -152,6 +152,8 @@ input[type='range'],
 textarea {
 	background-color: transparent
 }
+
+
 
 input[type='button'],
 #popuptext input[type='button'],

@@ -54,7 +54,6 @@ aside {
 
 .home {
 	flex: 3;
-	cursor: pointer;
 }
 
 #input {
@@ -63,7 +62,6 @@ aside {
 
 .setting {
 	flex: .5;
-	cursor: pointer;
 	text-align: right;
 }
 
@@ -180,6 +178,8 @@ aside {
 }
 
 .bigger {
+	box-sizing:content-box;
+	padding:.5em;
 	width: 1.3em;
 	height: 1.3em
 }
