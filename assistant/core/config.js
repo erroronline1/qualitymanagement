@@ -278,6 +278,13 @@ core.var = {
 			en: 'Home',
 			de: 'Start'
 		},
-
+		homeMenuBack: {
+			en: 'back',
+			de: 'zurück'
+		},
+		homeMenuForth: {
+			en: 'forward',
+			de: 'vor'
+		},
 	},
 };

@@ -77,6 +77,8 @@ var modulename = {
 	},
 	api: { //for globl search
 		available: function(search){
+			//stop performance monitoring that has been started by module calling
+			core.performance.stop('modulename.api.available(\''+search+'\')');
 			return somethingBasedOn(search);
 		},
 		processAfterImport: function(){
@@ -85,11 +87,28 @@ var modulename = {
 	},
 	function: { //module behaviour
 		init: function(query){
-			core.function.loadScript('data/modulename.js', 'modulename.function.someFunction(\'' + (query || '') + '\')');
+			//highlight menu icon
+			el('module{modulename}').checked=true; 
 			//import data file if applicable, return initial module content, process query from inter-module communication or global search
+			core.function.loadScript('data/modulename.js', 'modulename.function.someFunction(\'' + value(query) + '\')');
+			//prepare your modules interface
+			el('input').innerHTML='your menu';
+			el('temp').innerHTML='your temporary output or additional forms';
+			el('output').innerHTML='your output';
+			//stop performance monitoring that has been started by module calling and write history
+			core.performance.stop('modulename.function.init(\'' + value(query) + '\')');
+			core.history.write(['modulename.function.init(\'' + value(query) + '\')']);
 		},
 		someFunction: function(query){
-			//do what you have to do with your data or whatever
+			//optinal performance monitoring for each function
+			core.performance.start('modulename.function.someFunction(\'' + value(query) + '\')');
+			
+			//////////////////////////////////////////////////////
+			//do your magic here
+			//////////////////////////////////////////////////////
+
+			core.performance.stop('modulename.function.someFunction(\'' + value(query) + '\')');
+			core.history.write(['modulename.function.init(\'' + value(query) + '\')']);
 		}
 	}
 }

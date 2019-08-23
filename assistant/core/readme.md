@@ -4,6 +4,8 @@ a shortened overview of the core-functions that can be made use of in future mod
 ## core.js
 `el(v)` returns document.getElementById(v)
 
+`value(v)` returns value of v or '' even if v is undefined. useful for function parameters.
+
 `core.function.popup(text)` shows or updates a modal box if text is provided, hides it if function called with null value
 
 `core.function.toggelHeight(toggleel)` toggles the class list of given element to expand or shrink it
@@ -48,9 +50,13 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.function.icon.insert(icon)` returns an inline svg according to the before declared properties within the parent property
 
-`core.performance.start(track, group)` does start a console timer. starting a group is optional.
+`core.history.write(point)` adds an array of callbacks to the history storage if the parameter differs from last entry. removes entries if new entry is added while havinge gone back
 
-`core.performance.stop(track, info, group)` does stop a console timer. info can be some desired result. ending group is optional.
+`core.history.go('back'||'forth')` yields through the history and processes the stored callbacks
+
+`core.performance.start(track, group)` does start a console timer. starting a group is optional. this is called on every loadScript and should be ended within all callback functions.
+
+`core.performance.stop(track, info, group)` does stop a console timer. info can be some desired result. ending group is optional. 
 
 ## core_langage_synthesis.js
 extends the core-object with the language synthesis. here you define textblocks that can be switched for $keyword$ within continuous text using the function `core.function.languageSynthesis.output(block)` called by `'string'.replace(/\$(\w+?)\$/ig,function(match,group1){return core.function.languageSynthesis.output(group1)})`
