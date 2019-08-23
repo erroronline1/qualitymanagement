@@ -55,8 +55,8 @@ var documentbundles = {
 		available: function (search) {
 			core.function.loadScript('data/documentbundles.js',
 				'documentbundles.api.processAfterImport(\'' + search + '\')');
-			core.performance.stop('documentbundles.api.available(\''+search+'\')');
-			},
+			core.performance.stop('documentbundles.api.available(\'' + search + '\')');
+		},
 		processAfterImport: function (search) {
 			var searchobject = [],
 				display;
@@ -75,12 +75,6 @@ var documentbundles = {
 		}
 	},
 	function: {
-		init: function (query) {
-			core.function.loadScript('data/documentbundles.js', 'documentbundles.function.input(\'' + (query || '') + '\')');
-			el('temp').innerHTML = '<br />' + core.function.lang('useCaseDescription', 'documentbundles');
-			el('output').innerHTML = '';
-			core.performance.stop('documentbundles.function.init(' + (typeof query != 'undefined' ? '\'' + query + '\'' : '') + ')');
-		},
 		linkfile: function (url) {
 			// bad filename or dynamic url
 			if (typeof (url) === 'object') {
@@ -158,19 +152,28 @@ var documentbundles = {
 				el('temp').innerHTML = '<span class="highlight">' + core.function.lang('primaryCaption', 'documentbundles') + '</span><br />' + primary;
 				el('output').innerHTML = '<span class="highlight">' + core.function.lang('secondaryCaption', 'documentbundles') + '</span><br />' + secondary;
 			}
+			core.history.write(['documentbundles.function.init(\'' + treatment + '\')']);
 		},
 		input: function (query) {
-			core.performance.start('documentbundles.function.input(\'' + (query || '') + '\')'); //possible duplicate
+			core.performance.start('documentbundles.function.input(\'' + value(query) + '\')'); //possible duplicate
 			if (typeof (documentbundles_data) != 'undefined') {
 				var out = '<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.function.gen(sel)"><option value="">' + core.function.lang('selectDefault', 'documentbundles') + '</option>';
 				Object.keys(documentbundles_data).forEach(function (key) {
-					out += '<option id="' + key + '" value="' + key + '" '+(query==key?'selected':'')+'>' + key.replace(/_/g, " ") + '</option>';
+					out += '<option id="' + key + '" value="' + key + '" ' + (query == key ? 'selected' : '') + '>' + key.replace(/_/g, " ") + '</option>';
 				});
 				out += '</select>';
 				el('input').innerHTML = out + core.function.insert.checkbox(core.function.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.function.gen(sel)"');
-				if (typeof query != 'undefined') documentbundles.function.gen(query);
+				if (value(query) != '') documentbundles.function.gen(query);
 			}
-			core.performance.stop('documentbundles.function.input(\'' + (query || '') + '\')');
+			core.performance.stop('documentbundles.function.input(\'' + value(query) + '\')');
+			core.history.write(['documentbundles.function.init(\'' + value(query) + '\')']);
+		},
+		init: function (query) {
+			el('moduledocumentbundles').checked = true; // highlight menu icon
+			core.function.loadScript('data/documentbundles.js', 'documentbundles.function.input(\'' + value(query) + '\')');
+			el('temp').innerHTML = '<br />' + core.function.lang('useCaseDescription', 'documentbundles');
+			el('output').innerHTML = '';
+			core.performance.stop('documentbundles.function.init(\'' + value(query) + '\')');
 		},
 	}
 }

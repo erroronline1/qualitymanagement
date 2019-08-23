@@ -25,8 +25,8 @@ var help = {
 		available: function (search) {
 			core.function.loadScript('data/help.js',
 				'help.api.processAfterImport(\'' + search + '\')');
-			core.performance.stop('help.api.available(\''+search+'\')');
-			},
+			core.performance.stop('help.api.available(\'' + search + '\')');
+		},
 		processAfterImport: function (search) {
 			var display;
 			if (typeof (help_data) != 'undefined') {
@@ -37,24 +37,13 @@ var help = {
 					globalSearch.contribute('help', [display, value[1]]);
 				});
 			}
-			core.performance.stop('help.api.processAfterImport(\''+search+'\')');
+			core.performance.stop('help.api.processAfterImport(\'' + search + '\')');
 		}
 	},
 	function: {
-		init: function (query) {
-			core.function.loadScript('data/help.js', 'help.function.search(\'' + (query || '') + '\')');
-			el('input').innerHTML =
-				'<form id="search" action="javascript:help.function.search();">' +
-				'<input type="text" pattern=".{3,}" required value="' + (query || '') + '" placeholder="' + core.function.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search" />' +
-				'<span onclick="help.function.search();" class="search">' + core.function.icon.insert('search') + '</span> ' +
-				'<input type="submit" id="artikelsuche" value="' + core.function.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
-				'</form>';
-			el('temp').innerHTML = el('output').innerHTML = " ";
-			core.performance.stop('help.function.init(' + (typeof query != 'undefined' ? '\'' + query + '\'' : '') + ')');
-		},
 		search: function (query) {
 			query = query || el('helpquery').value;
-			core.performance.start('help.function.input(\'' + (query || '') + '\')'); //possible duplicate
+			core.performance.start('help.function.input(\'' + value(query) + '\')'); //possible duplicate
 			if (typeof (help_data) != 'undefined') {
 				var list = '';
 				Object.keys(help_data.content).forEach(function (key) {
@@ -62,7 +51,7 @@ var help = {
 					else list += '<br />';
 				});
 				el('temp').innerHTML = '<span class="highlight">' + core.function.lang('tableOfContents', 'help') + ':</span><br />' + list;
-				if (query != '') {
+				if (value(query) != '') {
 					var found = core.function.smartSearch.lookup(query, help_data.content, true);
 
 					// check if search matches item-list
@@ -81,7 +70,20 @@ var help = {
 					el('output').innerHTML = list;
 				}
 			}
-			core.performance.stop('help.function.input(\'' + (query || '') + '\')');
+			core.performance.stop('help.function.input(\'' + value(query) + '\')');
+			core.history.write(['help.function.init(\'' + value(query) + '\')']);
+		},
+		init: function (query) {
+			el('modulehelp').checked = true; // highlight menu icon
+			core.function.loadScript('data/help.js', 'help.function.search(\'' + value(query) + '\')');
+			el('input').innerHTML =
+				'<form id="search" action="javascript:help.function.search();">' +
+				'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.function.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search"  ' + (value(query) != '' ? 'value="' + query + '"' : '') + '  />' +
+				'<span onclick="help.function.search();" class="search">' + core.function.icon.insert('search') + '</span> ' +
+				'<input type="submit" id="artikelsuche" value="' + core.function.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
+				'</form>';
+			el('temp').innerHTML = el('output').innerHTML = " ";
+			core.performance.stop('help.function.init(\'' + value(query) + '\')');
 		},
 	}
 }

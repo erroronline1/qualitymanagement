@@ -70,22 +70,22 @@ var correspondence = {
 						'correspondence.api.processAfterImport(\'' + search + '\', \'' + correspondence.var.submodules[key][0] + '\', \'' + correspondence.var.submodules[key][0] + '_data\')');
 				}
 			});
-			core.performance.stop('correspondence.api.available(\''+search+'\')');
+			core.performance.stop('correspondence.api.available(\'' + search + '\')');
 		},
 		processAfterImport: function (search, submodule, objectname) {
 			var searchobject = [],
 				display;
-			object=eval(objectname);
+			object = eval(objectname);
 			Object.keys(object).forEach(function (key) {
 				searchobject.push([object[key]['title'], key]);
 			});
 			var found = core.function.smartSearch.lookup(search, searchobject, true);
 			found.forEach(function (value) {
 				display = '<a href="javascript:core.function.loadScript(\'modules/correspondence.js\',\'correspondence.function.init(\\\'' + submodule + '|' + searchobject[value[0]][1] + '\\\')\')">' + searchobject[value[0]][0] + '</a>';
-					//add value and relevance
-					globalSearch.contribute('correspondence', [display, value[1]]);
+				//add value and relevance
+				globalSearch.contribute('correspondence', [display, value[1]]);
 			});
-			core.performance.stop('correspondence.api.processAfterImport(\''+search+'\', \''+submodule+'\', \''+objectname+'\')');
+			core.performance.stop('correspondence.api.processAfterImport(\'' + search + '\', \'' + submodule + '\', \'' + objectname + '\')');
 		}
 	},
 	function: {
@@ -124,6 +124,7 @@ var correspondence = {
 				el('mailto').href = 'mailto:?body=' + core.function.escapeHTML(el('output').innerHTML, true);
 
 			} else core.function.popup(core.function.lang('errorSelectModules', 'correspondence'));
+			core.history.write(['correspondence.function.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
 		},
 
 		start: function (query) {
@@ -134,7 +135,7 @@ var correspondence = {
 				});
 				var output = core.function.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.function.gen()"') +
 					'<br /><br />' +
-					'<input type="text" placeholder="' + core.function.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.function.gen()" /> <span id="searchname" onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.function.lang('webSearchTitle', 'correspondence') + '">'+core.function.icon.insert('websearch')+'</span><br /><br />' +
+					'<input type="text" placeholder="' + core.function.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.function.gen()" /> <span id="searchname" onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.function.lang('webSearchTitle', 'correspondence') + '">' + core.function.icon.insert('websearch') + '</span><br /><br />' +
 					'<div class="inline">' +
 					core.function.insert.radio(core.function.lang('inputOptionMale', 'correspondence'), 'sex', 'male', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
 					core.function.insert.radio(core.function.lang('inputOptionFemale', 'correspondence'), 'sex', 'female', false, 'onchange="correspondence.function.gen()"') + ' ' +
@@ -152,26 +153,29 @@ var correspondence = {
 					'<br /><br /><a id="mailto" href="mailto:">' + core.function.icon.insert('email') + core.function.lang('openMailApp', 'correspondence') + '</a>' +
 					(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'correspondence') + '</a>' : '');
 				el('temp').innerHTML = output;
-				if (typeof query != 'undefined') correspondence.function.gen(query);
+				if (query != '') correspondence.function.gen(query);
 			} else core.function.popup(core.function.lang('errorSelectModules', 'correspondence'));
-			core.performance.stop('correspondence.function.start(' + (typeof query != 'undefined' ? '\'' + query + '\'' : '') + ')');
+			core.performance.stop('correspondence.function.start(\'' + value(query) + '\')');
+			core.history.write(['correspondence.function.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
 		},
 
 		init: function (query) {
+			el('modulecorrespondence').checked = true; // highlight menu icon
 			correspondence.var.submodules.select[1] = core.function.lang('inputLoadSubmoduleDefault', 'correspondence');
-			if (typeof query != 'undefined') {
+			if (query != '') {
 				preset = query.split('|');
 			}
 			el('input').innerHTML = core.function.insert.select(correspondence.var.submodules,
-				'submodule', 'submodule', (typeof preset != 'undefined' ? preset[0].substring(preset[0].indexOf('_')+1) : null), 'onchange="core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
-				'<span style="float:right" onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '" />'+core.function.icon.insert('refresh','bigger')+'</span>';
+					'submodule', 'submodule', (typeof preset != 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
+				'<span style="float:right" onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '" />' + core.function.icon.insert('refresh', 'bigger') + '</span>';
 			el('temp').innerHTML = '';
 			el('output').innerHTML = '';
-			if (typeof query != 'undefined') {
+			if (query != '') {
 				correspondence.var['presetModule'] = preset[0];
 				core.function.loadScript('data/' + preset[0] + '.js', 'correspondence.function.start(\'' + preset[1] + '\')');
 			}
-			core.performance.stop('correspondence.function.init(' + (typeof query != 'undefined' ? '\'' + query + '\'' : '') + ')');
+			core.performance.stop('correspondence.function.init(\'' + value(query) + '\')');
+			core.history.write(['correspondence.function.init(\'' + value(query) + '\')']);
 		}
 	}
 }

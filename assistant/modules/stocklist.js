@@ -85,8 +85,8 @@ var stocklist = {
 		available: function (search) {
 			core.function.loadScript('data/stocklist.js',
 				'stocklist.api.processAfterImport(\'' + search + '\')');
-				core.performance.stop('stocklist.api.available(\''+search+'\')');
-			},
+			core.performance.stop('stocklist.api.available(\'' + search + '\')');
+		},
 		processAfterImport: function (search) {
 			var display;
 			if (typeof (stocklist_data) != 'undefined') {
@@ -101,7 +101,7 @@ var stocklist = {
 					//add value and relevance
 					globalSearch.contribute('stocklist', [display, 1]);
 				}
-				core.performance.stop('stocklist.api.processAfterImport(\''+search+'\')');
+				core.performance.stop('stocklist.api.processAfterImport(\'' + search + '\')');
 			}
 		}
 	},
@@ -126,10 +126,10 @@ var stocklist = {
 		},
 		search: function (query) {
 			query = query || el('itemname').value;
-			core.performance.start('stocklist.function.input(\'' + (query || '') + '\')'); //possible duplicate
+			core.performance.start('stocklist.function.input(\'' + value(query) + '\')'); //possible duplicate
 			var list = '';
 			if (typeof (stocklist_data) != 'undefined') {
-				if (query != '') {
+				if (value(query) != '') {
 					var found = core.function.smartSearch.lookup(query, stocklist_data.content, stocklist.function.translate.filter()[el('stockfilter').options[el('stockfilter').selectedIndex].value][2]);
 					// check if search matches item-list
 					if (found.length > 0) {
@@ -154,21 +154,23 @@ var stocklist = {
 					return stocklist_data.content.length - 1;
 				}
 			}
-			core.performance.stop('stocklist.function.input(\'' + (query || '') + '\')');
+			core.performance.stop('stocklist.function.input(\'' + value(query) + '\')');
+			core.history.write(['stocklist.function.init(\'' + value(query) + '\')']);
 		},
 		init: function (query) {
-			core.function.loadScript('data/stocklist.js', 'stocklist.function.search(\'' + (query || '') + '\')');
+			el('modulestocklist').checked = true; // highlight menu icon
+			core.function.loadScript('data/stocklist.js', 'stocklist.function.search(\'' + value(query) + '\')');
 			el('input').innerHTML =
 				'<form id="search" action="javascript:stocklist.function.search();">' +
-				'<input type="text" pattern=".{3,}" required value="' + (query || '') + '" placeholder="' + core.function.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search" />' +
+				'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.function.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search"  ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
 				'<span onclick="stocklist.function.search();" class="search">' + core.function.icon.insert('search') + '</span> ' +
 				core.function.insert.select(stocklist.function.translate.returnselect(), 'stockfilter', 'stockfilter', (core.function.setting.get('stockfilter') || 'all'), 'onchange="core.function.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.function.search();"') +
 				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
-				'<span style="float:right;" id="searchname" onclick="window.open(\'https://www.google.de/#q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.function.lang('webSearchTitle', 'stocklist') + '">'+core.function.icon.insert('websearch','bigger')+'</span>'; +
+				'<span style="float:right;" id="searchname" onclick="window.open(\'https://www.google.de/#q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.function.lang('webSearchTitle', 'stocklist') + '">' + core.function.icon.insert('websearch', 'bigger') + '</span>'; +
 			'</form>';
 			el('output').innerHTML = el('temp').innerHTML = '';
 			el('temp').innerHTML = core.function.lang('useCaseDescription', 'stocklist');
-			core.performance.stop('stocklist.function.init(' + (typeof query != 'undefined' ? '\'' + query + '\'' : '') + ')');
+			core.performance.stop('stocklist.function.init(\'' + value(query) + '\')');
 		},
 	}
 }
