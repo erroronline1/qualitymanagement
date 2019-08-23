@@ -1,12 +1,20 @@
 function el(v) {
 	return document.getElementById(v);
 }
-function isIE(){ return !!document.documentMode;}
+
+function isIE() {
+	return !!document.documentMode;
+}
+
+function value(v) { //handles even unset parameters when in doubt
+	if (typeof v == 'undefined') return '';
+	else return v;
+}
 
 var core = {
 	function: {
 		popup: function (text) { //toggle notification popup
-			otext = '<span style="display:block; width:100%;"><a href="mailto:' + core.var.adminMail + '?subject=' + document.title + '">feedback/request</a><span style="float:right; width:2em; height:2em;" title="' + core.function.lang('popupCloseButton') + '" onclick="core.function.popup()">'+core.function.icon.insert('closepopup','bigger')+'</span></span>' + text;
+			otext = '<span style="display:block; width:100%;"><a href="mailto:' + core.var.adminMail + '?subject=' + document.title + '">feedback/request</a><span style="float:right; width:2em; height:2em;" title="' + core.function.lang('popupCloseButton') + '" onclick="core.function.popup()">' + core.function.icon.insert('closepopup', 'bigger') + '</span></span>' + text;
 			if (el('popup').style.opacity == '1' && typeof text === 'undefined') {
 				el('popup').style.opacity = '0';
 				el('popuptext').style.right = '-100vw';
@@ -23,17 +31,19 @@ var core = {
 				}, 100);
 			}
 		},
-		toggleHeight: function (toggleel) {
+		toggleHeight: function (toggleel) { //toggle height from divs having .items-class
 			var notoggle = new Array('label', 'input', 'select', 'textarea', 'a');
 			if (toggleel.classList.contains('items') && (toggleel.querySelectorAll(':hover').length == 0 || notoggle.indexOf(toggleel.querySelectorAll(':hover')[0].nodeName.toLowerCase()) < 0))
 				toggleel.classList.toggle('expand');
-			if (isIE())toggleel.scrollTop=0;
-			else toggleel.scroll({top:0,behavior:'smooth'});
+			if (isIE()) toggleel.scrollTop = 0;
+			else toggleel.scroll({
+				top: 0,
+				behavior: 'smooth'
+			});
 			//override for anchor node in ie11 is not recognized because of reasons
 		},
 
-		escapeHTML: function (text, br2nl) {
-			//primary use for escaping special chars for mailto
+		escapeHTML: function (text, br2nl) { //primary use for escaping special chars for mailto
 			if (br2nl !== "undefined") text = text.replace(/<br \/>|<br>/g, "\n");
 			return text
 				.replace(/\s/g, "%20")
@@ -78,6 +88,7 @@ var core = {
 					if (query[del].replace(/[\s]/g, '').length < 3) query.splice(del, 1);
 				}
 				var found = new Array();
+
 				function fuzzy(haystack, needle, ratio) {
 					if (haystack.indexOf(needle) > -1) return 2; // covers basic partial matches
 					if (!core.function.setting.get('settingFuzzySearch')) return false;
@@ -143,8 +154,7 @@ var core = {
 				}
 			}
 		},
-		lang: function (block, module, args) {
-			// returns module bricks first
+		lang: function (block, module, args) { // returns module language bricks first
 			try {
 				if (typeof eval(module).var.lang[block][core.var.selectedLanguage] === "function") return eval(module).var.lang[block][core.var.selectedLanguage](args);
 			} catch (e) {}
@@ -160,16 +170,14 @@ var core = {
 			console.log('error: ' + block);
 			return undefined;
 		},
-		languageSelection: function (event) {
-			//returns an array of radio inputs, can be concatenated e.g. by  
+		languageSelection: function (event) { //returns an array of radio inputs based on registered langages
 			var sel = new Array();
 			Object.keys(core.var.registeredLanguages).forEach(function (key) {
 				sel.push(core.function.insert.radio(core.var.registeredLanguages[key][1], 'lang', core.var.registeredLanguages[key][0], core.var.registeredLanguages[key][0] == core.var.selectedLanguage, event));
 			});
 			return sel;
 		},
-		loadScript: function (url, callback) {
-			//load given script-files into scope a.k.a. load desired modules
+		loadScript: function (url, callback) { //load given script-files into scope, e.g. load desired modules and data-files
 			if (url != '') {
 				core.performance.start(callback);
 				if (typeof (reset) != 'undefined') el('input').innerHTML = '';
@@ -179,10 +187,10 @@ var core = {
 				script.type = 'text/javascript';
 				script.src = url;
 				if (typeof (callback) != 'undefined') {
-					var skip=false;
+					var skip = false;
 					script.onload = function () { //not ie
 						eval(callback);
-						skip=true;
+						skip = true;
 					};
 					if (!skip) script.onreadystatechange = function () { //ie
 						if (this.readyState == 'complete') {
@@ -191,15 +199,14 @@ var core = {
 					};
 				}
 				document.head.appendChild(script);
-				if (callback.indexOf('init')>-1) {
-					core.var.currentScope=url.match(/\/(.*?)\./)[1];
+				if (callback.indexOf('init') > -1) {
+					core.var.currentScope = url.match(/\/(.*?)\./)[1];
 					document.title = core.function.lang('title') + ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage];
 				}
 			}
 		},
 
-		insert: {
-			//handle repetitive design patterns
+		insert: { //handle repetitive design patterns
 			checkbox: function (label, id, checked, additionalProperty, title) {
 				return '<label class="custominput"' + (title ? ' title="' + title + '"' : '') + '>' + label + '<input type="checkbox" id="' + id + '" ' + (checked ? 'checked="checked" ' : '') + (additionalProperty ? additionalProperty : '') + ' /><span class="checkmark"></span></label>';
 			},
@@ -220,21 +227,19 @@ var core = {
 			},
 		},
 
-		setting: {
-			//core-object because of reusable switch-methods
-			setup: function () {
-
+		setting: { //core-object because of reusable switch-methods
+			setup: function () { //displays settings menu
 				return '<div id="popupcontent">' +
 					'<article id="settingsMenu">' +
-					'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupMain();" style="cursor:pointer">' + core.function.icon.insert('generalsetting') + core.function.lang('settingMainCaption') + '</span><br />'+
-					'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupModules();" style="cursor:pointer">' + core.function.icon.insert('moduleselector') + core.function.lang('settingModuleselectorCaption') + '</span><br />'+
-					'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupAdvanced();" style="cursor:pointer">' + core.function.icon.insert('advancedsetting') + core.function.lang('settingAdvancedCaption') + '</span><br />'+
-					'<span onclick="el(\'settingContent\').innerHTML=updateTracker.enlist();" style="cursor:pointer">' + core.function.icon.insert('info') + 'Updates</span><br />'+
-					'</article>'+
-					'<aside id="settingContent">'+ core.function.setting.setupMain()+'</aside>'
-					+'<div>';
+					'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupMain();" style="cursor:pointer">' + core.function.icon.insert('generalsetting') + core.function.lang('settingMainCaption') + '</span><br />' +
+					'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupModules();" style="cursor:pointer">' + core.function.icon.insert('moduleselector') + core.function.lang('settingModuleselectorCaption') + '</span><br />' +
+					'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupAdvanced();" style="cursor:pointer">' + core.function.icon.insert('advancedsetting') + core.function.lang('settingAdvancedCaption') + '</span><br />' +
+					'<span onclick="el(\'settingContent\').innerHTML=updateTracker.enlist();" style="cursor:pointer">' + core.function.icon.insert('info') + 'Updates</span><br />' +
+					'</article>' +
+					'<aside id="settingContent">' + core.function.setting.setupMain() + '</aside>' +
+					'<div>';
 			},
-			setupMain: function(){
+			setupMain: function () { //returns main settings
 				if (typeof (core.var) != 'undefined') {
 					var themeSelector = new Object();
 					//create theme-selector
@@ -243,18 +248,18 @@ var core = {
 					});
 				}
 				return core.function.lang('settingThemeCaption') + ':<br />' + core.function.insert.select(themeSelector, 'settingTheme', 'settingTheme', (core.function.setting.get('settingTheme') || null), 'onchange="core.function.setting.theme(this.value)"') +
-				'<br />' + core.function.lang('settingMenusizeCaption') + ':<br />' + core.function.insert.checkbox(core.function.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.function.setting.get('settingSmallmenu') || 0), 'onchange="core.function.setting.reversedswitch(\'settingSmallmenu\')"', core.function.lang('settingRestartNeccessary')) +
-				'<br />' + core.function.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (core.function.setting.get('settingFontsize') || 0) + '" id="fontsize" onchange="core.function.setting.fontsize(this.value)" />' +
-				'<br />' + core.function.lang('settingLanguageCaption') + ':<br />' + core.function.insert.select(core.var.registeredLanguages, 'settingLanguage', 'settingLanguage', (core.var.selectedLanguage || null), 'title="' + core.function.lang('settingRestartNeccessary') + '" onchange="core.function.setting.set(\'settingLanguage\',(this.value))"') +
-				'<br /><br />' + core.function.insert.checkbox(core.function.lang('settingSearchOptionFuzzy'), 'settingFuzzySearch', (core.function.setting.get('settingFuzzySearch') || 0), 'onchange="core.function.setting.reversedswitch(\'settingFuzzySearch\')"') +
-				'<br /><small>' + core.function.lang('settingSearchOptionFuzzyHint') + '</small>' +
-				'<br />' + core.function.insert.checkbox(core.function.lang('settingCopyOptionSelector'), 'settingNewWindowCopy', (core.function.setting.get('settingNewWindowCopy') || 0), 'onchange="core.function.setting.reversedswitch(\'settingNewWindowCopy\')"') +
-				'<br /><small>' + core.function.lang('settingCopyOptionHint') + '</small>' +
-				'<br />' + core.function.insert.checkbox(core.function.lang('settingNotificationSelector'), 'settingStarthinweis' + updateTracker.latestMajorUpdate(), (core.function.setting.get('settingStarthinweis' + updateTracker.latestMajorUpdate()) != 1), 'onchange="core.function.setting.switch(\'settingStarthinweis' + updateTracker.latestMajorUpdate() + '\')"', core.function.lang('settingRestartNeccessary')) +
-				'<br /><small>' + core.function.lang('settingNotificationHint') + '</small>' +
-				'<br />' + core.function.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.function.setting.get('settingGlobalSearchTime') || 3) + '" id="fontsize" onchange="core.function.setting.set(\'settingGlobalSearchTime\',(this.value))" />';
+					'<br />' + core.function.lang('settingMenusizeCaption') + ':<br />' + core.function.insert.checkbox(core.function.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.function.setting.get('settingSmallmenu') || 0), 'onchange="core.function.setting.reversedswitch(\'settingSmallmenu\')"', core.function.lang('settingRestartNeccessary')) +
+					'<br />' + core.function.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (core.function.setting.get('settingFontsize') || 0) + '" id="fontsize" onchange="core.function.setting.fontsize(this.value)" />' +
+					'<br />' + core.function.lang('settingLanguageCaption') + ':<br />' + core.function.insert.select(core.var.registeredLanguages, 'settingLanguage', 'settingLanguage', (core.var.selectedLanguage || null), 'title="' + core.function.lang('settingRestartNeccessary') + '" onchange="core.function.setting.set(\'settingLanguage\',(this.value))"') +
+					'<br /><br />' + core.function.insert.checkbox(core.function.lang('settingSearchOptionFuzzy'), 'settingFuzzySearch', (core.function.setting.get('settingFuzzySearch') || 0), 'onchange="core.function.setting.reversedswitch(\'settingFuzzySearch\')"') +
+					'<br /><small>' + core.function.lang('settingSearchOptionFuzzyHint') + '</small>' +
+					'<br />' + core.function.insert.checkbox(core.function.lang('settingCopyOptionSelector'), 'settingNewWindowCopy', (core.function.setting.get('settingNewWindowCopy') || 0), 'onchange="core.function.setting.reversedswitch(\'settingNewWindowCopy\')"') +
+					'<br /><small>' + core.function.lang('settingCopyOptionHint') + '</small>' +
+					'<br />' + core.function.insert.checkbox(core.function.lang('settingNotificationSelector'), 'settingStarthinweis' + updateTracker.latestMajorUpdate(), (core.function.setting.get('settingStarthinweis' + updateTracker.latestMajorUpdate()) != 1), 'onchange="core.function.setting.switch(\'settingStarthinweis' + updateTracker.latestMajorUpdate() + '\')"', core.function.lang('settingRestartNeccessary')) +
+					'<br /><small>' + core.function.lang('settingNotificationHint') + '</small>' +
+					'<br />' + core.function.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.function.setting.get('settingGlobalSearchTime') || 3) + '" id="fontsize" onchange="core.function.setting.set(\'settingGlobalSearchTime\',(this.value))" />';
 			},
-			setupModules:function(){
+			setupModules: function () { //returns module selector
 				if (typeof (core.var) != 'undefined') {
 					var moduleSelector = '';
 					//create module-selector
@@ -264,11 +269,11 @@ var core = {
 				} else moduleSelector = core.function.lang('errorLoadingModules');
 				return moduleSelector;
 			},
-			setupAdvanced:function(){
+			setupAdvanced: function () { //return advanced settings
 				return '<input type="button" onclick="core.function.setting.clear()" value="' + core.function.lang('settingResetApp') + '" title="' + core.function.lang('settingRestartNeccessary') + '" />' +
-				'<br /><br />' + core.function.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.function.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
-				'<br /><br />' + aboutNotification[core.var.selectedLanguage] +
-				'<br /><br />' + core.function.lang('settingGeneralHint');
+					'<br /><br />' + core.function.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.function.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
+					'<br /><br />' + aboutNotification[core.var.selectedLanguage] +
+					'<br /><br />' + core.function.lang('settingGeneralHint');
 			},
 			theme: function (theme) {
 				el('colortheme').href = 'core/' + theme + '.css';
@@ -287,7 +292,7 @@ var core = {
 				else core.function.setting.unset(name);
 			},
 
-			localStorage: function () {
+			localStorage: function () { //returns boolean whether local storage is accessible
 				try {
 					test = new Array('void', 'localStorageTest');
 					localStorage.setItem(test[0], test[1]);
@@ -297,7 +302,7 @@ var core = {
 					return false;
 				}
 			},
-			set: function (name, value, expires) {
+			set: function (name, value) {
 				if (this.localStorage()) {
 					window.localStorage.setItem(name, value);
 				} else {
@@ -328,7 +333,7 @@ var core = {
 					document.cookie = name + '=0; expires=Thu, 01 Jan 1970 00:00:00 UTC' + ';';
 				}
 			},
-			clear: function () {
+			clear: function () { //resets whole application
 				if (this.localStorage()) {
 					window.localStorage.clear();
 				} else {
@@ -340,9 +345,12 @@ var core = {
 			}
 		},
 
-		icon: {
+		icon: { //easy icon handler for inline svg
 			//key[viewbox,transform scale, d-path]
 			home: ['0 0 2048 2048', '1,-1', 'M1024 1883l941 -942l-90 -90l-83 82v-805h-640v640h-256v-640h-640v805l-83 -82l-90 90zM1664 256v805l-640 640l-640 -640v-805h384v640h512v-640h384z'],
+			back: ['0 0 2048 2048', '1,-1', 'M2048 960h-1798l787 -787l-90 -90l-941 941l941 941l90 -90l-787 -787h1798v-128z'],
+			forth: ['0 0 2048 2048', '1,-1', 'M2042 1024l-941 -941l-90 90l787 787h-1798v128h1798l-787 787l90 90z'],
+			settings: ['0 0 2048 2048', '1,-1', 'M256 1152q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50t-10 -50t-27.5 -40.5t-40.5 -27.5t-50 -10t-50 10t-40.5 27.5t-27.5 40.5t-10 50t10 50t27.5 40.5t40.5 27.5t50 10zM1024 1152q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50t-10 -50t-27.5 -40.5t-40.5 -27.5t-50 -10t-50 10t-40.5 27.5t-27.5 40.5t-10 50t10 50t27.5 40.5t40.5 27.5t50 10zM1792 1152q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50t-10 -50t-27.5 -40.5t-40.5 -27.5t-50 -10t-50 10t-40.5 27.5t-27.5 40.5t-10 50t10 50t27.5 40.5t40.5 27.5t50 10z'],
 			search: ['0 0 2048 2048', '1,-1', 'M1344 2048q97 0 187 -25t168 -71t142.5 -110.5t110.5 -142.5t71 -168t25 -187t-25 -187t-71 -168t-110.5 -142.5t-142.5 -110.5t-168 -71t-187 -25q-125 0 -239.5 42t-210.5 121l-785 -784q-19 -19 -45 -19t-45 19t-19 45t19 45l784 785q-79 96 -121 210.5t-42 239.5 q0 97 25 187t71 168t110.5 142.5t142.5 110.5t168 71t187 25zM1344 768q119 0 224 45.5t183 123.5t123.5 183t45.5 224t-45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224t45.5 -224t123.5 -183t183 -123.5t224 -45.5z'],
 			mail: ['0 0 2048 2048', '1,-1', 'M0 1664h2048v-1280h-2048v1280zM1905 1536h-1762l881 -441zM128 512h1792v888l-896 -447l-896 447v-888z'],
 			delete: ['0 0 2048 2048', '1,-1', 'M1792 1664h-128v-1472q0 -40 -15 -75t-41 -61t-61 -41t-75 -15h-1024q-40 0 -75 15t-61 41t-41 61t-15 75v1472h-128v128h512v128q0 27 10 50t27.5 40.5t40.5 27.5t50 10h384q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50v-128h512v-128zM768 1792h384v128h-384v-128z M1536 1664h-1152v-1472q0 -26 19 -45t45 -19h1024q26 0 45 19t19 45v1472zM768 384h-128v1024h128v-1024zM1024 384h-128v1024h128v-1024zM1280 384h-128v1024h128v-1024z'],
@@ -356,7 +364,6 @@ var core = {
 			argument: ['0 0 2048 2048', '1,-1', 'M958 720q101 -40 184 -106.5t142 -152.5t91.5 -187t32.5 -210v-64h-128v64q0 119 -45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224v-64h-128v64q0 109 32.5 210t91.5 187t142 152.5t184 106.5q-45 31 -81 72t-61 88.5 t-38.5 100t-13.5 107.5q0 93 35.5 174.5t96 142t142 96t174.5 35.5t174.5 -35.5t142 -96t96 -142t35.5 -174.5q0 -55 -13.5 -107.5t-38.5 -100t-61 -88.5t-81 -72zM704 768q66 0 124 25t101.5 68.5t69 102t25.5 124.5t-25.5 124t-69 101.5t-101.5 69t-124 25.5t-124.5 -25.5 t-102 -69t-68.5 -101.5t-25 -124t25 -124.5t68.5 -102t102 -68.5t124.5 -25zM2048 2048v-1024h-256l-384 -384v384h-128v128h256v-203l203 203h181v768h-1280v-230q-32 -4 -64.5 -10.5t-63.5 -17.5v386h1536z'],
 			signature: ['0 0 2048 2048', '1,-1', 'M1984 256q26 0 45 -18.5t19 -45.5q0 -24 -17 -44q-30 -35 -69 -62.5t-83 -46.5t-91 -29t-92 -10q-99 0 -183 38.5t-152 109.5q-49 51 -109 79.5t-132 28.5q-70 0 -131.5 -28.5t-109.5 -79.5l-9.5 -9t-23 -22.5l-29.5 -29.5t-30.5 -30t-25 -25t-12.5 -13q-19 -19 -45 -19 t-45 19t-19 45t19 45q54 54 102 104t100 88t114 60.5t145 22.5q99 0 183 -38.5t152 -109.5q49 -51 109 -79.5t132 -28.5q76 0 132 28.5t109 79.5q11 10 21.5 15t25.5 5zM1235 1758q14 -8 23 -23t9 -32q0 -8 -2 -15t-5 -14l-707 -1415q-9 -19 -28 -28l-173 -87 q-32 -16 -69 -16h-9.5t-9.5 1l-47 -94q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 12 7 30t16.5 37.5t19.5 36.5t15 28q-26 40 -26 87v165q0 16 7 29l576 1152l-65 32l-237 -474q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 13 7 29l239 478 q16 32 43 50.5t63 18.5q35 0 66.5 -17t61.5 -32l71 142q8 17 23.5 26t33.5 9q13 0 22 -4q12 24 23.5 47.5t26 42.5t35.5 30.5t53 11.5t61 -15l94 -47q32 -16 50.5 -42.5t18.5 -63.5q0 -34 -15.5 -63.5t-29.5 -58.5zM1033 1859l87 -43l29 58l-87 43zM1117 1674l-192 96 l-669 -1337v-150q0 -11 8 -19t19 -8q4 0 16.5 5t29 13t35 17.5t35.5 18.5t30 16t19 10z'],
 			batchmail: ['0 0 2048 2048', '1,-1', 'M0.125 1664v-1082q28.998 23 60.9961 39.5t66.9961 28.5v815l895.945 -449l895.945 449v-953h-703.957v-128h831.949v1280h-2047.88zM1024.06 1160l-752.954 376h1505.91zM933.068 448l-225.986 -227l89.9941 -90l317.98 317l-317.98 317l-89.9941 -90zM549.092 512 q-49.9971 0 -110.493 2.5q-60.4971 2.5 -121.493 -0.5t-117.992 -14.5q-56.9971 -11.5 -101.494 -40t-70.9961 -77.5q-26.498 -49 -26.498 -126q0 -53 20.499 -99.5q20.498 -46.5 54.9961 -81t81.4951 -55t98.9941 -20.5v128q-26.998 0 -49.9971 10 q-22.998 10 -40.4971 27.5t-27.499 40.5q-9.99902 23 -9.99902 50t9.99902 50q10 23 27.499 40.5t40.4971 27.5q22.999 10 49.9971 10h292.982l-161.99 -163l89.9941 -90l316.98 317l-316.98 317l-89.9941 -90z'],
-			settings: ['0 0 2048 2048', '1,-1', 'M256 1152q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50t-10 -50t-27.5 -40.5t-40.5 -27.5t-50 -10t-50 10t-40.5 27.5t-27.5 40.5t-10 50t10 50t27.5 40.5t40.5 27.5t50 10zM1024 1152q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50t-10 -50t-27.5 -40.5t-40.5 -27.5t-50 -10t-50 10t-40.5 27.5t-27.5 40.5t-10 50t10 50t27.5 40.5t40.5 27.5t50 10zM1792 1152q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50t-10 -50t-27.5 -40.5t-40.5 -27.5t-50 -10t-50 10t-40.5 27.5t-27.5 40.5t-10 50t10 50t27.5 40.5t40.5 27.5t50 10z'],
 			generalsetting: ['0 0 2048 2048', '1,-1', 'M1783 1060q0 -9 0.5 -18t0.5 -18t-0.5 -18t-0.5 -18l259 -161l-159 -383l-297 68q-24 -26 -50 -50l68 -297l-383 -159l-161 259q-9 0 -18 -0.5t-18 -0.5t-18 0.5t-18 0.5l-161 -259l-383 159l68 297q-26 24 -50 50l-297 -68l-159 383l259 161q0 9 -0.5 18t-0.5 18t0.5 18t0.5 18l-259 161l159 383l297 -68q24 26 50 50l-68 297l383 159l161 -259q9 0 18 0.5t18 0.5t18 -0.5t18 -0.5l161 259l383 -159l-68 -297q26 -24 50 -50l297 68l159 -383zM1666 930q2 24 4 47.5t2 47.5q0 23 -2 47t-4 47l236 147l-86 208l-271 -63q-31 38 -63.5 70t-70.5 64l63 271l-208 86l-148 -236q-23 2 -47 4t-47 2q-24 0 -47.5 -2t-47.5 -4l-147 236l-208 -86l63 -271q-38 -31 -70 -63.5t-64 -70.5l-271 63l-86 -208l236 -148q-2 -24 -4 -47.5t-2 -47.5q0 -23 2 -47t4 -47l-236 -147l86 -208l271 63q31 -38 63.5 -70t70.5 -64l-63 -271l208 -86l148 236q23 -2 47 -4t47 -2q24 0 47.5 2t47.5 4l147 -236l208 86l-63 271q38 31 70 63.5t64 70.5l271 -63l86 208zM1024 1400q78 0 146.5 -29.5t119.5 -80.5t80.5 -119.5t29.5 -146.5t-29.5 -146.5t-80.5 -119.5t-119.5 -80.5t-146.5 -29.5t-146.5 29.5t-119.5 80.5t-80.5 119.5t-29.5 146.5t29.5 146.5t80.5 119.5t119.5 80.5t146.5 29.5zM1024 760q55 0 103 20.5t84 56.5t56.5 84t20.5 103t-20.5 103t-56.5 84t-84 56.5t-103 20.5t-103 -20.5t-84 -56.5t-56.5 -84t-20.5 -103t20.5 -103t56.5 -84t84 -56.5t103 -20.5z'],
 			moduleselector: ['0 0 2048 2048', '1,-1', 'M1600 1024h192v-896h-1664v1664h896v-192l448 448l576 -576zM1054 1472l418 -418l418 418l-418 418zM1024 1344v-320h320zM256 1024h640v640h-640v-640zM896 896h-640v-640h640v640zM1024 896v-640h640v640h-640z'],
 			advancedsetting: ['0 0 2048 2048', '1,-1', 'M128 1152q52 0 99 20.5t81.5 55t55 81t20.5 99.5q0 71 -3 142t4.5 138.5t32 130.5t78.5 117t125 83t147 29v-128q-53 0 -99.5 -20.5t-81 -55t-55 -81.5t-20.5 -99q0 -56 2 -110.5t0.5 -107t-9.5 -102t-27 -94.5t-52 -86t-85 -76q52 -35 85 -76t52 -86t27 -94.5t9.5 -102t-0.5 -107t-2 -110.5q0 -53 20.5 -99.5t55 -81t81 -55t99.5 -20.5v-128q-76 0 -147 29t-125 83t-78.5 117t-32 130.5t-4.5 138.5t3 142q0 52 -20.5 99t-55 81.5t-81.5 55t-99 20.5v128zM1280 2048q76 0 147 -29t125 -83t78.5 -117t32 -130.5t4.5 -138.5t-3 -142q0 -53 20.5 -99.5t55 -81t81 -55t99.5 -20.5v-128q-53 0 -99.5 -20.5t-81 -55t-55 -81.5t-20.5 -99q0 -71 3 -142t-4.5 -138.5t-32 -130.5t-78.5 -117t-125 -83t-147 -29v128q52 0 99 20.5t81.5 55t55 81t20.5 99.5q0 56 -2 110.5t-0.5 107t9.5 102t27 94.5t52 86t85 76q-52 35 -85 76t-52 86t-27 94.5t-9.5 102t0.5 107t2 110.5q0 52 -20.5 99t-55 81.5t-81.5 55t-99 20.5v128z'],
@@ -375,29 +382,91 @@ var core = {
 				return '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + this[icon][0] + '\" style=\"transform: scale(' + this[icon][1] + ');\" class=\"icon ' + addclass + '\"><path d=\"' + this[icon][2] + '\"/></svg>';
 			}
 		},
+		init: function (query) { //displays start screen
+			el('input').innerHTML =
+				'<form id="search" style="display:inline-block; font-size:150%; padding:0; margin:0;" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
+				'<input type="text" pattern=".{3,}" id="globalsearch" style="margin:0;" placeholder="' +
+				core.function.lang('globalSearchPlaceholder') + '" autofocus class="search" ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
+				'<span onclick="globalSearch.search(el(\'globalsearch\').value);" style="padding:.05em 0;" class="search">' + core.function.icon.insert('search') + '</span>' +
+				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
+				'</form>';
+			el('temp').innerHTML =
+				core.function.lang('greeting') + '<br />' +
+				(core.var.letterTemplate ? '<br /><a href="' + core.var.letterTemplate + '" target="_blank">' +
+					core.function.icon.insert('word') + core.function.lang('openLetterTemplate') + '</a><br />' : '') +
+				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' +
+					core.function.icon.insert('outlook') + core.function.lang('openOutlook') + '</a><br />' : '') +
+				'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>';
+			el('output').innerHTML = '';
+			core.var.currentScope = null;
+			document.title = core.function.lang('title')
+			if (typeof query != 'undefined') globalSearch.search(query);
+			core.history.write(['core.function.init(\'' + value(query) + '\')']);
+		},
 	},
-	performance:{
-		start:function(track, group){
-			if (core.function.setting.get('settingPerformanceMonitor')){
-				if (typeof group!= 'undefined') console.group(track);
+	history: { //stores and restores last actions. since last actions can only occur after loading the modules scripts into scope
+		// there is no need to recall these, just call the modules functions. however not all settings within the module can
+		// be accessed through history. slidersettings are either stored as global setting or not at all.
+		// history will only store last modules, submodules and queries. store an array as a sequence of necessary function calls
+		// to come back to the desired point e.g.
+		// core.function.history.write(['core.function.init()',''globalSearch(\'' + search + '\')'']);
+		// or use api-like callbacks within the modules
+		// this was implemented after performance monitor. you will see the parameters looking similar but since history
+		// will handle sequential callbacks as opposed to performance tracking this was not combined on purpose
+		// initialize history as array
+		storage: [],
+		currentStep: 1,
+		write: function (point) {
+			function areDifferent(a1, a2) {
+				if (typeof a1 == 'undefined') return true;
+				var i = a1.length;
+				while (i--) {
+					if (a1[i] !== a2[i]) return true;
+				}
+				return false;
+			}
+			if (areDifferent(core.history.storage[core.history.storage.length - (core.history.currentStep)], point)) {
+				core.history.storage.splice(core.history.storage.length - (core.history.currentStep - 1));
+				core.history.storage.push(point);
+				core.history.currentStep = 1;
+			}
+		},
+		go: function (dir) {
+			if (dir == 'back') core.history.currentStep = ++core.history.currentStep <= core.history.storage.length ? core.history.currentStep : core.history.storage.length;
+			else core.history.currentStep = --core.history.currentStep > 0 ? core.history.currentStep : 1;
+			if (typeof core.history.storage[core.history.storage.length - core.history.currentStep] != 'undefined') {
+				core.history.storage[core.history.storage.length - core.history.currentStep].forEach(function (key) {
+					core.var.currentScope = key.substring(0, key.indexOf('.')) != 'core' ? key.substring(0, key.indexOf('.')) : null;
+					document.title = core.function.lang('title') + (core.var.currentScope ? ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage] : '');
+					slider.slide(core.var.currentScope);
+					core.performance.start(key);
+					eval(key);
+				});
+			}
+
+		},
+	},
+	performance: { //starts and dispays timers to console, assigned with function calls and can display additional results
+		start: function (track, group) {
+			if (core.function.setting.get('settingPerformanceMonitor')) {
+				if (typeof group != 'undefined') console.group(track);
 				console.time(track);
 			}
 		},
-		stop:function(track, info, group){
-			if (core.function.setting.get('settingPerformanceMonitor')){
+		stop: function (track, info, group) {
+			if (core.function.setting.get('settingPerformanceMonitor')) {
 				console.timeEnd(track);
-				if (typeof info!= 'undefined' && info){
+				if (typeof info != 'undefined' && info) {
 					if (isIE()) console.log(info);
 					else {
 						if (typeof info == 'object') {
 							console.groupCollapsed('\u2b91 data:');
 							console.table(info);
 							console.groupEnd();
-						}
-						else console.log('\u2b91 '+info);
+						} else console.log('\u2b91 ' + info);
 					}
 				}
-				if (typeof group!= 'undefined') console.groupEnd();
+				if (typeof group != 'undefined') console.groupEnd();
 			}
 		},
 	}
@@ -405,7 +474,7 @@ var core = {
 
 // mainfile functions and objects
 var slider = { //just fancy animation of content on module change
-	modules: new Array(),
+	modules: new Array(null),
 	recent: 0,
 	slide: function (mod) {
 		el('content').classList.remove('slideup', 'slidedown');
@@ -419,22 +488,21 @@ var slider = { //just fancy animation of content on module change
 	}
 };
 
-function select_module() {
-	//load module list and return the main menu
+function select_module() { //load module list and return the main menu
 	if (typeof (core.var.modules) != 'undefined') {
 		Object.keys(core.var.modules).forEach(function (key) {
 			if (typeof core.var.modules[key] === 'object' && core.function.setting.get('module_' + key) != 1) {
 				//create module-selector
 				opt = 'modules/' + key + '.js';
-				el('menu').innerHTML += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.function.loadScript(\'' + opt + '\', \'' + key + '.function.init()\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
+				el('menu').innerHTML += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.function.loadScript(\'' + opt + '\', \'' + key + '.function.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
 				slider.modules.push(key);
 			}
 		});
 	} else core.function.popup(core.function.lang('errorLoadingModules'));
 }
 
-function selectText(element) {
-	if ( core.var.currentScope != null && (eval(core.var.currentScope).var.disableOutputSelect === "undefined" || !(eval(core.var.currentScope).var.disableOutputSelect))) {
+function selectText(element) { //selection of output-content on click if not disabled
+	if (core.var.currentScope != null && (eval(core.var.currentScope).var.disableOutputSelect === "undefined" || !(eval(core.var.currentScope).var.disableOutputSelect))) {
 		if (core.function.setting.get('settingNewWindowCopy')) {
 			var win = window.open("", "win"),
 				doc = win.document;
@@ -464,29 +532,32 @@ function selectText(element) {
 	}
 }
 
-var globalSearch = {
+var globalSearch = { //searches all modules using thir api-methods from the start page
 	result: {},
 	contribute: function (property, value) {
 		if (typeof this.result[property] == 'undefined') this.result[property] = [value];
 		else this.result[property].push(value);
 	},
 	search: function (search) {
-		core.performance.start('globalSearch','group');
-		document.body.style.cursor = 'progress';
-		var delay = 0;
-		//clear result on search initialization
-		globalSearch.result = {};
-		//load every module and fire api. api appends its result to the global search result because of asynchronous loading.
-		Object.keys(core.var.modules).forEach(function (key) {
-			if (typeof core.var.modules[key] === 'object') {
-				//load every module and fire api function
-				opt = 'modules/' + key + '.js';
-				core.function.loadScript(opt, key + '.api.available(\'' + search + '\')');
-			}
-		});
-		setTimeout(function () {
-			globalSearch.display()
-		}, (core.function.setting.get('settingGlobalSearchTime') || 3) * 1000);
+		if (value(search) != '') {
+			core.performance.start('globalSearch', 'group');
+			document.body.style.cursor = 'progress';
+			var delay = 0;
+			//clear result on search initialization
+			globalSearch.result = {};
+			//load every module and fire api. api appends its result to the global search result because of asynchronous loading.
+			Object.keys(core.var.modules).forEach(function (key) {
+				if (typeof core.var.modules[key] === 'object') {
+					//load every module and fire api function
+					opt = 'modules/' + key + '.js';
+					core.function.loadScript(opt, key + '.api.available(\'' + search + '\')');
+				}
+			});
+			setTimeout(function () {
+				globalSearch.display()
+			}, (core.function.setting.get('settingGlobalSearchTime') || 3) * 1000);
+			core.history.write(['core.function.init(\'' + search + '\')']);
+		}
 	},
 	display: function () {
 		if (Object.keys(this.result).length) {
