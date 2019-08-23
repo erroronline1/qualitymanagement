@@ -74,13 +74,22 @@ on save of excel-lists
 
 *caveat: since every document contains the code to register itself, changes of the vba-code have to be done in every file later on. an update of the codebase might be possible following [this tutorial by charles pearson](http://www.cpearson.com/excel/vbe.aspx) but i did not include this out of fear to have problems with our companies security and antivir settings.*
 
+### overview of documents in force and assertion of checkpoints
+![documents in force](assets/docm_documentsinforce.png)
+
+### overview of matched checkpoints
+![checkpoints](assets/docm_checkpoints.png)
+
+### overview of document bundles
+![document bundles](assets/docm_documentbundles.png)
+
 ## the assistant
 there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. then there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-libraray](http://vanilla.js-com). in case you have restricted access to your it i can recommend [notepad++ portabale](https://notepad-plus-plus.org/download/) out of personal experience.
 
 * the assistant is built using js-ecmascript 5 on purpose because of required compatibility to ms ie11. unfortunately this still is the default browser to date in many companies. the css is not compatible to previous versions of ie
 * the assistant is designed to handle multiple language support, comes with english and german and can be extended as desired. extend the lang-objects in every module, the config-file and register the languages in this config-file to make them available.
 * the core-object provides readable function-calls and globally usable variables. general configuration takes place in core/config.js. this file contains a variable that extents the core-object with global variables and commonly uses language-bricks.
-* built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, local-storage- or cookie-handler, repetitive design pattern implementation (icons, inputs, etc.) and some more. get access or extend these functions with `core.function.FUNCTIONNAME`, global variables with `core.var.VARNAME`. i recommend this pattern to modules as well, defining a module-object with `{moduleFileName}.function.FUNCTIONNAME` and `{moduleFileName}.var.VARNAME`. the handler for multi-language-support of the application  (`core.function.lang()`) makes built-in automated use of this pattern.
+* built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, local-storage- or cookie-handler, repetitive design pattern implementation (icons, inputs, etc.), history handling and some more. get access or extend these functions with `core.function.FUNCTIONNAME`, global variables with `core.var.VARNAME`. i recommend this pattern to modules as well, defining a module-object with `{moduleFileName}.function.FUNCTIONNAME` and `{moduleFileName}.var.VARNAME`. the handler for multi-language-support of the application  (`core.function.lang()`) makes built-in automated use of this pattern.
 * data files are stored in a different folder hoping that changes to the backend don't mess up data that might be accessed through different persons than the maintainer of the application
 * users can be informed about changes using the changelog in core/user_information.js. add your own changes and the information will popup automatically on start
 * since most of my colleagues don't mind messing around to learn something, there is a short-tip function whose entries can be extended in accordance to your modules
@@ -89,15 +98,27 @@ there is a main html-file in the root folder, a core folder with the core functi
 
 *be aware that there are dependencies between the assistants datafiles, their objects and handling, and the documents vba and table-structure. it might become neccessary to change things on both sides.*
 
+
+![assistant home screen](assets/assistant_home.png)
+
+### comes with different themes
+![assistant themes](assets/assistant_themes.png)
+
+### search less, find more directly from the home screen
+![assistant global search](assets/assistant_globalsearch.png)
+
+### customize the assistants behaviour
+![assistant settings](assets/assistant_settings.png)
+
 ### provided modules within open-source distribution
 the provided modules are filled with dummies. the general multi-language support was added in advance of making this application open source and comprehensible. some module-data-files might lack of multi-language content. in production this feature might or might not make sense. you are free to implement this feature for your self.
 
-* document search
-* predefined document packages
-* inventory / stock list
-* default texts for correspondence
-* mail tools for serial mails, signature composer and not-available-notice 
-* help (simplyfied for me not being english native and should be customized to your own companies comprehension of interwebz and nerd-stuff-thingies)
+* document lookup ![assistant document lookup](assets/assistant_documentlookup.png)
+* predefined document bundles ![assistant document bundles](assets/assistant_documentbundles.png)
+* inventory / stock list ![assistant stocklist](assets/assistant_stocklist.png)
+* default texts for correspondence ![assistant correspondence](assets/assistant_correspondence.png)
+* mail tools for serial mails, signature composer and not-available-notice  ![assistant mail tools](assets/assistant_mailtools.png)
+* help (simplyfied for me not being english native and should be customized to your own companies comprehension of interwebz and nerd-stuff-thingies) ![assistant help](assets/assistant_help.png)
 
 ### thoughts and considerations
 i tried to implement a preview on search forms using datalists. while it is not a big problem to update these dynamically i ran into two major issues: the cross-browser behaviour is very different and quirky. and using this in combination with fuzzy search and 6k+ items in stock-list everything slows horribly down. it would have been nice to have but ended up in some hours wasted.
