@@ -32,18 +32,19 @@
 <body>
 	<header>
 		<script>
-			document.write('<nav class="home" title="' + core.function.lang('homeMenuEntry') + '" onclick="location.reload()">' + core.function.icon.insert('home', 'bigger') + '</nav>');
-			document.write('<article id="input">');
-			document.write(
-				'<form id="search" style="display:inline-block; font-size:150%" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
-				'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
-				core.function.lang('globalSearchPlaceholder') + '" autofocus class="search" />' +
-				'<span onclick="globalSearch.search(el(\'globalsearch\').value);" style="padding:.05em 0;" class="search">' + core.function.icon.insert('search') +	'</span>' +
-				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
-				'</form>'
-			);
-			document.write('</article>');
-			document.write('<aside class="setting" title="' + core.function.lang('settingMenuEntry') + '" onclick="core.function.popup(core.function.setting.setup()); return;">' + core.function.icon.insert('settings', 'bigger') + '</aside>');
+			document.write('<nav class="home">' +
+				'<span title="' + core.function.lang('homeMenuEntry') +
+				'" onclick="slider.slide(\'null\'); core.function.init()">' + core.function.icon.insert('home', 'bigger') +
+				'</span>' +
+				'<span title="' + core.function.lang('homeMenuBack') + '" onclick="core.history.go(\'back\')">' + core
+				.function.icon.insert('back', 'bigger') + '</span>' +
+				'<span title="' + core.function.lang('homeMenuForth') + '" onclick="core.history.go(\'forth\')">' + core
+				.function.icon.insert('forth', 'bigger') + '</span>' +
+				'</nav>');
+			document.write('<article id="input"></article>');
+			document.write('<aside class="setting"><span title="' + core.function.lang('settingMenuEntry') +
+				'" onclick="core.function.popup(core.function.setting.setup()); return;">' + core.function.icon.insert(
+					'settings', 'bigger') + '</span></aside>');
 		</script>
 	</header>
 
@@ -51,7 +52,8 @@
 		<nav id="menu">
 			<span id="title">
 				<script>
-					document.write(core.var.logo + '<div style="display:inline-block">' + core.function.lang('title') + '&nbsp;</div>');
+					document.write(core.var.logo + '<div style="display:inline-block">' + core.function.lang('title') +
+					'&nbsp;</div>');
 				</script>
 			</span><br /><br />
 			<!-- since javascript doesn´t have access to local file system there is no automatic detection of json files available
@@ -59,18 +61,6 @@
 		</nav>
 		<div id="content">
 			<article id="temp">
-				<script>
-					document.write(
-						core.function.lang('greeting') + '<br />' +
-						(core.var.letterTemplate ? '<br /><a href="' + core.var.letterTemplate + '" target="_blank">' +
-							core.function.icon.insert('word') + core.function.lang('openLetterTemplate') + '</a><br />' : '') +
-						(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' +
-							core.function.icon.insert('outlook') + core.function.lang('openOutlook') + '</a><br />' : '') +
-						'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>'
-					);
-					var disableOutputSelect = true;
-				</script>
-
 			</article>
 			<aside id="output" onclick="selectText('output')">
 			</aside>
@@ -85,9 +75,11 @@
 		document.title = core.function.lang('title');
 		//load settings or defaults
 		var fontsize = document.body.style.fontSize = ((core.function.setting.get('settingFontsize') || 0) / 10 + 1) + 'em';
-		el('colortheme').href = 'core/' + ((core.function.setting.get('settingTheme') in core.var.themes?core.function.setting.get('settingTheme'):'default') || 'default') + '.css';
-		core.function.setting.get('settingSmallmenu') && el('menu').classList.add('small') && el('menuwidth').classList.add('small');
-
+		el('colortheme').href = 'core/' + ((core.function.setting.get('settingTheme') in core.var.themes ? core.function
+			.setting.get('settingTheme') : 'default') || 'default') + '.css';
+		core.function.setting.get('settingSmallmenu') && el('menu').classList.add('small') && el('menuwidth').classList.add(
+			'small');
+		core.function.init();
 		updateTracker.alert();
 	</script>
 </body>
