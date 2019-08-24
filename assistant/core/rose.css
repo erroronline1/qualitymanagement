@@ -45,8 +45,7 @@ input[type='button'],
 #popuptext input[type='button'],
 input[type='submit'],
 #popuptext input[type='submit'],
-.button,
-.button svg {
+.button {
 	fill: #fff;
 	color: #fff;
 }
