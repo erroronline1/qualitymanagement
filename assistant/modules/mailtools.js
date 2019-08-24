@@ -153,7 +153,7 @@ var mailtools = {
 			},
 			notavailableFrom: {
 				en: 'not available from',
-				de: 'Nicht erreibar vom'
+				de: 'Nicht erreichbar vom'
 			},
 			notavailableTo: {
 				en: 'until',
@@ -353,8 +353,8 @@ var mailtools = {
 		},
 		notavailableinput: function () {
 			el('mailtoolgen').innerHTML = '<span onclick="mailtools.function.notavailablegen()" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '">' + core.function.icon.insert('refresh', 'bigger') + '</span>';
-			el('temp').innerHTML = core.function.lang('notavailableFrom', 'mailtools') + ': <input type="date" id="notfrom" placeholder="DD.MM.YYYY" /><br />' +
-				core.function.lang('notavailableTo', 'mailtools') + ': <input type="date" id="notto" placeholder="DD.MM.YYYY" />' +
+			el('temp').innerHTML = core.function.lang('notavailableFrom', 'mailtools') + ':<br /><input type="date" id="notfrom" placeholder="DD.MM.YYYY" /><br />' +
+				core.function.lang('notavailableTo', 'mailtools') + ':<br /><input type="date" id="notto" placeholder="DD.MM.YYYY" />' +
 				(core.var.outlookWebUrl ? '<br /><br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'mailtools') + '</a>' : '');
 			el('output').innerHTML = '';
 			core.history.write(['mailtools.function.init(\'notavailable\')']);
