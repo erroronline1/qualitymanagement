@@ -194,9 +194,8 @@ i maintain this open template as well as the official version in my company. whi
 * core\config.js,
 * core\core_language_synthesis.js
 * core\user_information.js
-* modules\mailtools.js
 
-and of course the data files. the latter are seldom a subject of structural changes. most parts are quite dynamic and feed off the data files. customization might not be neccessary. be aware there will be no backwards-compatibilty to old module versions in case you customize these or develop additional modules.
+and of course the data files. the latter are seldom a subject of structural changes. most parts are quite dynamic and feed off the data files. customization might not be neccessary. be aware there will be no backwards-compatibilty to old module versions in case you customize these or develop additional modules. if you do not change anything within the other files any update from the latest commits should work flawless.
 
 [back to top](#a-quality-management-software)
 
