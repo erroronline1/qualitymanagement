@@ -126,7 +126,7 @@ var core = {
 						if (!filtered) {
 							//compare every query part between whitespaces 
 							query.forEach(function (b) {
-								var fuzzyquery = fuzzy(a, b, 1.4); //this quite reasonable ratio was determined through trial and error
+								var fuzzyquery = fuzzy(a, b, 2-((core.function.setting.get('settingFuzzyThreshold') || 6)*.1)); //fuzzy ratio of 1.4 by default is quite reasonable determined through trial and error
 								if (typeof (a) == 'string' && fuzzyquery && eval(additionalCondition)) {
 									var exist;
 									found.forEach(function (value, index) {
@@ -256,8 +256,7 @@ var core = {
 					'<br />' + core.function.insert.checkbox(core.function.lang('settingCopyOptionSelector'), 'settingNewWindowCopy', (core.function.setting.get('settingNewWindowCopy') || 0), 'onchange="core.function.setting.reversedswitch(\'settingNewWindowCopy\')"') +
 					'<br /><small>' + core.function.lang('settingCopyOptionHint') + '</small>' +
 					'<br />' + core.function.insert.checkbox(core.function.lang('settingNotificationSelector'), 'settingStarthinweis' + updateTracker.latestMajorUpdate(), (core.function.setting.get('settingStarthinweis' + updateTracker.latestMajorUpdate()) != 1), 'onchange="core.function.setting.switch(\'settingStarthinweis' + updateTracker.latestMajorUpdate() + '\')"', core.function.lang('settingRestartNeccessary')) +
-					'<br /><small>' + core.function.lang('settingNotificationHint') + '</small>' +
-					'<br />' + core.function.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.function.setting.get('settingGlobalSearchTime') || 3) + '" id="fontsize" onchange="core.function.setting.set(\'settingGlobalSearchTime\',(this.value))" />';
+					'<br /><small>' + core.function.lang('settingNotificationHint') + '</small>';
 			},
 			setupModules: function () { //returns module selector
 				if (typeof (core.var) != 'undefined') {
@@ -271,7 +270,9 @@ var core = {
 			},
 			setupAdvanced: function () { //return advanced settings
 				return '<input type="button" onclick="core.function.setting.clear()" value="' + core.function.lang('settingResetApp') + '" title="' + core.function.lang('settingRestartNeccessary') + '" />' +
-					'<br /><br />' + core.function.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.function.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
+					'<br /><br />' + core.function.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.function.setting.get('settingGlobalSearchTime') || 3) + '" id="fontsize" onchange="core.function.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
+					'<br />' + core.function.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.function.setting.get('settingFuzzyThreshold') || 6) + '" id="fontsize" onchange="core.function.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
+					'<br />' + core.function.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.function.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
 					'<br /><br />' + aboutNotification[core.var.selectedLanguage] +
 					'<br /><br />' + core.function.lang('settingGeneralHint');
 			},

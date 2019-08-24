@@ -189,8 +189,12 @@ core.var = {
 			de: 'Neue Hinweise werden immer automatisch beim Start angezeigt. <a href="javascript:core.function.popup(updateTracker.enlist());">Alle Hinweise anzeigen</a>'
 		},
 		settingGlobalSearchCaption: {
-			en: 'Time to deliver global search results <small>depending on your machines speed</small>',
-			de: 'Zeit für die Bereitstellung von globalen Suchergebnissen <small>abhängig von der Rechnergeschwindigkeit</small>'
+			en: 'Seconds to deliver global search results',
+			de: 'Sekunden für die Bereitstellung von globalen Suchergebnissen'
+		},
+		settingFuzzyThresholdCaption: {
+			en: 'Fuzzy threshold (6 is a reasonable default)',
+			de: 'Fuzzy Schwellenwert (6 ist ein guter Standard)'
 		},
 		settingGeneralHint: {
 			en: 'Local security settings can result in loss of settings on closing browser window.',
