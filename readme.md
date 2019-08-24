@@ -1,4 +1,31 @@
 # a quality management software
+
+automate your paper based qms
+
+## table of contents
+
+* [use case](#use-case)
+* [the core documents](#the-core-documents)
+	* [use case](#use-case-1)
+	* [what the documents do](#what-the-documents-do)
+	* [requirements](#requirements)
+* [the assistant](#the-assistant)
+	* [use case](#use-case-2)
+	* [what this tool does](#what-this-tool-does)
+	* [requirements](#requirements-1)
+* [but i am no programmer!](#but-i-am-no-programmer)
+* [details](#details)
+	* [the documents](#the-documents)
+	* [impressions](#overview-of-documents-in-force-and-assertion-of-checkpoints)
+	* [the assistant](#the-assistant-1)
+	* [impressions](#comes-with-different-themes)
+	* [features / provided modules](#provided-modules-within-open-source-distribution)
+	* [thoughts and considerations](#thoughts-and-considerations)
+* [miscellaneous](#miscellaneous)
+* [disclaimer](#disclaimer)
+* [license](#license)
+
+## use case
 while it makes way more sense to automate quality management using assistive technology and digitalizing everything, this is not always possible. so this quality management software has a very specific use case depending on your environment:
 
 * your quality managment and documentation is still mainly paper-based
@@ -7,12 +34,15 @@ while it makes way more sense to automate quality management using assistive tec
 * employees have access to the it-infrastructure and printers, e.g. via network and group-accounts
 * your it-department is stubborn and unflexible so you have to make use of the tools you have access to, even if you have to fasten screws with a hammer because you don't get a screwdriver
 * your company relies on microsoft windows and microsoft office (not sure about use of the documents macros for other platforms)
+* there is at least one tech-savvy co-worker interested in getting things done
 
 [by error on line 1](http://erroronline.one) but feel free to use and modify at your own risk according to the license outlined below.
 
 this quality management software has been in use in context to [iso 13485:2015](https://www.iso.org/search.html?q=13485%3A2016)
 
 there have been some significant changes to the core documents as well as to the assistant. i decided to make this a new version. in case you need previous sourcecodes these can be found as a branch in the public repository.
+
+[back to top](#a-quality-management-software)
 
 # the core documents
 ## use case
@@ -33,6 +63,8 @@ in general this system
 * one somewhat experienced office user to customize the document-blueprints and vba-macros
 * microsoft office 2010+ (tested with office 2010, 2016 and 2019 professional, word and excel)
 
+[back to top](#a-quality-management-software)
+
 # the assistant
 ## use case
 this tool serves as an assitive layer to access your companies documents in form of a web-app with read-only-properties.
@@ -52,9 +84,13 @@ this tool provides your company with an application to have an easier access to 
 * serial print of document packages requires active-x which is only available in ie11. this option will not be shown if not accessible
 * patience with coworkers blaming 'your' assistant for every network failure, printer settings and their inability to read the literal hints and descriptions
 
+[back to top](#a-quality-management-software)
+
 # but i am no programmer!
 to customize this software to your needs it is definitely neccessary to have someone change values within the vba-macros as well as the javascript configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
 if you are worried your coding employee leaves, at least the assistant can be maintained by any webdeveloper/webdeveloping agency that knows javascript. also there is no need of compiling since all source codes are openly accessible.
+
+[back to top](#a-quality-management-software)
 
 # details
 ## the documents
@@ -74,6 +110,10 @@ on save of excel-lists
 
 *caveat: since every document contains the code to register itself, changes of the vba-code have to be done in every file later on. an update of the codebase might be possible following [this tutorial by charles pearson](http://www.cpearson.com/excel/vbe.aspx) but i did not include this out of fear to have problems with our companies security and antivir settings.*
 
+take notice of additional [readme-files](administration/readme.md) and samples within the subfolders.
+
+[back to top](#a-quality-management-software)
+
 ### overview of documents in force and assertion of checkpoints
 ![documents in force](assets/docm_documentsinforce.png)
 
@@ -82,6 +122,11 @@ on save of excel-lists
 
 ### overview of document bundles
 ![document bundles](assets/docm_documentbundles.png)
+
+### customize the vba-variables
+![vba variables](assets/docm_vba.png)
+
+[back to top](#a-quality-management-software)
 
 ## the assistant
 there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. then there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-libraray](http://vanilla.js-com). in case you have restricted access to your it i can recommend [notepad++ portabale](https://notepad-plus-plus.org/download/) out of personal experience.
@@ -98,8 +143,11 @@ there is a main html-file in the root folder, a core folder with the core functi
 
 *be aware that there are dependencies between the assistants datafiles, their objects and handling, and the documents vba and table-structure. it might become neccessary to change things on both sides.*
 
+take notice of additional [core-readme-file](assistant/core/readme.md), [modules-readme-file](assistant/modules/readme.md) and samples within the subfolders.
 
 ![assistant home screen](assets/assistant_home.png)
+
+[back to top](#a-quality-management-software)
 
 ### comes with different themes
 ![assistant themes](assets/assistant_themes.png)
@@ -120,8 +168,12 @@ the provided modules are filled with dummies. the general multi-language support
 * mail tools for serial mails, signature composer and not-available-notice  ![assistant mail tools](assets/assistant_mailtools.png)
 * help (simplyfied for me not being english native and should be customized to your own companies comprehension of interwebz and nerd-stuff-thingies) ![assistant help](assets/assistant_help.png)
 
+[back to top](#a-quality-management-software)
+
 ### thoughts and considerations
 i tried to implement a preview on search forms using datalists. while it is not a big problem to update these dynamically i ran into two major issues: the cross-browser behaviour is very different and quirky. and using this in combination with fuzzy search and 6k+ items in stock-list everything slows horribly down. it would have been nice to have but ended up in some hours wasted.
+
+[back to top](#a-quality-management-software)
 
 # miscellaneous
 * the provided folder structure is not neccessarily your first choice and just a sample. but if you customize that you should change at least the default paths within the vba-macros
@@ -130,6 +182,8 @@ i tried to implement a preview on search forms using datalists. while it is not 
 * before implementing this system to your company make sure your decisions for documenting the system itself are reliable (e.g. rows and columns in the list of documents in force in dependency to the vba-macro within the self registering docm-files). otherwise you might have to change a lot of code in a lot of documents. this isn't fun.
 * the assistant is designed to hopefully seamlessly transition into windows 10 fluent design that is still to come to my company as time of writing. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be.
 
+[back to top](#a-quality-management-software)
+
 # disclaimer
 use at your own responsibility. as this system is or has been in real use with me being responsible, i did my best to make everything flawless. i also tried to make the documentation and comments as meaningful as i could. als always there might be parts that once seemed to be self-explanatory so a little bit of advanced javascript skills might come in handy.
 
@@ -137,6 +191,8 @@ this system does neither provide you with the content of your quality management
 but as the current deputy quality manager i strongly recommend to reconsider which type of information and extent your documentation must have to fit the norm.
 
 i was not able to find information if there are special requirements for a quality management software. regarding iso 13485 there are no restrictions what to use. you will have to take your own responsibility for any kind of software - even an amateurs work. you will just have to rate the risk, how to handle that and set up the process of validation of software application for this. as this software supports your paper-based documentation it is up to your own document content, process definitions and reliable form completion by your employees to make sure your qm/documentation meets all regulatory requirements.
+
+[back to top](#a-quality-management-software)
 
 # license
 a quality management software - automate your paper based qms
@@ -148,3 +204,5 @@ This program is free software; you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. 
 
 You should have received a copy of the GNU General Public License along with this program; if not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
+
+[back to top](#a-quality-management-software)
