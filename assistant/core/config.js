@@ -290,5 +290,9 @@ core.var = {
 			en: 'forward',
 			de: 'vor'
 		},
+		homeMenuFeedbackRequest: {
+			en: 'feedback / request',
+			de: 'Rückmeldung / Anfrage'
+		},
 	},
 };

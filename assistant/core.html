@@ -42,9 +42,12 @@
 				.function.icon.insert('forth', 'bigger') + '</span>' +
 				'</nav>');
 			document.write('<article id="input"></article>');
-			document.write('<aside class="setting"><span title="' + core.function.lang('settingMenuEntry') +
-				'" onclick="core.function.popup(core.function.setting.setup()); return;">' + core.function.icon.insert(
-					'settings', 'bigger') + '</span></aside>');
+			document.write('<aside class="setting">' +
+				'<span title="' + core.function.lang('homeMenuFeedbackRequest') + '" onclick="win = window.open(\'mailto:\' + core.var.adminMail + \'?subject=\' + document.title, \'emailWindow\'); if (win && win.open && !win.closed) win.close(); return;">' + core.function.icon.insert(
+					'feedbackrequest', 'bigger') + '</span> ' +
+				'<span title="' + core.function.lang('settingMenuEntry') + '" onclick="core.function.popup(core.function.setting.setup()); return;">' + core.function.icon.insert(
+					'settings', 'bigger') + '</span>' +
+				'</aside>');
 		</script>
 	</header>
 
