@@ -134,6 +134,18 @@ var stocklist = {
 					// check if search matches item-list
 					if (found.length > 0) {
 						core.function.smartSearch.relevance.init();
+						//reminder: keep these kind of assignments out of loops for performance reasons!
+						var maillanguage={ 
+							helpChangeItemTitle:core.function.lang('helpChangeItemTitle', 'stocklist'),
+							helpDeleteItemTitle:core.function.lang('helpDeleteItemTitle', 'stocklist'),
+							helpChangeItemPopup:core.function.lang('helpChangeItemPopup', 'stocklist'),
+							helpDeleteItemPopup:core.function.lang('helpDeleteItemPopup', 'stocklist'),
+							helpChangeItemSubject:core.function.lang('helpChangeItemSubject', 'stocklist'),
+							helpDeleteItemSubject:core.function.lang('helpDeleteItemSubject', 'stocklist'),
+							helpChangeItemCaption:core.function.lang('helpChangeItemCaption', 'stocklist'),
+							helpDeleteItemCaption:core.function.lang('helpDeleteItemCaption', 'stocklist'),
+						};
+
 						found.forEach(function (value) {
 							list += core.function.smartSearch.relevance.nextstep(value[1]);
 							var tresult = '<div class="items items71" onclick="core.function.toggleHeight(this)">' + core.function.insert.expand(),
@@ -143,8 +155,8 @@ var stocklist = {
 								mailbody += stocklist_data.content[0][h] + ': ' + stocklist_data.content[value[0]][h] + "\n";
 							}
 							list += tresult +
-								'<a title="' + core.function.lang('helpChangeItemTitle', 'stocklist') + '" onclick="return confirm(\'' + core.function.lang('helpChangeItemPopup', 'stocklist') + '\');" href="mailto:' + stocklist.var.inventoryControl + '?subject=' + core.function.escapeHTML(core.function.lang('helpChangeItemSubject', 'stocklist')) + '&body=' + core.function.escapeHTML(mailbody) + '">' + core.function.lang('helpChangeItemCaption', 'stocklist') + '</a> ' +
-								'<a title="' + core.function.lang('helpDeleteItemTitle', 'stocklist') + '" onclick="return confirm(\'' + core.function.lang('helpDeleteItemPopup', 'stocklist') + '\');" href="mailto:' + stocklist.var.inventoryControl + '?subject=' + core.function.escapeHTML(core.function.lang('helpDeleteItemSubject', 'stocklist')) + '&body=' + core.function.escapeHTML(mailbody) + '">' + core.function.lang('helpDeleteItemCaption', 'stocklist') + '</a>' +
+								'<a title="' + maillanguage.helpChangeItemTitle + '" onclick="return confirm(\'' + maillanguage.helpChangeItemPopup + '\');" href="mailto:' + stocklist.var.inventoryControl + '?subject=' + core.function.escapeHTML(maillanguage.helpChangeItemSubject) + '&body=' + core.function.escapeHTML(mailbody) + '">' + maillanguage.helpChangeItemCaption + '</a> ' +
+								'<a title="' + maillanguage.helpDeleteItemTitle + '" onclick="return confirm(\'' + maillanguage.helpDeleteItemPopup + '\');" href="mailto:' + stocklist.var.inventoryControl + '?subject=' + core.function.escapeHTML(maillanguage.helpDeleteItemSubject) + '&body=' + core.function.escapeHTML(mailbody) + '">' + maillanguage.helpDeleteItemCaption + '</a> ' +
 								'</div>';
 						});
 					} else list = core.function.lang('errorNothingFound', 'stocklist', query);
