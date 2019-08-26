@@ -2,6 +2,16 @@
 // this was my attempt to present knowledge about the functions bit by bit, randomly, at startup.
 // it absolutely makes sense to extent the information for any given module as this extends the faq
 
+const style = ['background: #4c566a', 'padding: 10px 0px', 'line-height: 35px',].join(';');
+const main= [style, 'color: #eceff4'].join(';');
+const heart=[style,	'color: #bf616a'].join(';');
+const link=[style,	'color: #a3be8c'].join(';');
+if (!isIE()) console.log('%c      coded with %c♥️ %cby error on line 1 - %c http://erroronline.one      ', main, heart, main, link);
+else console.log('coded with ♥️ by error on line 1 - http://erroronline.one');
+var developerAlert='Welcome to the console output of the ' + core.function.lang('title') + '!\n'
+					+ 'Please be aware that displaying the console results in a significant decrease of speed.\n';
+console.warn(developerAlert);
+
 var randomTip = {
 	show: function () {
 		// 	show random tip on startup
