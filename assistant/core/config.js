@@ -193,8 +193,8 @@ core.var = {
 			de: 'Sekunden für die Bereitstellung von globalen Suchergebnissen'
 		},
 		settingFuzzyThresholdCaption: {
-			en: 'Fuzzy threshold (6 is a reasonable default)',
-			de: 'Fuzzy Schwellenwert (6 ist ein guter Standard)'
+			en: 'Fuzzy threshold (5 is a reasonable default)',
+			de: 'Fuzzy Schwellenwert (5 ist ein guter Standard)'
 		},
 		settingGeneralHint: {
 			en: 'Local security settings can result in loss of settings on closing browser window.',

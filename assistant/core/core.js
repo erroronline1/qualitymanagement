@@ -93,27 +93,29 @@ var core = {
 					if (haystack.indexOf(needle) > -1) return 2; // covers basic partial matches, avoids unnecessary nested loops
 					if (!fuzzy) return false; // breaks if fuzzySearch is not set
 					//yield through every character position of haystack
-					for (var sp = 0; sp < haystack.length - needle.length; sp++) {
-					// haystack
-					// haysta
-					//  aystac
-					//   ystack
+					for (var sp = 0; sp <= haystack.length - needle.length; sp++) {
+						// haystack
+						// haysta
+						//  aystac
+						//   ystack
 						var matches = 0;
 						//yield trough every character position of needle
 						for (var i = 0; i < needle.length; i++) {
-						// haysta
-						// n
-						//  e
-						//   e
-						//    d
-						//     l
-						//      e
+							// haysta
+							// n
+							//  e
+							//   e
+							//    d
+							//     l
+							//      e
 							var charPos = haystack.substring(sp, sp + needle.length).indexOf(needle[i]);
-							if (charPos == i) { //current character of needle matches exact position in haystack-block
+							if (haystack.substring(sp, sp + needle.length)[i] == needle[i]) { //current character of needle matches exact position in haystack-block
 								matches += 2;
 							} else if (charPos > -1) { //current character of needle does not match position but can be found
 								matches += 1;
-							} else matches -= 1; //current character of needle can not be found in haystack block
+							} else matches; //current character of needle can not be found in haystack block
+							//break if ratio can not reached any longer
+							if (((matches / (i + 1)) + ratio) / 2 < ratio) break;
 						}
 						if (matches / needle.length >= ratio) return matches / needle.length;
 					}
@@ -123,7 +125,7 @@ var core = {
 				if (query.length > 0) {
 					//reminder: keep these kind of assignments out of loops for performance reasons!
 					var fuzzySearch = core.function.setting.get('settingFuzzySearch');
-					var fuzzyRatio = 2 - ((core.function.setting.get('settingFuzzyThreshold') || 6) * .1); //fuzzy ratio of 1.4 by default is quite reasonable determined through trial and error
+					var fuzzyRatio = 2 - ((core.function.setting.get('settingFuzzyThreshold') || 5) * .1); //fuzzy ratio of 1.5 by default is quite reasonable determined through trial and error
 
 					Object.keys(dataBaseObject).forEach(function (key) {
 						var a = dataBaseObject[key],
@@ -288,7 +290,7 @@ var core = {
 			setupAdvanced: function () { //return advanced settings
 				return '<input type="button" onclick="core.function.setting.clear()" value="' + core.function.lang('settingResetApp') + '" title="' + core.function.lang('settingRestartNeccessary') + '" />' +
 					'<br /><br />' + core.function.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.function.setting.get('settingGlobalSearchTime') || 3) + '" id="fontsize" onchange="core.function.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
-					'<br />' + core.function.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.function.setting.get('settingFuzzyThreshold') || 6) + '" id="fontsize" onchange="core.function.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
+					'<br />' + core.function.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.function.setting.get('settingFuzzyThreshold') || 5) + '" id="fontsize" onchange="core.function.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
 					'<br />' + core.function.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.function.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
 					'<br /><br />' + aboutNotification[core.var.selectedLanguage] +
 					'<br /><br />' + core.function.lang('settingGeneralHint');
