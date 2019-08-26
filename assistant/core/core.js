@@ -74,9 +74,10 @@ var core = {
 				// assign single terms to query array splitting by whitespace, stripping ' ( ) and - without preceding whitespace
 				var initial_query = userInput.toLowerCase().replace(/[^a-zA-Z0-9äÄöÖüÜß-\s]/g, '').split(/[\s]/g),
 					query = new Array(),
-					filter = new Array();
+					filter = new Array(),
+					found = new Array();
 				//sort -terms to filter
-				//i once spliced the query array but that directly influenced the foreach
+				//i once spliced the query array but that instantaneously influenced the foreach
 				initial_query.forEach(function (word) {
 					if (word.substring(0, 1) == '-') filter.push(word.substring(1));
 					else query.push(word);
@@ -87,20 +88,32 @@ var core = {
 				for (var del = query.length - 1; del >= 0; del -= 1) {
 					if (query[del].replace(/[\s]/g, '').length < 3) query.splice(del, 1);
 				}
-				var found = new Array();
 
-				function fuzzy(haystack, needle, ratio) {
-					if (haystack.indexOf(needle) > -1) return 2; // covers basic partial matches
-					if (!core.function.setting.get('settingFuzzySearch')) return false;
-					//nested loops compare substrings within long haystack for matching fuzzy needle
+				function fuzzy(haystack, needle, fuzzy, ratio) {
+					if (haystack.indexOf(needle) > -1) return 2; // covers basic partial matches, avoids unnecessary nested loops
+					if (!fuzzy) return false; // breaks if fuzzySearch is not set
+					//yield through every character position of haystack
 					for (var sp = 0; sp < haystack.length - needle.length; sp++) {
+					// haystack
+					// haysta
+					//  aystac
+					//   ystack
 						var matches = 0;
+						//yield trough every character position of needle
 						for (var i = 0; i < needle.length; i++) {
-							if (haystack.substring(sp, sp + needle.length).indexOf(needle[i]) == i) {
+						// haysta
+						// n
+						//  e
+						//   e
+						//    d
+						//     l
+						//      e
+							var charPos = haystack.substring(sp, sp + needle.length).indexOf(needle[i]);
+							if (charPos == i) { //current character of needle matches exact position in haystack-block
 								matches += 2;
-								continue;
-							}
-							haystack.substring(sp, sp + needle.length).indexOf(needle[i]) > -1 ? matches += 1 : matches -= 1;
+							} else if (charPos > -1) { //current character of needle does not match position but can be found
+								matches += 1;
+							} else matches -= 1; //current character of needle can not be found in haystack block
 						}
 						if (matches / needle.length >= ratio) return matches / needle.length;
 					}
@@ -108,6 +121,10 @@ var core = {
 				};
 
 				if (query.length > 0) {
+					//reminder: keep these kind of assignments out of loops for performance reasons!
+					var fuzzySearch = core.function.setting.get('settingFuzzySearch');
+					var fuzzyRatio = 2 - ((core.function.setting.get('settingFuzzyThreshold') || 6) * .1); //fuzzy ratio of 1.4 by default is quite reasonable determined through trial and error
+
 					Object.keys(dataBaseObject).forEach(function (key) {
 						var a = dataBaseObject[key],
 							filtered = false;
@@ -126,7 +143,7 @@ var core = {
 						if (!filtered) {
 							//compare every query part between whitespaces 
 							query.forEach(function (b) {
-								var fuzzyquery = fuzzy(a, b, 2-((core.function.setting.get('settingFuzzyThreshold') || 6)*.1)); //fuzzy ratio of 1.4 by default is quite reasonable determined through trial and error
+								var fuzzyquery = fuzzy(a, b, fuzzySearch, fuzzyRatio);
 								if (typeof (a) == 'string' && fuzzyquery && eval(additionalCondition)) {
 									var exist;
 									found.forEach(function (value, index) {
@@ -377,7 +394,7 @@ var core = {
 			websearch: ['0 0 2048 2048', '1,-1', 'M1024 2048q141 0 272 -36.5t245 -103t207.5 -160t160 -207.5t103 -245t36.5 -272t-36.5 -272t-103 -245t-160 -207.5t-207.5 -160t-245 -103t-272 -36.5t-272 36.5t-245 103t-207.5 160t-160 207.5t-103 244.5t-36.5 272.5q0 141 36.5 272t103 245t160 207.5t207.5 160t244.5 103t272.5 36.5zM1833 1408q-38 81 -92 152.5t-120 130.5t-143 105t-161 75q36 -50 65 -106t51.5 -115.5t38.5 -120.5t28 -121h333zM1920 1024q0 133 -37 256h-363q8 -64 12 -127.5t4 -128.5t-4 -128.5t-12 -127.5h363q37 123 37 256zM1024 128q49 0 91.5 27t78.5 71t64.5 99.5t50.5 112.5t37 110t23 92h-690q8 -39 23 -92t37 -110t50.5 -112.5t64.5 -99.5t78.5 -71t91.5 -27zM1391 768q8 64 12.5 127.5t4.5 128.5t-4.5 128.5t-12.5 127.5h-734q-8 -64 -12.5 -127.5t-4.5 -128.5t4.5 -128.5t12.5 -127.5h734zM128 1024q0 -133 37 -256h363q-8 64 -12 127.5t-4 128.5t4 128.5t12 127.5h-363q-37 -123 -37 -256zM1024 1920q-49 0 -91.5 -27t-78.5 -71t-64.5 -99.5t-50.5 -112.5t-37 -110t-23 -92h690q-8 39 -23 92t-37 110t-50.5 112.5t-64.5 99.5t-78.5 71t-91.5 27zM731 1871q-84 -29 -161 -75t-143 -105t-120 -130.5t-92 -152.5h333q12 60 28 121t38.5 120.5t51.5 115.5t65 106zM215 640q38 -81 92 -152.5t120 -130.5t143 -105t161 -75q-36 50 -65 106t-51.5 115.5t-38.5 120.5t-28 121h-333zM1317 177q84 29 161 75t143 105t120 130.5t92 152.5h-333q-12 -60 -28 -121t-38.5 -120.5t-51.5 -115.5t-65 -106z'],
 			closepopup: ['0 0 2048 2048', '1,-1', 'M0 1664h2048v-1152h-2048v1152zM128 1536v-896h1280v896h-1280zM1920 640v896h-384v-896h384zM989 1405l317 -317l-317 -317l-90 90l162 163h-421v128h421l-162 163z'],
 			info: ['0 0 2048 2048', '1,-1', 'M960 128q-133 0 -255.5 34t-229.5 96.5t-194.5 150t-150 194.5t-96.5 229.5t-34 255.5t34 255.5t96.5 229.5t150 194.5t194.5 150t229.5 96.5t255.5 34t255.5 -34t229.5 -96.5t194.5 -150t150 -194.5t96.5 -229.5t34 -255.5t-34 -255.5t-96.5 -229.5t-150 -194.5t-194.5 -150t-229.5 -96.5t-255.5 -34zM960 1920q-115 0 -221 -30t-198.5 -84t-168.5 -130t-130 -168.5t-84 -199t-30 -220.5t30 -220.5t84 -199t130 -168.5t168.5 -130t198.5 -84t221 -30q114 0 220.5 30t199 84t168.5 130t130 168.5t84 198.5t30 221q0 114 -30 220.5t-84 199t-130 168.5t-168.5 130t-199 84t-220.5 30zM896 1280h128v-640h-128v640zM896 1536h128v-128h-128v128z'],
-			feedbackrequest: ['0 0 2048 2048', '1,-1','M514 467q25 -85 63 -160q-10 -20 -20.5 -42.5t-31.5 -33.5l-173 -87q-34 -16 -69 -16h-9.5t-9.5 1l-47 -94q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 12 7 30t16.5 37.5t19.5 36.5t15 28q-26 40 -26 87v165q0 16 7 29l576 1152l-65 32l-237 -474q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 13 7 29l239 478q16 32 43 50.5t63 18.5q35 0 66.5 -17t61.5 -32l71 142q8 17 23.5 26t33.5 9q13 0 22 -4q12 24 23.5 47.5t26 42.5t35.5 30.5t53 11.5t61 -15l94 -47q32 -16 50.5 -42.5t18.5 -63.5q0 -34 -15.5 -63.5t-29.5 -58.5q14 -8 23 -23t9 -32q0 -12 -8.5 -32.5t-19.5 -42.5t-22 -42t-16 -31q-43 -7 -84 -18.5t-82 -26.5l82 164l-192 96l-282 -562q-5 -10 -12.5 -19t-12.5 -18q-14 -21 -26 -42.5t-23 -44.5q-21 -41 -36 -84q-4 -10 -7 -21.5t-8 -21.5l-262 -524v-150q0 -11 8 -19t19 -8l166 80zM1033 1859l87 -43l29 58l-87 43zM1344 1408q97 0 187 -25t168.5 -71t142.5 -110t110 -142.5t71 -168.5t25 -187t-25 -187t-71 -168.5t-110 -142.5t-142.5 -110t-168.5 -71t-187 -25t-187 25t-168.5 71t-142.5 110t-110 142.5t-71 168.5t-25 187t25 187t71 168.5t110 142.5t142.5 110t168.5 71t187 25zM1344 128q119 0 224 45.5t183 123.5t123.5 183t45.5 224t-45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224t45.5 -224t123.5 -183t183 -123.5t224 -45.5zM1280 384h128v-128h-128v128zM1344 1152q53 0 99.5 -20t81.5 -55t55 -81.5t20 -99.5q0 -46 -14 -81t-35.5 -63t-46.5 -50.5t-46.5 -44.5t-35.5 -45t-14 -52v-48h-128v48q0 46 14 81t35.5 63t46.5 50.5t46.5 44.5t35.5 45t14 52q0 27 -10 50t-27.5 40.5t-40.5 27.5t-50 10t-50 -10t-40.5 -27.5t-27.5 -40.5t-10 -50h-128q0 53 20 99.5t55 81.5t81.5 55t99.5 20z'],
+			feedbackrequest: ['0 0 2048 2048', '1,-1', 'M514 467q25 -85 63 -160q-10 -20 -20.5 -42.5t-31.5 -33.5l-173 -87q-34 -16 -69 -16h-9.5t-9.5 1l-47 -94q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 12 7 30t16.5 37.5t19.5 36.5t15 28q-26 40 -26 87v165q0 16 7 29l576 1152l-65 32l-237 -474q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 13 7 29l239 478q16 32 43 50.5t63 18.5q35 0 66.5 -17t61.5 -32l71 142q8 17 23.5 26t33.5 9q13 0 22 -4q12 24 23.5 47.5t26 42.5t35.5 30.5t53 11.5t61 -15l94 -47q32 -16 50.5 -42.5t18.5 -63.5q0 -34 -15.5 -63.5t-29.5 -58.5q14 -8 23 -23t9 -32q0 -12 -8.5 -32.5t-19.5 -42.5t-22 -42t-16 -31q-43 -7 -84 -18.5t-82 -26.5l82 164l-192 96l-282 -562q-5 -10 -12.5 -19t-12.5 -18q-14 -21 -26 -42.5t-23 -44.5q-21 -41 -36 -84q-4 -10 -7 -21.5t-8 -21.5l-262 -524v-150q0 -11 8 -19t19 -8l166 80zM1033 1859l87 -43l29 58l-87 43zM1344 1408q97 0 187 -25t168.5 -71t142.5 -110t110 -142.5t71 -168.5t25 -187t-25 -187t-71 -168.5t-110 -142.5t-142.5 -110t-168.5 -71t-187 -25t-187 25t-168.5 71t-142.5 110t-110 142.5t-71 168.5t-25 187t25 187t71 168.5t110 142.5t142.5 110t168.5 71t187 25zM1344 128q119 0 224 45.5t183 123.5t123.5 183t45.5 224t-45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224t45.5 -224t123.5 -183t183 -123.5t224 -45.5zM1280 384h128v-128h-128v128zM1344 1152q53 0 99.5 -20t81.5 -55t55 -81.5t20 -99.5q0 -46 -14 -81t-35.5 -63t-46.5 -50.5t-46.5 -44.5t-35.5 -45t-14 -52v-48h-128v48q0 46 14 81t35.5 63t46.5 50.5t46.5 44.5t35.5 45t14 52q0 27 -10 50t-27.5 40.5t-40.5 27.5t-50 10t-50 -10t-40.5 -27.5t-27.5 -40.5t-10 -50h-128q0 53 20 99.5t55 81.5t81.5 55t99.5 20z'],
 
 			insert: function (icon, addclass) {
 				addclass = addclass || '';
