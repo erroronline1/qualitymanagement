@@ -72,7 +72,7 @@ var core = {
 				// data base will be searched for single words as well as a concatenated string
 
 				// assign single terms to query array splitting by whitespace, stripping ' ( ) and - without preceding whitespace
-				var initial_query = userInput.toLowerCase().replace(/[^a-zA-Z0-9-\s]/g, '').split(/[\s]/g),
+				var initial_query = userInput.toLowerCase().replace(/[^a-zA-Z0-9äÄöÖüÜß-\s]/g, '').split(/[\s]/g),
 					query = new Array(),
 					filter = new Array();
 				//sort -terms to filter
@@ -112,10 +112,10 @@ var core = {
 						var a = dataBaseObject[key],
 							filtered = false;
 						if (typeof (a) == 'object') a = a.join();
-						a = a.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
-
 						//filter filename in case of pdf-files else take raw string
 						a = a.replace(/\S+\/.+\/(.+)\.pdf/g, "$1");
+						//strip all remaining special chars
+						a = a.toLowerCase().replace(/[^a-zA-Z0-9äÄöÖüÜß\s]/g, '');
 						for (var i = 0; i < filter.length; i++) {
 							if (a.indexOf(filter[i]) > -1) {
 								filtered = true;
@@ -381,7 +381,7 @@ var core = {
 
 			insert: function (icon, addclass) {
 				addclass = addclass || '';
-				return '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + this[icon][0] + '\" style=\"transform: scale(' + this[icon][1] + ');\" class=\"icon ' + addclass + '\"><path d=\"' + this[icon][2] + '\"/></svg>';
+				return '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + this[icon][0] + '\" style=\"transform: scale(' + this[icon][1] + ');\" class=\"icon ' + addclass + '\"><path d=\"' + this[icon][2] + '\"></path></svg>';
 			}
 		},
 		init: function (query) { //displays start screen
@@ -457,17 +457,20 @@ var core = {
 		},
 		stop: function (track, info, group) {
 			if (core.function.setting.get('settingPerformanceMonitor')) {
+				console.groupCollapsed(track);
 				console.timeEnd(track);
+				console.trace();
 				if (typeof info != 'undefined' && info) {
 					if (isIE()) console.log(info);
 					else {
 						if (typeof info == 'object') {
-							console.groupCollapsed('\u2b91 data:');
+							console.groupCollapsed('\u2b91 additional info:');
 							console.table(info);
 							console.groupEnd();
 						} else console.log('\u2b91 ' + info);
 					}
 				}
+				console.groupEnd();
 				if (typeof group != 'undefined') console.groupEnd();
 			}
 		},
