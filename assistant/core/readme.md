@@ -6,6 +6,10 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `value(v)` returns value of v or '' even if v is undefined. useful for function parameters.
 
+`isIE()` returns boolean for browserhacks
+
+`svgClassList` polyfill for adding/removing classes to svg classList
+
 `core.function.popup(text)` shows or updates a modal box if text is provided, hides it if function called with null value
 
 `core.function.toggelHeight(toggleel)` toggles the class list of given element to expand or shrink it
