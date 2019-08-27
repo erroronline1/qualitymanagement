@@ -37,15 +37,18 @@
 				'" onclick="slider.slide(\'null\'); core.function.init()">' + core.function.icon.insert('home', 'bigger') +
 				'</span>' +
 				'<span title="' + core.function.lang('homeMenuBack') + '" onclick="core.history.go(\'back\')">' + core
-				.function.icon.insert('back', 'bigger') + '</span>' +
+				.function.icon.insert('back', 'bigger inactiveicon', 'titlebackbutton') + '</span>' +
 				'<span title="' + core.function.lang('homeMenuForth') + '" onclick="core.history.go(\'forth\')">' + core
-				.function.icon.insert('forth', 'bigger') + '</span>' +
+				.function.icon.insert('forth', 'bigger inactiveicon', 'titleforthbutton') + '</span>' +
 				'</nav>');
 			document.write('<article id="input"></article>');
 			document.write('<aside class="setting">' +
-				'<span title="' + core.function.lang('homeMenuFeedbackRequest') + '" onclick="win = window.open(\'mailto:\' + core.var.adminMail + \'?subject=\' + document.title, \'emailWindow\'); if (win && win.open && !win.closed) win.close(); return;">' + core.function.icon.insert(
+				'<span title="' + core.function.lang('homeMenuFeedbackRequest') +
+				'" onclick="win = window.open(\'mailto:\' + core.var.adminMail + \'?subject=\' + document.title, \'emailWindow\'); if (win && win.open && !win.closed) win.close(); return;">' +
+				core.function.icon.insert(
 					'feedbackrequest', 'bigger') + '</span> ' +
-				'<span title="' + core.function.lang('settingMenuEntry') + '" onclick="core.function.popup(core.function.setting.setup()); return;">' + core.function.icon.insert(
+				'<span title="' + core.function.lang('settingMenuEntry') +
+				'" onclick="core.function.popup(core.function.setting.setup()); return;">' + core.function.icon.insert(
 					'settings', 'bigger') + '</span>' +
 				'</aside>');
 		</script>
@@ -56,7 +59,7 @@
 			<span id="title">
 				<script>
 					document.write(core.var.logo + '<div style="display:inline-block">' + core.function.lang('title') +
-					'&nbsp;</div>');
+						'&nbsp;</div>');
 				</script>
 			</span><br /><br />
 			<!-- since javascript doesn´t have access to local file system there is no automatic detection of json files available

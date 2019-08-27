@@ -25,7 +25,11 @@ select optgroup {
 }
 
 .icon {
-	fill: #fff;
+	fill: rgba(255, 255, 255, 1);
+}
+
+.inactiveicon {
+	fill: rgba(255, 255, 255, .3);
 }
 
 input[type='text'],
@@ -37,7 +41,7 @@ span.search .icon,
 	fill: #666;
 }
 
-textarea{
+textarea {
 	color: #eee !important;
 }
 
@@ -60,7 +64,7 @@ a:link {
 }
 
 a:visited {
-	color: rgba(179,177,16,.8);
+	color: rgba(179, 177, 16, .8);
 }
 
 /*///////////////////////////////////////////// 
@@ -123,7 +127,8 @@ span.search {
 	background-color: #fff;
 }
 
-#temp, .bigger:hover {
+#temp,
+.bigger:hover {
 	background-color: rgba(255, 255, 255, .1);
 }
 
