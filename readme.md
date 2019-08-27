@@ -85,6 +85,8 @@ this tool provides your company with an application to have an easier access to 
 * serial print of document packages requires active-x which is only available in ie11. this option will not be shown if not accessible
 * patience with coworkers blaming 'your' assistant for every network failure, printer settings and their inability to read the literal hints and descriptions
 
+[visit the working demo](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
+
 [back to top](#a-quality-management-software)
 
 # installation
@@ -145,7 +147,9 @@ take notice of additional [readme-files](administration/readme.md) and samples w
 ## the assistant
 there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. then there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-libraray](http://vanilla.js-com). in case you have restricted access to your it i can recommend [notepad++ portabale](https://notepad-plus-plus.org/download/) out of personal experience.
 
-* the assistant is built using js-ecmascript 5 on purpose because of required compatibility to ms ie11. unfortunately this still is the default browser to date in many companies. the css is not compatible to previous versions of ie.
+[visit the working demo](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
+
+* the assistant is built using js-ecmascript 5 on purpose because of required compatibility to ms ie11. unfortunately this still is the default browser to date in many companies. the css is not compatible to previous versions of ie. there might be browserhacks and polyfills.
 * the assistant is designed to handle multiple language support, comes with english and german and can be extended as desired. extend the lang-objects in every module, the config-file and register the languages in this config-file to make them available.
 * the core-object provides readable function-calls and globally usable variables. general configuration takes place in core/config.js. this file contains a variable that extents the core-object with global variables and commonly used language-bricks.
 * built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, local-storage- or cookie-handler, repetitive design pattern implementation (icons, inputs, etc.), history handling and some more. get access or extend these functions with `core.function.FUNCTIONNAME`, global variables with `core.var.VARNAME`. i recommend this pattern to modules as well, defining a module-object with `{moduleFileName}.function.FUNCTIONNAME` and `{moduleFileName}.var.VARNAME`. the handler for multi-language-support of the application  (`core.function.lang()`) makes built-in automated use of this pattern.
