@@ -11,6 +11,18 @@ function value(v) { //handles even unset parameters when in doubt
 	else return v;
 }
 
+var svgClassList = { //classList.add and *.remove not supported for svg in ie, this works as a polyfill
+	add: function (element, classname) {
+		if (element.classList) element.classList.add(classname);
+		else if (element.getAttribute('class').indexOf(classname) < 0) element.setAttribute('class', element.getAttribute('class') + ' ' + classname);
+		
+	},
+	remove: function (element, classname) {
+		if (element.classList) element.classList.remove(classname);
+		else if (element.getAttribute('class').indexOf(classname) > -1) element.setAttribute('class', element.getAttribute('class').replace(classname, ' '));
+	},
+};
+
 var core = {
 	function: {
 		popup: function (text) { //toggle notification popup
@@ -471,12 +483,14 @@ var core = {
 			core.history.buttoncolor();
 		},
 		buttoncolor: function () {
-			if (core.history.currentStep < 2)
-				el('titleforthbutton').classList.add('inactiveicon');
-			else el('titleforthbutton').classList.remove('inactiveicon');
+			//classList.add and *.remove not supported for svg in ie
+			if (core.history.currentStep < 2 )
+				svgClassList.add(el('titleforthbutton'), 'inactiveicon');
+			else svgClassList.remove(el('titleforthbutton'), 'inactiveicon');
 			if (core.history.currentStep == core.history.storage.length)
-				el('titlebackbutton').classList.add('inactiveicon');
-			else el('titlebackbutton').classList.remove('inactiveicon');
+				svgClassList.add(el('titlebackbutton'), 'inactiveicon');
+			else svgClassList.remove(el('titlebackbutton'), 'inactiveicon');
+
 		}
 	},
 	performance: { //starts and dispays timers to console, assigned with function calls and can display additional results
