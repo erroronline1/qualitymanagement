@@ -201,7 +201,7 @@ var documentlookup = {
 						core.function.smartSearch.relevance.init();
 						found.forEach(function (value) {
 							list += core.function.smartSearch.relevance.nextstep(value[1]);
-							if (typeof (documentlookup.var.selectedObject().content[value[0]]) == 'object') list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[value[0]][0]) + '<br />';
+							if (typeof (documentlookup.var.selectedObject().content[value[0]]) == 'object') list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[value[0]][0], (documentlookup.var.selectedObject().content[value[0]][1] ? core.function.lang('searchTitle', 'documentlookup') + documentlookup.var.selectedObject().content[value[0]][1] : false)) + '<br />';
 							else list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[value[0]]) + '<br />';
 						});
 						el('output').innerHTML = list;
