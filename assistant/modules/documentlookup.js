@@ -82,8 +82,7 @@ var documentlookup = {
 		selectedObject: function () {
 			return eval(documentlookup.var.selectedModule() + '_data');
 		},
-//		thirdDocumentCategoryPath: 'O:/Technische Orthopaedie/QM/QM-PDF Vorlagen/Nachweisdokumente/',
-		thirdDocumentCategoryPath: 'c:/',
+		thirdDocumentCategoryPath: 'E:/Quality Management/TTD',
 		disableOutputSelect: true,
 	},
 	api: {
@@ -157,14 +156,8 @@ var documentlookup = {
 
 					var tfav2 = output.split(',');
 					//sef default document titles without whitespaces, predefined clicks for hiher postion 
-					var defaults = 'Briefvorlagemit100JahrLogo,20,' +
-						'FahrtArbeitgeberbescheinigung,10,' +
-						'arbeitsunt,10,' +
-						'KAssenanordnungNationalIBANID22678,5,' +
-						'Protokoll,10,' +
-						'Bestellschein,10,' +
-						'Empfangsbesttigung,10,' +
-						'Reklamation,10';
+					var defaults = 'Protocol,10,' +
+						'AttendanceList,5,';
 
 					output = '<br />' + core.function.lang('favouriteCaption', 'documentlookup') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
 						core.function.icon.insert('delete', 'bigger', false, 'title="' + core.function.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'\')"') +

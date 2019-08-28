@@ -20,8 +20,8 @@ var correspondence = {
 				de: 'Thema wählen...'
 			},
 			inputPlaceholder: {
-				en: 'first name / last name recipient or patient',
-				de: 'Vor-/ Nachname Adressat oder Patient'
+				en: 'first name / last name recipient',
+				de: 'Vor-/ Nachname Adressat'
 			},
 			inputOptionMale: {
 				en: 'male',
@@ -50,11 +50,8 @@ var correspondence = {
 		},
 		submodules: {
 			select: ['', ''],
-			allgemein: ['correspondence_allgemein', 'Allgemein'],
-			armprothetik: ['correspondence_armprothetik', 'Armprothetik'],
-			beinprothetik: ['correspondence_beinprothetik', 'Beinprothetik'],
-			verwaltung: ['correspondence_verwaltung', 'Verwaltung'],
-			warenwirtschaft: ['correspondence_warenwirtschaft', 'Warenwirtschaft'],
+			common: ['correspondence_common', 'common'],
+			//extend with additional files. this makes for a clearer categorization. 
 		},
 		selectedModule: function () {
 			return el('submodule').options[el('submodule').selectedIndex].value || this.presetModule;

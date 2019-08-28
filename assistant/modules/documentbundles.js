@@ -14,7 +14,7 @@ var documentbundles = {
 		lang: {
 			useCaseDescription: {
 				en: 'Shown are all required documents. Process descriptions are applicable.',
-				de: 'Es werden die erforderlichen Dokumente zur Vorgangsdokumentation angezeigt. Übergeordnet gelten die einschlägigen Verfahrens- und Arbeitsanweisungen.'
+				de: 'Es werden die erforderlichen Dokumente angezeigt. Übergeordnet gelten die einschlägigen Verfahrens- und Arbeitsanweisungen.'
 			},
 			serialPrintLink: {
 				en: function (e) {
@@ -30,24 +30,23 @@ var documentbundles = {
 			},
 			secondaryCaption: {
 				en: 'To be taken into account if applicable',
-				de: 'Falls zutreffend zusätzlich oder im Versorgungsverlauf zu berücksichtigen'
+				de: 'Falls zutreffend zusätzlich zu berücksichtigen'
 			},
 			selectDefault: {
 				en: 'choose...',
 				de: 'Auswahl treffen...'
 			},
 			selectEnableExceptions: {
-				en: 'aid present',
-				de: 'Hilfsmittel vorhanden'
+				en: 'additional case', //change this caption to make sense for you
+				de: 'zusätzliche Berücksichtigung'
 			},
 			errorNoActiveX: {
 				en: 'Please reload application and allow ActiveX...',
 				de: 'Bitte Oberfläche neu laden und ActiveX zulassen...'
 			},
 			additionalInfo: {
-				en: 'Additional information: <span class="highlight">please print the route card two times!</span><br />Each prescription means a different case.<br />In case of appointments for cast models, fittings or delivery it it not neccessary to hand out documents by the reception.',
-				de: 'Zusatzinformation: <span class="highlight">Bitte "Willkommen" 2x ausdrucken!</span><br />Jede Verordnung steht für einen eigenen Vorgang.<br />Für Termine zum Abdruck, Anproben oder Lieferung bei laufenden genehmigten Versorgungen sind keine Unterlagen vom Empfang erforderlich.'
-			},
+				en: 'Additional information: can be displayed here if neccessary',
+				de: 'Zusatzinformation: können hier angegeben werden, falls erforderlich'			},
 		},
 		disableOutputSelect: true,
 	},

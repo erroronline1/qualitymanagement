@@ -10,7 +10,7 @@
 
 var stocklist = {
 	var: {
-		inventoryControl: 'info.ot@med.uni-heidelberg.de',
+		inventoryControl: 'inventory.control@email.adr',
 		lang: {
 			inputPlaceholder: {
 				en: 'item, 3 characters minimum',
@@ -19,15 +19,11 @@ var stocklist = {
 			useCaseDescription: {
 				en: function () {
 					return (stocklist.function.search() ? 'There are currently ' + stocklist.function.search() + ' items listed. ' : '') +
-						'These are the products that have permission to be ordered and used in production.';
+						'These are the products that have permission to be ordered and used in production. Search for default items by &quot;manufacturer&quot and mess around with search terms.';
 				},
 				de: function () {
 					return (stocklist.function.search() ? 'Aktuell hat die Artikelliste ' + stocklist.function.search() + ' Einträge. ' : '') +
-						'Als Nachweis über eingeführte Produkte ist es nicht vorgesehen, dass jede Modellgröße oder -variante gelistet ist. ' +
-						'Produkte die in unterschiedlichen Varianten existieren sind in der Artikelnummer an den jeweiligen Positionen für ' +
-						'Seite, Farbe, Größe, etc. mit (X) bezeichnet und müssen bei einer Bestellung entsprechend angepasst werden. ' +
-						'Die EVA-Nummer dient primär als Referenz zur Zuordnung für die Warenwirtschaft und ist im Falle von Konfektionsartikeln in der Regel ' +
-						'nicht zielführend. Die Bestellung erfolgt mittels der Hersteller-Artikelnummer.';
+						'An dieser Stelle könne alle zugelassenen Artikel eingesehen werden. Suche nach Standardeinträgen von &quot;Manufacturer&quot; und spiel mit Suchbegriffen.';
 				}
 			},
 			filterAll: {
