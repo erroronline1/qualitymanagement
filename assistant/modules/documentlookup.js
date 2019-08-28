@@ -82,7 +82,7 @@ var documentlookup = {
 		selectedObject: function () {
 			return eval(documentlookup.var.selectedModule() + '_data');
 		},
-		thirdDocumentCategoryPath: 'E:/Quality Management/TTD',
+		thirdDocumentCategoryPath: 'O:/Technische Orthopaedie/QM/QM-PDF Vorlagen/Nachweisdokumente/',
 		disableOutputSelect: true,
 	},
 	api: {
@@ -156,14 +156,20 @@ var documentlookup = {
 
 					var tfav2 = output.split(',');
 					//sef default document titles without whitespaces, predefined clicks for hiher postion 
-					var defaults = 'Protocol,10,' +
-						'AttendanceList,5,';
+					var defaults = 'Briefvorlagemit100JahrLogo,20,' +
+						'FahrtArbeitgeberbescheinigung,10,' +
+						'arbeitsunt,10,' +
+						'KAssenanordnungNationalIBANID22678,5,' +
+						'Protokoll,10,' +
+						'Bestellschein,10,' +
+						'Empfangsbesttigung,10,' +
+						'Reklamation,10';
 
-						output = '<br />' + core.function.lang('favouriteCaption', 'documentlookup') + ':<span style="display:inline-block; vertical-align:middle; float:right;">' +
-						' <span title="' + core.function.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'\')">' + core.function.icon.insert('delete') + '</span>' +
-						' <span title="' + core.function.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + defaults + '\')">' + core.function.icon.insert('clipboard') + '</span>' +
-						' <span title="' + core.function.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + core.function.setting.get('customfavouritedocs') + '\')">' + core.function.icon.insert('refresh') + '</span>' +
-						' <span title="' + core.function.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.customreset()">' + core.function.icon.insert('save') + '</span>' +
+					output = '<br />' + core.function.lang('favouriteCaption', 'documentlookup') + ':<span style="display:inline-block; vertical-align:middle; float:right;">' +
+						core.function.icon.insert('delete', 'bigger', false, 'title="' + core.function.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'\')"') +
+						core.function.icon.insert('clipboard', 'bigger', false, 'title="' + core.function.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + defaults + '\')"') +
+						core.function.icon.insert('refresh', 'bigger', false, 'title="' + core.function.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + core.function.setting.get('customfavouritedocs') + '\')"') +
+						core.function.icon.insert('save', 'bigger', false, 'title="' + core.function.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.customreset()"') +
 						'</span><br /><br />';
 					for (var i = 0; i < tfav2.length; i += 2) {
 						if (tfav[tfav2[i]] != undefined) output += tfav[tfav2[i]] + '<br />';

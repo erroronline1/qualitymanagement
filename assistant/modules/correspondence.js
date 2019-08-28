@@ -20,8 +20,8 @@ var correspondence = {
 				de: 'Thema wählen...'
 			},
 			inputPlaceholder: {
-				en: 'first name / last name recipient',
-				de: 'Vor-/ Nachname Adressat'
+				en: 'first name / last name recipient or patient',
+				de: 'Vor-/ Nachname Adressat oder Patient'
 			},
 			inputOptionMale: {
 				en: 'male',
@@ -50,8 +50,11 @@ var correspondence = {
 		},
 		submodules: {
 			select: ['', ''],
-			common: ['correspondence_common', 'common'],
-			//extend with additional files. this makes for a clearer categorization. 
+			allgemein: ['correspondence_allgemein', 'Allgemein'],
+			armprothetik: ['correspondence_armprothetik', 'Armprothetik'],
+			beinprothetik: ['correspondence_beinprothetik', 'Beinprothetik'],
+			verwaltung: ['correspondence_verwaltung', 'Verwaltung'],
+			warenwirtschaft: ['correspondence_warenwirtschaft', 'Warenwirtschaft'],
 		},
 		selectedModule: function () {
 			return el('submodule').options[el('submodule').selectedIndex].value || this.presetModule;
@@ -135,7 +138,7 @@ var correspondence = {
 				});
 				var output = core.function.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.function.gen()"') +
 					'<br /><br />' +
-					'<input type="text" placeholder="' + core.function.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.function.gen()" /> <span id="searchname" onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.function.lang('webSearchTitle', 'correspondence') + '">' + core.function.icon.insert('websearch') + '</span><br /><br />' +
+					'<input type="text" placeholder="' + core.function.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.function.gen()" /> ' + core.function.icon.insert('websearch', 'bigger', false, 'onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.function.lang('webSearchTitle', 'correspondence') + '"') + '<br /><br />' +
 					'<div class="inline">' +
 					core.function.insert.radio(core.function.lang('inputOptionMale', 'correspondence'), 'sex', 'male', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
 					core.function.insert.radio(core.function.lang('inputOptionFemale', 'correspondence'), 'sex', 'female', false, 'onchange="correspondence.function.gen()"') + ' ' +
@@ -167,7 +170,7 @@ var correspondence = {
 			}
 			el('input').innerHTML = core.function.insert.select(correspondence.var.submodules,
 					'submodule', 'submodule', (typeof preset != 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
-				'<span style="float:right" onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '" />' + core.function.icon.insert('refresh', 'bigger') + '</span>';
+				core.function.icon.insert('refresh', 'bigger', false, 'onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '"');
 			el('temp').innerHTML = '';
 			el('output').innerHTML = '';
 			if (query != '') {

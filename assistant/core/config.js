@@ -290,6 +290,10 @@ core.var = {
 			en: 'forward',
 			de: 'vor'
 		},
+		homeMenuRestart: {
+			en: 'restart',
+			de: 'neu starten'
+		},
 		homeMenuFeedbackRequest: {
 			en: 'feedback / request',
 			de: 'Rückmeldung / Anfrage'

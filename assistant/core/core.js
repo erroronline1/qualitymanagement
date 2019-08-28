@@ -26,7 +26,7 @@ var svgClassList = { //classList.add and *.remove not supported for svg in ie, t
 var core = {
 	function: {
 		popup: function (text) { //toggle notification popup
-			otext = '<span style="display:block; width:100%;"><span style="float:right; width:2em; height:2em;" title="' + core.function.lang('popupCloseButton') + '" onclick="core.function.popup()">' + core.function.icon.insert('closepopup', 'bigger') + '</span></span>' + text;
+			otext = '<span style="display:block; width:100%; text-align:right;">' + core.function.icon.insert('closepopup', 'bigger', false, 'title="' + core.function.lang('popupCloseButton') + '" onclick="core.function.popup()"') + '</span>' + text;
 			if (el('popup').style.opacity == '1' && typeof text === 'undefined') {
 				el('popup').style.opacity = '0';
 				el('popuptext').style.right = '-100vw';
@@ -410,17 +410,17 @@ var core = {
 			info: ['0 0 2048 2048', '1,-1', 'M960 128q-133 0 -255.5 34t-229.5 96.5t-194.5 150t-150 194.5t-96.5 229.5t-34 255.5t34 255.5t96.5 229.5t150 194.5t194.5 150t229.5 96.5t255.5 34t255.5 -34t229.5 -96.5t194.5 -150t150 -194.5t96.5 -229.5t34 -255.5t-34 -255.5t-96.5 -229.5t-150 -194.5t-194.5 -150t-229.5 -96.5t-255.5 -34zM960 1920q-115 0 -221 -30t-198.5 -84t-168.5 -130t-130 -168.5t-84 -199t-30 -220.5t30 -220.5t84 -199t130 -168.5t168.5 -130t198.5 -84t221 -30q114 0 220.5 30t199 84t168.5 130t130 168.5t84 198.5t30 221q0 114 -30 220.5t-84 199t-130 168.5t-168.5 130t-199 84t-220.5 30zM896 1280h128v-640h-128v640zM896 1536h128v-128h-128v128z'],
 			feedbackrequest: ['0 0 2048 2048', '1,-1', 'M514 467q25 -85 63 -160q-10 -20 -20.5 -42.5t-31.5 -33.5l-173 -87q-34 -16 -69 -16h-9.5t-9.5 1l-47 -94q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 12 7 30t16.5 37.5t19.5 36.5t15 28q-26 40 -26 87v165q0 16 7 29l576 1152l-65 32l-237 -474q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 13 7 29l239 478q16 32 43 50.5t63 18.5q35 0 66.5 -17t61.5 -32l71 142q8 17 23.5 26t33.5 9q13 0 22 -4q12 24 23.5 47.5t26 42.5t35.5 30.5t53 11.5t61 -15l94 -47q32 -16 50.5 -42.5t18.5 -63.5q0 -34 -15.5 -63.5t-29.5 -58.5q14 -8 23 -23t9 -32q0 -12 -8.5 -32.5t-19.5 -42.5t-22 -42t-16 -31q-43 -7 -84 -18.5t-82 -26.5l82 164l-192 96l-282 -562q-5 -10 -12.5 -19t-12.5 -18q-14 -21 -26 -42.5t-23 -44.5q-21 -41 -36 -84q-4 -10 -7 -21.5t-8 -21.5l-262 -524v-150q0 -11 8 -19t19 -8l166 80zM1033 1859l87 -43l29 58l-87 43zM1344 1408q97 0 187 -25t168.5 -71t142.5 -110t110 -142.5t71 -168.5t25 -187t-25 -187t-71 -168.5t-110 -142.5t-142.5 -110t-168.5 -71t-187 -25t-187 25t-168.5 71t-142.5 110t-110 142.5t-71 168.5t-25 187t25 187t71 168.5t110 142.5t142.5 110t168.5 71t187 25zM1344 128q119 0 224 45.5t183 123.5t123.5 183t45.5 224t-45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224t45.5 -224t123.5 -183t183 -123.5t224 -45.5zM1280 384h128v-128h-128v128zM1344 1152q53 0 99.5 -20t81.5 -55t55 -81.5t20 -99.5q0 -46 -14 -81t-35.5 -63t-46.5 -50.5t-46.5 -44.5t-35.5 -45t-14 -52v-48h-128v48q0 46 14 81t35.5 63t46.5 50.5t46.5 44.5t35.5 45t14 52q0 27 -10 50t-27.5 40.5t-40.5 27.5t-50 10t-50 -10t-40.5 -27.5t-27.5 -40.5t-10 -50h-128q0 53 20 99.5t55 81.5t81.5 55t99.5 20z'],
 
-			insert: function (icon, addclass, id) {
+			insert: function (icon, addclass, id, event) {
 				addclass = addclass || '';
-				return '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + this[icon][0] + '\" style=\"transform: scale(' + this[icon][1] + ');\" class=\"icon ' + addclass + '\" ' + (value(id) != '' ? 'id=\"' + id + '\"' : '') + '><path d=\"' + this[icon][2] + '\"></path></svg>';
+				return '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + this[icon][0] + '\" style=\"transform: scale(' + this[icon][1] + ');\" class=\"icon ' + addclass + '\" ' + (value(id) != '' ? ' id=\"' + id + '\" ' : '') + (value(event) != '' ? ' ' + event : '') + '><path d=\"' + this[icon][2] + '\"></path></svg>';
 			}
 		},
 		init: function (query) { //displays start screen
 			el('input').innerHTML =
-				'<form id="search" style="display:inline-block; font-size:150%; padding:0; margin:0;" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
-				'<input type="text" pattern=".{3,}" id="globalsearch" style="margin:0;" placeholder="' +
+				'<form id="search" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
+				'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
 				core.function.lang('globalSearchPlaceholder') + '" autofocus class="search" ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
-				'<span onclick="globalSearch.search(el(\'globalsearch\').value);" style="padding:.05em 0;" class="search">' + core.function.icon.insert('search') + '</span>' +
+				'<span onclick="globalSearch.search(el(\'globalsearch\').value);" class="search">' + core.function.icon.insert('search') + '</span>' +
 				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
 				'</form>';
 			el('temp').innerHTML =
