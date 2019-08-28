@@ -15,7 +15,6 @@ var svgClassList = { //classList.add and *.remove not supported for svg in ie, t
 	add: function (element, classname) {
 		if (element.classList) element.classList.add(classname);
 		else if (element.getAttribute('class').indexOf(classname) < 0) element.setAttribute('class', element.getAttribute('class') + ' ' + classname);
-		
 	},
 	remove: function (element, classname) {
 		if (element.classList) element.classList.remove(classname);
@@ -261,7 +260,7 @@ var core = {
 		setting: { //core-object because of reusable switch-methods
 			setup: function () { //displays settings menu
 				return '<div id="popupcontent">' +
-					'<article id="settingsMenu">' +
+					'<article class="home" style="border-right:1px solid">' +
 					'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupMain();" style="cursor:pointer">' + core.function.icon.insert('generalsetting') + core.function.lang('settingMainCaption') + '</span><br />' +
 					'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupModules();" style="cursor:pointer">' + core.function.icon.insert('moduleselector') + core.function.lang('settingModuleselectorCaption') + '</span><br />' +
 					'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupAdvanced();" style="cursor:pointer">' + core.function.icon.insert('advancedsetting') + core.function.lang('settingAdvancedCaption') + '</span><br />' +
@@ -409,10 +408,15 @@ var core = {
 			closepopup: ['0 0 2048 2048', '1,-1', 'M0 1664h2048v-1152h-2048v1152zM128 1536v-896h1280v896h-1280zM1920 640v896h-384v-896h384zM989 1405l317 -317l-317 -317l-90 90l162 163h-421v128h421l-162 163z'],
 			info: ['0 0 2048 2048', '1,-1', 'M960 128q-133 0 -255.5 34t-229.5 96.5t-194.5 150t-150 194.5t-96.5 229.5t-34 255.5t34 255.5t96.5 229.5t150 194.5t194.5 150t229.5 96.5t255.5 34t255.5 -34t229.5 -96.5t194.5 -150t150 -194.5t96.5 -229.5t34 -255.5t-34 -255.5t-96.5 -229.5t-150 -194.5t-194.5 -150t-229.5 -96.5t-255.5 -34zM960 1920q-115 0 -221 -30t-198.5 -84t-168.5 -130t-130 -168.5t-84 -199t-30 -220.5t30 -220.5t84 -199t130 -168.5t168.5 -130t198.5 -84t221 -30q114 0 220.5 30t199 84t168.5 130t130 168.5t84 198.5t30 221q0 114 -30 220.5t-84 199t-130 168.5t-168.5 130t-199 84t-220.5 30zM896 1280h128v-640h-128v640zM896 1536h128v-128h-128v128z'],
 			feedbackrequest: ['0 0 2048 2048', '1,-1', 'M514 467q25 -85 63 -160q-10 -20 -20.5 -42.5t-31.5 -33.5l-173 -87q-34 -16 -69 -16h-9.5t-9.5 1l-47 -94q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 12 7 30t16.5 37.5t19.5 36.5t15 28q-26 40 -26 87v165q0 16 7 29l576 1152l-65 32l-237 -474q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 13 7 29l239 478q16 32 43 50.5t63 18.5q35 0 66.5 -17t61.5 -32l71 142q8 17 23.5 26t33.5 9q13 0 22 -4q12 24 23.5 47.5t26 42.5t35.5 30.5t53 11.5t61 -15l94 -47q32 -16 50.5 -42.5t18.5 -63.5q0 -34 -15.5 -63.5t-29.5 -58.5q14 -8 23 -23t9 -32q0 -12 -8.5 -32.5t-19.5 -42.5t-22 -42t-16 -31q-43 -7 -84 -18.5t-82 -26.5l82 164l-192 96l-282 -562q-5 -10 -12.5 -19t-12.5 -18q-14 -21 -26 -42.5t-23 -44.5q-21 -41 -36 -84q-4 -10 -7 -21.5t-8 -21.5l-262 -524v-150q0 -11 8 -19t19 -8l166 80zM1033 1859l87 -43l29 58l-87 43zM1344 1408q97 0 187 -25t168.5 -71t142.5 -110t110 -142.5t71 -168.5t25 -187t-25 -187t-71 -168.5t-110 -142.5t-142.5 -110t-168.5 -71t-187 -25t-187 25t-168.5 71t-142.5 110t-110 142.5t-71 168.5t-25 187t25 187t71 168.5t110 142.5t142.5 110t168.5 71t187 25zM1344 128q119 0 224 45.5t183 123.5t123.5 183t45.5 224t-45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224t45.5 -224t123.5 -183t183 -123.5t224 -45.5zM1280 384h128v-128h-128v128zM1344 1152q53 0 99.5 -20t81.5 -55t55 -81.5t20 -99.5q0 -46 -14 -81t-35.5 -63t-46.5 -50.5t-46.5 -44.5t-35.5 -45t-14 -52v-48h-128v48q0 46 14 81t35.5 63t46.5 50.5t46.5 44.5t35.5 45t14 52q0 27 -10 50t-27.5 40.5t-40.5 27.5t-50 10t-50 -10t-40.5 -27.5t-27.5 -40.5t-10 -50h-128q0 53 20 99.5t55 81.5t81.5 55t99.5 20z'],
+			fileexplorer: ['0 0 2048 2048', '1,-1','M2048 256h-384v-128h-384v128h-512v-128h-384v128h-384v1536q0 27 10 50t27.5 40.5t40.5 27.5t50 10h480q45 0 77.5 -9.5t58 -23.5t45.5 -31t40.5 -31t44 -23.5t54.5 -9.5h992q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50v-1408zM128 1792v-128h480q24 0 42 4.5t33 13t29.5 20t31.5 26.5q-17 15 -31.5 26.5t-29.5 20t-33 13t-42 4.5h-480zM1280 384v256h-512v-256h512zM1536 256v576q0 26 -19 45t-45 19h-896q-26 0 -45 -19t-19 -45v-576h128v512h768v-512h128zM1920 1664h-992q-31 0 -54.5 -9.5t-44 -23.5t-41 -31t-45.5 -31t-57.5 -23.5t-77.5 -9.5h-480v-1152h256v448q0 40 15 75t41 61t61 41t75 15h896q40 0 75 -15t61 -41t41 -61t15 -75v-448h256v1280z'],
 
-			insert: function (icon, addclass, id, event) {
+			insert: function (icon, addclass, id, attributes) {
 				addclass = addclass || '';
-				return '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + this[icon][0] + '\" style=\"transform: scale(' + this[icon][1] + ');\" class=\"icon ' + addclass + '\" ' + (value(id) != '' ? ' id=\"' + id + '\" ' : '') + (value(event) != '' ? ' ' + event : '') + '><path d=\"' + this[icon][2] + '\"></path></svg>';
+				var rtrn= '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + this[icon][0] + '\" style=\"transform: scale(' + this[icon][1] + ');\" class=\"icon ' + addclass + '\" ' + (value(id) != '' ? ' id=\"' + id + '\" ' : '') + (value(attributes) != '' ? ' ' + attributes : '') + '><path d=\"' + this[icon][2] + '\"></path></svg>';
+				//weird hack: svg seem not to support the title attribute. so there has to be a wrapper if attributes contain title
+				var title=value(attributes).match(/title="(.*?)"/g);
+				if (title) return ['<span ' + title + '>', rtrn,'</span>'].join('');				
+				else return rtrn;
 			}
 		},
 		init: function (query) { //displays start screen
@@ -484,7 +488,7 @@ var core = {
 		},
 		buttoncolor: function () {
 			//classList.add and *.remove not supported for svg in ie
-			if (core.history.currentStep < 2 )
+			if (core.history.currentStep < 2)
 				svgClassList.add(el('titleforthbutton'), 'inactiveicon');
 			else svgClassList.remove(el('titleforthbutton'), 'inactiveicon');
 			if (core.history.currentStep == core.history.storage.length)
