@@ -45,10 +45,11 @@
 			document.write('<article id="input"></article>');
 			document.write('<aside class="setting">' +
 				core.function.icon.insert('feedbackrequest', 'bigger', false,
-					'title="' + core.function.lang('homeMenuFeedbackRequest') + 'onclick="win = window.open(\'mailto:\' + core.var.adminMail + \'?subject=\' + document.title, \'emailWindow\'); if (win && win.open && !win.closed) win.close(); return;"') +
+					'title="' + core.function.lang('homeMenuFeedbackRequest') +
+					'" onclick="var win = window.open(\'mailto:\' + core.var.adminMail + \'?subject=\' + document.title, \'emailWindow\'); if (win && win.open && !win.closed) win.close(); return;"') +
 				core.function.icon.insert('settings', 'bigger', false,
-				'title="' + core.function.lang('settingMenuEntry') +
-				'" onclick="core.function.popup(core.function.setting.setup()); return;"') +
+					'title="' + core.function.lang('settingMenuEntry') +
+					'" onclick="core.function.popup(core.function.setting.setup()); return;"') +
 				'</aside>');
 		</script>
 	</header>
