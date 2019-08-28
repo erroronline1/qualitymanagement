@@ -162,7 +162,7 @@ var documentbundles = {
 					out += '<option id="' + key + '" value="' + key + '" ' + (query == key ? 'selected' : '') + '>' + key.replace(/_/g, " ") + '</option>';
 				});
 				out += '</select>';
-				el('input').innerHTML = out + '<span style="display:inline-block; padding-top:.375em">' + core.function.insert.checkbox(core.function.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.function.gen(sel)"')+ '</span>';
+				el('input').innerHTML = out + '<span class="inline" style="padding-top:.375em">' + core.function.insert.checkbox(core.function.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.function.gen(sel)"') + '</span>';
 				if (value(query) != '') documentbundles.function.gen(query);
 			}
 			core.performance.stop('documentbundles.function.input(\'' + value(query) + '\')');

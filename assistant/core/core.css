@@ -1,18 +1,18 @@
 /*relevant properties and alignment*/
+
+/* /////////////////////////////////////////////////////////////////////////////////
+general layout box-items
+//////////////////////////////////////////////////////////////////////////////////*/
+
 * {
 	box-sizing: border-box;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.005);
 	transition: .3s ease;
 	margin: 0;
-}
-
-body,
-input,
-select {
 	font-family: 'Segoe UI', sans-serif;
 	font-size: 1em;
 	font-weight: 300;
-	margin: 0;
+	vertical-align: top;
 }
 
 body {
@@ -53,28 +53,44 @@ aside {
 }
 
 .home {
-	flex: 3;
+	flex: 0 0 14em;
 }
 
-#input {
-	flex: 8;
+#input,
+#search {
+	display: flex;
+	flex-direction: row;
+}
+
+#search {
+	max-width: 100%;
+}
+
+#input,
+#input *,
+#search * {
+	flex: 1 1 auto;
+}
+
+#input .icon,
+#search .icon,
+#search span {
+	flex: 0 0 auto;
+}
+
+#input select,
+#search select {
+	flex: 0 1 20em;
+}
+
+#search input {
+	flex: 1 1 20em;
 }
 
 .setting {
-	flex: 1 1 6em;
+	flex: 0 0 9em;
 	text-align: right;
 	overflow: hidden;
-}
-
-#settingsMenu {
-	flex: 0 1 13em;
-	border-right: 1px solid
-}
-
-#menu,
-#content {
-	z-index: 8;
-	vertical-align: top;
 }
 
 #content {
@@ -84,48 +100,21 @@ aside {
 }
 
 #menu {
-	flex: 1 1 10em;
+	flex: 0 0 23em;
 	height: 100%;
 	overflow-x: hidden;
+	overflow-y: auto;
 }
 
-#menu,
-.home {
-	max-width: 60em;
-	min-width: 10em;
-}
-
+/* browser switch for ie
 @media screen and (-ms-high-contrast: active),
 (-ms-high-contrast: none) {
-
-	/*ms-specific media query, will only parsed in internet explorer, flex is interpreted different, this part is for future use*/
-	#menu {
-		flex: 1;
-		height: 100vh;
-		overflow-x: hidden;
-		overflow-y: auto;
-	}
-
-	#menu,
-	.home {
-		max-width: 30em;
-		min-width: 10em;
-	}
-
 }
-
+*/
 @media (max-width:75em) {
 	#menu {
 		max-width: 4em;
-		min-width: 4em;
-		width: 4em;
 		white-space: nowrap;
-	}
-
-	.home {
-		max-width: 12em;
-		min-width: 12em;
-		width: 12em;
 	}
 
 	#menu label {
@@ -136,15 +125,7 @@ aside {
 /* small menu like responsive version by user demand */
 #menu.small {
 	max-width: 4em;
-	min-width: 4em;
-	width: 4em;
 	white-space: nowrap;
-}
-
-.home.small {
-	max-width: 12em;
-	min-width: 12em;
-	width: 12em;
 }
 
 #menu.small label {
@@ -160,8 +141,6 @@ aside {
 	cursor: pointer;
 	margin-bottom: .5em;
 	padding: .5em;
-	-ms-user-select: none;
-	-moz-user-select: none;
 	user-select: none;
 }
 
@@ -169,9 +148,36 @@ aside {
 	fill: rgba(0, 164, 201, 1);
 }
 
+#popup {
+	z-index: 10;
+	display: none;
+	opacity: 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	padding: 0;
+	width: 100vw;
+	height: 100vh;
+}
+
+#popuptext {
+	white-space: normal;
+	width: 44vw;
+	min-width: 45em;
+	height: 100%;
+	padding: 1em 2em;
+	top: 0;
+	right: -100vw;
+	position: absolute;
+	overflow-x: auto;
+}
+
+/* /////////////////////////////////////////////////////////////////////////////////
+content box-items
+//////////////////////////////////////////////////////////////////////////////////*/
+
 #title {
 	font-size: 2em;
-	vertical-align: middle;
 	white-space: nowrap;
 }
 
@@ -179,14 +185,16 @@ aside {
 	width: 1em;
 	height: 1em;
 	margin: -.2em .5em -.1em 0;
+	vertical-align: middle;
 }
 
-.icon:active{
+.icon:active {
 	transform: scale(.9, -.9) !important;
 }
 
 .bigger {
 	box-sizing: content-box;
+	margin-top: .125em;
 	padding: .5em;
 	width: 1.3em;
 	height: 1.3em
@@ -265,15 +273,16 @@ aside {
 
 .inline {
 	display: inline-block;
-	vertical-align: top;
 }
+
+/* /////////////////////////////////////////////////////////////////////////////////
+elements
+//////////////////////////////////////////////////////////////////////////////////*/
 
 .custominput {
 	display: inline-block;
 	position: relative;
 	padding-left: 2.5em;
-	-ms-user-select: none;
-	-moz-user-select: none;
 	user-select: none;
 	min-width: 10em;
 }
@@ -314,21 +323,27 @@ input[type='text'],
 input[type='date'],
 select,
 span.search {
-	font-size: 1em;
+	float: left;
 	width: 20em;
 	max-width: 90%;
 	margin-bottom: .5em;
 	margin-right: .5em;
+	padding: .5em;
+}
+
+select {
+	/*wtf!*/
+	padding: .45em;
 }
 
 input[type='text'].search {
 	margin-right: 0;
-	width: 18em;
-	max-width: calc(90% - 2em);
+	flex: 1 1 auto;
 }
 
 span.search {
-	padding: .07em 0;
+	padding: .375em 0;
+	max-width: 2em;
 }
 
 input[type='button'],
@@ -337,20 +352,11 @@ input[type='submit'],
 	padding: .3em 1.2em;
 	border: none;
 	cursor: default;
-	margin: 0;
 }
 
 textarea {
-	font-family: 'Segoe UI', sans-serif;
-	font-size: 1em;
-	font-weight: 300;
 	margin: .25em;
 	overflow: auto;
-}
-
-h1 {
-	font-variant: small-caps;
-	font-size: 1.5em;
 }
 
 a {
@@ -363,38 +369,17 @@ a::after {
 	padding-right: 1em;
 }
 
+#search a::after{ content:none}
+
 hr {
 	border: 0;
 	height: 1px;
 	margin: 1em;
 }
 
-#popup {
-	z-index: 10;
-	display: none;
-	opacity: 0;
-	position: fixed;
-	top: 0;
-	left: 0;
-	margin: 0;
-	padding: 0;
-	width: 100vw;
-	height: 100vh;
-}
-
-#popuptext {
-	white-space: normal;
-	width: 44vw;
-	min-width: 45em;
-	height: 100%;
-	padding: 1em 2em;
-	top: 0;
-	right: -100vw;
-	position: absolute;
-	overflow-x: auto;
-}
-
-/* add a little fancyness */
+/* /////////////////////////////////////////////////////////////////////////////////
+add a little fancyness
+//////////////////////////////////////////////////////////////////////////////////*/
 
 a:hover::after {
 	animation: activelink .25s infinite alternate;

@@ -139,15 +139,15 @@ var stocklist = {
 					if (found.length > 0) {
 						core.function.smartSearch.relevance.init();
 						//reminder: keep these kind of assignments out of loops for performance reasons!
-						var maillanguage={ 
-							helpChangeItemTitle:core.function.lang('helpChangeItemTitle', 'stocklist'),
-							helpDeleteItemTitle:core.function.lang('helpDeleteItemTitle', 'stocklist'),
-							helpChangeItemPopup:core.function.lang('helpChangeItemPopup', 'stocklist'),
-							helpDeleteItemPopup:core.function.lang('helpDeleteItemPopup', 'stocklist'),
-							helpChangeItemSubject:core.function.lang('helpChangeItemSubject', 'stocklist'),
-							helpDeleteItemSubject:core.function.lang('helpDeleteItemSubject', 'stocklist'),
-							helpChangeItemCaption:core.function.lang('helpChangeItemCaption', 'stocklist'),
-							helpDeleteItemCaption:core.function.lang('helpDeleteItemCaption', 'stocklist'),
+						var maillanguage = {
+							helpChangeItemTitle: core.function.lang('helpChangeItemTitle', 'stocklist'),
+							helpDeleteItemTitle: core.function.lang('helpDeleteItemTitle', 'stocklist'),
+							helpChangeItemPopup: core.function.lang('helpChangeItemPopup', 'stocklist'),
+							helpDeleteItemPopup: core.function.lang('helpDeleteItemPopup', 'stocklist'),
+							helpChangeItemSubject: core.function.lang('helpChangeItemSubject', 'stocklist'),
+							helpDeleteItemSubject: core.function.lang('helpDeleteItemSubject', 'stocklist'),
+							helpChangeItemCaption: core.function.lang('helpChangeItemCaption', 'stocklist'),
+							helpDeleteItemCaption: core.function.lang('helpDeleteItemCaption', 'stocklist'),
 						};
 
 						found.forEach(function (value) {
