@@ -82,7 +82,8 @@ var documentlookup = {
 		selectedObject: function () {
 			return eval(documentlookup.var.selectedModule() + '_data');
 		},
-		thirdDocumentCategoryPath: 'O:/Technische Orthopaedie/QM/QM-PDF Vorlagen/Nachweisdokumente/',
+//		thirdDocumentCategoryPath: 'O:/Technische Orthopaedie/QM/QM-PDF Vorlagen/Nachweisdokumente/',
+		thirdDocumentCategoryPath: 'c:/',
 		disableOutputSelect: true,
 	},
 	api: {
@@ -165,7 +166,7 @@ var documentlookup = {
 						'Empfangsbesttigung,10,' +
 						'Reklamation,10';
 
-					output = '<br />' + core.function.lang('favouriteCaption', 'documentlookup') + ':<span style="display:inline-block; vertical-align:middle; float:right;">' +
+					output = '<br />' + core.function.lang('favouriteCaption', 'documentlookup') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
 						core.function.icon.insert('delete', 'bigger', false, 'title="' + core.function.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'\')"') +
 						core.function.icon.insert('clipboard', 'bigger', false, 'title="' + core.function.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + defaults + '\')"') +
 						core.function.icon.insert('refresh', 'bigger', false, 'title="' + core.function.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + core.function.setting.get('customfavouritedocs') + '\')"') +
@@ -232,7 +233,7 @@ var documentlookup = {
 				'<span onclick="documentlookup.function.search();" class="search">' + core.function.icon.insert('search') + '</span> ' +
 				core.function.insert.select(selection, 'lookup', 'lookup', (core.function.setting.get('lookup_bundle') || false), 'onchange="core.function.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.function.search()\');"') +
 				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
-				'<a style="float:right" href="' + documentlookup.var.thirdDocumentCategoryPath + '">' + core.function.lang('optionThirdType', 'documentlookup') + '</a>' +
+				'<a href="file://'+documentlookup.var.thirdDocumentCategoryPath+'" >'+core.function.icon.insert('fileexplorer','bigger', false, 'title="' + core.function.lang('optionThirdType', 'documentlookup') + '"') +'</a>'+
 				'</form>';
 			el('temp').innerHTML = el('output').innerHTML = '';
 			core.performance.stop('documentlookup.function.init(\'' + value(query) + '\')');
