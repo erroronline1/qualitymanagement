@@ -33,23 +33,22 @@
 	<header>
 		<script>
 			document.write('<nav class="home">' +
-				'<span title="' + core.function.lang('homeMenuEntry') +
-				'" onclick="slider.slide(\'null\'); core.function.init()">' + core.function.icon.insert('home', 'bigger') +
-				'</span>' +
-				'<span title="' + core.function.lang('homeMenuBack') + '" onclick="core.history.go(\'back\')">' + core
-				.function.icon.insert('back', 'bigger inactiveicon', 'titlebackbutton') + '</span>' +
-				'<span title="' + core.function.lang('homeMenuForth') + '" onclick="core.history.go(\'forth\')">' + core
-				.function.icon.insert('forth', 'bigger inactiveicon', 'titleforthbutton') + '</span>' +
+				core.function.icon.insert('home', 'bigger', false,
+					'title="' + core.function.lang('homeMenuEntry') + '" onclick="slider.slide(\'null\'); core.function.init()"') +
+				core.function.icon.insert('back', 'bigger inactiveicon', 'titlebackbutton',
+					'title="' + core.function.lang('homeMenuBack') + '" onclick="core.history.go(\'back\')"') +
+				core.function.icon.insert('forth', 'bigger inactiveicon', 'titleforthbutton',
+					'title="' + core.function.lang('homeMenuForth') + '" onclick="core.history.go(\'forth\')"') +
+				core.function.icon.insert('refresh', 'bigger', false,
+					'title="' + core.function.lang('homeMenuRestart') + '" onclick="location.reload()"') +
 				'</nav>');
 			document.write('<article id="input"></article>');
 			document.write('<aside class="setting">' +
-				'<span title="' + core.function.lang('homeMenuFeedbackRequest') +
-				'" onclick="win = window.open(\'mailto:\' + core.var.adminMail + \'?subject=\' + document.title, \'emailWindow\'); if (win && win.open && !win.closed) win.close(); return;">' +
-				core.function.icon.insert(
-					'feedbackrequest', 'bigger') + '</span> ' +
-				'<span title="' + core.function.lang('settingMenuEntry') +
-				'" onclick="core.function.popup(core.function.setting.setup()); return;">' + core.function.icon.insert(
-					'settings', 'bigger') + '</span>' +
+				core.function.icon.insert('feedbackrequest', 'bigger', false,
+					'title="' + core.function.lang('homeMenuFeedbackRequest') + 'onclick="win = window.open(\'mailto:\' + core.var.adminMail + \'?subject=\' + document.title, \'emailWindow\'); if (win && win.open && !win.closed) win.close(); return;"') +
+				core.function.icon.insert('settings', 'bigger', false,
+				'title="' + core.function.lang('settingMenuEntry') +
+				'" onclick="core.function.popup(core.function.setting.setup()); return;"') +
 				'</aside>');
 		</script>
 	</header>
