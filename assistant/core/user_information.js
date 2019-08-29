@@ -19,7 +19,13 @@ var randomTip = {
 			'<br /><span class="highlight">' + this.list[0][core.var.selectedLanguage] + ':</span>' +
 			'<br />' + this.list[Math.floor(Math.random() * (this.list.length - 1) + 1)][core.var.selectedLanguage] +
 			'';
-
+	},
+	enlist: function(){
+		var rtrn='';
+		Object.keys(this.list).forEach(function(key){
+			rtrn += randomTip.list[key][core.var.selectedLanguage]+'<br /><br />';
+		});
+		return rtrn;
 	},
 	list: [
 		//	list of tips according to registered langages, first item is the caption of the tip
@@ -41,8 +47,8 @@ var randomTip = {
 			de: 'Bei niedriger Auflösung kannst du das Menü dauerhaft bei den Einstellungen auf schmal einstellen, damit mehr Platz für die Inhalte ist.'
 		},
 		{
-			en: 'Enabling fuzzy search can help you finding the desired content in case of typos.',
-			de: 'Wenn du dich gelegentlich vertippst kann dich Fuzzy-Search unterstützen trotzdem zum Ziel zu gelangen.'
+			en: 'Enabling fuzzy search can help you finding the desired content in case of typos. Set up the sensitivity in the advanced settings.',
+			de: 'Wenn du dich gelegentlich vertippst kann dich Fuzzy-Search unterstützen trotzdem zum Ziel zu gelangen. Die Empfindlichkeit kann bei den erweiterten Einstellungen angepasst werden.'
 		},
 		{
 			en: 'Search for different keywords, results with the most matches appear at the top.',
@@ -83,6 +89,10 @@ var randomTip = {
 		{
 			en: 'If suddenly something is not working anymore it might be possible I had to change something. Just reload the application. I hope you didn\'t lost anything.',
 			de: 'Falls etwas plötzlich nicht mehr funktioniert habe ich vermutlich etwas ändern müssen. Lade die Oberfläche einfach nochmal. Ich hoffe es ging nichts verloren.'
+		},
+		{
+			en:'Some Browsers are slower than others (looking at you Edge!). If the global search or modules do not load properly add a little delay in the advanced settings.',
+			de:'Manche Brwoser sind langsamer als andere (fühle dich angesprochen Edge!). Wenn die globale Suche oder die Module nicht richtig laden gib ihnen bei den erweiterten Einstellungen etwas mehr Zeit.'
 		},
 		//	module specific tips
 		{
