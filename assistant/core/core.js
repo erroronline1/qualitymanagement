@@ -209,14 +209,23 @@ var core = {
 		},
 		loadScript: function (url, callback) { //load given script-files into scope, e.g. load desired modules and data-files
 			if (url != '') {
-				core.performance.start(callback);
-				if (typeof (reset) != 'undefined') el('input').innerHTML = '';
-				// Adding the script tag to the head as suggested before
-				var head = document.getElementsByTagName('head')[0],
-					script = document.createElement('script');
+				if (typeof (callback) != 'undefined') core.performance.start(callback);
+
+				// create new script node
+				var script = document.createElement('script');
 				script.type = 'text/javascript';
 				script.src = url;
+				// evaluate callback function on load event
 				if (typeof (callback) != 'undefined') {
+
+					// add module-vars to head in case of module call
+					var scriptname = url.match(/\/(.*?)\./)[1];
+					if (scriptname in core.var.modules) {
+						var scriptvar = document.createElement('script');
+						scriptvar.type = 'text/javascript';
+						scriptvar.src = 'data/' + scriptname + '.var.js';
+					}
+
 					var skip = false;
 					script.onload = function () { //not ie
 						eval(callback);
@@ -227,12 +236,17 @@ var core = {
 							eval(callback);
 						}
 					};
+					//set current scope(==module name), window title and load module.var-file
+					if (callback.indexOf('init') > -1) {
+						core.var.currentScope = url.match(/\/(.*?)\./)[1];
+						document.title = core.function.lang('title') + ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage];
+					}
 				}
-				document.head.appendChild(script);
-				if (callback.indexOf('init') > -1) {
-					core.var.currentScope = url.match(/\/(.*?)\./)[1];
-					document.title = core.function.lang('title') + ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage];
-				}
+				//append node(s)
+				if (typeof scriptvar != "undefined") document.head.appendChild(scriptvar);
+				setTimeout(function () {
+					document.head.appendChild(script);
+				}, core.function.setting.get('settingVarPreloadTime') || 50);
 			}
 		},
 
@@ -260,11 +274,12 @@ var core = {
 		setting: { //core-object because of reusable switch-methods
 			setup: function () { //displays settings menu
 				return '<div id="popupcontent">' +
-					'<article class="home" style="border-right:1px solid">' +
+					'<article class="home" style="border-right:1px solid; line-height:3em">' +
 					'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupMain();" style="cursor:pointer">' + core.function.icon.insert('generalsetting') + core.function.lang('settingMainCaption') + '</span><br />' +
 					'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupModules();" style="cursor:pointer">' + core.function.icon.insert('moduleselector') + core.function.lang('settingModuleselectorCaption') + '</span><br />' +
 					'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupAdvanced();" style="cursor:pointer">' + core.function.icon.insert('advancedsetting') + core.function.lang('settingAdvancedCaption') + '</span><br />' +
-					'<span onclick="el(\'settingContent\').innerHTML=updateTracker.enlist();" style="cursor:pointer">' + core.function.icon.insert('info') + 'Updates</span><br />' +
+					'<span onclick="el(\'settingContent\').innerHTML=updateTracker.enlist();" style="cursor:pointer">' + core.function.icon.insert('update') + 'Updates</span><br />' +
+					'<span onclick="el(\'settingContent\').innerHTML=aboutNotification[core.var.selectedLanguage]+\'<hr />\'+core.function.lang(\'settingGeneralHint\')+\'<hr />\'+randomTip.enlist();" style="cursor:pointer">' + core.function.icon.insert('info') + 'About</span><br />' +
 					'</article>' +
 					'<aside id="settingContent">' + core.function.setting.setupMain() + '</aside>' +
 					'<div>';
@@ -278,8 +293,8 @@ var core = {
 					});
 				}
 				return core.function.lang('settingThemeCaption') + ':<br />' + core.function.insert.select(themeSelector, 'settingTheme', 'settingTheme', (core.function.setting.get('settingTheme') || null), 'onchange="core.function.setting.theme(this.value)"') +
-					'<br />' + core.function.lang('settingMenusizeCaption') + ':<br />' + core.function.insert.checkbox(core.function.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.function.setting.get('settingSmallmenu') || 0), 'onchange="core.function.setting.reversedswitch(\'settingSmallmenu\')"', core.function.lang('settingRestartNeccessary')) +
-					'<br />' + core.function.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (core.function.setting.get('settingFontsize') || 0) + '" id="fontsize" onchange="core.function.setting.fontsize(this.value)" />' +
+					'<br /><br />' + core.function.lang('settingMenusizeCaption') + ':<br />' + core.function.insert.checkbox(core.function.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.function.setting.get('settingSmallmenu') || 0), 'onchange="core.function.setting.reversedswitch(\'settingSmallmenu\')"', core.function.lang('settingRestartNeccessary')) +
+					'<br />' + core.function.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (core.function.setting.get('settingFontsize') || 0) + '" onchange="core.function.setting.fontsize(this.value)" />' +
 					'<br />' + core.function.lang('settingLanguageCaption') + ':<br />' + core.function.insert.select(core.var.registeredLanguages, 'settingLanguage', 'settingLanguage', (core.var.selectedLanguage || null), 'title="' + core.function.lang('settingRestartNeccessary') + '" onchange="core.function.setting.set(\'settingLanguage\',(this.value))"') +
 					'<br /><br />' + core.function.insert.checkbox(core.function.lang('settingSearchOptionFuzzy'), 'settingFuzzySearch', (core.function.setting.get('settingFuzzySearch') || 0), 'onchange="core.function.setting.reversedswitch(\'settingFuzzySearch\')"') +
 					'<br /><small>' + core.function.lang('settingSearchOptionFuzzyHint') + '</small>' +
@@ -299,12 +314,12 @@ var core = {
 				return moduleSelector;
 			},
 			setupAdvanced: function () { //return advanced settings
-				return '<input type="button" onclick="core.function.setting.clear()" value="' + core.function.lang('settingResetApp') + '" title="' + core.function.lang('settingRestartNeccessary') + '" />' +
-					'<br /><br />' + core.function.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.function.setting.get('settingGlobalSearchTime') || 3) + '" id="fontsize" onchange="core.function.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
-					'<br />' + core.function.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.function.setting.get('settingFuzzyThreshold') || 5) + '" id="fontsize" onchange="core.function.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
+				return '<input type="button" onclick="core.function.setting.clear()" value="' + core.function.lang('settingResetApp') + '" title="' + core.function.lang('settingRestartNeccessary') + '" /><br />' +
+					'<br />' + core.function.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.function.setting.get('settingFuzzyThreshold') || 5) + '" onchange="core.function.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
+					'<br />' + core.function.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.function.setting.get('settingGlobalSearchTime') || 3) + '" onchange="core.function.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
+					'<br />' + core.function.lang('settingVarPreloadCaption') + ':<br /><input type="range" min="0" max="1000" step="50" value="' + (core.function.setting.get('settingVarPreloadTime') || 50) + '" onchange="core.function.setting.set(\'settingVarPreloadTime\',(this.value))" />' +
 					'<br />' + core.function.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.function.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
-					'<br /><br />' + aboutNotification[core.var.selectedLanguage] +
-					'<br /><br />' + core.function.lang('settingGeneralHint');
+					'';
 			},
 			theme: function (theme) {
 				el('colortheme').href = 'core/' + theme + '.css';
@@ -383,6 +398,10 @@ var core = {
 			forth: ['0 0 2048 2048', '1,-1', 'M2042 1024l-941 -941l-90 90l787 787h-1798v128h1798l-787 787l90 90z'],
 			settings: ['0 0 2048 2048', '1,-1', 'M256 1152q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50t-10 -50t-27.5 -40.5t-40.5 -27.5t-50 -10t-50 10t-40.5 27.5t-27.5 40.5t-10 50t10 50t27.5 40.5t40.5 27.5t50 10zM1024 1152q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50t-10 -50t-27.5 -40.5t-40.5 -27.5t-50 -10t-50 10t-40.5 27.5t-27.5 40.5t-10 50t10 50t27.5 40.5t40.5 27.5t50 10zM1792 1152q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50t-10 -50t-27.5 -40.5t-40.5 -27.5t-50 -10t-50 10t-40.5 27.5t-27.5 40.5t-10 50t10 50t27.5 40.5t40.5 27.5t50 10z'],
 			search: ['0 0 2048 2048', '1,-1', 'M1344 2048q97 0 187 -25t168 -71t142.5 -110.5t110.5 -142.5t71 -168t25 -187t-25 -187t-71 -168t-110.5 -142.5t-142.5 -110.5t-168 -71t-187 -25q-125 0 -239.5 42t-210.5 121l-785 -784q-19 -19 -45 -19t-45 19t-19 45t19 45l784 785q-79 96 -121 210.5t-42 239.5 q0 97 25 187t71 168t110.5 142.5t142.5 110.5t168 71t187 25zM1344 768q119 0 224 45.5t183 123.5t123.5 183t45.5 224t-45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224t45.5 -224t123.5 -183t183 -123.5t224 -45.5z'],
+			closepopup: ['0 0 2048 2048', '1,-1', 'M0 1664h2048v-1152h-2048v1152zM128 1536v-896h1280v896h-1280zM1920 640v896h-384v-896h384zM989 1405l317 -317l-317 -317l-90 90l162 163h-421v128h421l-162 163z'],
+			info: ['0 0 2048 2048', '1,-1', 'M960 128q-133 0 -255.5 34t-229.5 96.5t-194.5 150t-150 194.5t-96.5 229.5t-34 255.5t34 255.5t96.5 229.5t150 194.5t194.5 150t229.5 96.5t255.5 34t255.5 -34t229.5 -96.5t194.5 -150t150 -194.5t96.5 -229.5t34 -255.5t-34 -255.5t-96.5 -229.5t-150 -194.5t-194.5 -150t-229.5 -96.5t-255.5 -34zM960 1920q-115 0 -221 -30t-198.5 -84t-168.5 -130t-130 -168.5t-84 -199t-30 -220.5t30 -220.5t84 -199t130 -168.5t168.5 -130t198.5 -84t221 -30q114 0 220.5 30t199 84t168.5 130t130 168.5t84 198.5t30 221q0 114 -30 220.5t-84 199t-130 168.5t-168.5 130t-199 84t-220.5 30zM896 1280h128v-640h-128v640zM896 1536h128v-128h-128v128z'],
+			update: ['0 0 2048 2048', '1,-1', 'M1024 1536v-549l365 -366l-90 -90l-403 402v603h128zM1536 1408h297q-56 117 -140.5 211.5t-190 161.5t-227.5 103t-251 36q-123 0 -237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5t32 -237.5t90.5 -214t140.5 -181.5t181.5 -140.5t213.5 -90.5t238 -32q150 0 289 48.5t253 135.5t197.5 207.5t123.5 265.5l123 -34q-45 -166 -140.5 -304t-226 -237.5t-289 -154.5t-330.5 -55q-141 0 -272 36.5t-245 103t-207.5 160t-160 207.5t-103 244.5t-36.5 272.5q0 141 36.5 272t103 245t160 207.5t207.5 160t244.5 103t272.5 36.5q140 0 272 -37t248.5 -105.5t212 -166.5t163.5 -221v274h128v-512h-512v128z'],
+			feedbackrequest: ['0 0 2048 2048', '1,-1', 'M514 467q25 -85 63 -160q-10 -20 -20.5 -42.5t-31.5 -33.5l-173 -87q-34 -16 -69 -16h-9.5t-9.5 1l-47 -94q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 12 7 30t16.5 37.5t19.5 36.5t15 28q-26 40 -26 87v165q0 16 7 29l576 1152l-65 32l-237 -474q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 13 7 29l239 478q16 32 43 50.5t63 18.5q35 0 66.5 -17t61.5 -32l71 142q8 17 23.5 26t33.5 9q13 0 22 -4q12 24 23.5 47.5t26 42.5t35.5 30.5t53 11.5t61 -15l94 -47q32 -16 50.5 -42.5t18.5 -63.5q0 -34 -15.5 -63.5t-29.5 -58.5q14 -8 23 -23t9 -32q0 -12 -8.5 -32.5t-19.5 -42.5t-22 -42t-16 -31q-43 -7 -84 -18.5t-82 -26.5l82 164l-192 96l-282 -562q-5 -10 -12.5 -19t-12.5 -18q-14 -21 -26 -42.5t-23 -44.5q-21 -41 -36 -84q-4 -10 -7 -21.5t-8 -21.5l-262 -524v-150q0 -11 8 -19t19 -8l166 80zM1033 1859l87 -43l29 58l-87 43zM1344 1408q97 0 187 -25t168.5 -71t142.5 -110t110 -142.5t71 -168.5t25 -187t-25 -187t-71 -168.5t-110 -142.5t-142.5 -110t-168.5 -71t-187 -25t-187 25t-168.5 71t-142.5 110t-110 142.5t-71 168.5t-25 187t25 187t71 168.5t110 142.5t142.5 110t168.5 71t187 25zM1344 128q119 0 224 45.5t183 123.5t123.5 183t45.5 224t-45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224t45.5 -224t123.5 -183t183 -123.5t224 -45.5zM1280 384h128v-128h-128v128zM1344 1152q53 0 99.5 -20t81.5 -55t55 -81.5t20 -99.5q0 -46 -14 -81t-35.5 -63t-46.5 -50.5t-46.5 -44.5t-35.5 -45t-14 -52v-48h-128v48q0 46 14 81t35.5 63t46.5 50.5t46.5 44.5t35.5 45t14 52q0 27 -10 50t-27.5 40.5t-40.5 27.5t-50 10t-50 -10t-40.5 -27.5t-27.5 -40.5t-10 -50h-128q0 53 20 99.5t55 81.5t81.5 55t99.5 20z'],
 			mail: ['0 0 2048 2048', '1,-1', 'M0 1664h2048v-1280h-2048v1280zM1905 1536h-1762l881 -441zM128 512h1792v888l-896 -447l-896 447v-888z'],
 			delete: ['0 0 2048 2048', '1,-1', 'M1792 1664h-128v-1472q0 -40 -15 -75t-41 -61t-61 -41t-75 -15h-1024q-40 0 -75 15t-61 41t-41 61t-15 75v1472h-128v128h512v128q0 27 10 50t27.5 40.5t40.5 27.5t50 10h384q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50v-128h512v-128zM768 1792h384v128h-384v-128z M1536 1664h-1152v-1472q0 -26 19 -45t45 -19h1024q26 0 45 19t19 45v1472zM768 384h-128v1024h128v-1024zM1024 384h-128v1024h128v-1024zM1280 384h-128v1024h128v-1024z'],
 			save: ['0 0 2048 2048', '1,-1', 'M1792 1920q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50v-1664h-1563l-229 230v1434q0 27 10 50t27.5 40.5t40.5 27.5t50 10h1536zM512 1152h1024v640h-1024v-640zM1280 640h-640v-384h128v256h128v-256h384v384zM1792 1792h-128v-768h-1280v768h-128v-1381l154 -155h102 v512h896v-512h384v1536z'],
@@ -405,17 +424,14 @@ var core = {
 			email: ['0 0 2048 2048', '1,-1', 'M1024 2048q141 0 272 -36.5t245 -103t207.5 -160t160 -207.5t103 -245t36.5 -272q0 -55 -10.5 -114.5t-31.5 -116.5t-53 -108t-74.5 -89.5t-96.5 -61t-118 -22.5q-54 0 -105.5 14.5t-95.5 41.5t-80.5 66t-60.5 88q-30 -47 -69 -85.5t-85 -66.5t-98.5 -43t-109.5 -15 q-102 0 -185 44.5t-141.5 116.5t-90 164t-31.5 187t31.5 187t90 164t141.5 116.5t185 44.5q95 0 176.5 -41t143.5 -112v153h128v-512v-128q0 -53 20 -99.5t55 -81.5t81.5 -55t99.5 -20q44 0 80.5 18.5t65 49t49.5 70t34.5 82.5t20 85.5t6.5 78.5q0 123 -32 237.5t-90.5 214 t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32t-237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5t32 -237.5t90.5 -214t140.5 -181.5t181.5 -140.5t213.5 -90.5t238 -32q178 0 343 68l49 -118q-94 -39 -192.5 -58.5t-199.5 -19.5 q-141 0 -272 36.5t-245 103t-207.5 160t-160 207.5t-103 244.5t-36.5 272.5q0 141 36.5 272t103 245t160 207.5t207.5 160t244.5 103t272.5 36.5zM960 640q75 0 134.5 34.5t100.5 89.5t63 123.5t22 136.5t-22 136.5t-63 123.5t-100.5 89.5t-134.5 34.5t-134.5 -34.5 t-100.5 -89.5t-63 -123.5t-22 -136.5t22 -136.5t63 -123.5t100.5 -89.5t134.5 -34.5z'],
 			print: ['0 0 2048 2048', '1,-1', 'M1920 1280q26 0 49.5 -10t41 -27.5t27.5 -41t10 -49.5v-896h-512v-256h-1024v256h-512v896q0 26 10 49.5t27.5 41t41 27.5t49.5 10h384v768h1024v-768h384zM640 1280h768v640h-768v-640zM1408 640h-768v-512h768v512zM1920 1152h-1792v-768h384v384h1024v-384h384v768z M320 1024q26 0 45 -19t19 -45t-19 -45t-45 -19t-45 19t-19 45t19 45t45 19z'],
 			websearch: ['0 0 2048 2048', '1,-1', 'M1024 2048q141 0 272 -36.5t245 -103t207.5 -160t160 -207.5t103 -245t36.5 -272t-36.5 -272t-103 -245t-160 -207.5t-207.5 -160t-245 -103t-272 -36.5t-272 36.5t-245 103t-207.5 160t-160 207.5t-103 244.5t-36.5 272.5q0 141 36.5 272t103 245t160 207.5t207.5 160t244.5 103t272.5 36.5zM1833 1408q-38 81 -92 152.5t-120 130.5t-143 105t-161 75q36 -50 65 -106t51.5 -115.5t38.5 -120.5t28 -121h333zM1920 1024q0 133 -37 256h-363q8 -64 12 -127.5t4 -128.5t-4 -128.5t-12 -127.5h363q37 123 37 256zM1024 128q49 0 91.5 27t78.5 71t64.5 99.5t50.5 112.5t37 110t23 92h-690q8 -39 23 -92t37 -110t50.5 -112.5t64.5 -99.5t78.5 -71t91.5 -27zM1391 768q8 64 12.5 127.5t4.5 128.5t-4.5 128.5t-12.5 127.5h-734q-8 -64 -12.5 -127.5t-4.5 -128.5t4.5 -128.5t12.5 -127.5h734zM128 1024q0 -133 37 -256h363q-8 64 -12 127.5t-4 128.5t4 128.5t12 127.5h-363q-37 -123 -37 -256zM1024 1920q-49 0 -91.5 -27t-78.5 -71t-64.5 -99.5t-50.5 -112.5t-37 -110t-23 -92h690q-8 39 -23 92t-37 110t-50.5 112.5t-64.5 99.5t-78.5 71t-91.5 27zM731 1871q-84 -29 -161 -75t-143 -105t-120 -130.5t-92 -152.5h333q12 60 28 121t38.5 120.5t51.5 115.5t65 106zM215 640q38 -81 92 -152.5t120 -130.5t143 -105t161 -75q-36 50 -65 106t-51.5 115.5t-38.5 120.5t-28 121h-333zM1317 177q84 29 161 75t143 105t120 130.5t92 152.5h-333q-12 -60 -28 -121t-38.5 -120.5t-51.5 -115.5t-65 -106z'],
-			closepopup: ['0 0 2048 2048', '1,-1', 'M0 1664h2048v-1152h-2048v1152zM128 1536v-896h1280v896h-1280zM1920 640v896h-384v-896h384zM989 1405l317 -317l-317 -317l-90 90l162 163h-421v128h421l-162 163z'],
-			info: ['0 0 2048 2048', '1,-1', 'M960 128q-133 0 -255.5 34t-229.5 96.5t-194.5 150t-150 194.5t-96.5 229.5t-34 255.5t34 255.5t96.5 229.5t150 194.5t194.5 150t229.5 96.5t255.5 34t255.5 -34t229.5 -96.5t194.5 -150t150 -194.5t96.5 -229.5t34 -255.5t-34 -255.5t-96.5 -229.5t-150 -194.5t-194.5 -150t-229.5 -96.5t-255.5 -34zM960 1920q-115 0 -221 -30t-198.5 -84t-168.5 -130t-130 -168.5t-84 -199t-30 -220.5t30 -220.5t84 -199t130 -168.5t168.5 -130t198.5 -84t221 -30q114 0 220.5 30t199 84t168.5 130t130 168.5t84 198.5t30 221q0 114 -30 220.5t-84 199t-130 168.5t-168.5 130t-199 84t-220.5 30zM896 1280h128v-640h-128v640zM896 1536h128v-128h-128v128z'],
-			feedbackrequest: ['0 0 2048 2048', '1,-1', 'M514 467q25 -85 63 -160q-10 -20 -20.5 -42.5t-31.5 -33.5l-173 -87q-34 -16 -69 -16h-9.5t-9.5 1l-47 -94q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 12 7 30t16.5 37.5t19.5 36.5t15 28q-26 40 -26 87v165q0 16 7 29l576 1152l-65 32l-237 -474q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 13 7 29l239 478q16 32 43 50.5t63 18.5q35 0 66.5 -17t61.5 -32l71 142q8 17 23.5 26t33.5 9q13 0 22 -4q12 24 23.5 47.5t26 42.5t35.5 30.5t53 11.5t61 -15l94 -47q32 -16 50.5 -42.5t18.5 -63.5q0 -34 -15.5 -63.5t-29.5 -58.5q14 -8 23 -23t9 -32q0 -12 -8.5 -32.5t-19.5 -42.5t-22 -42t-16 -31q-43 -7 -84 -18.5t-82 -26.5l82 164l-192 96l-282 -562q-5 -10 -12.5 -19t-12.5 -18q-14 -21 -26 -42.5t-23 -44.5q-21 -41 -36 -84q-4 -10 -7 -21.5t-8 -21.5l-262 -524v-150q0 -11 8 -19t19 -8l166 80zM1033 1859l87 -43l29 58l-87 43zM1344 1408q97 0 187 -25t168.5 -71t142.5 -110t110 -142.5t71 -168.5t25 -187t-25 -187t-71 -168.5t-110 -142.5t-142.5 -110t-168.5 -71t-187 -25t-187 25t-168.5 71t-142.5 110t-110 142.5t-71 168.5t-25 187t25 187t71 168.5t110 142.5t142.5 110t168.5 71t187 25zM1344 128q119 0 224 45.5t183 123.5t123.5 183t45.5 224t-45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224t45.5 -224t123.5 -183t183 -123.5t224 -45.5zM1280 384h128v-128h-128v128zM1344 1152q53 0 99.5 -20t81.5 -55t55 -81.5t20 -99.5q0 -46 -14 -81t-35.5 -63t-46.5 -50.5t-46.5 -44.5t-35.5 -45t-14 -52v-48h-128v48q0 46 14 81t35.5 63t46.5 50.5t46.5 44.5t35.5 45t14 52q0 27 -10 50t-27.5 40.5t-40.5 27.5t-50 10t-50 -10t-40.5 -27.5t-27.5 -40.5t-10 -50h-128q0 53 20 99.5t55 81.5t81.5 55t99.5 20z'],
-			fileexplorer: ['0 0 2048 2048', '1,-1','M2048 256h-384v-128h-384v128h-512v-128h-384v128h-384v1536q0 27 10 50t27.5 40.5t40.5 27.5t50 10h480q45 0 77.5 -9.5t58 -23.5t45.5 -31t40.5 -31t44 -23.5t54.5 -9.5h992q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50v-1408zM128 1792v-128h480q24 0 42 4.5t33 13t29.5 20t31.5 26.5q-17 15 -31.5 26.5t-29.5 20t-33 13t-42 4.5h-480zM1280 384v256h-512v-256h512zM1536 256v576q0 26 -19 45t-45 19h-896q-26 0 -45 -19t-19 -45v-576h128v512h768v-512h128zM1920 1664h-992q-31 0 -54.5 -9.5t-44 -23.5t-41 -31t-45.5 -31t-57.5 -23.5t-77.5 -9.5h-480v-1152h256v448q0 40 15 75t41 61t61 41t75 15h896q40 0 75 -15t61 -41t41 -61t15 -75v-448h256v1280z'],
+			fileexplorer: ['0 0 2048 2048', '1,-1', 'M2048 256h-384v-128h-384v128h-512v-128h-384v128h-384v1536q0 27 10 50t27.5 40.5t40.5 27.5t50 10h480q45 0 77.5 -9.5t58 -23.5t45.5 -31t40.5 -31t44 -23.5t54.5 -9.5h992q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50v-1408zM128 1792v-128h480q24 0 42 4.5t33 13t29.5 20t31.5 26.5q-17 15 -31.5 26.5t-29.5 20t-33 13t-42 4.5h-480zM1280 384v256h-512v-256h512zM1536 256v576q0 26 -19 45t-45 19h-896q-26 0 -45 -19t-19 -45v-576h128v512h768v-512h128zM1920 1664h-992q-31 0 -54.5 -9.5t-44 -23.5t-41 -31t-45.5 -31t-57.5 -23.5t-77.5 -9.5h-480v-1152h256v448q0 40 15 75t41 61t61 41t75 15h896q40 0 75 -15t61 -41t41 -61t15 -75v-448h256v1280z'],
 
 			insert: function (icon, addclass, id, attributes) {
 				addclass = addclass || '';
-				var rtrn= '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + this[icon][0] + '\" style=\"transform: scale(' + this[icon][1] + ');\" class=\"icon ' + addclass + '\" ' + (value(id) != '' ? ' id=\"' + id + '\" ' : '') + (value(attributes) != '' ? ' ' + attributes : '') + '><path d=\"' + this[icon][2] + '\"></path></svg>';
+				var rtrn = '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + this[icon][0] + '\" style=\"transform: scale(' + this[icon][1] + ');\" class=\"icon ' + addclass + '\" ' + (value(id) != '' ? ' id=\"' + id + '\" ' : '') + (value(attributes) != '' ? ' ' + attributes : '') + '><path d=\"' + this[icon][2] + '\"></path></svg>';
 				//weird hack: svg seem not to support the title attribute. so there has to be a wrapper if attributes contain title
-				var title=value(attributes).match(/title="(.*?)"/g);
-				if (title) return ['<span ' + title + '>', rtrn,'</span>'].join('');				
+				var title = value(attributes).match(/title="(.*?)"/g);
+				if (title) return ['<span ' + title + '>', rtrn, '</span>'].join('');
 				else return rtrn;
 			}
 		},
