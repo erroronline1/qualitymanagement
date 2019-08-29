@@ -58,65 +58,74 @@ be aware of these rules to handle your modules properly. these rules apply to su
 [error on line 1](http://erroronline.one)
 
 ## module structure
-each module consists of an object with properties and methods. the initiating method can be the callback function of module loading with `core.function.loadScript('modules/modulename.js','modulename.function.init()')`. the overall structure looks like this:
+each module consists of an object with properties and methods. the initiating method should be the callback function of module loading with `core.function.loadScript('modules/modulename.js','modulename.function.init()')`. the overall structure of the modules data processing looks like this:
 
 ```Javascript
-var modulename = {
-	var: { //module variables
-		someProperty: 'Pi is exaclty 3',
-		lang: {
-			inputPlaceholder: {
-				en: 'Search for last digit of pi',
-				de: 'Suche die letzte Stelle von Pi' 
-			},
-			otherShownText: {
-				en: 'Add multi-language-support for all text chunks',
-				de: 'Füge Unterstützung für mehrfache Sprachen für alle Text-Blöcke ein'
-			}
-		}
-	},
-	api: { //for globl search
-		available: function(search){
-			//stop performance monitoring that has been started by module calling
-			core.performance.stop('modulename.api.available(\''+search+'\')');
-			return somethingBasedOn(search);
-		},
-		processAfterImport: function(){
-			//if you have to load something first this might be the callback function.
-		}
-	},
-	function: { //module behaviour
-		init: function(query){
-			//highlight menu icon
-			el('module{modulename}').checked=true; 
-			//import data file if applicable, return initial module content, process query from inter-module communication or global search
-			core.function.loadScript('data/modulename.js', 'modulename.function.someFunction(\'' + value(query) + '\')');
-			//prepare your modules interface
-			el('input').innerHTML='your menu';
-			el('temp').innerHTML='your temporary output or additional forms';
-			el('output').innerHTML='your output';
-			//stop performance monitoring that has been started by module calling and write history
-			core.performance.stop('modulename.function.init(\'' + value(query) + '\')');
-			core.history.write(['modulename.function.init(\'' + value(query) + '\')']);
-		},
-		someFunction: function(query){
-			//optinal performance monitoring for each function
-			core.performance.start('modulename.function.someFunction(\'' + value(query) + '\')');
-			
-			//////////////////////////////////////////////////////
-			//do your magic here
-			//////////////////////////////////////////////////////
+if (typeof modulename == 'undefined') var modulename={};
 
-			core.performance.stop('modulename.function.someFunction(\'' + value(query) + '\')');
-			core.history.write(['modulename.function.init(\'' + value(query) + '\')']);
-		}
+modulename.api= { //for globl search
+	available: function(search){
+		//stop performance monitoring that has been started by module calling
+		core.performance.stop('modulename.api.available(\''+search+'\')');
+		return somethingBasedOn(search);
+	},
+	processAfterImport: function(){
+		//if you have to load something first this might be the callback function.
 	}
-}
+};
+modulename.function= { //module behaviour
+	init: function(query){
+		//highlight menu icon
+		el('module{modulename}').checked=true; 
+			el('module{modulename}').checked=true; 
+		el('module{modulename}').checked=true; 
+		//import data file if applicable, return initial module content, process query from inter-module communication or global search
+		core.function.loadScript('data/modulename.js', 'modulename.function.someFunction(\'' + value(query) + '\')');
+		//prepare your modules interface
+		el('input').innerHTML='your menu';
+		el('temp').innerHTML='your temporary output or additional forms';
+		el('output').innerHTML='your output';
+		//stop performance monitoring that has been started by module calling and write history
+		core.performance.stop('modulename.function.init(\'' + value(query) + '\')');
+		core.history.write(['modulename.function.init(\'' + value(query) + '\')']);
+	},
+	someFunction: function(query){
+		//optinal performance monitoring for each function
+		core.performance.start('modulename.function.someFunction(\'' + value(query) + '\')');
+		
+		//////////////////////////////////////////////////////
+		//do your magic here
+		//////////////////////////////////////////////////////
 
-//declare false if the output is meant to be copied and should be selected as a whole by clicking into the area
-var disableOutputSelect = true;
-
+		core.performance.stop('modulename.function.someFunction(\'' + value(query) + '\')');
+		core.history.write(['modulename.function.init(\'' + value(query) + '\')']);
+	}
+};
 ```
+
+the folder data has to contain a variable-file for the module, that will be called automatically on module load.
+
+```Javascript
+if (typeof modulename == 'undefined') var modulename={};
+
+modulename.var= { //module variables
+	someProperty: 'Pi is exaclty 3',
+	lang: {
+		inputPlaceholder: {
+			en: 'Search for last digit of pi',
+			de: 'Suche die letzte Stelle von Pi' 
+		},
+		otherShownText: {
+			en: 'Add multi-language-support for all text chunks',
+			de: 'Füge Unterstützung für mehrfache Sprachen für alle Text-Blöcke ein'
+		}
+	},
+	//declare false if the output is meant to be copied and should be selected as a whole by clicking into the area
+	disableOutputSelect: false,
+};
+```
+
+thus algorithms and values are separated and changes on one don´t necessarily affect the other. or copying new content between my companies and this open source version don't overwrite something (that happend way to often). since both parts of module are loaded asynchronously the initialization of the modules object in both files might be reasonable.
 
 please inspect the sample files for further information. while distributing this piece of software there happen to be some differencies between the open source version and the actual software used in my company. the main differencies can be found in the {modulename}.var-properties. maybe you find this suitable for you as well so changes to to sourcecode are way more easy to implement.
 
@@ -177,7 +186,7 @@ the method handles the decision over values or functions on its own.
 i have to admit i am a bit proud of this one. this method has to be handed over the raw query string and an object containing the searchable data. it then splits the query into whitespace separated terms, divides -filters and adds a concatenated query to an array of query options. fuzzy search is optional and can be enabled from the settings. if the query bits are set up the dataset will be checked for occurences of every bit. comparison happens for word-characters only (regex \w). the results is a multidimensional array that can be displayed first in order of occurrences of different terms (if there are more than one) then of the data object.
 
 ## output usage
-output text is selected on click by default. to avoid this add `var disableOutputSelect=true;` to module script. this is considered not to be implemented global through registered-modules for being dynamically mutable if desired in future modules
+output text is selected on click by default. to avoid this add a property `disableOutputSelect=true;` to module.var. this is considered not to be implemented global through registered-modules for being dynamically mutable if desired within the module itself (e.g. see mailtools).
 
 ## inter-module communication
 communication between modules is possible with use of localstorage or cookies. this has to be observed strictly, because of possible failures and dependencies of js-data-files. there might be spaghetti! use the `core.function.setting` method and always make sure to have proper default and error handling in case of missing data. initiating functions of submodules partially accept queries to handle preselections.

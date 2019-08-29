@@ -188,13 +188,17 @@ core.var = {
 			en: 'New hints are shown on startup automatically. <a href="javascript:core.function.popup(updateTracker.enlist());">Show all hints</a>',
 			de: 'Neue Hinweise werden immer automatisch beim Start angezeigt. <a href="javascript:core.function.popup(updateTracker.enlist());">Alle Hinweise anzeigen</a>'
 		},
+		settingFuzzyThresholdCaption: {
+			en: 'Fuzzy threshold (5 is a reasonable default)',
+			de: 'Fuzzy Schwellenwert (5 ist ein guter Standard)'
+		},
 		settingGlobalSearchCaption: {
 			en: 'Seconds to deliver global search results',
 			de: 'Sekunden für die Bereitstellung von globalen Suchergebnissen'
 		},
-		settingFuzzyThresholdCaption: {
-			en: 'Fuzzy threshold (5 is a reasonable default)',
-			de: 'Fuzzy Schwellenwert (5 ist ein guter Standard)'
+		settingVarPreloadCaption: {
+			en: 'Delay between loading modules data and functions in milliseconds (Edge)',
+			de: 'Millisekunden Ladeverzögerung zwischen Moduldaten und -funktionen (Edge)'
 		},
 		settingGeneralHint: {
 			en: 'Local security settings can result in loss of settings on closing browser window.',

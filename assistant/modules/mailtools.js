@@ -6,297 +6,113 @@
 //  different salutation and recipients address, creating signatures
 //  and not-available-messages
 //
-//  dependencies:	none
+//  dependencies:	data/mailtools.var.js
 //
 // in this case you will have to customize the modules directly
 //
 //////////////////////////////////////////////////////////////
 
-var mailtools = {
-	var: {
-		lang: {
-			selectSubmodule: {
-				en: 'Please select Submodule',
-				de: 'Bitte Funktion wählen'
-			},
-			errorMatchingRows: {
-				en: 'The numbers of names and email-adresses don\'t match.',
-				de: 'Die Anzahl der Namen und der eMailadressen stimmt nicht überein!'
-			},
-			buttonTestCaption: {
-				en: 'sample entries',
-				de: 'Testeinträge'
-			},
-			buttonTestTitle: {
-				en: 'tests with samples',
-				de: 'testet mit Standardwerten'
-			},
-			sampleNameValue: {
-				en: 'Mrs. Doe\nMr. Doe',
-				de: 'Frau Musterfrau\nHerr Mustermann'
-			},
-			sampleMailValue: {
-				en: 'jane.doe@email.adr\njohn.doe@email.adr',
-				de: 'monika.musterfrau@email.adr\nmax.mustermann@email.adr'
-			},
-			sampleSubjectValue: {
-				en: 'Mail subject',
-				de: 'Betreff der eMail'
-			},
-			sampleBodyValue: {
-				en: 'This is a test mail.\n\nHave fun reading.',
-				de: 'Die ist eine Test-Mail\n\nViel Spaß beim Lesen.'
-			},
-			formRecipientListCaption: {
-				en: 'Recipient list',
-				de: 'Empfängerliste'
-			},
-			formRecipientListPlaceholder: {
-				en: 'names, 1 per row',
-				de: 'Namen, 1 pro Zeile'
-			},
-			formRecipientMailPlaceholder: {
-				en: 'adresses, 1 per row',
-				de: 'Adressen, 1 pro Zeile'
-			},
-			formContentCaption: {
-				en: 'Content',
-				de: 'Inhalt'
-			},
-			formSubjectPlaceholder: {
-				en: 'Subject',
-				de: 'Betreff'
-			},
-			formBodyPlaceholder: {
-				en: 'Text without salutation',
-				de: 'Text ohne Anrede'
-			},
-			outputMailTo: {
-				en: 'mail to',
-				de: 'eMail an'
-			},
-			outputSalutation: {
-				en: function (val) {
-					return 'Dear';
-				},
-				de: function (val) {
-					var greeting = 'Sehr geehrte';
-					if (val.search('Herr') < 2 && val.search('Herr') > -1) greeting += "r";
-					return greeting;
-				}
-			},
-			errorMatchingRows: {
-				en: 'The numbers of names and email-adresses doesn\'t match.',
-				de: 'Die Anzahl der Namen und der eMailadressen stimmt nicht überein!'
-			},
-			buttonTestCaption: {
-				en: 'sample entries',
-				de: 'Testeinträge'
-			},
-			buttonTestTitle: {
-				en: 'tests with samples',
-				de: 'testet mit Standardwerten'
-			},
-			sampleNameValue: {
-				en: 'Mrs. Doe\nMr. Doe',
-				de: 'Frau Musterfrau\nHerr Mustermann'
-			},
-			sampleMailValue: {
-				en: 'jane.doe@email.adr\njohn.doe@email.adr',
-				de: 'monika.musterfrau@email.adr\nmax.mustermann@email.adr'
-			},
-			sampleSubjectValue: {
-				en: 'Mail subject',
-				de: 'Betreff der eMail'
-			},
-			sampleBodyValue: {
-				en: 'This is a test mail.\n\nHave fun reading.',
-				de: 'Die ist eine Test-Mail\n\nViel Spaß beim Lesen.'
-			},
-			formRecipientListCaption: {
-				en: 'Recipient list',
-				de: 'Empfängerliste'
-			},
-			formRecipientListPlaceholder: {
-				en: 'names, 1 per row',
-				de: 'Namen, 1 pro Zeile'
-			},
-			formRecipientMailPlaceholder: {
-				en: 'adresses, 1 per row',
-				de: 'Adressen, 1 pro Zeile'
-			},
-			formContentCaption: {
-				en: 'Content',
-				de: 'Inhalt'
-			},
-			formSubjectPlaceholder: {
-				en: 'Subject',
-				de: 'Betreff'
-			},
-			formBodyPlaceholder: {
-				en: 'Text without salutation',
-				de: 'Text ohne Anrede'
-			},
-			outputMailTo: {
-				en: 'mail to',
-				de: 'eMail an'
-			},
-			outputSalutation: {
-				en: function (val) {
-					return 'Dear';
-				},
-				de: function (val) {
-					var greeting = 'Sehr geehrte';
-					if (val.search('Herr') < 2 && val.search('Herr') > -1) greeting += "r";
-					return greeting;
-				}
-			},
-			notavailableFrom: {
-				en: 'not available from',
-				de: 'Nicht erreichbar vom'
-			},
-			notavailableTo: {
-				en: 'until',
-				de: 'bis'
-			},
-			notavailableDay: {
-				en: function (day) {
-					if (day == '11' || day == '12' || day == '13') return day + 'th';
-					else if (day.substring(1) == '1') return day + 'st';
-					else if (day.substring(1) == '2') return day + 'nd';
-					else if (day.substring(1) == '3') return day + 'rd';
-					else return day + 'th';
-				},
-				de: function (day) {
-					return day;
-				}
-			},
-			notavailableMonth: {
-				en: function (month) {
-					var m = new Array('', 'January', 'February', 'March', ' April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-					return m[month];
-				},
-				de: function (month) {
-					var m = new Array('', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember');
-					return m[month];
-				}
-			},
-		},
-		submodules: {
-			serialmail: {
-				en: 'Serialmail',
-				de: 'Serienmail'
-			},
-			signature: {
-				en: 'Signature Composer',
-				de: 'Signaturgenerator'
-			},
-			notavailable: {
-				en: 'Not Available Message',
-				de: 'Abwesenheitsnotiz'
-			},
-		},
-		disableOutputSelect: true,
+if (typeof mailtools == 'undefined') var mailtools = {};
+
+mailtools.api = {
+	available: function (search) {
+		var searchobject = [],
+			display;
+		Object.keys(mailtools.var.submodules).forEach(function (key) {
+			searchobject.push([mailtools.var.submodules[key][core.var.selectedLanguage], key]);
+		});
+		var found = core.function.smartSearch.lookup(search, searchobject, true);
+		found.forEach(function (value) {
+			display = '<a href="javascript:core.function.loadScript(\'modules/mailtools.js\',\'mailtools.function.init(\\\'' + searchobject[value[0]][1] + '\\\')\')">' + searchobject[value[0]][0] + '</a>';
+			//add value and relevance
+			globalSearch.contribute('mailtools', [display, value[1]]);
+		});
+		core.performance.stop('mailtools.api.available(\'' + search + '\')');
 	},
-	api: {
-		available: function (search) {
-			var searchobject = [],
-				display;
-			Object.keys(mailtools.var.submodules).forEach(function (key) {
-				searchobject.push([mailtools.var.submodules[key][core.var.selectedLanguage], key]);
-			});
-			var found = core.function.smartSearch.lookup(search, searchobject, true);
-			found.forEach(function (value) {
-				display = '<a href="javascript:core.function.loadScript(\'modules/mailtools.js\',\'mailtools.function.init(\\\'' + searchobject[value[0]][1] + '\\\')\')">' + searchobject[value[0]][0] + '</a>';
-				//add value and relevance
-				globalSearch.contribute('mailtools', [display, value[1]]);
-			});
-			core.performance.stop('mailtools.api.available(\'' + search + '\')');
-		},
+};
+mailtools.function = {
+	serialmailinput: function () {
+		el('mailtoolgen').innerHTML = core.function.icon.insert('refresh', 'bigger', false,
+			'onclick="mailtools.function.serialmailgen()" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '"');
+		el('temp').innerHTML = '<input type="button" value="' + core.function.lang('buttonTestCaption', 'mailtools') + '" title="' + core.function.lang('buttonTestTitle', 'mailtools') + '" onclick="mailtools.function.serialtest()" /><br /><br />' +
+			core.function.lang('formRecipientListCaption', 'mailtools') + ':<br /><textarea id="names" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.function.lang('formRecipientListPlaceholder', 'mailtools') + '"></textarea> ' +
+			'<textarea id="adresses" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.function.lang('formRecipientMailPlaceholder', 'mailtools') + '"></textarea><br />' +
+			core.function.lang('formContentCaption', 'mailtools') + ':<br /><input type="text" style="width:98%" id="subject" placeholder="' + core.function.lang('formSubjectPlaceholder', 'mailtools') + '"><br />' +
+			'<textarea id="body" rows="10" style="width:98%;" placeholder="' + core.function.lang('formBodyPlaceholder', 'mailtools') + '"></textarea>';
+		el('output').innerHTML = '';
+		core.history.write(['mailtools.function.init(\'serialmail\')']);
 	},
-	function: {
-		serialmailinput: function () {
-			el('mailtoolgen').innerHTML = core.function.icon.insert('refresh', 'bigger', false,
-				'onclick="mailtools.function.serialmailgen()" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '"');
-			el('temp').innerHTML = '<input type="button" value="' + core.function.lang('buttonTestCaption', 'mailtools') + '" title="' + core.function.lang('buttonTestTitle', 'mailtools') + '" onclick="mailtools.function.serialtest()" /><br /><br />' +
-				core.function.lang('formRecipientListCaption', 'mailtools') + ':<br /><textarea id="names" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.function.lang('formRecipientListPlaceholder', 'mailtools') + '"></textarea> ' +
-				'<textarea id="adresses" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.function.lang('formRecipientMailPlaceholder', 'mailtools') + '"></textarea><br />' +
-				core.function.lang('formContentCaption', 'mailtools') + ':<br /><input type="text" style="width:98%" id="subject" placeholder="' + core.function.lang('formSubjectPlaceholder', 'mailtools') + '"><br />' +
-				'<textarea id="body" rows="10" style="width:98%;" placeholder="' + core.function.lang('formBodyPlaceholder', 'mailtools') + '"></textarea>';
-			el('output').innerHTML = '';
-			core.history.write(['mailtools.function.init(\'serialmail\')']);
-		},
-		serialtest: function () {
-			el('names').value = core.function.lang('sampleNameValue', 'mailtools');
-			el('adresses').value = core.function.lang('sampleMailValue', 'mailtools');
-			el('subject').value = core.function.lang('sampleSubjectValue', 'mailtools');
-			el('body').value = core.function.lang('sampleBodyValue', 'mailtools');
-		},
-		serialmailgen: function () {
-			if (!el('names').value || !el('adresses').value || !el('body').value || !el('subject').value) core.function.popup(core.function.lang('errorNoContent', 'mailtools'));
+	serialtest: function () {
+		el('names').value = core.function.lang('sampleNameValue', 'mailtools');
+		el('adresses').value = core.function.lang('sampleMailValue', 'mailtools');
+		el('subject').value = core.function.lang('sampleSubjectValue', 'mailtools');
+		el('body').value = core.function.lang('sampleBodyValue', 'mailtools');
+	},
+	serialmailgen: function () {
+		if (!el('names').value || !el('adresses').value || !el('body').value || !el('subject').value) core.function.popup(core.function.lang('errorNoContent', 'mailtools'));
+		else {
+			var names = el('names').value.split(/\n/g),
+				adresses = el('adresses').value.split(/\s/g);
+			if (names.length != adresses.length) core.function.popup(core.function.lang('errorMatchingRows', 'mailtools'));
 			else {
-				var names = el('names').value.split(/\n/g),
-					adresses = el('adresses').value.split(/\s/g);
-				if (names.length != adresses.length) core.function.popup(core.function.lang('errorMatchingRows', 'mailtools'));
-				else {
-					var output = '';
-					for (var i = 0; i < names.length; i++) {
-						output += '<a href="mailto:' + adresses[i] + '?subject=' + el('subject').value + '&body=' + core.function.lang('outputSalutation', 'mailtools', names[i]) + '%20' + encodeURI(names[i]) + ',%0A%0A' + encodeURI(el('body').value) + '">' + core.function.lang('outputMailTo', 'mailtools') + ' ' + names[i] + ' &lt;' + adresses[i] + '&gt;</a><br />';
-					}
-					disableOutputSelect = true;
-					el('output').innerHTML = output;
+				var output = '';
+				for (var i = 0; i < names.length; i++) {
+					output += '<a href="mailto:' + adresses[i] + '?subject=' + el('subject').value + '&body=' + core.function.lang('outputSalutation', 'mailtools', names[i]) + '%20' + encodeURI(names[i]) + ',%0A%0A' + encodeURI(el('body').value) + '">' + core.function.lang('outputMailTo', 'mailtools') + ' ' + names[i] + ' &lt;' + adresses[i] + '&gt;</a><br />';
 				}
-				mailtools.var.disableOutputSelect = true;
+				disableOutputSelect = true;
+				el('output').innerHTML = output;
 			}
-		},
-		signatureinput: function () {
-			el('mailtoolgen').innerHTML = core.function.icon.insert('refresh', 'bigger', false,
-				'onclick="el(\'output\').innerHTML=mailtools_data.signature[core.var.selectedLanguage]()" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '"');
-			el('temp').innerHTML = mailtools_data.signature[core.var.selectedLanguage](1) +
-				'<br /><br />' +
-				core.function.languageSelection('onchange="el(\'output\').innerHTML=mailtools_data.signature[this.id]()"').join('<br />') +
-				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'mailtools') + '</a>' : '');
-			el('output').innerHTML = '';
-			mailtools.var.disableOutputSelect = false;
-			core.history.write(['mailtools.function.init(\'signature\')']);
-		},
-		notavailableinput: function () {
-			el('mailtoolgen').innerHTML = core.function.icon.insert('refresh', 'bigger', false,
-				'onclick="mailtools.function.notavailablegen()" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '"');
-			el('temp').innerHTML = core.function.lang('notavailableFrom', 'mailtools') + ':<br /><input type="date" id="notfrom" placeholder="DD.MM.YYYY" /><br />' +
-				core.function.lang('notavailableTo', 'mailtools') + ':<br /><input type="date" id="notto" placeholder="DD.MM.YYYY" />' +
-				(core.var.outlookWebUrl ? '<br /><br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'mailtools') + '</a>' : '');
-			el('output').innerHTML = '';
-			core.history.write(['mailtools.function.init(\'notavailable\')']);
-		},
-		notavailablegen: function () {
-			//gets date inputs and sorts them to dd.mm.yyyy
-			from = el('notfrom').value.split(/\D/g);
-			if (from[0].length > 2) from = new Array(from[2], from[1], from[0]);
-			to = el('notto').value.split(/\D/g);
-			if (to[0].length > 2) to = new Array(to[2], to[1], to[0]);
-			var dates = {
-				from: from,
-				to: to
-			};
-			mailtools.var.disableOutputSelect = false;
-			el('output').innerHTML = mailtools_data.notavailableResponse['de'](dates) +
-				mailtools_data.notavailableResponse['en'](dates);
-		},
-		init: function (query) {
-			if (typeof mailtools_data == 'undefined') core.function.loadScript('data/mailtools.js', 'mailtools.function.init(\'' + value(query) + '\')');
-			el('modulemailtools').checked = true; // highlight menu icon
-			var options = new Object();
-			options['null'] = ['', core.function.lang('selectSubmodule', 'mailtools')];
-			Object.keys(mailtools.var.submodules).forEach(function (key) {
-				options[key] = [key, mailtools.var.submodules[key][core.var.selectedLanguage]];
-			});
-			el('input').innerHTML = core.function.insert.select(options, 'mailtoolsselection', 'mailtoolsselection', query, ' onchange="mailtools.function[this.options[this.selectedIndex].value+\'input\']()"') +
-				'<span class="inline" id="mailtoolgen"></span>';
-			el('temp').innerHTML = el('output').innerHTML = '';
-			if (value(query) != '') eval('mailtools.function.' + query + 'input()');
-			core.performance.stop('mailtools.function.init(\'' + value(query) + '\')');
-			core.history.write(['mailtools.function.init(\'' + value(query) + '\')']);
-		},
-	}
-}
+			mailtools.var.disableOutputSelect = true;
+		}
+	},
+	signatureinput: function () {
+		el('mailtoolgen').innerHTML = core.function.icon.insert('refresh', 'bigger', false,
+			'onclick="el(\'output\').innerHTML=mailtools_data.signature[core.var.selectedLanguage]()" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '"');
+		el('temp').innerHTML = mailtools_data.signature[core.var.selectedLanguage](1) +
+			'<br /><br />' +
+			core.function.languageSelection('onchange="el(\'output\').innerHTML=mailtools_data.signature[this.id]()"').join('<br />') +
+			(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'mailtools') + '</a>' : '');
+		el('output').innerHTML = '';
+		mailtools.var.disableOutputSelect = false;
+		core.history.write(['mailtools.function.init(\'signature\')']);
+	},
+	notavailableinput: function () {
+		el('mailtoolgen').innerHTML = core.function.icon.insert('refresh', 'bigger', false,
+			'onclick="mailtools.function.notavailablegen()" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '"');
+		el('temp').innerHTML = core.function.lang('notavailableFrom', 'mailtools') + ':<br /><input type="date" id="notfrom" placeholder="DD.MM.YYYY" /><br /><br />' +
+			core.function.lang('notavailableTo', 'mailtools') + ':<br /><input type="date" id="notto" placeholder="DD.MM.YYYY" />' +
+			(core.var.outlookWebUrl ? '<br /><br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'mailtools') + '</a>' : '');
+		el('output').innerHTML = '';
+		core.history.write(['mailtools.function.init(\'notavailable\')']);
+	},
+	notavailablegen: function () {
+		//gets date inputs and sorts them to dd.mm.yyyy
+		from = el('notfrom').value.split(/\D/g);
+		if (from[0].length > 2) from = new Array(from[2], from[1], from[0]);
+		to = el('notto').value.split(/\D/g);
+		if (to[0].length > 2) to = new Array(to[2], to[1], to[0]);
+		var dates = {
+			from: from,
+			to: to
+		};
+		mailtools.var.disableOutputSelect = false;
+		el('output').innerHTML = mailtools_data.notavailableResponse['de'](dates) +
+			mailtools_data.notavailableResponse['en'](dates);
+	},
+	init: function (query) {
+		if (typeof mailtools_data == 'undefined') core.function.loadScript('data/mailtools.js', 'mailtools.function.init(\'' + value(query) + '\')');
+		el('modulemailtools').checked = true; // highlight menu icon
+		var options = new Object();
+		options['null'] = ['', core.function.lang('selectSubmodule', 'mailtools')];
+		Object.keys(mailtools.var.submodules).forEach(function (key) {
+			options[key] = [key, mailtools.var.submodules[key][core.var.selectedLanguage]];
+		});
+		el('input').innerHTML = core.function.insert.select(options, 'mailtoolsselection', 'mailtoolsselection', query, ' onchange="mailtools.function[this.options[this.selectedIndex].value+\'input\']()"') +
+			'<span class="inline" id="mailtoolgen"></span>';
+		el('temp').innerHTML = el('output').innerHTML = '';
+		if (value(query) != '') eval('mailtools.function.' + query + 'input()');
+		core.performance.stop('mailtools.function.init(\'' + value(query) + '\')');
+		core.history.write(['mailtools.function.init(\'' + value(query) + '\')']);
+	},
+
+};
