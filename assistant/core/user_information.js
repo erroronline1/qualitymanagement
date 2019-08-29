@@ -39,11 +39,11 @@ var randomTip = {
 			de: 'Falls dir dir Farbe nicht gefällt kannst du ein anderes Theme bei den Einstellungen auswählen.'
 		},
 		{
-			en: 'In case you have difficulties reading, set up the font size and display size differently.',
+			en: 'In case you have difficulties reading, customize the font- and display-size.',
 			de: 'Wenn du Schwierigkeiten hat etwas zu erkennen, stelle in den Einstellungen die Schrift- und Darstellungsgröße ein.'
 		},
 		{
-			en: 'Having a bad screen resolution you can set up the menu bar to be always small to have more space for the content.',
+			en: 'You can set up the menu bar to be always small to have more space for the content in case you have a bad screen resolution ',
 			de: 'Bei niedriger Auflösung kannst du das Menü dauerhaft bei den Einstellungen auf schmal einstellen, damit mehr Platz für die Inhalte ist.'
 		},
 		{
@@ -63,7 +63,7 @@ var randomTip = {
 			de: 'Deine letzten Such- und Filtereinstellungen werden automatisch gespeichert. Manchmal macht es das schneller, manchmal wird überraschend wenig angezeigt. Achte mal darauf.'
 		},
 		{
-			en: 'To avoid the need of adjusting the font type of copied content, you can let it be opened within a new window.',
+			en: 'To avoid the need of adjusting the font type of copied content, you can have it opened within a new window.',
 			de: 'Um beim Kopieren von Inhalten die Schriftart nicht anpassen zu müssen, kannst du den Text auch in einem neuen Fenster ausgeben lassen.'
 		},
 		{
@@ -75,8 +75,8 @@ var randomTip = {
 			de: 'Wenn Dir das Menü zu voll ist kannst du Module bei den Einstellungen deaktivieren.'
 		},
 		{
-			en: 'Save the application to your browsers favourite-bar, as a shortcut to the desktop or to the startup-folder.',
-			de: 'Speichere die Seite in der Favoriten-Leiste deines Browsers oder als Verknüpfung auf dem Desktop oder im Autostart-Ordner.'
+			en: 'Save the application to your browsers favourite-bar, as a shortcut to the desktop or to the startup-folder to have quick access to the qm-system at any time.',
+			de: 'Speichere die Seite in der Favoriten-Leiste deines Browsers oder als Verknüpfung auf dem Desktop oder im Autostart-Ordner um jederzeit schnellen Zugriff auf das QM-System zu haben..'
 		},
 		{
 			en: 'Some settings take effect immediately, others need a restart of the application.',
@@ -87,12 +87,8 @@ var randomTip = {
 			de: 'Standardmäßig sind mehrere Sprachen implementiert. Sowohl die Oberfläche als auch Textblöcke können mehrsprachig dargestellt werden.'
 		},
 		{
-			en: 'If suddenly something is not working anymore it might be possible I had to change something. Just reload the application. I hope you didn\'t lost anything.',
-			de: 'Falls etwas plötzlich nicht mehr funktioniert habe ich vermutlich etwas ändern müssen. Lade die Oberfläche einfach nochmal. Ich hoffe es ging nichts verloren.'
-		},
-		{
 			en:'Some Browsers are slower than others (looking at you Edge!). If the global search or modules do not load properly add a little delay in the advanced settings.',
-			de:'Manche Brwoser sind langsamer als andere (fühle dich angesprochen Edge!). Wenn die globale Suche oder die Module nicht richtig laden gib ihnen bei den erweiterten Einstellungen etwas mehr Zeit.'
+			de:'Manche Browser sind langsamer als andere (fühle dich angesprochen Edge!). Wenn die globale Suche oder die Module nicht richtig laden gib ihnen bei den erweiterten Einstellungen etwas mehr Zeit.'
 		},
 		//	module specific tips
 		{
