@@ -74,7 +74,8 @@ aside {
 
 #input .icon,
 #search .icon,
-#search span {
+#search span,
+#search a {
 	flex: 0 0 auto;
 }
 
@@ -195,6 +196,7 @@ content box-items
 .bigger {
 	box-sizing: content-box;
 	margin-top: .125em;
+	margin-bottom: .625em;
 	padding: .5em;
 	width: 1.3em;
 	height: 1.3em
@@ -369,7 +371,9 @@ a::after {
 	padding-right: 1em;
 }
 
-#search a::after{ content:none}
+#search a::after {
+	content: none
+}
 
 hr {
 	border: 0;
