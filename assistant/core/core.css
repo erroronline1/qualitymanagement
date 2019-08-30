@@ -142,7 +142,6 @@ aside {
 	cursor: pointer;
 	margin-bottom: .5em;
 	padding: .5em;
-	user-select: none;
 }
 
 #menu input[type='radio']:checked+label .icon {
@@ -286,7 +285,6 @@ elements
 	display: inline-block;
 	position: relative;
 	padding-left: 2.5em;
-	user-select: none;
 	min-width: 10em;
 }
 
