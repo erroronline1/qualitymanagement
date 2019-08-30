@@ -105,11 +105,12 @@ stocklist.function = {
 		el('input').innerHTML =
 			'<form id="search" action="javascript:stocklist.function.search();">' +
 			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.function.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search"  ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
-			'<span onclick="stocklist.function.search();" class="search">' + core.function.icon.insert('search') + '</span> ' +
+			'<span onclick="stocklist.function.search();" class="search">' + core.function.insert.icon('search') + '</span> ' +
 			core.function.insert.select(stocklist.function.translate.returnselect(), 'stockfilter', 'stockfilter', (core.function.setting.get('stockfilter') || 'all'), 'onchange="core.function.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.function.search();"') +
 			'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
-			core.function.icon.insert('websearch', 'bigger', false, 'onclick="window.open(\'https://www.google.de/#q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.function.lang('webSearchTitle', 'stocklist') + '"') +
+			core.function.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.google.de/#q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.function.lang('webSearchTitle', 'stocklist') + '"') +
 			'</form>';
+		el('itemname').focus();
 		el('output').innerHTML = el('temp').innerHTML = '';
 		el('temp').innerHTML = core.function.lang('useCaseDescription', 'stocklist');
 		core.performance.stop('stocklist.function.init(\'' + value(query) + '\')');

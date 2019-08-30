@@ -84,10 +84,10 @@ documentlookup.function = {
 
 				var tfav2 = output.split(',');
 				output = '<br />' + core.function.lang('favouriteCaption', 'documentlookup') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
-					core.function.icon.insert('delete', 'bigger', false, 'title="' + core.function.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'\')"') +
-					core.function.icon.insert('clipboard', 'bigger', false, 'title="' + core.function.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + documentlookup.var.defaultFavourites + '\')"') +
-					core.function.icon.insert('refresh', 'bigger', false, 'title="' + core.function.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + core.function.setting.get('customfavouritedocs') + '\')"') +
-					core.function.icon.insert('save', 'bigger', false, 'title="' + core.function.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.customreset()"') +
+					core.function.insert.icon('delete', 'bigger', false, 'title="' + core.function.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'\')"') +
+					core.function.insert.icon('clipboard', 'bigger', false, 'title="' + core.function.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + documentlookup.var.defaultFavourites + '\')"') +
+					core.function.insert.icon('refresh', 'bigger', false, 'title="' + core.function.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + core.function.setting.get('customfavouritedocs') + '\')"') +
+					core.function.insert.icon('save', 'bigger', false, 'title="' + core.function.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.customreset()"') +
 					'</span><br /><br />';
 				for (var i = 0; i < tfav2.length; i += 2) {
 					if (tfav[tfav2[i]] != undefined) output += tfav[tfav2[i]] + '<br />';
@@ -147,11 +147,12 @@ documentlookup.function = {
 		el('input').innerHTML =
 			'<form id="search" action="javascript:documentlookup.function.search();">' +
 			'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.function.lang('searchPlaceholder', 'documentlookup') + '" class="search"  ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
-			'<span onclick="documentlookup.function.search();" class="search">' + core.function.icon.insert('search') + '</span> ' +
+			'<span onclick="documentlookup.function.search();" class="search">' + core.function.insert.icon('search') + '</span> ' +
 			core.function.insert.select(selection, 'lookup', 'lookup', (core.function.setting.get('lookup_bundle') || false), 'onchange="core.function.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.function.search()\');"') +
 			'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
-			'<a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.function.icon.insert('fileexplorer', 'bigger', false, 'title="' + core.function.lang('optionThirdType', 'documentlookup') + '"') + '</a>' +
+			'<a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.function.insert.icon('fileexplorer', 'bigger', false, 'title="' + core.function.lang('optionThirdType', 'documentlookup') + '"') + '</a>' +
 			'</form>';
+		el('documentname').focus();
 		el('temp').innerHTML = el('output').innerHTML = '';
 		core.performance.stop('documentlookup.function.init(\'' + value(query) + '\')');
 	},

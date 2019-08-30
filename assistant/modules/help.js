@@ -68,9 +68,11 @@ help.function = {
 		el('input').innerHTML =
 			'<form id="search" action="javascript:help.function.search();">' +
 			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.function.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search"  ' + (value(query) != '' ? 'value="' + query + '"' : '') + '  />' +
-			'<span onclick="help.function.search();" class="search">' + core.function.icon.insert('search') + '</span> ' +
+			'<span onclick="help.function.search();" class="search">' + core.function.insert.icon('search') + '</span> ' +
 			'<input type="submit" id="artikelsuche" value="' + core.function.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
 			'</form>';
+		el('helpquery').focus();
+
 		el('temp').innerHTML = el('output').innerHTML = " ";
 		core.performance.stop('help.function.init(\'' + value(query) + '\')');
 	},
