@@ -199,7 +199,8 @@ content box-items
 	margin-bottom: .625em;
 	padding: .5em;
 	width: 1.3em;
-	height: 1.3em
+	height: 1.3em;
+	border: 1px solid transparent;
 }
 
 .items {

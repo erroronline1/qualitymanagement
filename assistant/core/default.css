@@ -71,6 +71,10 @@ a:visited {
 borders
 /////////////////////////////////////////////*/
 
+.bigger:hover {
+	border: 1px solid rgba(0, 0, 0, .2);
+}
+
 input,
 select,
 span.search,
@@ -127,8 +131,7 @@ span.search {
 	background-color: #fff;
 }
 
-#temp,
-.bigger:hover {
+#temp {
 	background-color: rgba(255, 255, 255, .7);
 }
 
@@ -157,7 +160,9 @@ textarea {
 	background-color: transparent
 }
 
-
+.bigger:hover {
+	background-color: rgba(0, 0, 0, .07);
+}
 
 input[type='button'],
 #popuptext input[type='button'],
