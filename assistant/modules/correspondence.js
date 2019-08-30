@@ -85,7 +85,7 @@ correspondence.function = {
 			});
 			var output = core.function.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.function.gen()"') +
 				'<br /><br />' +
-				'<input type="text" placeholder="' + core.function.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.function.gen()" /> ' + core.function.icon.insert('websearch', 'bigger', false, 'onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.function.lang('webSearchTitle', 'correspondence') + '"') + '<br /><br />' +
+				'<input type="text" placeholder="' + core.function.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.function.gen()" /> ' + core.function.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.function.lang('webSearchTitle', 'correspondence') + '"') + '<br /><br />' +
 				'<div class="inline">' +
 				core.function.insert.radio(core.function.lang('inputOptionMale', 'correspondence'), 'sex', 'male', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
 				core.function.insert.radio(core.function.lang('inputOptionFemale', 'correspondence'), 'sex', 'female', false, 'onchange="correspondence.function.gen()"') + ' ' +
@@ -99,9 +99,9 @@ correspondence.function = {
 				core.function.insert.radio(core.function.lang('inputOptionInformal', 'correspondence'), 'age', 'child', false, 'onchange="correspondence.function.gen()"') + '' +
 				'</div>' +
 				(typeof (additionalOptions) !== "undefined" && additionalOptions ? '<br />' + additionalOptions : '') +
-				(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '" target="_blank">' + core.function.icon.insert('word') + core.function.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.function.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
-				'<br /><br /><a id="mailto" href="mailto:">' + core.function.icon.insert('email') + core.function.lang('openMailApp', 'correspondence') + '</a>' +
-				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'correspondence') + '</a>' : '');
+				(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '" target="_blank">' + core.function.insert.icon('word') + core.function.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.function.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
+				'<br /><br /><a id="mailto" href="mailto:">' + core.function.insert.icon('email') + core.function.lang('openMailApp', 'correspondence') + '</a>' +
+				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.insert.icon('outlook') + core.function.lang('openOutlook', 'correspondence') + '</a>' : '');
 			el('temp').innerHTML = output;
 			if (query != '') correspondence.function.gen(query);
 		} else core.function.popup(core.function.lang('errorSelectModules', 'correspondence'));
@@ -117,7 +117,7 @@ correspondence.function = {
 		}
 		el('input').innerHTML = core.function.insert.select(correspondence.var.submodules,
 				'submodule', 'submodule', (typeof preset != 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
-			core.function.icon.insert('refresh', 'bigger', false, 'onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '"');
+			core.function.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '"');
 		el('temp').innerHTML = '';
 		el('output').innerHTML = '';
 		if (query != '') {

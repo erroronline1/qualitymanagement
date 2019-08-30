@@ -8,7 +8,7 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `isIE()` returns boolean for browserhacks
 
-`svgClassList` polyfill for adding/removing classes to svg classList
+`svgClassList()` polyfill for adding/removing classes to svg classList
 
 `core.function.popup(text)` shows or updates a modal box if text is provided, hides it if function called with null value
 
@@ -38,6 +38,8 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.function.insert.expand()` returns a html span that implicates whether an box is expanded or shrunken
 
+`core.function.insert.icon(icon, addclass, id, attributes)` returns an inline svg according to the declared properties within contained asset-object. addclass, id, and attributes are optional
+
 `core.function.setting.setup()` returns the content of the settings to display within the popup modal. all the other setting methods are for this primarily but
 
 `core.function.setting.switch(name)` toggles a cookie in terms of on by default
@@ -51,8 +53,6 @@ a shortened overview of the core-functions that can be made use of in future mod
 `core.function.setting.unset(name)` unsets localstorage.item or cookie *name*
 
 `core.function.setting.clear()` resets the whole application
-
-`core.function.icon.insert(icon)` returns an inline svg according to the before declared properties within the parent property
 
 `core.history.write(point)` adds an array of callbacks to the history storage if the parameter differs from last entry. removes entries if new entry is added while havinge gone back
 

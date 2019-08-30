@@ -8,42 +8,42 @@ core.var = {
 		//			}
 		//		},		
 		documentlookup: {
-			icon: core.function.icon.insert('document'),
+			icon: core.function.insert.icon('document'),
 			display: {
 				en: "Document Lookup",
 				de: "Dokumentensuche",
 			}
 		},
 		documentbundles: {
-			icon: core.function.icon.insert('folder'),
+			icon: core.function.insert.icon('folder'),
 			display: {
 				en: "Document Bundles",
 				de: "Dokumentenpakete"
 			}
 		},
 		stocklist: {
-			icon: core.function.icon.insert('shoppingcart'),
+			icon: core.function.insert.icon('shoppingcart'),
 			display: {
 				en: "Stock List",
 				de: "Lager- und Artikelliste"
 			}
 		},
 		correspondence: {
-			icon: core.function.icon.insert('mail'),
+			icon: core.function.insert.icon('mail'),
 			display: {
 				en: "Recommended Words for Correspondence",
 				de: "Textvorschläge für Korrespondenz"
 			}
 		},
 		mailtools: {
-			icon: core.function.icon.insert('batchmail'),
+			icon: core.function.insert.icon('batchmail'),
 			display: {
 				en: "Mail Tools",
 				de: "eMail Tools"
 			}
 		},
 		help: {
-			icon: core.function.icon.insert('faq'),
+			icon: core.function.insert.icon('faq'),
 			display: {
 				en: "Help",
 				de: "Hilfe"

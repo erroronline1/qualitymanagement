@@ -32,7 +32,7 @@ mailtools.api = {
 };
 mailtools.function = {
 	serialmailinput: function () {
-		el('mailtoolgen').innerHTML = core.function.icon.insert('refresh', 'bigger', false,
+		el('mailtoolgen').innerHTML = core.function.insert.icon('refresh', 'bigger', false,
 			'onclick="mailtools.function.serialmailgen()" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '"');
 		el('temp').innerHTML = '<input type="button" value="' + core.function.lang('buttonTestCaption', 'mailtools') + '" title="' + core.function.lang('buttonTestTitle', 'mailtools') + '" onclick="mailtools.function.serialtest()" /><br /><br />' +
 			core.function.lang('formRecipientListCaption', 'mailtools') + ':<br /><textarea id="names" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.function.lang('formRecipientListPlaceholder', 'mailtools') + '"></textarea> ' +
@@ -66,22 +66,22 @@ mailtools.function = {
 		}
 	},
 	signatureinput: function () {
-		el('mailtoolgen').innerHTML = core.function.icon.insert('refresh', 'bigger', false,
+		el('mailtoolgen').innerHTML = core.function.insert.icon('refresh', 'bigger', false,
 			'onclick="el(\'output\').innerHTML=mailtools_data.signature[core.var.selectedLanguage]()" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '"');
 		el('temp').innerHTML = mailtools_data.signature[core.var.selectedLanguage](1) +
 			'<br /><br />' +
 			core.function.languageSelection('onchange="el(\'output\').innerHTML=mailtools_data.signature[this.id]()"').join('<br />') +
-			(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'mailtools') + '</a>' : '');
+			(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.insert.icon('outlook') + core.function.lang('openOutlook', 'mailtools') + '</a>' : '');
 		el('output').innerHTML = '';
 		mailtools.var.disableOutputSelect = false;
 		core.history.write(['mailtools.function.init(\'signature\')']);
 	},
 	notavailableinput: function () {
-		el('mailtoolgen').innerHTML = core.function.icon.insert('refresh', 'bigger', false,
+		el('mailtoolgen').innerHTML = core.function.insert.icon('refresh', 'bigger', false,
 			'onclick="mailtools.function.notavailablegen()" title="' + core.function.lang('buttonGenTitle', 'mailtools') + '"');
 		el('temp').innerHTML = core.function.lang('notavailableFrom', 'mailtools') + ':<br /><input type="date" id="notfrom" placeholder="DD.MM.YYYY" /><br /><br />' +
 			core.function.lang('notavailableTo', 'mailtools') + ':<br /><input type="date" id="notto" placeholder="DD.MM.YYYY" />' +
-			(core.var.outlookWebUrl ? '<br /><br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.icon.insert('outlook') + core.function.lang('openOutlook', 'mailtools') + '</a>' : '');
+			(core.var.outlookWebUrl ? '<br /><br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.insert.icon('outlook') + core.function.lang('openOutlook', 'mailtools') + '</a>' : '');
 		el('output').innerHTML = '';
 		core.history.write(['mailtools.function.init(\'notavailable\')']);
 	},

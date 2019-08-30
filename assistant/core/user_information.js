@@ -15,7 +15,7 @@ console.warn(developerAlert);
 var randomTip = {
 	show: function () {
 		// 	show random tip on startup
-		return '<span style="float:right" onclick="el(\'randomTip\').innerHTML=randomTip.show()">' + core.function.icon.insert('refresh') + '</span>' +
+		return '<span style="float:right" onclick="el(\'randomTip\').innerHTML=randomTip.show()">' + core.function.insert.icon('refresh') + '</span>' +
 			'<br /><span class="highlight">' + this.list[0][core.var.selectedLanguage] + ':</span>' +
 			'<br />' + this.list[Math.floor(Math.random() * (this.list.length - 1) + 1)][core.var.selectedLanguage] +
 			'';
