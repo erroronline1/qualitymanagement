@@ -87,7 +87,7 @@ var randomTip = {
 			de: 'Standardmäßig sind mehrere Sprachen implementiert. Sowohl die Oberfläche als auch Textblöcke können mehrsprachig dargestellt werden.'
 		},
 		{
-			en:'Some Browsers are slower than others (looking at you Edge!). If the global search or modules do not load properly add a little delay in the advanced settings.',
+			en:'Some browsers are slower than others (looking at you Edge!). If the global search or modules do not load properly add a little delay in the advanced settings.',
 			de:'Manche Browser sind langsamer als andere (fühle dich angesprochen Edge!). Wenn die globale Suche oder die Module nicht richtig laden gib ihnen bei den erweiterten Einstellungen etwas mehr Zeit.'
 		},
 		//	module specific tips
