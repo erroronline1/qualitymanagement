@@ -438,10 +438,11 @@ var core = {
 			el('input').innerHTML =
 				'<form id="search" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
 				'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
-				core.function.lang('globalSearchPlaceholder') + '" autofocus class="search" ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
+				core.function.lang('globalSearchPlaceholder') + '" class="search" ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
 				'<span onclick="globalSearch.search(el(\'globalsearch\').value);" class="search">' + core.function.insert.icon('search') + '</span>' +
 				'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
 				'</form>';
+			el('globalsearch').focus();
 			el('temp').innerHTML =
 				core.function.lang('greeting') + '<br />' +
 				(core.var.letterTemplate ? '<br /><a href="' + core.var.letterTemplate + '" target="_blank">' +
