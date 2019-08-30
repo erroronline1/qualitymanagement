@@ -75,11 +75,13 @@ documentlookup.function = {
 			var output = core.function.setting.get('favouritedocs');
 			if (output) {
 				var tfav = tfav2 = new Array();
+				//bring selected object into scope to avoid method callbacks in loops for performance reasons
+				var interimobject=documentlookup.var.selectedObject().content;
 				//assign link to index as favourite handler
-				Object.keys(documentlookup.var.selectedObject().content).forEach(function (key) {
-					if (typeof documentlookup.var.selectedObject().content[key] === 'object')
-						tfav[documentlookup.function.favouriteHandler.prepare(documentlookup.var.selectedObject().content[key][0])] = documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key][0]);
-					else tfav[documentlookup.function.favouriteHandler.prepare(documentlookup.var.selectedObject().content[key])] = documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key]);
+				Object.keys(interimobject).forEach(function (key) {
+					if (typeof interimobject[key] === 'object')
+						tfav[documentlookup.function.favouriteHandler.prepare(interimobject[key][0])] = documentlookup.function.linkfile(interimobject[key][0]);
+					else tfav[documentlookup.function.favouriteHandler.prepare(interimobject[key])] = documentlookup.function.linkfile(interimobject[key]);
 				});
 
 				var tfav2 = output.split(',');
@@ -109,15 +111,17 @@ documentlookup.function = {
 		core.performance.start('documentlookup.function.search(\'' + value(query) + '\')'); //possible duplicate
 		var list = '';
 		if (typeof documentlookup.var.selectedObject() !== 'undefined') {
+			//bring selected object into scope to avoid method callbacks in loops for performance reasons
+			var interimobject=documentlookup.var.selectedObject().content;
 			//list all items for overview
-			Object.keys(documentlookup.var.selectedObject().content).forEach(function (key) {
-				if (typeof documentlookup.var.selectedObject().content[key] === 'object') list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key][0]) + '<br />';
-				else list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key]) + '<br />';
+			Object.keys(interimobject).forEach(function (key) {
+				if (typeof interimobject[key] === 'object') list += documentlookup.function.linkfile(interimobject[key][0]) + '<br />';
+				else list += documentlookup.function.linkfile(interimobject[key]) + '<br />';
 			});
 			el('temp').innerHTML = list;
 
 			if (value(query) !== '') {
-				var found = core.function.smartSearch.lookup(query, documentlookup.var.selectedObject().content, true);
+				var found = core.function.smartSearch.lookup(query, interimobject, true);
 
 				// check if search matches item-list and display result
 				if (found.length > 0) {
@@ -125,8 +129,8 @@ documentlookup.function = {
 					core.function.smartSearch.relevance.init();
 					found.forEach(function (value) {
 						list += core.function.smartSearch.relevance.nextstep(value[1]);
-						if (typeof documentlookup.var.selectedObject().content[value[0]] === 'object') list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[value[0]][0], (documentlookup.var.selectedObject().content[value[0]][1] ? core.function.lang('searchTitle', 'documentlookup') + documentlookup.var.selectedObject().content[value[0]][1] : false)) + '<br />';
-						else list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[value[0]]) + '<br />';
+						if (typeof interimobject[value[0]] === 'object') list += documentlookup.function.linkfile(interimobject[value[0]][0], (interimobject[value[0]][1] ? core.function.lang('searchTitle', 'documentlookup') + interimobject[value[0]][1] : false)) + '<br />';
+						else list += documentlookup.function.linkfile(interimobject[value[0]]) + '<br />';
 					});
 					el('output').innerHTML = list;
 					list = '';
