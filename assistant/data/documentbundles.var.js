@@ -1,4 +1,4 @@
-if (typeof documentbundles == 'undefined') var documentbundles = {};
+if (typeof documentbundles === 'undefined') var documentbundles = {};
 
 documentbundles.var = {
 	serialPrintShellCommand: '"' + 'C:/Program Files/Adobe/Reader 11.0/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t',

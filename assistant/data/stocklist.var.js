@@ -1,4 +1,4 @@
-if (typeof stocklist == 'undefined') var stocklist = {};
+if (typeof stocklist === 'undefined') var stocklist = {};
 
 stocklist.var = {
 	inventoryControl: 'inventory.control@email.adr',

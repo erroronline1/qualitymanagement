@@ -8,7 +8,7 @@
 //					data/documentpackages.js
 //
 //////////////////////////////////////////////////////////////
-if (typeof documentbundles == 'undefined') var documentbundles = {};
+if (typeof documentbundles === 'undefined') var documentbundles = {};
 
 documentbundles.api = {
 	available: function (search) {
@@ -19,7 +19,7 @@ documentbundles.api = {
 	processAfterImport: function (search) {
 		var searchobject = [],
 			display;
-		if (typeof (documentbundles_data) != 'undefined') {
+		if (typeof documentbundles_data !== 'undefined') {
 			Object.keys(documentbundles_data).forEach(function (key) {
 				searchobject.push([key, key]);
 			});
@@ -85,7 +85,7 @@ documentbundles.function = {
 			serialPDFlist = '';
 
 		// regular documents
-		if (typeof pack != 'undefined') {
+		if (typeof pack !== 'undefined') {
 			Object.keys(pack.primary).forEach(function (index) {
 				primary += documentbundles.function.linkfile(pack.primary[index]);
 				if (EXCEPTIONS.noserialprint.indexOf(pack.primary[index]) < 0) serialPDFlist += ',' + pack.primary[index];
@@ -115,14 +115,14 @@ documentbundles.function = {
 	},
 	input: function (query) {
 		core.performance.start('documentbundles.function.input(\'' + value(query) + '\')'); //possible duplicate
-		if (typeof (documentbundles_data) != 'undefined') {
+		if (typeof documentbundles_data !== 'undefined') {
 			var out = '<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.function.gen(sel)"><option value="">' + core.function.lang('selectDefault', 'documentbundles') + '</option>';
 			Object.keys(documentbundles_data).forEach(function (key) {
-				out += '<option id="' + key + '" value="' + key + '" ' + (query == key ? 'selected' : '') + '>' + key.replace(/_/g, " ") + '</option>';
+				out += '<option id="' + key + '" value="' + key + '" ' + (query === key ? 'selected' : '') + '>' + key.replace(/_/g, " ") + '</option>';
 			});
 			out += '</select>';
 			el('input').innerHTML = out + '<span class="inline" style="padding-top:.375em">' + core.function.insert.checkbox(core.function.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.function.gen(sel)"') + '</span>';
-			if (value(query) != '') documentbundles.function.gen(query);
+			if (value(query) !== '') documentbundles.function.gen(query);
 		}
 		core.performance.stop('documentbundles.function.input(\'' + value(query) + '\')');
 		core.history.write(['documentbundles.function.init(\'' + value(query) + '\')']);

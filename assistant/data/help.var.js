@@ -1,4 +1,4 @@
-if (typeof help == 'undefined') var help = {};
+if (typeof help === 'undefined') var help = {};
 
 help.var = {
 	lang: {

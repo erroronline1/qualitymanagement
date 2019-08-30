@@ -7,7 +7,7 @@ function isIE() {
 }
 
 function value(v) { //handles even unset parameters when in doubt
-	if (typeof v == 'undefined') return '';
+	if (typeof v === 'undefined') return '';
 	else return v;
 }
 
@@ -120,7 +120,7 @@ var core = {
 							//     l
 							//      e
 							var charPos = haystack.substring(sp, sp + needle.length).indexOf(needle[i]);
-							if (haystack.substring(sp, sp + needle.length)[i] == needle[i]) { //current character of needle matches exact position in haystack-block
+							if (haystack.substring(sp, sp + needle.length)[i] === needle[i]) { //current character of needle matches exact position in haystack-block
 								matches += 2;
 							} else if (charPos > -1) { //current character of needle does not match position but can be found
 								matches += 1;
@@ -141,7 +141,7 @@ var core = {
 					Object.keys(dataBaseObject).forEach(function (key) {
 						var a = dataBaseObject[key],
 							filtered = false;
-						if (typeof (a) == 'object') a = a.join();
+						if (typeof (a) === 'object') a = a.join();
 						//filter filename in case of pdf-files else take raw string
 						a = a.replace(/\S+\/.+\/(.+)\.pdf/g, "$1");
 						//strip all remaining special chars
@@ -157,10 +157,10 @@ var core = {
 							//compare every query part between whitespaces 
 							query.forEach(function (b) {
 								var fuzzyquery = fuzzy(a, b, fuzzySearch, fuzzyRatio);
-								if (typeof (a) == 'string' && fuzzyquery && eval(additionalCondition)) {
+								if (typeof (a) === 'string' && fuzzyquery && eval(additionalCondition)) {
 									var exist;
 									found.forEach(function (value, index) {
-										if (value[0] == key) exist = index;
+										if (value[0] === key) exist = index;
 									});
 									if (exist != undefined) found[exist][1] += fuzzyquery;
 									else found.push(new Array(key, fuzzyquery));
@@ -177,7 +177,7 @@ var core = {
 					this.initiated = 0;
 				},
 				nextstep: function (value) {
-					if (this.initiated == 0) this.initiated = value;
+					if (this.initiated === 0) this.initiated = value;
 					if (this.initiated > value) var out = '<hr />';
 					this.initiated = value;
 					return out || '';
@@ -203,20 +203,20 @@ var core = {
 		languageSelection: function (event) { //returns an array of radio inputs based on registered langages
 			var sel = new Array();
 			Object.keys(core.var.registeredLanguages).forEach(function (key) {
-				sel.push(core.function.insert.radio(core.var.registeredLanguages[key][1], 'lang', core.var.registeredLanguages[key][0], core.var.registeredLanguages[key][0] == core.var.selectedLanguage, event));
+				sel.push(core.function.insert.radio(core.var.registeredLanguages[key][1], 'lang', core.var.registeredLanguages[key][0], core.var.registeredLanguages[key][0] === core.var.selectedLanguage, event));
 			});
 			return sel;
 		},
 		loadScript: function (url, callback) { //load given script-files into scope, e.g. load desired modules and data-files
 			if (url != '') {
-				if (typeof (callback) != 'undefined') core.performance.start(callback);
+				if (typeof (callback) !== 'undefined') core.performance.start(callback);
 
 				// create new script node
 				var script = document.createElement('script');
 				script.type = 'text/javascript';
 				script.src = url;
 				// evaluate callback function on load event
-				if (typeof (callback) != 'undefined') {
+				if (typeof (callback) !== 'undefined') {
 
 					// add module-vars to head in case of module call
 					var scriptname = url.match(/\/(.*?)\./)[1];
@@ -232,7 +232,7 @@ var core = {
 						skip = true;
 					};
 					if (!skip) script.onreadystatechange = function () { //ie
-						if (this.readyState == 'complete') {
+						if (this.readyState === 'complete') {
 							eval(callback);
 						}
 					};
@@ -243,7 +243,7 @@ var core = {
 					}
 				}
 				//append node(s)
-				if (typeof scriptvar != "undefined") document.head.appendChild(scriptvar);
+				if (typeof scriptvar !== "undefined") document.head.appendChild(scriptvar);
 				setTimeout(function () {
 					document.head.appendChild(script);
 				}, core.function.setting.get('settingVarPreloadTime') || 50);
@@ -261,7 +261,7 @@ var core = {
 				// output has to be object with optionId:[value,label] pairs
 				var output = '<select name="' + name + '" id="' + id + '" ' + (additionalProperty ? additionalProperty : '') + '>'
 				Object.keys(options).forEach(function (key) {
-					output += '<option value="' + options[key][0] + '" ' + (selected == key ? 'selected="selected" ' : '') + '>' + options[key][1] + '</option>';
+					output += '<option value="' + options[key][0] + '" ' + (selected === key ? 'selected="selected" ' : '') + '>' + options[key][1] + '</option>';
 				});
 				output += '</select>';
 				return output;
@@ -328,7 +328,7 @@ var core = {
 					'<div>';
 			},
 			setupMain: function () { //returns main settings
-				if (typeof (core.var) != 'undefined') {
+				if (typeof (core.var) !== 'undefined') {
 					var themeSelector = new Object();
 					//create theme-selector
 					Object.keys(core.var.themes).forEach(function (key) {
@@ -347,7 +347,7 @@ var core = {
 					'<br /><small>' + core.function.lang('settingNotificationHint') + '</small>';
 			},
 			setupModules: function () { //returns module selector
-				if (typeof (core.var) != 'undefined') {
+				if (typeof (core.var) !== 'undefined') {
 					var moduleSelector = '';
 					//create module-selector
 					Object.keys(core.var.modules).forEach(function (key) {
@@ -455,7 +455,7 @@ var core = {
 				if (el('module' + key) != 'undefined') el('module' + key).checked = false;
 			});
 			document.title = core.function.lang('title')
-			if (typeof query != 'undefined') globalSearch.search(query);
+			if (typeof query !== 'undefined') globalSearch.search(query);
 			core.history.write(['core.function.init(\'' + value(query) + '\')']);
 		},
 	},
@@ -473,7 +473,7 @@ var core = {
 		currentStep: 1,
 		write: function (point) {
 			function areDifferent(a1, a2) {
-				if (typeof a1 == 'undefined') return true;
+				if (typeof a1 === 'undefined') return true;
 				var i = a1.length;
 				while (i--) {
 					if (a1[i] !== a2[i]) return true;
@@ -488,9 +488,9 @@ var core = {
 			}
 		},
 		go: function (dir) {
-			if (dir == 'back') core.history.currentStep = ++core.history.currentStep <= core.history.storage.length ? core.history.currentStep : core.history.storage.length;
+			if (dir === 'back') core.history.currentStep = ++core.history.currentStep <= core.history.storage.length ? core.history.currentStep : core.history.storage.length;
 			else core.history.currentStep = --core.history.currentStep > 0 ? core.history.currentStep : 1;
-			if (typeof core.history.storage[core.history.storage.length - core.history.currentStep] != 'undefined') {
+			if (typeof core.history.storage[core.history.storage.length - core.history.currentStep] !== 'undefined') {
 				core.history.storage[core.history.storage.length - core.history.currentStep].forEach(function (key) {
 					core.var.currentScope = key.substring(0, key.indexOf('.')) != 'core' ? key.substring(0, key.indexOf('.')) : null;
 					document.title = core.function.lang('title') + (core.var.currentScope ? ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage] : '');
@@ -506,7 +506,7 @@ var core = {
 			if (core.history.currentStep < 2)
 				svgClassList.add(el('titleforthbutton'), 'inactiveicon');
 			else svgClassList.remove(el('titleforthbutton'), 'inactiveicon');
-			if (core.history.currentStep == core.history.storage.length)
+			if (core.history.currentStep === core.history.storage.length)
 				svgClassList.add(el('titlebackbutton'), 'inactiveicon');
 			else svgClassList.remove(el('titlebackbutton'), 'inactiveicon');
 
@@ -515,7 +515,7 @@ var core = {
 	performance: { //starts and dispays timers to console, assigned with function calls and can display additional results
 		start: function (track, group) {
 			if (core.function.setting.get('settingPerformanceMonitor')) {
-				if (typeof group != 'undefined') console.group(track);
+				if (typeof group !== 'undefined') console.group(track);
 				console.time(track);
 			}
 		},
@@ -524,10 +524,10 @@ var core = {
 				console.groupCollapsed(track);
 				console.timeEnd(track);
 				console.trace();
-				if (typeof info != 'undefined' && info) {
+				if (typeof info !== 'undefined' && info) {
 					if (isIE()) console.log(info);
 					else {
-						if (typeof info == 'object') {
+						if (typeof info === 'object') {
 							console.groupCollapsed('\u2b91 additional info:');
 							console.table(info);
 							console.groupEnd();
@@ -535,7 +535,7 @@ var core = {
 					}
 				}
 				console.groupEnd();
-				if (typeof group != 'undefined') console.groupEnd();
+				if (typeof group !== 'undefined') console.groupEnd();
 			}
 		},
 	}
@@ -558,7 +558,7 @@ var slider = { //just fancy animation of content on module change
 };
 
 function select_module() { //load module list and return the main menu
-	if (typeof (core.var.modules) != 'undefined') {
+	if (typeof (core.var.modules) !== 'undefined') {
 		Object.keys(core.var.modules).forEach(function (key) {
 			if (typeof core.var.modules[key] === 'object' && core.function.setting.get('module_' + key) != 1) {
 				//create module-selector
@@ -604,7 +604,7 @@ function selectText(element) { //selection of output-content on click if not dis
 var globalSearch = { //searches all modules using thir api-methods from the start page
 	result: {},
 	contribute: function (property, value) {
-		if (typeof this.result[property] == 'undefined') this.result[property] = [value];
+		if (typeof this.result[property] === 'undefined') this.result[property] = [value];
 		else this.result[property].push(value);
 	},
 	search: function (search) {

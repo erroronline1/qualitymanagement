@@ -1,4 +1,4 @@
-if (typeof documentlookup == 'undefined') var documentlookup = {};
+if (typeof documentlookup === 'undefined') var documentlookup = {};
 
 documentlookup.var = {
 	lang: {

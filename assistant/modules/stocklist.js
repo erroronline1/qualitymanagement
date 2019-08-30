@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////
 
-if (typeof stocklist == 'undefined') var stocklist = {};
+if (typeof stocklist === 'undefined') var stocklist = {};
 
 stocklist.api = {
 	available: function (search) {
@@ -19,7 +19,7 @@ stocklist.api = {
 	},
 	processAfterImport: function (search) {
 		var display;
-		if (typeof (stocklist_data) != 'undefined') {
+		if (typeof stocklist_data !== 'undefined') {
 			var found = core.function.smartSearch.lookup(search, stocklist_data.content, true);
 			//the following would return the found items, but i decided otherwise in this case
 			//found.forEach(function (value) {
@@ -58,8 +58,8 @@ stocklist.function = {
 		query = query || el('itemname').value;
 		core.performance.start('stocklist.function.input(\'' + value(query) + '\')'); //possible duplicate
 		var list = '';
-		if (typeof (stocklist_data) != 'undefined') {
-			if (value(query) != '') {
+		if (typeof stocklist_data !== 'undefined') {
+			if (value(query) !== '') {
 				var found = core.function.smartSearch.lookup(query, stocklist_data.content, stocklist.function.translate.filter()[el('stockfilter').options[el('stockfilter').selectedIndex].value][2]);
 				// check if search matches item-list
 				if (found.length > 0) {
@@ -104,7 +104,7 @@ stocklist.function = {
 		core.function.loadScript('data/stocklist.js', 'stocklist.function.search(\'' + value(query) + '\')');
 		el('input').innerHTML =
 			'<form id="search" action="javascript:stocklist.function.search();">' +
-			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.function.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search"  ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
+			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.function.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +
 			'<span onclick="stocklist.function.search();" class="search">' + core.function.insert.icon('search') + '</span> ' +
 			core.function.insert.select(stocklist.function.translate.returnselect(), 'stockfilter', 'stockfilter', (core.function.setting.get('stockfilter') || 'all'), 'onchange="core.function.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.function.search();"') +
 			'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +

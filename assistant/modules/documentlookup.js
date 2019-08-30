@@ -11,7 +11,7 @@
 //
 //////////////////////////////////////////////////////////////
 
-if (typeof documentlookup == 'undefined') var documentlookup = {};
+if (typeof documentlookup === 'undefined') var documentlookup = {};
 
 documentlookup.api = {
 	available: function (search) {
@@ -23,11 +23,11 @@ documentlookup.api = {
 	},
 	processAfterImport: function (search, objectname) {
 		var display = '';
-		if (typeof (objectname) != 'undefined') {
+		if (typeof objectname !== 'undefined') {
 			object = eval(objectname);
 			var found = core.function.smartSearch.lookup(search, object.content, true);
 			found.forEach(function (value) {
-				if (typeof (object.content[value[0]]) == 'object') display = documentlookup.function.linkfile(object.content[value[0]][0], core.function.lang('searchTitle', 'documentlookup') + object.content[value[0]][1]);
+				if (typeof object.content[value[0]] === 'object') display = documentlookup.function.linkfile(object.content[value[0]][0], core.function.lang('searchTitle', 'documentlookup') + object.content[value[0]][1]);
 				else display = documentlookup.function.linkfile(object.content[value[0]]);
 				//add value and relevance
 				globalSearch.contribute('documentlookup', [display, value[1]]);
@@ -38,9 +38,9 @@ documentlookup.api = {
 };
 documentlookup.function = {
 	linkfile: function (url, title) {
-		title = value(title) != '' ? ' title="' + title + '" ' : '';
+		title = value(title) !== '' ? ' title="' + title + '" ' : '';
 		// bad filename or dynamic url
-		if (typeof (url) === 'object') {
+		if (typeof url === 'object') {
 			return '<a href="' + url[0] + '" ' + title + ' target="_blank">' + url[1] + '</a>';
 		}
 		// url with quality filename
@@ -58,7 +58,7 @@ documentlookup.function = {
 						favourites = new Array();
 					//create two dimensional array and add sighting if neccessary
 					for (var i = 0; i < tfav.length; i += 2) {
-						favourites.push(new Array(tfav[i], parseInt(tfav[i + 1]) + (tfav[i] == value ? 1 : 0)));
+						favourites.push(new Array(tfav[i], parseInt(tfav[i + 1]) + (tfav[i] === value ? 1 : 0)));
 					}
 					favourites.sort(core.function.sortBySecondColumn);
 					//reduce two dimensional array after sorting
@@ -77,7 +77,7 @@ documentlookup.function = {
 				var tfav = tfav2 = new Array();
 				//assign link to index as favourite handler
 				Object.keys(documentlookup.var.selectedObject().content).forEach(function (key) {
-					if (typeof (documentlookup.var.selectedObject().content[key]) == 'object')
+					if (typeof documentlookup.var.selectedObject().content[key] === 'object')
 						tfav[documentlookup.function.favouriteHandler.prepare(documentlookup.var.selectedObject().content[key][0])] = documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key][0]);
 					else tfav[documentlookup.function.favouriteHandler.prepare(documentlookup.var.selectedObject().content[key])] = documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key]);
 				});
@@ -90,7 +90,7 @@ documentlookup.function = {
 					core.function.insert.icon('save', 'bigger', false, 'title="' + core.function.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.customreset()"') +
 					'</span><br /><br />';
 				for (var i = 0; i < tfav2.length; i += 2) {
-					if (tfav[tfav2[i]] != undefined) output += tfav[tfav2[i]] + '<br />';
+					if (tfav[tfav2[i]] !== undefined) output += tfav[tfav2[i]] + '<br />';
 				}
 			}
 			return output || '';
@@ -108,15 +108,15 @@ documentlookup.function = {
 		query = query || el('documentname').value;
 		core.performance.start('documentlookup.function.search(\'' + value(query) + '\')'); //possible duplicate
 		var list = '';
-		if (typeof (documentlookup.var.selectedObject()) != 'undefined') {
+		if (typeof documentlookup.var.selectedObject() !== 'undefined') {
 			//list all items for overview
 			Object.keys(documentlookup.var.selectedObject().content).forEach(function (key) {
-				if (typeof (documentlookup.var.selectedObject().content[key]) == 'object') list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key][0]) + '<br />';
+				if (typeof documentlookup.var.selectedObject().content[key] === 'object') list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key][0]) + '<br />';
 				else list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[key]) + '<br />';
 			});
 			el('temp').innerHTML = list;
 
-			if (query != '') {
+			if (value(query) !== '') {
 				var found = core.function.smartSearch.lookup(query, documentlookup.var.selectedObject().content, true);
 
 				// check if search matches item-list and display result
@@ -125,7 +125,7 @@ documentlookup.function = {
 					core.function.smartSearch.relevance.init();
 					found.forEach(function (value) {
 						list += core.function.smartSearch.relevance.nextstep(value[1]);
-						if (typeof (documentlookup.var.selectedObject().content[value[0]]) == 'object') list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[value[0]][0], (documentlookup.var.selectedObject().content[value[0]][1] ? core.function.lang('searchTitle', 'documentlookup') + documentlookup.var.selectedObject().content[value[0]][1] : false)) + '<br />';
+						if (typeof documentlookup.var.selectedObject().content[value[0]] === 'object') list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[value[0]][0], (documentlookup.var.selectedObject().content[value[0]][1] ? core.function.lang('searchTitle', 'documentlookup') + documentlookup.var.selectedObject().content[value[0]][1] : false)) + '<br />';
 						else list += documentlookup.function.linkfile(documentlookup.var.selectedObject().content[value[0]]) + '<br />';
 					});
 					el('output').innerHTML = list;
@@ -146,7 +146,7 @@ documentlookup.function = {
 		});
 		el('input').innerHTML =
 			'<form id="search" action="javascript:documentlookup.function.search();">' +
-			'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.function.lang('searchPlaceholder', 'documentlookup') + '" class="search"  ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
+			'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.function.lang('searchPlaceholder', 'documentlookup') + '" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +
 			'<span onclick="documentlookup.function.search();" class="search">' + core.function.insert.icon('search') + '</span> ' +
 			core.function.insert.select(selection, 'lookup', 'lookup', (core.function.setting.get('lookup_bundle') || false), 'onchange="core.function.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.function.search()\');"') +
 			'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +

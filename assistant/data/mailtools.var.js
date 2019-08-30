@@ -1,4 +1,4 @@
-if (typeof mailtools == 'undefined') var mailtools = {};
+if (typeof mailtools === 'undefined') var mailtools = {};
 
 mailtools.var = {
 	lang: {
@@ -148,10 +148,10 @@ mailtools.var = {
 		},
 		notavailableDay: {
 			en: function (day) {
-				if (day == '11' || day == '12' || day == '13') return day + 'th';
-				else if (day.substring(1) == '1') return day + 'st';
-				else if (day.substring(1) == '2') return day + 'nd';
-				else if (day.substring(1) == '3') return day + 'rd';
+				if (day === '11' || day === '12' || day === '13') return day + 'th';
+				else if (day.substring(1) === '1') return day + 'st';
+				else if (day.substring(1) === '2') return day + 'nd';
+				else if (day.substring(1) === '3') return day + 'rd';
 				else return day + 'th';
 			},
 			de: function (day) {

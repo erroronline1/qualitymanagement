@@ -9,13 +9,13 @@
 //
 //////////////////////////////////////////////////////////////
 
-if (typeof correspondence == 'undefined') var correspondence = {};
+if (typeof correspondence === 'undefined') var correspondence = {};
 
 correspondence.api = {
 	available: function (search) {
 		//loop through registered submodules, load them individually and let processAfterImport add smartSearch-results to globalSearch
 		Object.keys(correspondence.var.submodules).forEach(function (key) {
-			if (correspondence.var.submodules[key][0] != '') {
+			if (correspondence.var.submodules[key][0] !== '') {
 				core.function.loadScript('data/' + correspondence.var.submodules[key][0] + '.js',
 					'correspondence.api.processAfterImport(\'' + search + '\', \'' + correspondence.var.submodules[key][0] + '\', \'' + correspondence.var.submodules[key][0] + '_data\')');
 			}
@@ -40,7 +40,7 @@ correspondence.api = {
 };
 correspondence.function = {
 	gen: function (query) { //create user output
-		if (typeof (correspondence.var.selectedObject()) != 'undefined') {
+		if (typeof correspondence.var.selectedObject() !== 'undefined') {
 			//read selected checkboxes or set to default
 			var checkbox = new Array();
 			query = query || el('textTheme').options[el('textTheme').selectedIndex].value;
@@ -78,7 +78,7 @@ correspondence.function = {
 	},
 
 	start: function (query) {
-		if (typeof (correspondence.var.selectedObject()) != 'undefined') {
+		if (typeof correspondence.var.selectedObject() !== 'undefined') {
 			var sel = new Object();
 			Object.keys(correspondence.var.selectedObject()).forEach(function (key) {
 				sel[key] = [key, correspondence.var.selectedObject()[key].title];
@@ -98,12 +98,12 @@ correspondence.function = {
 				core.function.insert.radio(core.function.lang('inputOptionFormal', 'correspondence'), 'age', 'adult', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
 				core.function.insert.radio(core.function.lang('inputOptionInformal', 'correspondence'), 'age', 'child', false, 'onchange="correspondence.function.gen()"') + '' +
 				'</div>' +
-				(typeof (additionalOptions) !== "undefined" && additionalOptions ? '<br />' + additionalOptions : '') +
+				(typeof additionalOptions !== "undefined" && additionalOptions ? '<br />' + additionalOptions : '') +
 				(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '" target="_blank">' + core.function.insert.icon('word') + core.function.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.function.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
 				'<br /><br /><a id="mailto" href="mailto:">' + core.function.insert.icon('email') + core.function.lang('openMailApp', 'correspondence') + '</a>' +
 				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.insert.icon('outlook') + core.function.lang('openOutlook', 'correspondence') + '</a>' : '');
 			el('temp').innerHTML = output;
-			if (query != '') correspondence.function.gen(query);
+			if (value(query) !== '') correspondence.function.gen(query);
 		} else core.function.popup(core.function.lang('errorSelectModules', 'correspondence'));
 		core.performance.stop('correspondence.function.start(\'' + value(query) + '\')');
 		core.history.write(['correspondence.function.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
@@ -112,15 +112,15 @@ correspondence.function = {
 	init: function (query) {
 		el('modulecorrespondence').checked = true; // highlight menu icon
 		correspondence.var.submodules.select[1] = core.function.lang('inputLoadSubmoduleDefault', 'correspondence');
-		if (query != '') {
+		if (value(query) !== '') {
 			preset = query.split('|');
 		}
 		el('input').innerHTML = core.function.insert.select(correspondence.var.submodules,
-				'submodule', 'submodule', (typeof preset != 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
+				'submodule', 'submodule', (typeof preset !== 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.function.loadScript(\'data/\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
 			core.function.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '"');
 		el('temp').innerHTML = '';
 		el('output').innerHTML = '';
-		if (query != '') {
+		if (value(query) !== '') {
 			correspondence.var['presetModule'] = preset[0];
 			core.function.loadScript('data/' + preset[0] + '.js', 'correspondence.function.start(\'' + preset[1] + '\')');
 		}

@@ -12,7 +12,7 @@
 //
 //////////////////////////////////////////////////////////////
 
-if (typeof mailtools == 'undefined') var mailtools = {};
+if (typeof mailtools === 'undefined') var mailtools = {};
 
 mailtools.api = {
 	available: function (search) {
@@ -53,7 +53,7 @@ mailtools.function = {
 		else {
 			var names = el('names').value.split(/\n/g),
 				adresses = el('adresses').value.split(/\s/g);
-			if (names.length != adresses.length) core.function.popup(core.function.lang('errorMatchingRows', 'mailtools'));
+			if (names.length !== adresses.length) core.function.popup(core.function.lang('errorMatchingRows', 'mailtools'));
 			else {
 				var output = '';
 				for (var i = 0; i < names.length; i++) {
@@ -100,7 +100,7 @@ mailtools.function = {
 			mailtools_data.notavailableResponse['en'](dates);
 	},
 	init: function (query) {
-		if (typeof mailtools_data == 'undefined') core.function.loadScript('data/mailtools.js', 'mailtools.function.init(\'' + value(query) + '\')');
+		if (typeof mailtools_data === 'undefined') core.function.loadScript('data/mailtools.js', 'mailtools.function.init(\'' + value(query) + '\')');
 		el('modulemailtools').checked = true; // highlight menu icon
 		var options = new Object();
 		options['null'] = ['', core.function.lang('selectSubmodule', 'mailtools')];
@@ -110,7 +110,7 @@ mailtools.function = {
 		el('input').innerHTML = core.function.insert.select(options, 'mailtoolsselection', 'mailtoolsselection', query, ' onchange="mailtools.function[this.options[this.selectedIndex].value+\'input\']()"') +
 			'<span class="inline" id="mailtoolgen"></span>';
 		el('temp').innerHTML = el('output').innerHTML = '';
-		if (value(query) != '') eval('mailtools.function.' + query + 'input()');
+		if (value(query) !== '') eval('mailtools.function.' + query + 'input()');
 		core.performance.stop('mailtools.function.init(\'' + value(query) + '\')');
 		core.history.write(['mailtools.function.init(\'' + value(query) + '\')']);
 	},

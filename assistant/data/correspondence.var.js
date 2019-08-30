@@ -1,4 +1,4 @@
-if (typeof correspondence == 'undefined') var correspondence = {};
+if (typeof correspondence === 'undefined') var correspondence = {};
 
 correspondence.var = {
 	lang: {
