@@ -108,7 +108,7 @@ var aboutNotification = {
 	de: 'Diese Anwendung ist Bestandteil eines Systems zur Unterstützung eines Qualitätsmanagement-Systems. Es dient als universelle Schnittstelle und kann modular erweitert werden.<br /><br />Das Gesamtsystem aus Anwendung und anhängigen Dokumenten ist unter der GNU GENERAL PUBLIC LICENSE Version 3 verwendbar. Quelltexte und Templates sind erhältlich unter <a href="https://github.com/erroronline1/qualitymanagement/" target="_blank">https://github.com/erroronline1/qualitymanagement/</a><br />&copy; 2019, <a href="http://erroronline.one" target="_blank">error on line 1</a>'
 };
 
-// in case of major updates something might happen to malfunction. this module keeps track of changes and informs every user abut new
+// in case of major updates something might happen to malfunction. this module keeps track of changes and informs every user about new
 // features.
 
 var updateTracker = {
@@ -138,6 +138,7 @@ var updateTracker = {
 		//	list of updates in ascending order. this is considered not to be critical in terms of language so feel free to fill this list in you main oder native language
 		['Minor', '15.06.2019: Enjoy!'],
 		['Major', '16.06.2019: Welcome to the assistant. As the responsible person you can delete this message and later add your own announcements or update hints.'],
-		['Major', '16.08.2019: Welcome to the assistant. This is the next version. search less, find more...'],
+		['Major', '16.08.2019: Welcome to the assistant. This is the next version. Search less, find more...'],
+		['Major', '06.09.2019: Welcome to the assistant. This is the next version with clear and tidy separation between algorithms and customized data.'],
 	],
 };
