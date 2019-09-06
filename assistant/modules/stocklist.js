@@ -75,14 +75,21 @@ stocklist.function = {
 						helpChangeItemCaption: core.function.lang('helpChangeItemCaption', 'stocklist'),
 						helpDeleteItemCaption: core.function.lang('helpDeleteItemCaption', 'stocklist'),
 					};
+					function mklink(str){
+						//replaces http://website and c:/folder/file with links
+						//given folders may contain whitespaces but are not embedded into text
+						return str.replace(/\w{3,}:\/+\S*|\w:\/.+/g, function(l){return '<a href="' + l + '" target="_blank">' + l + '</a>';});
+					}
 
 					found.forEach(function (value) {
 						list += core.function.smartSearch.relevance.nextstep(value[1]);
 						var tresult = '<div class="items items71" onclick="core.function.toggleHeight(this)">' + core.function.insert.expand(),
 							mailbody = '';
 						for (var h = 0; h < stocklist_data.content[0].length; h++) {
-							tresult += '<p><span class="highlight">' + stocklist_data.content[0][h] + ':</span> ' + stocklist_data.content[value[0]][h] + '</p>';
-							mailbody += stocklist_data.content[0][h] + ': ' + stocklist_data.content[value[0]][h] + "\n";
+							if (stocklist_data.content[value[0]][h]!='') {
+								tresult += '<p><span class="highlight">' + stocklist_data.content[0][h] + ':</span> ' + mklink(stocklist_data.content[value[0]][h]) + '</p>';
+								mailbody += stocklist_data.content[0][h] + ': ' + stocklist_data.content[value[0]][h] + "\n";
+							}
 						}
 						list += tresult +
 							'<a title="' + maillanguage.helpChangeItemTitle + '" onclick="return confirm(\'' + maillanguage.helpChangeItemPopup + '\');" href="mailto:' + stocklist.var.inventoryControl + '?subject=' + core.function.escapeHTML(maillanguage.helpChangeItemSubject) + '&body=' + core.function.escapeHTML(mailbody) + '">' + maillanguage.helpChangeItemCaption + '</a> ' +
