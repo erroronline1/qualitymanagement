@@ -3,8 +3,8 @@
 //
 //  module for checking if a item exists in stock
 //
-//  dependencies:	data/stocklist.var.js
-//					data/stocklist.js
+//  dependencies:	library/module.var/stocklist.var.js
+//					library/module.data/stocklist.js
 //					artikelmanager.xlsm
 //
 //////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@ if (typeof stocklist === 'undefined') var stocklist = {};
 
 stocklist.api = {
 	available: function (search) {
-		core.function.loadScript('data/stocklist.js',
+		core.function.loadScript('library/module.data/stocklist.js',
 			'stocklist.api.processAfterImport(\'' + search + '\')');
 		core.performance.stop('stocklist.api.available(\'' + search + '\')');
 	},
@@ -108,7 +108,7 @@ stocklist.function = {
 	},
 	init: function (query) {
 		el('modulestocklist').checked = true; // highlight menu icon
-		core.function.loadScript('data/stocklist.js', 'stocklist.function.search(\'' + value(query) + '\')');
+		core.function.loadScript('library/module.data/stocklist.js', 'stocklist.function.search(\'' + value(query) + '\')');
 		el('input').innerHTML =
 			'<form id="search" action="javascript:stocklist.function.search();">' +
 			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.function.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +

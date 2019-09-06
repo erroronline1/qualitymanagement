@@ -33,7 +33,7 @@ dependencies are: datalists for texts
 
 globalSearch api: returns texts blocks where headers match the search terms.
 
-currently i have no idea how to set this one up with an easy office interface because language synthesis is quite complex in this simple approach already. this module makes use of the `core.function.languageSynthesis` properties within core/core_language_synthesis.js, adding new texts might require flexible additions to this core-function with all language support and in my company i am not sure about the ability to comprehend inserting $placeholders$ to a text. so currently adding meaning to this module will definitively need an understanding of the code.
+currently i have no idea how to set this one up with an easy office interface because language synthesis is quite complex in this simple approach already. this module makes use of the `core.function.languageSynthesis` properties within library/core/core.function.languageSynthesis.js, adding new texts might require flexible additions to this core-function with all language support and in my company i am not sure about the ability to comprehend inserting $placeholders$ to a text. so currently adding meaning to this module will definitively need an understanding of the code.
 
 ## mail tool
 creating serial letters is an office feature, but sending almost the same email to different recipients while manually changing the salutation is not that much fun. automate this by using this module. all you have to to is to klick on the created links one after another and send the emails.
@@ -156,7 +156,7 @@ initialization of module will be achieved by the callback functions of the core.
 the language bricks within the modules are to be defined. i recommend the same nesting and pattern than the core language model for easier source reading. within every module the language-blocks have to be filled up according to registered languages to avoid errors of undefined objects. the bricks can be called with `core.function.lang('brickName','modulename')` and will return the block in the selected language.
 
 ## language synthesis
-the root language model core.function.languageSynthesis within the file core\core_language_synthesis.js can be extended through assigning an additional property within the module-file for example:
+the root language model core.function.languageSynthesis within the file library/core/core.function.languageSynthesis.js can be extended through assigning an additional property within the module-file for example:
 
 ```Javascript
 core.function.languageSynthesis.property={

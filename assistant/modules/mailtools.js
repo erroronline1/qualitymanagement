@@ -6,7 +6,7 @@
 //  different salutation and recipients address, creating signatures
 //  and not-available-messages
 //
-//  dependencies:	data/mailtools.var.js
+//  dependencies:	library/module.var/mailtools.var.js
 //
 // in this case you will have to customize the modules directly
 //
@@ -100,7 +100,7 @@ mailtools.function = {
 			mailtools_data.notavailableResponse['en'](dates);
 	},
 	init: function (query) {
-		if (typeof mailtools_data === 'undefined') core.function.loadScript('data/mailtools.js', 'mailtools.function.init(\'' + value(query) + '\')');
+		if (typeof mailtools_data === 'undefined') core.function.loadScript('library/module.data/mailtools.js', 'mailtools.function.init(\'' + value(query) + '\')');
 		el('modulemailtools').checked = true; // highlight menu icon
 		var options = new Object();
 		options['null'] = ['', core.function.lang('selectSubmodule', 'mailtools')];

@@ -219,11 +219,11 @@ var core = {
 				if (typeof (callback) !== 'undefined') {
 
 					// add module-vars to head in case of module call
-					var scriptname = url.match(/\/(.*?)\./)[1];
+					var scriptname = url.match(/\/(.*?)\./).pop();
 					if (scriptname in core.var.modules) {
 						var scriptvar = document.createElement('script');
 						scriptvar.type = 'text/javascript';
-						scriptvar.src = 'data/' + scriptname + '.var.js';
+						scriptvar.src = 'library/module.var/' + scriptname + '.var.js';
 					}
 
 					var skip = false;
@@ -237,8 +237,8 @@ var core = {
 						}
 					};
 					//set current scope(==module name), window title and load module.var-file
-					if (callback.indexOf('init') > -1) {
-						core.var.currentScope = url.match(/\/(.*?)\./)[1];
+					if (callback.indexOf('init') > -1 && scriptname in core.var.modules) {
+						core.var.currentScope = scriptname;
 						document.title = core.function.lang('title') + ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage];
 					}
 				}

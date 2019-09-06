@@ -4,15 +4,15 @@
 //  module for preselecting documents within a quality
 //  mangagement system according to given tasks
 //
-//  dependencies:	dtata/documentpackages.var.js
-//					data/documentpackages.js
+//  dependencies:	library/module.var/documentpackages.var.js
+//					library/module.data/documentpackages.js
 //
 //////////////////////////////////////////////////////////////
 if (typeof documentbundles === 'undefined') var documentbundles = {};
 
 documentbundles.api = {
 	available: function (search) {
-		core.function.loadScript('data/documentbundles.js',
+		core.function.loadScript('library/module.data/documentbundles.js',
 			'documentbundles.api.processAfterImport(\'' + search + '\')');
 		core.performance.stop('documentbundles.api.available(\'' + search + '\')');
 	},
@@ -129,7 +129,7 @@ documentbundles.function = {
 	},
 	init: function (query) {
 		el('moduledocumentbundles').checked = true; // highlight menu icon
-		core.function.loadScript('data/documentbundles.js', 'documentbundles.function.input(\'' + value(query) + '\')');
+		core.function.loadScript('library/module.data/documentbundles.js', 'documentbundles.function.input(\'' + value(query) + '\')');
 		el('temp').innerHTML = '<br />' + core.function.lang('useCaseDescription', 'documentbundles');
 		el('output').innerHTML = '';
 		core.performance.stop('documentbundles.function.init(\'' + value(query) + '\')');

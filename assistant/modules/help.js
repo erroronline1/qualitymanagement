@@ -3,8 +3,8 @@
 //
 //  module for searching the frequently asked questions
 //
-//  dependencies:	data/help.var.js
-//					data/help.js
+//  dependencies:	library/module.var/help.var.js
+//					library/module.data/help.js
 //
 //////////////////////////////////////////////////////////////
 
@@ -12,7 +12,7 @@ if (typeof help === 'undefined') var help = {};
 
 help.api = {
 	available: function (search) {
-		core.function.loadScript('data/help.js',
+		core.function.loadScript('library/module.data/help.js',
 			'help.api.processAfterImport(\'' + search + '\')');
 		core.performance.stop('help.api.available(\'' + search + '\')');
 	},
@@ -64,7 +64,7 @@ help.function = {
 	},
 	init: function (query) {
 		el('modulehelp').checked = true; // highlight menu icon
-		core.function.loadScript('data/help.js', 'help.function.search(\'' + value(query) + '\')');
+		core.function.loadScript('library/module.data/help.js', 'help.function.search(\'' + value(query) + '\')');
 		el('input').innerHTML =
 			'<form id="search" action="javascript:help.function.search();">' +
 			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.function.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + '  />' +

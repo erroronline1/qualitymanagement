@@ -151,10 +151,10 @@ there is a main html-file in the root folder, a core folder with the core functi
 
 * the assistant is built using js-ecmascript 5 on purpose because of required compatibility to ms ie11. unfortunately this still is the default browser to date in many companies. the css is not compatible to previous versions of ie. there might be browserhacks and polyfills.
 * the assistant is designed to handle multiple language support, comes with english and german and can be extended as desired. extend the lang-objects in every module, the config-file and register the languages in this config-file to make them available.
-* the core-object provides readable function-calls and globally usable variables. general configuration takes place in core/core.var.js. this file contains a variable that extents the core-object with global variables and commonly used language-bricks.
+* the core-object provides readable function-calls and globally usable variables. general configuration takes place in library/core/core.var.js. this file contains a variable that extents the core-object with global variables and commonly used language-bricks.
 * built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, local-storage- or cookie-handler, repetitive design pattern implementation (icons, inputs, etc.), history handling and some more. get access or extend these functions with `core.function.FUNCTIONNAME`, global variables with `core.var.VARNAME`. i recommend this pattern to modules as well, defining a module-object with `{moduleFileName}.function.FUNCTIONNAME` and `{moduleFileName}.var.VARNAME`. the handler for multi-language-support of the application  (`core.function.lang()`) makes built-in automated use of this pattern.
 * data files are stored in a different folder hoping that changes to the backend don't mess up data that might be accessed through different persons than the maintainer of the application. these are separated in module-variables that define the modules behaviour and module data that will be processed according to the modules task. the latter are optional.
-* users can be informed about changes using the changelog in core/user_information.js. add your own changes and the information will popup automatically on start.
+* users can be informed about changes using the changelog in library/core/core.userDialogue.js. add your own changes and the information will popup automatically on start.
 * since most of my colleagues don't mind messing around to learn something, there is a short-tip function whose entries can be extended in accordance to your modules.
 * settings will be stored in local storage or cookies (depending on browser support) so everything depends on the local machine in addition to user login. in case everything is stored with cookies if the browsers history is cleaned on exit all setting will be gone as well. the storage method handles local-storage support with cookies as a fallback. this means there is finally support for chrome with an issue with cookie storage of local sites as well as ie11 without local storage.
 * you can monitor the performance (currently implemented for tracking asynchronous loading and processing) in the console if you enable it in the settings.
@@ -191,15 +191,10 @@ the provided modules are filled with dummies. the general multi-language support
 ### thoughts and considerations
 i tried to implement a preview on search forms using datalists. while it is not a big problem to update these dynamically i ran into two major issues: the cross-browser behaviour is very different and quirky. and using this in combination with fuzzy search and 6k+ items in stock-list everything slows horribly down. it would have been nice to have but ended up in some hours wasted.
 
-the assistant is designed to hopefully transition seamlessly into windows 10 fluent design that is still to come to my company as time of writing. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be.
+the assistant is designed to hopefully transition seamlessly into windows 10 fluent design that is still to come to my company as time of writing. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be. i am not a fanboy in the first place, although i like microsofts os design. i just try to make it look as native as possible to not disturb the co-workers. it is hard enough to convince them to utilize quality management as well as this tool.
 
 ### changes and updates
-i maintain this open template as well as the official version in my company. while making changes to the program i repeatedly have to consider the individual parts. fortunately these are limited to
-* core\core.var.js,
-* core\core_language_synthesis.js
-* core\user_information.js
-
-and all of the data files. the latter are seldom a subject of structural changes. most parts are quite dynamic and feed off the data files. customization might not be neccessary. be aware there will be no backwards-compatibilty to old module versions in case you customize these or develop additional modules. if you do not change anything within the other files any update from the latest commits should work flawless.
+i maintain this open template as well as the official version in my company. while making changes to the program i repeatedly have to consider the individual parts. therefore all custom files are to be found within the library folder. these are seldom a subject of structural changes. most parts are quite dynamic and feed off the data files. customization might not be neccessary. be aware there will be no backwards-compatibilty to old module versions in case you customize these or develop additional modules. if you do not change anything within the other files any update from the latest commits should work flawless.
 
 [back to top](#a-quality-management-software)
 
