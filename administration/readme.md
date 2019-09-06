@@ -31,3 +31,6 @@ this list contains external documents in force and can contain other file lists.
 the stocklist might contain all products and materials that have permission from the companies head. i am aware there are better solutions for stock administration but by time of writing my own companies software is worse than using excel for that. so this *is* an advance. the export function on save makes the list accessible and searchable for all employees using the assistant hence optimizing dialogue with inventory control. excel might freeze on export if the list contains 6k+ items, but it just takes some time, so no worries.
 
 *please be aware that there are dependencies between column numbers and entries and the assistants filter function. the excel-list will be displayed in the same way within the assistant in the first place.*
+
+## thoughts and considerations
+on export of files to pdf the file dialogue does not show pdf files. you will be asked to provide a file name with default docm-extension that will be changed automatically. this is due to the fact that vba `Application.FileDialog(msoFileDialogSaveAs)` does not support `.Filter`. existant files will not be displayed and just be overwritten.
