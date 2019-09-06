@@ -36,7 +36,7 @@ var randomTip = {
 		//	general functionality tips			
 		{
 			en: 'If you don\'t like the color, you can change the theme within the settings',
-			de: 'Falls dir dir Farbe nicht gefällt kannst du ein anderes Theme bei den Einstellungen auswählen.'
+			de: 'Falls dir die Farbe nicht gefällt kannst du ein anderes Theme bei den Einstellungen auswählen.'
 		},
 		{
 			en: 'In case you have difficulties reading, customize the font- and display-size.',
