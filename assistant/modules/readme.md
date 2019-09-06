@@ -80,7 +80,7 @@ modulename.function= { //module behaviour
 			el('module{modulename}').checked=true; 
 		el('module{modulename}').checked=true; 
 		//import data file if applicable, return initial module content, process query from inter-module communication or global search
-		core.function.loadScript('data/modulename.js', 'modulename.function.someFunction(\'' + value(query) + '\')');
+		core.function.loadScript('library/module.data/modulename.js', 'modulename.function.someFunction(\'' + value(query) + '\')');
 		//prepare your modules interface
 		el('input').innerHTML='your menu';
 		el('temp').innerHTML='your temporary output or additional forms';
@@ -109,7 +109,7 @@ the folder data has to contain a variable-file for the module, that will be call
 if (typeof modulename == 'undefined') var modulename={};
 
 modulename.var= { //module variables
-	someProperty: 'Pi is exaclty 3',
+	someProperty: 'Pi is exactly 3',
 	lang: {
 		inputPlaceholder: {
 			en: 'Search for last digit of pi',
@@ -147,7 +147,7 @@ all modules are depentent on the main module, only some may have dependencies of
 container for output are named 'input', 'temp' and 'output' and can be accessed via `el('input').innerHTML` or whatever.
 
 ## registering and loading of modules
-register and deregister modules in ROOT/core/config.js so they are accessible and listed on initial start. import js-files or other subscripts with `core.function.loadScript(url,callback);` files to be imported always have to be hardcoded (e.g. dropdown-list) because javascript having no indirect access to local file system (directory-listing etc.). this has to be done within modules as well. data-objects should be stored in data/ prefixed with modulename_. therefore these can remain untouched if any changes occur for the main module-file and won't be affected during file-transfers in reviews.
+register and deregister modules in ROOT/core/config.js so they are accessible and listed on initial start. import js-files or other subscripts with `core.function.loadScript(url,callback);` files to be imported always have to be hardcoded (e.g. dropdown-list) because javascript having no indirect access to local file system (directory-listing etc.). this has to be done within modules as well. data-objects should be stored in library/module.data/ prefixed with modulename_. therefore these can remain untouched if any changes occur for the main module-file and won't be affected during file-transfers in reviews.
 
 ## module initialization
 initialization of module will be achieved by the callback functions of the core.function.loadScript-method. initialization should contain a default output for input (forms or explanatory text), might contain module information in temp and should clear output. even if the module-object is reinitialized on every module-call there is no way of initializing with the same function name because of some asynchronous variable handling or scope unknown to me resulting in calling the previous init-function and giving a lot of errors.
@@ -183,7 +183,7 @@ the former object structure absolutely makes sense in german. in english not rea
 the method handles the decision over values or functions on its own.
 
 ## smart search with fuzzy search
-i have to admit i am a bit proud of this one. this method has to be handed over the raw query string and an object containing the searchable data. it then splits the query into whitespace separated terms, divides -filters and adds a concatenated query to an array of query options. fuzzy search is optional and can be enabled from the settings. if the query bits are set up the dataset will be checked for occurences of every bit. comparison happens for word-characters only (regex \w). the results is a multidimensional array that can be displayed first in order of occurrences of different terms (if there are more than one) then of the data object.
+i have to admit i am a bit proud of this one. this method has to be handed over the raw query string and an object containing the searchable data. it then splits the query into whitespace separated terms, divides -filters and adds a concatenated query to an array of query options. fuzzy search is optional and can be enabled from the settings. if the query bits are set up the dataset will be checked for occurences of every bit. the results is a multidimensional array that can be displayed first in order of occurrences of different terms (if there are more than one) then of the data object.
 
 ## output usage
 output text is selected on click by default. to avoid this add a property `disableOutputSelect=true;` to module.var. this is considered not to be implemented global through registered-modules for being dynamically mutable if desired within the module itself (e.g. see mailtools).
