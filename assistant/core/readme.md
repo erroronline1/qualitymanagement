@@ -62,5 +62,5 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.performance.stop(track, info, group)` does stop a console timer. info can be some desired result. ending group is optional. 
 
-## core_langage_synthesis.js
+## ../library/core/core.function.languageSynthesis.js
 extends the core-object with the language synthesis. here you define textblocks that can be switched for $keyword$ within continuous text using the function `core.function.languageSynthesis.output(block)` called by `'string'.replace(/\$(\w+?)\$/ig,function(match,group1){return core.function.languageSynthesis.output(group1)})`
