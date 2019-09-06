@@ -83,7 +83,8 @@ var core = {
 				// data base will be searched for single words as well as a concatenated string
 
 				// assign single terms to query array splitting by whitespace, stripping ' ( ) and - without preceding whitespace
-				var initial_query = userInput.toLowerCase().replace(/[^a-zA-Z0-9äÄöÖüÜß-\s]/g, '').split(/[\s]/g),
+				var sanitizeRegEx = /[^a-zA-Z0-9äÄöÖüÜß-\s]/g;
+				var initial_query = userInput.toLowerCase().replace(sanitizeRegEx, '').split(/[\s]/g),
 					query = new Array(),
 					filter = new Array(),
 					found = new Array();
@@ -99,7 +100,6 @@ var core = {
 				for (var del = query.length - 1; del >= 0; del -= 1) {
 					if (query[del].replace(/[\s]/g, '').length < 3) query.splice(del, 1);
 				}
-
 				function fuzzy(haystack, needle, fuzzy, ratio) {
 					if (haystack.indexOf(needle) > -1) return 2; // covers basic partial matches, avoids unnecessary nested loops
 					if (!fuzzy) return false; // breaks if fuzzySearch is not set
@@ -145,7 +145,7 @@ var core = {
 						//filter filename in case of pdf-files else take raw string
 						a = a.replace(/\S+\/.+\/(.+)\.pdf/g, "$1");
 						//strip all remaining special chars
-						a = a.toLowerCase().replace(/[^a-zA-Z0-9äÄöÖüÜß\s]/g, '');
+						a = a.toLowerCase().replace(sanitizeRegEx, '');
 						for (var i = 0; i < filter.length; i++) {
 							if (a.indexOf(filter[i]) > -1) {
 								filtered = true;
