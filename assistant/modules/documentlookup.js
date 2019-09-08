@@ -3,9 +3,9 @@
 //
 //  module for searching document-files in a static database
 //
-//  dependencies:	library/module.var/documentlookup.var.js
-//					library/module.data/documentlookup_int.js,
-//					library/module.data/documentlookup_ext.js,
+//  dependencies:	{core.var.moduleVarDir}documentlookup.var.js
+//					{core.var.moduleDataDir}documentlookup_int.js,
+//					{core.var.moduleDataDir}documentlookup_ext.js,
 //					documents.xlsm,
 //					external_dokuments.xlsm
 //
@@ -16,7 +16,7 @@ if (typeof documentlookup === 'undefined') var documentlookup = {};
 documentlookup.api = {
 	available: function (search) {
 		Object.keys(documentlookup.var.submodules).forEach(function (key) {
-			core.function.loadScript('library/module.data/' + key + '.js',
+			core.function.loadScript(core.var.moduleDataDir + key + '.js',
 				'documentlookup.api.processAfterImport(\'' + search + '\', \'' + key + '_data\')');
 		});
 		core.performance.stop('documentlookup.api.available(\'' + search + '\')');
@@ -142,7 +142,7 @@ documentlookup.function = {
 	},
 	init: function (query) {
 		el('moduledocumentlookup').checked = true; // highlight menu icon
-		core.function.loadScript('library/module.data/' + documentlookup.var.selectedModule() + '.js', 'documentlookup.function.search(\'' + value(query) + '\')');
+		core.function.loadScript(core.var.moduleDataDir + documentlookup.var.selectedModule() + '.js', 'documentlookup.function.search(\'' + value(query) + '\')');
 		//prepare selection
 		var selection = {};
 		Object.keys(documentlookup.var.submodules).forEach(function (key) {
@@ -152,7 +152,7 @@ documentlookup.function = {
 			'<form id="search" action="javascript:documentlookup.function.search();">' +
 			'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.function.lang('searchPlaceholder', 'documentlookup') + '" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +
 			'<span onclick="documentlookup.function.search();" class="search">' + core.function.insert.icon('search') + '</span> ' +
-			core.function.insert.select(selection, 'lookup', 'lookup', (core.function.setting.get('lookup_bundle') || false), 'onchange="core.function.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.function.loadScript(\'library/module.data/\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.function.search()\');"') +
+			core.function.insert.select(selection, 'lookup', 'lookup', (core.function.setting.get('lookup_bundle') || false), 'onchange="core.function.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.function.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.function.search()\');"') +
 			'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
 			'<a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.function.insert.icon('fileexplorer', 'bigger', false, 'title="' + core.function.lang('optionThirdType', 'documentlookup') + '"') + '</a>' +
 			'</form>';

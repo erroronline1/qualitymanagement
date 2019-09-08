@@ -1,3 +1,5 @@
+if (typeof core === 'undefined') var core = {};
+
 core.var = {
 	modules: {
 		//		module_file_name:{
@@ -78,7 +80,11 @@ core.var = {
 		}
 	},
 	//	rootdir in case different handling of source files is necessary over developement and production sites
-	rootdir: location.pathname.substring(1, location.pathname.lastIndexOf('/')).replace(/%20/g, " ") + '/',
+	coreRootDir: location.pathname.substring(1, location.pathname.lastIndexOf('/')).replace(/%20/g, " ") + '/',
+	// moduleDataDir path to modules data files according to xlsm-files
+	moduleDataDir: 'library/module.data/',
+	// moduleVarDir path to modules config files
+	moduleVarDir: 'library/module.var/',
 	// this will be automatically set to the last loaded module
 	currentScope: null,
 	//	logo as shown in upper left corner

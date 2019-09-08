@@ -4,8 +4,8 @@
 //  module for processing predefined text-blocks to have an
 //  automated text according to selectable topics
 //
-//  dependencies:	library/module.var/correspondence.var.js
-//					library/module.data/correspondence_....js
+//  dependencies:	{core.var.moduleVarDir}correspondence.var.js
+//					{core.var.moduleDataDir}correspondence_....js
 //
 //////////////////////////////////////////////////////////////
 
@@ -16,7 +16,7 @@ correspondence.api = {
 		//loop through registered submodules, load them individually and let processAfterImport add smartSearch-results to globalSearch
 		Object.keys(correspondence.var.submodules).forEach(function (key) {
 			if (correspondence.var.submodules[key][0] !== '') {
-				core.function.loadScript('library/module.data/' + correspondence.var.submodules[key][0] + '.js',
+				core.function.loadScript(core.var.moduleDataDir + correspondence.var.submodules[key][0] + '.js',
 					'correspondence.api.processAfterImport(\'' + search + '\', \'' + correspondence.var.submodules[key][0] + '\', \'' + correspondence.var.submodules[key][0] + '_data\')');
 			}
 		});
@@ -116,13 +116,13 @@ correspondence.function = {
 			preset = query.split('|');
 		}
 		el('input').innerHTML = core.function.insert.select(correspondence.var.submodules,
-				'submodule', 'submodule', (typeof preset !== 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.function.loadScript(\'library/module.data/\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
+				'submodule', 'submodule', (typeof preset !== 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.function.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
 			core.function.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '"');
 		el('temp').innerHTML = '';
 		el('output').innerHTML = '';
 		if (value(query) !== '') {
 			correspondence.var['presetModule'] = preset[0];
-			core.function.loadScript('library/module.data/' + preset[0] + '.js', 'correspondence.function.start(\'' + preset[1] + '\')');
+			core.function.loadScript(core.var.moduleDataDir + preset[0] + '.js', 'correspondence.function.start(\'' + preset[1] + '\')');
 		}
 		core.performance.stop('correspondence.function.init(\'' + value(query) + '\')');
 		core.history.write(['correspondence.function.init(\'' + value(query) + '\')']);

@@ -4,15 +4,15 @@
 //  module for preselecting documents within a quality
 //  mangagement system according to given tasks
 //
-//  dependencies:	library/module.var/documentpackages.var.js
-//					library/module.data/documentpackages.js
+//  dependencies:	{core.var.moduleVarDir}documentpackages.var.js
+//					{core.var.moduleDataDir}documentpackages.js
 //
 //////////////////////////////////////////////////////////////
 if (typeof documentbundles === 'undefined') var documentbundles = {};
 
 documentbundles.api = {
 	available: function (search) {
-		core.function.loadScript('library/module.data/documentbundles.js',
+		core.function.loadScript(core.var.moduleDataDir + 'documentbundles.js',
 			'documentbundles.api.processAfterImport(\'' + search + '\')');
 		core.performance.stop('documentbundles.api.available(\'' + search + '\')');
 	},
@@ -45,7 +45,7 @@ documentbundles.function = {
 	serialPrint: function (files) {
 		/*
 			files=files.substring(1).replace(/\//g,'\\').split(',');
-			var batch=core.function.rootdir+'modules/packages.cmd';
+			var batch=core.function.coreRootDir+'modules/packages.cmd';
 			try {
 				var shell = new ActiveXObject("WScript.Shell");
 				//shell.run('cmd /h & pause'); // do not delete if cmd is restricted on your system. this keeps a window open in case of need to mess around ;)
@@ -129,7 +129,7 @@ documentbundles.function = {
 	},
 	init: function (query) {
 		el('moduledocumentbundles').checked = true; // highlight menu icon
-		core.function.loadScript('library/module.data/documentbundles.js', 'documentbundles.function.input(\'' + value(query) + '\')');
+		core.function.loadScript(core.var.moduleDataDir + 'documentbundles.js', 'documentbundles.function.input(\'' + value(query) + '\')');
 		el('temp').innerHTML = '<br />' + core.function.lang('useCaseDescription', 'documentbundles');
 		el('output').innerHTML = '';
 		core.performance.stop('documentbundles.function.init(\'' + value(query) + '\')');
