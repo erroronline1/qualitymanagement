@@ -118,7 +118,7 @@ correspondence.function = {
 		el('input').innerHTML = core.function.insert.select(correspondence.var.submodules,
 				'submodule', 'submodule', (typeof preset !== 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.function.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
 			core.function.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '"');
-		el('temp').innerHTML = '';
+		el('temp').innerHTML = core.function.lang('useCaseDescription', 'correspondence');
 		el('output').innerHTML = '';
 		if (value(query) !== '') {
 			correspondence.var['presetModule'] = preset[0];

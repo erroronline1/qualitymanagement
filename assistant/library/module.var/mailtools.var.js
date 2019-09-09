@@ -2,6 +2,10 @@ if (typeof mailtools === 'undefined') var mailtools = {};
 
 mailtools.var = {
 	lang: {
+		useCaseDescription: {
+			en: 'Select function from above.',
+			de: 'Bitte oben die gewünschte Funktion wählen'
+		},
 		selectSubmodule: {
 			en: 'Please select Submodule',
 			de: 'Bitte Funktion wählen'

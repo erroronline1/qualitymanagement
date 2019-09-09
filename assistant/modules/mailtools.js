@@ -109,7 +109,8 @@ mailtools.function = {
 		});
 		el('input').innerHTML = core.function.insert.select(options, 'mailtoolsselection', 'mailtoolsselection', query, ' onchange="mailtools.function[this.options[this.selectedIndex].value+\'input\']()"') +
 			'<span class="inline" id="mailtoolgen"></span>';
-		el('temp').innerHTML = el('output').innerHTML = '';
+		el('temp').innerHTML = core.function.lang('useCaseDescription', 'mailtools');
+		el('output').innerHTML = '';
 		if (value(query) !== '') eval('mailtools.function.' + query + 'input()');
 		core.performance.stop('mailtools.function.init(\'' + value(query) + '\')');
 		core.history.write(['mailtools.function.init(\'' + value(query) + '\')']);

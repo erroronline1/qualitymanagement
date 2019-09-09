@@ -2,6 +2,10 @@ if (typeof correspondence === 'undefined') var correspondence = {};
 
 correspondence.var = {
 	lang: {
+		useCaseDescription: {
+			en: 'Select department from above, then the topic, and customize the text using the options. Use direct websearch if you are unsure aabout the name.',
+			de: 'Bitte oben den gewünschten Bereich und anschließend das Thema wählen und den Text über die Optionen anpassen. Bei unklaren Namen direkt die Websuche benutzen.'
+		},
 		inputLoadSubmoduleDefault: {
 			en: 'select department...',
 			de: 'Bereich wählen...'
