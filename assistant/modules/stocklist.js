@@ -5,7 +5,7 @@
 //
 //  dependencies:	{core.var.moduleVarDir}stocklist.var.js
 //					{core.var.moduleDataDir}stocklist.js
-//					artikelmanager.xlsm
+//					stocklist.xlsm
 //
 //////////////////////////////////////////////////////////////
 
@@ -20,7 +20,10 @@ stocklist.api = {
 	processAfterImport: function (search) {
 		var display;
 		if (typeof stocklist_data !== 'undefined') {
-			var found = core.function.smartSearch.lookup(search, stocklist_data.content, true);
+			//clone data object and reset first value to undefined otherwise header terms can be displayed as results
+			var data_without_header=JSON.parse(JSON.stringify(stocklist_data));
+			data_without_header.content[0]=new Array(data_without_header.content[0].length);
+			var found = core.function.smartSearch.lookup(search, data_without_header.content, true);
 			//the following would return the found items, but i decided otherwise in this case
 			//found.forEach(function (value) {
 			//	display=display:stocklist_data.content[value[0]][1] + ' ' +stocklist_data.content[value[0]][2] + ' '+ stocklist_data.content[value[0]][3];
@@ -37,19 +40,10 @@ stocklist.api = {
 };
 stocklist.function = {
 	translate: {
-		filter: function () {
-			//id:[select value, select text, filter for smartsearch]
-			return {
-				all: ['all', core.function.lang('filterAll', 'stocklist'), 'true'],
-				conf: ['conf', core.function.lang('filterReadymade', 'stocklist'), 'stocklist_data.content[key][6]==\'ja\''],
-				nconf: ['nconf', core.function.lang('filterNoReadymade', 'stocklist'), 'stocklist_data.content[key][6]==\'nein\''],
-				store: ['store', core.function.lang('filterStock', 'stocklist'), 'stocklist_data.content[key][7]!=\'nein\''],
-			};
-		},
 		returnselect: function () {
 			var output = new Object();
-			Object.keys(stocklist.function.translate.filter()).forEach(function (key) {
-				output[key] = [stocklist.function.translate.filter()[key][0], stocklist.function.translate.filter()[key][1]];
+			Object.keys(stocklist.var.filter()).forEach(function (key) {
+				output[key] = [stocklist.var.filter()[key][0], stocklist.var.filter()[key][1]];
 			});
 			return output;
 		},
@@ -60,7 +54,10 @@ stocklist.function = {
 		var list = '';
 		if (typeof stocklist_data !== 'undefined') {
 			if (value(query) !== '') {
-				var found = core.function.smartSearch.lookup(query, stocklist_data.content, stocklist.function.translate.filter()[el('stockfilter').options[el('stockfilter').selectedIndex].value][2]);
+				//clone data object and reset first value to undefined otherwise header terms can be displayed as results
+				var data_without_header=JSON.parse(JSON.stringify(stocklist_data));
+				data_without_header.content[0]=new Array(data_without_header.content[0].length);
+				var found = core.function.smartSearch.lookup(query, data_without_header.content, stocklist.var.filter()[el('stockfilter').options[el('stockfilter').selectedIndex].value][2]);
 				// check if search matches item-list
 				if (found.length > 0) {
 					core.function.smartSearch.relevance.init();
