@@ -29,8 +29,13 @@ core.function = {
 		//can set array of where to same what, strings are converted to array automatically, 'console' is reserved
 		if (typeof where === 'string') where=[where];
 		where.forEach(function(w){
-			if (w==='console') console.log(what);
-			else document.getElementById(w).innerHTML=what;
+			if (core.function.setting.get('settingOutputMonitor') || w==='console'){
+				var group= w + ' from ' + core.var.currentScope;
+				console.groupCollapsed(group);
+				console.log(what);
+				console.groupEnd(group);
+			}
+			if (w !== 'console') document.getElementById(w).innerHTML=what;
 		});
 	},
 	popup: function (text) { //toggle notification popup
@@ -372,6 +377,7 @@ core.function = {
 				'<br />' + core.function.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.function.setting.get('settingGlobalSearchTime') || 3) + '" onchange="core.function.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
 				'<br />' + core.function.lang('settingVarPreloadCaption') + ':<br /><input type="range" min="0" max="1000" step="50" value="' + (core.function.setting.get('settingVarPreloadTime') || 50) + '" onchange="core.function.setting.set(\'settingVarPreloadTime\',(this.value))" />' +
 				'<br />' + core.function.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.function.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
+				'<br />' + core.function.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.function.setting.get('settingOutputMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingOutputMonitor\')"') +
 				'';
 		},
 		theme: function (theme) {
@@ -578,8 +584,8 @@ function select_module() { //load module list and return the main menu
 				output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.function.loadScript(\'' + opt + '\', \'' + key + '.function.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
 				slider.modules.push(key);
 			}
-			core.function.stdout('menu', output);
 		});
+		core.function.stdout('menu', output);
 	} else core.function.popup(core.function.lang('errorLoadingModules'));
 }
 
@@ -614,7 +620,7 @@ function selectText(element) { //selection of output-content on click if not dis
 	}
 }
 
-var globalSearch = { //searches all modules using thir api-methods from the start page
+var globalSearch = { //searches all modules using their api-methods from the start page
 	result: {},
 	contribute: function (property, value) {
 		if (typeof this.result[property] === 'undefined') this.result[property] = [value];
