@@ -131,7 +131,6 @@ documentbundles.function = {
 		el('moduledocumentbundles').checked = true; // highlight menu icon
 		core.function.loadScript(core.var.moduleDataDir + 'documentbundles.js', 'documentbundles.function.input(\'' + value(query) + '\')');
 		core.function.stdout('temp', '<br />' + core.function.lang('useCaseDescription', 'documentbundles'));
-		core.function.stdout('output', '');
 		core.performance.stop('documentbundles.function.init(\'' + value(query) + '\')');
 	},
 };

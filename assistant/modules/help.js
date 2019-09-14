@@ -72,8 +72,6 @@ help.function = {
 			'<input type="submit" id="artikelsuche" value="' + core.function.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
 			'</form>');
 		el('helpquery').focus();
-
-		core.function.stdout(['temp', 'output'], '');
 		core.performance.stop('help.function.init(\'' + value(query) + '\')');
 	},
 };

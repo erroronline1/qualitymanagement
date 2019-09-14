@@ -115,7 +115,6 @@ stocklist.function = {
 			core.function.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.google.de/#q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.function.lang('webSearchTitle', 'stocklist') + '"') +
 			'</form>');
 		el('itemname').focus();
-		core.function.stdout('output', '');
 		core.function.stdout('temp', core.function.lang('useCaseDescription', 'stocklist'));
 		core.performance.stop('stocklist.function.init(\'' + value(query) + '\')');
 	},

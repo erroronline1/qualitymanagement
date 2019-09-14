@@ -57,7 +57,6 @@ correspondence.function = {
 			}
 
 			//output
-			core.function.stdout('output', '');
 			var index = 0;
 			if (el('thirdperson').checked) index = 1;
 			var output = '';
@@ -119,8 +118,6 @@ correspondence.function = {
 				'submodule', 'submodule', (typeof preset !== 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.function.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
 			core.function.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '"'));
 		core.function.stdout('temp', core.function.lang('useCaseDescription', 'correspondence'));
-//		core.function.stdout('temp', core.function.lang('useCaseDescription', 'correspondence'));
-		core.function.stdout('output', '');
 		if (value(query) !== '') {
 			correspondence.var['presetModule'] = preset[0];
 			core.function.loadScript(core.var.moduleDataDir + preset[0] + '.js', 'correspondence.function.start(\'' + preset[1] + '\')');

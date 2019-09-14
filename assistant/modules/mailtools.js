@@ -100,7 +100,7 @@ mailtools.function = {
 			mailtools_data.notavailableResponse['en'](dates));
 	},
 	init: function (query) {
-		if (typeof mailtools_data === 'undefined') core.function.loadScript(core.var.moduleDataDir + 'mailtools.js', 'mailtools.function.init(\'' + value(query) + '\')');
+		if (typeof mailtools_data === 'undefined') core.function.loadScript(core.var.moduleDataDir + 'mailtools.js');
 		el('modulemailtools').checked = true; // highlight menu icon
 		var options = new Object();
 		options['null'] = ['', core.function.lang('selectSubmodule', 'mailtools')];
@@ -109,9 +109,8 @@ mailtools.function = {
 		});
 		core.function.stdout('input', core.function.insert.select(options, 'mailtoolsselection', 'mailtoolsselection', query, ' onchange="mailtools.function[this.options[this.selectedIndex].value+\'input\']()"') +
 			'<span class="inline" id="mailtoolgen"></span>');
-		core.function.stdout('temp', core.function.lang('useCaseDescription', 'mailtools'));
-		core.function.stdout('output', '');
 		if (value(query) !== '') eval('mailtools.function.' + query + 'input()');
+		else core.function.stdout('temp', core.function.lang('useCaseDescription', 'mailtools'));
 		core.performance.stop('mailtools.function.init(\'' + value(query) + '\')');
 		core.history.write(['mailtools.function.init(\'' + value(query) + '\')']);
 	},

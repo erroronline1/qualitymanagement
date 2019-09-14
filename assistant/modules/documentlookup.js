@@ -157,7 +157,6 @@ documentlookup.function = {
 			'<a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.function.insert.icon('fileexplorer', 'bigger', false, 'title="' + core.function.lang('optionThirdType', 'documentlookup') + '"') + '</a>' +
 			'</form>');
 		el('documentname').focus();
-		core.function.stdout(['temp', 'output'], '');
 		core.performance.stop('documentlookup.function.init(\'' + value(query) + '\')');
 	},
 };
