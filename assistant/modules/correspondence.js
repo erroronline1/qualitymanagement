@@ -57,7 +57,7 @@ correspondence.function = {
 			}
 
 			//output
-			el("output").innerHTML = "";
+			core.function.stdout('output', '');
 			var index = 0;
 			if (el('thirdperson').checked) index = 1;
 			var output = '';
@@ -70,7 +70,7 @@ correspondence.function = {
 				//el('output').innerHTML+=(checkbox[value]==1?output+'<br />':'');
 				output += '<br />';
 			});
-			el('output').innerHTML = output;
+			core.function.stdout('output', output);
 			el('mailto').href = 'mailto:?body=' + core.function.escapeHTML(el('output').innerHTML, true);
 
 		} else core.function.popup(core.function.lang('errorSelectModules', 'correspondence'));
@@ -102,7 +102,7 @@ correspondence.function = {
 				(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '" target="_blank">' + core.function.insert.icon('word') + core.function.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.function.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
 				'<br /><br /><a id="mailto" href="mailto:">' + core.function.insert.icon('email') + core.function.lang('openMailApp', 'correspondence') + '</a>' +
 				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.insert.icon('outlook') + core.function.lang('openOutlook', 'correspondence') + '</a>' : '');
-			el('temp').innerHTML = output;
+			core.function.stdout('temp', output);
 			if (value(query) !== '') correspondence.function.gen(query);
 		} else core.function.popup(core.function.lang('errorSelectModules', 'correspondence'));
 		core.performance.stop('correspondence.function.start(\'' + value(query) + '\')');
@@ -115,11 +115,12 @@ correspondence.function = {
 		if (value(query) !== '') {
 			preset = query.split('|');
 		}
-		el('input').innerHTML = core.function.insert.select(correspondence.var.submodules,
+		core.function.stdout('input', core.function.insert.select(correspondence.var.submodules,
 				'submodule', 'submodule', (typeof preset !== 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.function.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
-			core.function.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '"');
-		el('temp').innerHTML = core.function.lang('useCaseDescription', 'correspondence');
-		el('output').innerHTML = '';
+			core.function.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '"'));
+		core.function.stdout('temp', core.function.lang('useCaseDescription', 'correspondence'));
+//		core.function.stdout('temp', core.function.lang('useCaseDescription', 'correspondence'));
+		core.function.stdout('output', '');
 		if (value(query) !== '') {
 			correspondence.var['presetModule'] = preset[0];
 			core.function.loadScript(core.var.moduleDataDir + preset[0] + '.js', 'correspondence.function.start(\'' + preset[1] + '\')');

@@ -39,7 +39,7 @@ help.function = {
 				if (help_data.content[key][0]) list += '<a style="cursor:pointer" onclick="el(\'helpquery\').value=\'' + help_data.content[key][0] + '\'; el(\'search\').submit();">' + help_data.content[key][0] + '</a><br />';
 				else list += '<br />';
 			});
-			el('temp').innerHTML = '<span class="highlight">' + core.function.lang('tableOfContents', 'help') + ':</span><br />' + list;
+			core.function.stdout('temp', '<span class="highlight">' + core.function.lang('tableOfContents', 'help') + ':</span><br />' + list);
 			if (value(query) !== '') {
 				var found = core.function.smartSearch.lookup(query, help_data.content, true);
 
@@ -56,7 +56,7 @@ help.function = {
 							'</div>';
 					});
 				} else list = core.function.lang('errorNothingFound', 'help', query);
-				el('output').innerHTML = list;
+				core.function.stdout('output', list);
 			}
 		}
 		core.performance.stop('help.function.input(\'' + value(query) + '\')');
@@ -65,15 +65,15 @@ help.function = {
 	init: function (query) {
 		el('modulehelp').checked = true; // highlight menu icon
 		core.function.loadScript(core.var.moduleDataDir + 'help.js', 'help.function.search(\'' + value(query) + '\')');
-		el('input').innerHTML =
+		core.function.stdout('input',
 			'<form id="search" action="javascript:help.function.search();">' +
 			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.function.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + '  />' +
 			'<span onclick="help.function.search();" class="search">' + core.function.insert.icon('search') + '</span> ' +
 			'<input type="submit" id="artikelsuche" value="' + core.function.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
-			'</form>';
+			'</form>');
 		el('helpquery').focus();
 
-		el('temp').innerHTML = el('output').innerHTML = " ";
+		core.function.stdout(['temp', 'output'], '');
 		core.performance.stop('help.function.init(\'' + value(query) + '\')');
 	},
 };

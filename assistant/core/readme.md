@@ -10,6 +10,8 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `svgClassList()` polyfill for adding/removing classes to svg classList
 
+`core.function.stdout(where, what)` serves as a wrapper for output to innerHTML, but can be used for debugging easily by setting/adding 'console' to *where*
+
 `core.function.popup(text)` shows or updates a modal box if text is provided, hides it if function called with null value
 
 `core.function.toggelHeight(toggleel)` toggles the class list of given element to expand or shrink it

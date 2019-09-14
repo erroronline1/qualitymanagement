@@ -108,8 +108,8 @@ documentbundles.function = {
 			Object.keys(pack.secondary).forEach(function (index) {
 				secondary += documentbundles.function.linkfile(pack.secondary[index]);
 			});
-			el('temp').innerHTML = '<span class="highlight">' + core.function.lang('primaryCaption', 'documentbundles') + '</span><br />' + primary;
-			el('output').innerHTML = '<span class="highlight">' + core.function.lang('secondaryCaption', 'documentbundles') + '</span><br />' + secondary;
+			core.function.stdout('temp', '<span class="highlight">' + core.function.lang('primaryCaption', 'documentbundles') + '</span><br />' + primary);
+			core.function.stdout('output', '<span class="highlight">' + core.function.lang('secondaryCaption', 'documentbundles') + '</span><br />' + secondary);
 		}
 		core.history.write(['documentbundles.function.init(\'' + treatment + '\')']);
 	},
@@ -121,7 +121,7 @@ documentbundles.function = {
 				out += '<option id="' + key + '" value="' + key + '" ' + (query === key ? 'selected' : '') + '>' + key.replace(/_/g, " ") + '</option>';
 			});
 			out += '</select>';
-			el('input').innerHTML = out + '<span class="inline" style="padding-top:.375em">' + core.function.insert.checkbox(core.function.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.function.gen(sel)"') + '</span>';
+			core.function.stdout('input', out + '<span class="inline" style="padding-top:.375em">' + core.function.insert.checkbox(core.function.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.function.gen(sel)"') + '</span>');
 			if (value(query) !== '') documentbundles.function.gen(query);
 		}
 		core.performance.stop('documentbundles.function.input(\'' + value(query) + '\')');
@@ -130,8 +130,8 @@ documentbundles.function = {
 	init: function (query) {
 		el('moduledocumentbundles').checked = true; // highlight menu icon
 		core.function.loadScript(core.var.moduleDataDir + 'documentbundles.js', 'documentbundles.function.input(\'' + value(query) + '\')');
-		el('temp').innerHTML = '<br />' + core.function.lang('useCaseDescription', 'documentbundles');
-		el('output').innerHTML = '';
+		core.function.stdout('temp', '<br />' + core.function.lang('useCaseDescription', 'documentbundles'));
+		core.function.stdout('output', '');
 		core.performance.stop('documentbundles.function.init(\'' + value(query) + '\')');
 	},
 };

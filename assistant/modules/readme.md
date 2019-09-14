@@ -82,9 +82,9 @@ modulename.function= { //module behaviour
 		//import data file if applicable, return initial module content, process query from inter-module communication or global search
 		core.function.loadScript(core.var.moduleDataDir + 'modulename.js', 'modulename.function.someFunction(\'' + value(query) + '\')');
 		//prepare your modules interface
-		el('input').innerHTML='your menu';
-		el('temp').innerHTML='your temporary output or additional forms';
-		el('output').innerHTML='your output';
+		core.function.stdout('input', 'your menu');
+		core.function.stdout('temp', 'your temporary output or additional forms');
+		core.function.stdout('output', 'your output');
 		//stop performance monitoring that has been started by module calling and write history
 		core.performance.stop('modulename.function.init(\'' + value(query) + '\')');
 		core.history.write(['modulename.function.init(\'' + value(query) + '\')']);
@@ -144,7 +144,7 @@ modules must contain functions to generate the modules output. some functions ar
 all modules are depentent on the main module, only some may have dependencies of other data-files.
 
 ## output containers
-container for output are named 'input', 'temp' and 'output' and can be accessed via `el('input').innerHTML` or whatever.
+container for output are named 'input', 'temp' and 'output' and can be accessed preferably via `core.function.stdout('input', content)` or `el('input').innerHTML` or whatever.
 
 ## registering and loading of modules
 register and deregister modules in ROOT/core/config.js so they are accessible and listed on initial start. import js-files or other subscripts with `core.function.loadScript(url,callback);` files to be imported always have to be hardcoded (e.g. dropdown-list) because javascript having no indirect access to local file system (directory-listing etc.). this has to be done within modules as well. data-objects should be stored in `core.var.moduleDataDir`-folder prefixed with modulename_. therefore these can remain untouched if any changes occur for the main module-file and won't be affected during file-transfers in reviews.

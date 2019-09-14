@@ -25,6 +25,14 @@ var svgClassList = { //classList.add and *.remove not supported for svg in ie, t
 if (typeof core === 'undefined') var core = {};
 
 core.function = {
+	stdout: function(where, what){ //handles output, thus is suitable for unit-testing and debugging.
+		//can set array of where to same what, strings are converted to array automatically, 'console' is reserved
+		if (typeof where === 'string') where=[where];
+		where.forEach(function(w){
+			if (w==='console') console.log(what);
+			else document.getElementById(w).innerHTML=what;
+		});
+	},
 	popup: function (text) { //toggle notification popup
 		otext = '<span style="display:block; width:100%; text-align:right;">' + core.function.insert.icon('closepopup', 'bigger', false, 'title="' + core.function.lang('popupCloseButton') + '" onclick="core.function.popup()"') + '</span>' + text;
 		if (el('popup').style.opacity == '1' && typeof text === 'undefined') {
@@ -32,10 +40,10 @@ core.function = {
 			el('popuptext').style.right = '-100vw';
 			setTimeout(function () {
 				el('popup').style.display = 'none';
-				el('popuptext').innerHTML = otext;
+				core.function.stdout('popuptext', otext);
 			}, 100);
 		} else {
-			el('popuptext').innerHTML = otext;
+			core.function.stdout('popuptext', otext);
 			el('popup').style.display = 'block';
 			el('popup').style.opacity = '1';
 			setTimeout(function () {
@@ -320,11 +328,11 @@ core.function = {
 		setup: function () { //displays settings menu
 			return '<div id="popupcontent">' +
 				'<article class="home" style="border-right:1px solid; line-height:3em">' +
-				'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupMain();" style="cursor:pointer">' + core.function.insert.icon('generalsetting') + core.function.lang('settingMainCaption') + '</span><br />' +
-				'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupModules();" style="cursor:pointer">' + core.function.insert.icon('moduleselector') + core.function.lang('settingModuleselectorCaption') + '</span><br />' +
-				'<span onclick="el(\'settingContent\').innerHTML=core.function.setting.setupAdvanced();" style="cursor:pointer">' + core.function.insert.icon('advancedsetting') + core.function.lang('settingAdvancedCaption') + '</span><br />' +
-				'<span onclick="el(\'settingContent\').innerHTML=updateTracker.enlist();" style="cursor:pointer">' + core.function.insert.icon('update') + 'Updates</span><br />' +
-				'<span onclick="el(\'settingContent\').innerHTML=aboutNotification[core.var.selectedLanguage]+\'<hr />\'+core.function.lang(\'settingGeneralHint\')+\'<hr />\'+randomTip.enlist();" style="cursor:pointer">' + core.function.insert.icon('info') + 'About</span><br />' +
+				'<span onclick="core.function.stdout(\'settingContent\', core.function.setting.setupMain());" style="cursor:pointer">' + core.function.insert.icon('generalsetting') + core.function.lang('settingMainCaption') + '</span><br />' +
+				'<span onclick="core.function.stdout(\'settingContent\', core.function.setting.setupModules());" style="cursor:pointer">' + core.function.insert.icon('moduleselector') + core.function.lang('settingModuleselectorCaption') + '</span><br />' +
+				'<span onclick="core.function.stdout(\'settingContent\', core.function.setting.setupAdvanced());" style="cursor:pointer">' + core.function.insert.icon('advancedsetting') + core.function.lang('settingAdvancedCaption') + '</span><br />' +
+				'<span onclick="core.function.stdout(\'settingContent\', updateTracker.enlist());" style="cursor:pointer">' + core.function.insert.icon('update') + 'Updates</span><br />' +
+				'<span onclick="core.function.stdout(\'settingContent\', aboutNotification[core.var.selectedLanguage]+\'<hr />\'+core.function.lang(\'settingGeneralHint\')+\'<hr />\'+randomTip.enlist());" style="cursor:pointer">' + core.function.insert.icon('info') + 'About</span><br />' +
 				'</article>' +
 				'<aside id="settingContent">' + core.function.setting.setupMain() + '</aside>' +
 				'<div>';
@@ -437,22 +445,22 @@ core.function = {
 	},
 
 	init: function (query) { //displays start screen
-		el('input').innerHTML =
+		core.function.stdout('input',
 			'<form id="search" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
 			'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
 			core.function.lang('globalSearchPlaceholder') + '" class="search" ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
 			'<span onclick="globalSearch.search(el(\'globalsearch\').value);" class="search">' + core.function.insert.icon('search') + '</span>' +
 			'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
-			'</form>';
+			'</form>');
 		el('globalsearch').focus();
-		el('temp').innerHTML =
+		core.function.stdout('temp',
 			core.function.lang('greeting') + '<br />' +
 			(core.var.letterTemplate ? '<br /><a href="' + core.var.letterTemplate + '" target="_blank">' +
 				core.function.insert.icon('word') + core.function.lang('openLetterTemplate') + '</a><br />' : '') +
 			(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' +
 				core.function.insert.icon('outlook') + core.function.lang('openOutlook') + '</a><br />' : '') +
-			'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>';
-		el('output').innerHTML = '';
+			'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>');
+			core.function.stdout('output', '');
 		core.var.currentScope = null;
 		Object.keys(core.var.modules).forEach(function (key) {
 			if (el('module' + key) != 'undefined') el('module' + key).checked = false;
@@ -552,7 +560,7 @@ var slider = { //just fancy animation of content on module change
 		el('content').classList.remove('slideup', 'slidedown');
 		var newone = el('content').cloneNode(true);
 		el('content').parentNode.replaceChild(newone, el('content'));
-		el('input').innerHTML = el('temp').innerHTML = el('output').innerHTML = '';
+		core.function.stdout(['input', 'temp', 'output'], '');
 		if (slider.modules.indexOf(mod) > slider.recent) el('content').classList.add('slideup')
 		if (slider.modules.indexOf(mod) < slider.recent) el('content').classList.add('slidedown')
 
@@ -562,13 +570,15 @@ var slider = { //just fancy animation of content on module change
 
 function select_module() { //load module list and return the main menu
 	if (typeof (core.var.modules) !== 'undefined') {
+		var output='';
 		Object.keys(core.var.modules).forEach(function (key) {
 			if (typeof core.var.modules[key] === 'object' && core.function.setting.get('module_' + key) != 1) {
 				//create module-selector
 				opt = 'modules/' + key + '.js';
-				el('menu').innerHTML += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.function.loadScript(\'' + opt + '\', \'' + key + '.function.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
+				output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.function.loadScript(\'' + opt + '\', \'' + key + '.function.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
 				slider.modules.push(key);
 			}
+			core.function.stdout('menu', output);
 		});
 	} else core.function.popup(core.function.lang('errorLoadingModules'));
 }
@@ -646,7 +656,7 @@ var globalSearch = { //searches all modules using thir api-methods from the star
 				displayResult += '</div>';
 			});
 		} else var displayResult = core.function.lang('errorNothingFound', null, el('globalsearch').value);
-		el('output').innerHTML = displayResult;
+		core.function.stdout('output', displayResult);
 		document.body.style.cursor = 'default';
 		core.performance.stop('globalSearch', null, 'endgroup');
 	}

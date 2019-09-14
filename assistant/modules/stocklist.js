@@ -94,7 +94,7 @@ stocklist.function = {
 							'</div>';
 					});
 				} else list = core.function.lang('errorNothingFound', 'stocklist', query);
-				el('output').innerHTML = list;
+				core.function.stdout('output', list);
 				list = '';
 			} else {
 				return stocklist_data.content.length - 1;
@@ -106,17 +106,17 @@ stocklist.function = {
 	init: function (query) {
 		el('modulestocklist').checked = true; // highlight menu icon
 		core.function.loadScript(core.var.moduleDataDir + 'stocklist.js', 'stocklist.function.search(\'' + value(query) + '\')');
-		el('input').innerHTML =
+		core.function.stdout('input',
 			'<form id="search" action="javascript:stocklist.function.search();">' +
 			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.function.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +
 			'<span onclick="stocklist.function.search();" class="search">' + core.function.insert.icon('search') + '</span> ' +
 			core.function.insert.select(stocklist.function.translate.returnselect(), 'stockfilter', 'stockfilter', (core.function.setting.get('stockfilter') || 'all'), 'onchange="core.function.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.function.search();"') +
 			'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
 			core.function.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.google.de/#q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.function.lang('webSearchTitle', 'stocklist') + '"') +
-			'</form>';
+			'</form>');
 		el('itemname').focus();
-		el('output').innerHTML = el('temp').innerHTML = '';
-		el('temp').innerHTML = core.function.lang('useCaseDescription', 'stocklist');
+		core.function.stdout('output', '');
+		core.function.stdout('temp', core.function.lang('useCaseDescription', 'stocklist'));
 		core.performance.stop('stocklist.function.init(\'' + value(query) + '\')');
 	},
 };

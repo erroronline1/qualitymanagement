@@ -118,7 +118,7 @@ documentlookup.function = {
 				if (typeof interimobject[key] === 'object') list += documentlookup.function.linkfile(interimobject[key][0]) + '<br />';
 				else list += documentlookup.function.linkfile(interimobject[key]) + '<br />';
 			});
-			el('temp').innerHTML = list;
+			core.function.stdout('temp', list);
 
 			if (value(query) !== '') {
 				var found = core.function.smartSearch.lookup(query, interimobject, true);
@@ -132,10 +132,10 @@ documentlookup.function = {
 						if (typeof interimobject[value[0]] === 'object') list += documentlookup.function.linkfile(interimobject[value[0]][0], (interimobject[value[0]][1] ? core.function.lang('searchTitle', 'documentlookup') + interimobject[value[0]][1] : false)) + '<br />';
 						else list += documentlookup.function.linkfile(interimobject[value[0]]) + '<br />';
 					});
-					el('output').innerHTML = list;
+					core.function.stdout('output', list);
 					list = '';
-				} else el('output').innerHTML = core.function.lang('errorNothingFound', 'documentlookup', query);
-			} else el('output').innerHTML = documentlookup.function.favouriteHandler.get() || '';
+				} else core.function.stdout('output', core.function.lang('errorNothingFound', 'documentlookup', query));
+			} else core.function.stdout('output', documentlookup.function.favouriteHandler.get() || '');
 		}
 		core.performance.stop('documentlookup.function.search(\'' + value(query) + '\')', found);
 		core.history.write(['documentlookup.function.init(\'' + value(query) + '\')']);
@@ -148,16 +148,16 @@ documentlookup.function = {
 		Object.keys(documentlookup.var.submodules).forEach(function (key) {
 			selection[key] = [key, documentlookup.var.submodules[key][core.var.selectedLanguage]];
 		});
-		el('input').innerHTML =
+		core.function.stdout('input',
 			'<form id="search" action="javascript:documentlookup.function.search();">' +
 			'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.function.lang('searchPlaceholder', 'documentlookup') + '" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +
 			'<span onclick="documentlookup.function.search();" class="search">' + core.function.insert.icon('search') + '</span> ' +
 			core.function.insert.select(selection, 'lookup', 'lookup', (core.function.setting.get('lookup_bundle') || false), 'onchange="core.function.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.function.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.function.search()\');"') +
 			'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
 			'<a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.function.insert.icon('fileexplorer', 'bigger', false, 'title="' + core.function.lang('optionThirdType', 'documentlookup') + '"') + '</a>' +
-			'</form>';
+			'</form>');
 		el('documentname').focus();
-		el('temp').innerHTML = el('output').innerHTML = '';
+		core.function.stdout(['temp', 'output'], '');
 		core.performance.stop('documentlookup.function.init(\'' + value(query) + '\')');
 	},
 };
