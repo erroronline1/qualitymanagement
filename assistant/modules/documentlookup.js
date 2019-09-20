@@ -27,8 +27,7 @@ documentlookup.api = {
 			object = eval(objectname);
 			var found = core.function.smartSearch.lookup(search, object.content, true);
 			found.forEach(function (value) {
-				if (typeof object.content[value[0]] === 'object') display = documentlookup.function.linkfile(object.content[value[0]][0], core.function.lang('searchTitle', 'documentlookup') + object.content[value[0]][1]);
-				else display = documentlookup.function.linkfile(object.content[value[0]]);
+				display = documentlookup.function.linkfile([object.content[value[0]][0], object.content[value[0]][1]], false, (object.content[value[0]][2] ? core.function.lang('searchTitle', 'documentlookup') + object.content[value[0]][2] : false));
 				//add value and relevance
 				globalSearch.contribute('documentlookup', [display, value[1]]);
 			});
@@ -37,14 +36,11 @@ documentlookup.api = {
 	}
 };
 documentlookup.function = {
-	linkfile: function (url, title) {
-		title = value(title) !== '' ? ' title="' + title + '" ' : '';
-		// bad filename or dynamic url
-		if (typeof url === 'object') {
-			return '<a href="' + url[0] + '" ' + title + ' target="_blank">' + url[1] + '</a>';
-		}
-		// url with quality filename
-		else return '<a href="' + url + '" ' + title + ' onclick="documentlookup.function.favouriteHandler.set(\'' + documentlookup.function.favouriteHandler.prepare(url) + '\'); return;" target="_blank">' + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.')).substring(1) + '</a>';
+	linkfile: function (url, track, title) {
+		var title = value(title) !== '' ? ' title="' + title + '" ' : '';
+		var displayName = ( url[1] ? url[1] : url[0].substring(url[0].lastIndexOf('/'), url[0].lastIndexOf('.')).substring(1))
+		if (track) return '<a href="' + url[0] + '" ' + title + ' onclick="documentlookup.function.favouriteHandler.set(\'' + documentlookup.function.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>';
+		else return '<a href="' + url[0] + '" ' + title + ' target="_blank">' + displayName + '</a>'; 
 	},
 	favouriteHandler: {
 		prepare: function (value) {
@@ -79,9 +75,7 @@ documentlookup.function = {
 				var interimobject=documentlookup.var.selectedObject().content;
 				//assign link to index as favourite handler
 				Object.keys(interimobject).forEach(function (key) {
-					if (typeof interimobject[key] === 'object')
-						tfav[documentlookup.function.favouriteHandler.prepare(interimobject[key][0])] = documentlookup.function.linkfile(interimobject[key][0]);
-					else tfav[documentlookup.function.favouriteHandler.prepare(interimobject[key])] = documentlookup.function.linkfile(interimobject[key]);
+					tfav[documentlookup.function.favouriteHandler.prepare(interimobject[key][0])] = documentlookup.function.linkfile([interimobject[key][0],interimobject[key][1]],false);
 				});
 
 				var tfav2 = output.split(',');
@@ -115,8 +109,7 @@ documentlookup.function = {
 			var interimobject=documentlookup.var.selectedObject().content;
 			//list all items for overview
 			Object.keys(interimobject).forEach(function (key) {
-				if (typeof interimobject[key] === 'object') list += documentlookup.function.linkfile(interimobject[key][0]) + '<br />';
-				else list += documentlookup.function.linkfile(interimobject[key]) + '<br />';
+				list += documentlookup.function.linkfile([interimobject[key][0],interimobject[key][1]], true) + '<br />';
 			});
 			core.function.stdout('temp', list);
 
@@ -129,8 +122,7 @@ documentlookup.function = {
 					core.function.smartSearch.relevance.init();
 					found.forEach(function (value) {
 						list += core.function.smartSearch.relevance.nextstep(value[1]);
-						if (typeof interimobject[value[0]] === 'object') list += documentlookup.function.linkfile(interimobject[value[0]][0], (interimobject[value[0]][1] ? core.function.lang('searchTitle', 'documentlookup') + interimobject[value[0]][1] : false)) + '<br />';
-						else list += documentlookup.function.linkfile(interimobject[value[0]]) + '<br />';
+						list += documentlookup.function.linkfile([interimobject[value[0]][0],interimobject[value[0]][1]], true, (interimobject[value[0]][2] ? core.function.lang('searchTitle', 'documentlookup') + interimobject[value[0]][2] : false)) + '<br />';
 					});
 					core.function.stdout('output', list);
 					list = '';
