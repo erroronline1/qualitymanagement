@@ -581,7 +581,7 @@ var slider = { //just fancy animation of content on module change
 
 function select_module() { //load module list and return the main menu
 	if (typeof (core.var.modules) !== 'undefined') {
-		var output='';
+		var output='<span style="font-size:200%; line-height:200%">' + core.var.logo + core.function.lang('title',false)+ '</span>';
 		Object.keys(core.var.modules).forEach(function (key) {
 			if (typeof core.var.modules[key] === 'object' && core.function.setting.get('module_' + key) != 1) {
 				//create module-selector
