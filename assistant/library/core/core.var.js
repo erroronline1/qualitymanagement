@@ -44,6 +44,12 @@ core.var = {
 				de: "eMail Tools"
 			}
 		},
+		auditplanner:{
+			icon:core.function.insert.icon('checklist'),
+            display: {	en:"Audit Planner",
+						de:"Auditplaner"
+			}
+		},
 		help: {
 			icon: core.function.insert.icon('faq'),
 			display: {
