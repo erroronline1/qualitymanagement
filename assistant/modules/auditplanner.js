@@ -29,7 +29,6 @@ auditplanner.function = {
 			core.function.stdout('temp', '<span class="highlight">' + core.function.lang('tableOfContents', 'auditplanner') + ':</span><br />' + list);
 		}
 		core.performance.stop('auditplanner.function.select(\'' + value(query) + '\')');
-		core.history.write(['auditplanner.function.select(\'' + value(query) + '\')']);
 		auditplanner.function.output();
 	},
 	output: function () {
@@ -81,6 +80,7 @@ auditplanner.function = {
 			core.function.insert.icon('refresh', 'bigger inline', false, 'onclick="auditplanner.function.select()" title="' + core.function.lang('buttonAllTitle', 'auditplanner') + '"') +
 			core.function.insert.icon('shuffle', 'bigger inline', false, 'onclick="auditplanner.function.select(\'random\')" title="' + core.function.lang('buttonShuffleTitle', 'auditplanner') + '"')
 		);
+		core.history.write(['auditplanner.function.init(\'' + value(query) + '\')']);
 		core.performance.stop('auditplanner.function.init(\'' + value(query) + '\')');
 	},
 };
