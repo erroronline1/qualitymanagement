@@ -40,7 +40,7 @@ core.var = {
 		correspondence: {
 			icon: core.function.insert.icon('mail'),
 			display: {
-				en: "Recommended Words for Correspondence",
+				en: "Recommendation for Correspondence",
 				de: "Textvorschläge für Korrespondenz"
 			}
 		},
