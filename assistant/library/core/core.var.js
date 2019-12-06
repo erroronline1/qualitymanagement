@@ -30,6 +30,13 @@ core.var = {
 				de: "Lager- und Artikelliste"
 			}
 		},
+		timetable: {
+			icon: core.function.insert.icon('clock'),
+			display: {
+				en: "Timetable",
+				de: "Arbeitszeittabelle"
+			}
+		},
 		correspondence: {
 			icon: core.function.insert.icon('mail'),
 			display: {
