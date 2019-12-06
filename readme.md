@@ -182,8 +182,10 @@ the provided modules are filled with dummies. the general multi-language support
 * document lookup ![assistant document lookup](assets/assistant_documentlookup.png)
 * predefined document bundles ![assistant document bundles](assets/assistant_documentbundles.png)
 * inventory / stock list ![assistant stocklist](assets/assistant_stocklist.png)
+* timetable ![assistant timetable](assets/assistant_timetable.png)
 * default texts for correspondence ![assistant correspondence](assets/assistant_correspondence.png)
 * mail tools for serial mails, signature composer and not-available-notice  ![assistant mail tools](assets/assistant_mailtools.png)
+* audit planner ![assistant audit planner](assets/assistant_auditplanner.png)
 * help (simplyfied for me not being english native and should be customized to your own companies comprehension of interwebz and nerd-stuff-thingies) ![assistant help](assets/assistant_help.png)
 
 [back to top](#a-quality-management-software)
