@@ -116,6 +116,7 @@ core.var = {
 	corporateFontSize: '10pt',
 	letterTemplate: 'file:///E:/Quality Management/published/letter_template.docx', // if you want to use, else null
 	outlookWebUrl: 'https://exc20/owa/auth/logon.aspx', //if you have it installed else null
+	publishedFolder: 'file:///E:/Quality Management/published',
 
 	//text-blocks within the core file and reusable textblocks for modules
 	lang: {
@@ -288,6 +289,10 @@ core.var = {
 		openMailApp: {
 			en: 'open mail app',
 			de: 'eMail-Programm öffnen'
+		},
+		openPublishedFolder: {
+			en: 'open published folder directly',
+			de: 'Dokumentenpfad direkt öffnen'
 		},
 		openLetterTemplate: {
 			en: 'open letter tempate',
