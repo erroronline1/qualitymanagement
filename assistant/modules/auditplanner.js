@@ -23,8 +23,11 @@ auditplanner.function = {
 		if (typeof auditplanner_data !== 'undefined') {
 			var list = '';
 			Object.keys(auditplanner_data.content).forEach(function (key) {
-				var checked = query == 'random' ? Math.random() >= 0.5 : true;
-				list += core.function.insert.checkbox(auditplanner_data.content[key][1], 'ap' + key, checked, 'onchange="auditplanner.function.output()"', false) + '<br />';
+				if (key>0){ //skip first item being header only
+					var checked = query == 'random' ? Math.random() >= 0.5 : (query == 'none' ? false : true);
+					
+					list += core.function.insert.checkbox(auditplanner_data.content[key][0] + ' ' + auditplanner_data.content[key][1], 'ap' + key, checked, 'onchange="auditplanner.function.output()"', false) + '<br />';
+				}
 			});
 			core.function.stdout('temp', '<span class="highlight">' + core.function.lang('tableOfContents', 'auditplanner') + ':</span><br />' + list);
 		}
@@ -36,7 +39,7 @@ auditplanner.function = {
 		if (typeof auditplanner_data !== 'undefined') {
 			var output = '';
 			Object.keys(auditplanner_data.content).forEach(function (key) {
-				if (el('ap' + key).checked) {
+				if (key >0 && el('ap' + key).checked) { //skip first item being header only and not selected topics
 					output += auditplanner_data.content[key][0] + ' ' + auditplanner_data.content[key][1] + ': ' + '<br />';
 
 					//deep-copy line to new array
@@ -56,30 +59,35 @@ auditplanner.function = {
 					//select maximum number of questions
 					outputarray = outputarray.splice(0, el('maxquestions').options[el('maxquestions').selectedIndex].value);
 					outputarray.forEach(function (key) {
-						output += key + '<br />';
+						output += '- ' + key + '<br /><br />';
 					});
 					output += '<br />';
 				}
-
 			});
 			core.function.stdout('output', output);
 		}
 		core.performance.stop('auditplanner.function.output()');
 	},
-	init: function (query) {
-		el('moduleauditplanner').checked = true; // highlight menu icon
-		core.function.loadScript(core.var.moduleDataDir + 'auditplanner.js', 'auditplanner.function.select(\'' + value(query) + '\')');
-		
+	start: function(query){
 		qnumOptions={1: [1, 'max. 1 ' + core.function.lang('selectOptionQuestion', 'auditplanner')],}
 		while (Object.keys(qnumOptions).length<auditplanner.var.maximumQuestions) {
 			var index=Object.keys(qnumOptions).length+1;
 			qnumOptions[index]= [index, 'max. ' + index + ' ' + core.function.lang('selectOptionQuestions', 'auditplanner')];
 		}
+		qnumOptions[index+1]= [auditplanner_data.content[0].length, core.function.lang('selectOptionAll', 'auditplanner') + ' (' + auditplanner_data.content[0].length + ')'];
 		core.function.stdout('input',
-			core.function.insert.select(qnumOptions, 'maxquestions', 'maxquestions', false, 'onchange="auditplanner.function.output()"') +
-			core.function.insert.icon('refresh', 'bigger inline', false, 'onclick="auditplanner.function.select()" title="' + core.function.lang('buttonAllTitle', 'auditplanner') + '"') +
+			core.function.insert.select(qnumOptions, 'maxquestions', 'maxquestions', '3', 'onchange="auditplanner.function.output()"') +
+			core.function.insert.icon('refreshall', 'bigger inline', false, 'onclick="auditplanner.function.select()" title="' + core.function.lang('buttonAllTitle', 'auditplanner') + '"') +
+			core.function.insert.icon('refreshnone', 'bigger inline', false, 'onclick="auditplanner.function.select(\'none\')" title="' + core.function.lang('buttonNoneTitle', 'auditplanner') + '"') +
 			core.function.insert.icon('shuffle', 'bigger inline', false, 'onclick="auditplanner.function.select(\'random\')" title="' + core.function.lang('buttonShuffleTitle', 'auditplanner') + '"')
 		);
+		auditplanner.function.select(value(query));
+	},
+	
+	init: function (query) {
+		el('moduleauditplanner').checked = true; // highlight menu icon
+		core.function.loadScript(core.var.moduleDataDir + 'auditplanner.js', 'auditplanner.function.start(\'' + value(query) + '\')');
+		
 		core.history.write(['auditplanner.function.init(\'' + value(query) + '\')']);
 		core.performance.stop('auditplanner.function.init(\'' + value(query) + '\')');
 	},
