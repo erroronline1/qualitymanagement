@@ -10,9 +10,13 @@ auditplanner.var = {
 			en: 'select all topics',
 			de: 'alle Themen wählen'
 		},
+		buttonNoneTitle: {
+			en: 'select no topics',
+			de: 'keine Themen wählen'
+		},
 		buttonShuffleTitle: {
 			en: 'select random topics',
-			de: 'zufälige Themen wählen'
+			de: 'zufällige Themen wählen'
 		},
 		selectOptionQuestion: {
 			en: 'question',
@@ -22,7 +26,11 @@ auditplanner.var = {
 			en: 'questions',
 			de: 'Fragen'
 		},
+		selectOptionAll: {
+			en: 'all questions',
+			de: 'alle Fragen'
+		},
 	},
 	disableOutputSelect: false,
-	maximumQuestions: 5,
+	maximumQuestions: 8,
 };
