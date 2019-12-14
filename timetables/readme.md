@@ -28,5 +28,14 @@ on first opening of the file the user will be prompted to initialise the sheet. 
 the sheets are protected by default, only relevant cells can be changed by the user. on the first change after opening the user will have to enter a password. if this is not set already a personal password can be chosen. if forgotten a new one can be chosen as well. there will be no prompt until the next opening of the document. this reduces the risk of manipulation by accident or other employees.
 
 ### don't tell anyone
-the security is inversely proportional to the tech savvyness of the users. there is a hidden sheet containing the masterpassword to unlock and relock sheets while initializing or creating the monthly sheet.
-here the user passwords are stored as well, complemented by timestamp of creation and user account. in case of integrity concerns these information might give a start for investigating.
+the security is inversely proportional to the tech savvyness of the users. there is a very hidden sheet containing the masterpassword to unlock and relock sheets while initializing or creating the monthly sheet.
+here the user passwords are stored as well, complemented by timestamp of creation and user account. in case of integrity concerns these information might give a start for investigating. if you consider enhancing security protect the macro code with a password as well, but ponder on tech savvyness of employees vs. long term accessability even after you leave the company with the passwords...
+
+### flaws
+opening the file for the first time from the web or a network path will excel be loading it in protected mode. this causes an issue that can only be bypassed by reopening the file for excel will trust the source from then on. there will be an information about this, as this was the easiest way after several insufficent tries to handle this (leaving protected mode delays unprotecting after initializing macros. there is no application.wait available coming from protected view).
+
+password input will take place by inputbox so there is a plain text input without masking with asterisks, leaving a limitation regarding security. as of today i was not able to implement a userform or api-manipulation to handle this.
+
+passwords are stored in plain text. whether you like that or not, it makes it a lot easier to track possible vulnerabilities and editing sheets.
+
+all this might not satisfy all security concerns but is considered reasonable.
