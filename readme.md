@@ -27,21 +27,19 @@ automate your paper based qms
 * [license](#license)
 
 ## use case
-while it makes way more sense to automate quality management using assistive technology and digitalizing everything, this is not always possible. so this quality management software has a very specific use case depending on your environment:
+while it makes way more sense to automate quality management using assistive technology and digitalizing everything, this is not always possible. therefore this quality management software has a very specific use case depending on your environment:
 
 * your quality managment and documentation is still mainly paper-based
 * your quality manager is fed up with manual version control, archiving, publishing and keeping the overview list of documents clean
 * your company does not have the ressources to test out different expensive qm-software-solutions until you find one to suit your needs
 * employees have access to the it-infrastructure and printers, e.g. via network and group-accounts
 * your it-department is stubborn and unflexible so you have to make use of the tools you have access to, even if you have to fasten screws with a hammer because you don't get a screwdriver
-* your company relies on microsoft windows and microsoft office (not sure about use of the documents macros for other platforms)
-* there is at least one tech-savvy co-worker interested in getting things done
+* your company relies on microsoft office
+* there is at least one tech-savvy employee interested in getting things done
 
 [by error on line 1](http://erroronline.one) but feel free to use and modify at your own risk according to the license outlined below. i am happy to get feedback on code- and documentation-quality since this is my first official open source project.
 
-this quality management software has been in use in context to [iso 13485:2015](https://www.iso.org/search.html?q=13485%3A2016)
-
-there have been some significant changes to the core documents as well as to the assistant. i decided to make this a new version. in case you need previous sourcecodes these can be found as a branch in the public repository.
+this quality management software has been in use in context to [iso 13485:2015](https://www.iso.org/search.html?q=13485%3A2016) and was approved by the certification authority.
 
 [back to top](#a-quality-management-software)
 
@@ -93,7 +91,7 @@ this tool provides your company with an application to have an easier access to 
 there is no installation routine. place the files to your desired accessible network-folders and customize them by hand. create or recreate your documents with the provided template_file.docm and let the workflow guide you through the registration.
 
 ![sample folder structure](assets/folderstructure.png)
-* the provided folder structure is not neccessarily your first choice and just a sample. you have to change at least the default paths within the vba-macros and the assistant anyway.
+* the provided folder structure might not be neccessarily your first choice and serves just as a sample. you have to change at least the default paths within the vba-macros and the assistant anyway.
 * even if you don't want to use the assistant, the documents semiautomated version control still might be useful for you. on the other hand the assistant is hardly possible to populate without the documents unless you write your own routines for that.
 * i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to pdfs and the assistant application should be granted for everyone.
 * before implementing this system to your company make sure your decisions for documenting the system itself are reliable (e.g. rows and columns in the list of documents in force in dependency to the vba-macro within the self registering docm-files). otherwise you might have to change a lot of code in a lot of documents. this isn't fun.
@@ -101,7 +99,7 @@ there is no installation routine. place the files to your desired accessible net
 [back to top](#a-quality-management-software)
 
 # but i am no programmer!
-**main goal of this system is not to have a simple solution out of the box but to bypass administrative it restrictions.**
+**main goal of this system is not to have a simple solution out of the box but to bypass administrative it restrictions. at least if you are a subdivision of a bigger company that has special rules you have to bypass somehow.**
 to customize this software to your needs it is definitely neccessary to have someone change values within the vba-macros as well as the javascript configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
 **on the bright side everything is open source and can be maintained by any programmer/webdeveloper/webdeveloping agency that does javascript and knows how to access the visual basic editor via the office developer tab!**
 
@@ -151,12 +149,12 @@ there is a main html-file in the root folder, a core folder with the core functi
 
 * the assistant is built using js-ecmascript 5 on purpose because of required compatibility to ms ie11. unfortunately this still is the default browser to date in many companies. the css is not compatible to previous versions of ie. there might be browserhacks and polyfills.
 * the assistant is designed to handle multiple language support, comes with english and german and can be extended as desired. extend the lang-objects in every module, the config-file and register the languages in this config-file to make them available.
-* the core-object provides readable function-calls and globally usable variables. general configuration takes place in library/core/core.var.js. this file contains a variable that extents the core-object with global variables and commonly used language-bricks.
+* the core-object provides (hopefully) readable function-calls and globally usable variables. general configuration takes place in library/core/core.var.js. this file contains a variable that extents the core-object with global variables and commonly used language-bricks.
 * built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, local-storage- or cookie-handler, repetitive design pattern implementation (icons, inputs, etc.), history handling and some more. get access or extend these functions with `core.function.FUNCTIONNAME`, global variables with `core.var.VARNAME`. i recommend this pattern to modules as well, defining a module-object with `{moduleFileName}.function.FUNCTIONNAME` and `{moduleFileName}.var.VARNAME`. the handler for multi-language-support of the application  (`core.function.lang()`) makes built-in automated use of this pattern.
 * data files are stored in a different folder hoping that changes to the backend don't mess up data that might be accessed through different persons than the maintainer of the application. these are separated in module-variables that define the modules behaviour and module data that will be processed according to the modules task. the latter are optional.
 * users can be informed about changes using the changelog in library/core/core.userDialogue.js. add your own changes and the information will popup automatically on start.
 * since most of my colleagues don't mind messing around to learn something, there is a short-tip function whose entries can be extended in accordance to your modules.
-* settings will be stored in local storage or cookies (depending on browser support) so everything depends on the local machine in addition to user login. in case everything is stored with cookies if the browsers history is cleaned on exit all setting will be gone as well. the storage method handles local-storage support with cookies as a fallback. this means there is finally support for chrome with an issue with cookie storage of local sites as well as ie11 without local storage.
+* settings will be stored in local storage or cookies (depending on browser support) so everything depends on the local machine in addition to user login. in case everything is stored with cookies if the browsers history is cleaned on exit all setting will be gone as well. the storage method handles local-storage support with cookies as a fallback. this means there is support for chrome having an issue with cookie storage of local sites as well as ie11 not having local storage.
 * you can monitor the performance (currently implemented for tracking asynchronous loading and processing) in the console if you enable it in the settings.
 
 *be aware that there are dependencies between the assistants datafiles, their objects and handling, and the documents vba and table-structure. it might become neccessary to change things on both sides.*
@@ -191,14 +189,14 @@ the provided modules are filled with dummies. the general multi-language support
 [back to top](#a-quality-management-software)
 
 ### thoughts and considerations
-i tried to implement a preview on search forms using datalists. while it is not a big problem to update these dynamically i ran into two major issues: the cross-browser behaviour is very different and quirky. and using this in combination with fuzzy search and 6k+ items in stock-list everything slows horribly down. it would have been nice to have but ended up in some hours wasted.
+i tried to implement a preview on search forms using datalists. while it is not a big problem to update these dynamically i ran into two major issues: the cross-browser behaviour is very different and quirky. and using this in combination with fuzzy search and 6k+ items in stock-list slows everything horribly down. it would have been nice to have but ended up in some hours wasted.
 
 the assistant is designed to hopefully transition seamlessly into windows 10 fluent design that is still to come to my company as time of writing. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be. i am not a fanboy in the first place, although i like microsofts os design. i just try to make it look as native as possible to not disturb the co-workers. it is hard enough to convince them to utilize quality management as well as this tool.
 
 ### changes and updates
 this software is purposed to be adapted to the companies needs in an flexible way. if you find something missing you can add functions quick and easily (within technical boundaries). i do exactly this and want to keep the open source distribution updated as well. as long as i am not aware that this software is used by a third party i will push to master and will not implement any version management or branching.
 
-i maintain this open template as well as the official version in my company. while making changes to the program i repeatedly have to consider the individual parts. therefore all custom files are to be found within the library folder. these are seldom a subject of structural changes. most parts are quite dynamic and feed off the data files. customization might not be neccessary. if you do not change anything within the main files any update from the latest commits should work flawless.
+i maintain this open template as well as the official version in my company. while making changes to the program i repeatedly have to consider the individual parts. therefore all custom files are to be found within the library folder. these are seldom a subject of structural changes. most parts are quite dynamic and feed off the data files. customization might not be neccessary. if you do not customize anything within the main files any update from the latest commits should work flawless.
 
 [back to top](#a-quality-management-software)
 
