@@ -36,25 +36,31 @@ documentlookup.api = {
 	}
 };
 documentlookup.function = {
-	linkfile: function (url, track, title) {
+	linkfile: function (url, track, title, favourite) {
 		var title = value(title) !== '' ? ' title="' + title + '" ' : '';
 		var displayName = ( url[1] ? url[1] : url[0].substring(url[0].lastIndexOf('/'), url[0].lastIndexOf('.')).substring(1))
-		if (track) return '<a href="' + url[0] + '" ' + title + ' onclick="documentlookup.function.favouriteHandler.set(\'' + documentlookup.function.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>';
-		else return '<a href="' + url[0] + '" ' + title + ' target="_blank">' + displayName + '</a>'; 
+		if (value(favourite)!=='') return '<span class="singlefavouritehandler"><a href="' + url[0] + '" ' + title + ' onclick="documentlookup.function.favouriteHandler.set(\'' + documentlookup.function.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>' + core.function.insert.icon('delete', false, false, 'onclick="documentlookup.function.favouriteHandler.set(\':' + documentlookup.function.favouriteHandler.prepare(url[0]) + '\'); return;"') + '</span>';
+		else if (track) return '<a href="' + url[0] + '" ' + title + ' onclick="documentlookup.function.favouriteHandler.set(\'' + documentlookup.function.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>';
+		return '<a href="' + url[0] + '" ' + title + ' target="_blank">' + displayName + '</a>'; 
 	},
 	favouriteHandler: {
 		prepare: function (value) {
 			return value.substring(value.lastIndexOf('/'), value.lastIndexOf('.')).substring(1).replace(/[^a-z0-9]/gi, '');
 		},
 		set: function (value) {
-			var output = core.function.setting.get('favouritedocs');
+			var output = core.function.setting.get('favouritedocs'),
+				deleteValue=false;
+			if (value.indexOf(':')==0){ //if preceded by : the value will be deleted from the favourite list
+				deleteValue=true
+				value=value.substring(1);
+			}
 			if (output) {
 				if (output.indexOf(value) > -1) {
 					var tfav = output.split(','),
 						favourites = new Array();
 					//create two dimensional array and add sighting if neccessary
 					for (var i = 0; i < tfav.length; i += 2) {
-						favourites.push(new Array(tfav[i], parseInt(tfav[i + 1]) + (tfav[i] === value ? 1 : 0)));
+						if (!(deleteValue && tfav[i] === value)) favourites.push(new Array(tfav[i], parseInt(tfav[i + 1]) + (tfav[i] === value ? 1 : 0)));
 					}
 					favourites.sort(core.function.sortBySecondColumn);
 					//reduce two dimensional array after sorting
@@ -66,6 +72,7 @@ documentlookup.function = {
 				} else output += ',' + value + ',1';
 			} else output = value + ',1';
 			core.function.setting.set('favouritedocs', output);
+			core.function.stdout('favourites', documentlookup.function.favouriteHandler.get());
 		},
 		get: function () {
 			var output = core.function.setting.get('favouritedocs');
@@ -75,7 +82,7 @@ documentlookup.function = {
 				var interimobject=documentlookup.var.selectedObject().content;
 				//assign link to index as favourite handler
 				Object.keys(interimobject).forEach(function (key) {
-					tfav[documentlookup.function.favouriteHandler.prepare(interimobject[key][0])] = documentlookup.function.linkfile([interimobject[key][0],interimobject[key][1]],false);
+					tfav[documentlookup.function.favouriteHandler.prepare(interimobject[key][0])] = documentlookup.function.linkfile([interimobject[key][0],interimobject[key][1]], true, interimobject[key][2], 1);
 				});
 
 				var tfav2 = output.split(',');
@@ -127,7 +134,7 @@ documentlookup.function = {
 					core.function.stdout('output', list);
 					list = '';
 				} else core.function.stdout('output', core.function.lang('errorNothingFound', 'documentlookup', query));
-			} else core.function.stdout('output', documentlookup.function.favouriteHandler.get() || '');
+			} else core.function.stdout('output', '<div id="favourites">' + (documentlookup.function.favouriteHandler.get() || '') + '</div>');
 		}
 		core.performance.stop('documentlookup.function.search(\'' + value(query) + '\')', found);
 		core.history.write(['documentlookup.function.init(\'' + value(query) + '\')']);

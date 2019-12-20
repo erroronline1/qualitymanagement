@@ -99,6 +99,10 @@ var randomTip = {
 			en: 'Search and access module content right from the entry page. In accordance to the computers speed the time to deliver results can be set.',
 			de: 'Suche und nutze die Inhalte direkt von der Startseite aus. Je nach Geschwindigkeit des Computers kann die Zeit für die Bereitstellung der Ergebnisse eingestellt werden.'
 		},
+		{
+			en: 'Favourite entries can be deleted as a whole and individual. The latter can be achieved by hovering about two seconds above the link.',
+			de: 'Favoriten können gleichzeitig und einzeln gelöscht werden. Letzteres kann erreicht werden indem du mit dem Mauszeiger ungefähr zwei Sekunden über dem Link bleibst.'
+		}
 
 	],
 };

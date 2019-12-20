@@ -16,7 +16,6 @@ timetable.api = {
 			searchTerms=timetable.var.searchTerms[core.var.selectedLanguage],
 			found=false;
 		for (var i = 0 ; i < searchTerms.length; i++){
-			console.log (queryString);
 			if (searchTerms[i].toLowerCase().indexOf(queryString[0].toLowerCase()) > -1) {
 				found=true;
 				break;
@@ -43,22 +42,29 @@ timetable.function = {
 		core.performance.stop('timetable.function.input(\'' + value(query) + '\')');
 		core.history.write(['timetable.function.init(\'\')']);
 	},
-	linkfile: function (name) {
-		return '<a href="'+timetable.var.path + name.toLowerCase() + '.xlsm"  onclick="timetable.function.favouriteHandler.set(\'' + timetable.function.favouriteHandler.prepare(name) + '\'); return;" target="_blank">' + core.function.lang('linkTitle','timetable') + name + '</a>';
+	linkfile: function (name, favourite) {
+		var link='<a href="'+timetable.var.path + name.toLowerCase() + '.xlsm" onclick="timetable.function.favouriteHandler.set(\'' + timetable.function.favouriteHandler.prepare(name) + '\'); return;" target="_blank">' + core.function.lang('linkTitle','timetable') + name + '</a> ';
+		if (value(favourite)==='') return link;
+		else return '<span class="singlefavouritehandler">' + link + core.function.insert.icon('delete', false, false, 'onclick="timetable.function.favouriteHandler.set(\':' + timetable.function.favouriteHandler.prepare(name) + '\'); return;"') + '</span>';
 	},
 	favouriteHandler: {
 		prepare: function (value) {
 			return encodeURI(value.toLowerCase());
 		},
 		set: function (value) {
-			var output = core.function.setting.get('favouritetimetable');
+			var output = core.function.setting.get('favouritetimetable'),
+				deleteValue=false;
+			if (value.indexOf(':')==0){ //if preceded by : the value will be deleted from the favourite list
+				deleteValue=true
+				value=value.substring(1);
+			}
 			if (output) {
 				if (output.indexOf(value) > -1) {
 					var tfav = output.split(','),
 						favourites = new Array();
 					//create two dimensional array and add sighting if neccessary
 					for (var i = 0; i < tfav.length; i += 2) {
-						favourites.push(new Array(tfav[i], parseInt(tfav[i + 1]) + (tfav[i] === value ? 1 : 0)));
+						if (!(deleteValue && tfav[i] === value)) favourites.push(new Array(tfav[i], parseInt(tfav[i + 1]) + (tfav[i] === value ? 1 : 0)));
 					}
 					favourites.sort(core.function.sortBySecondColumn);
 					//reduce two dimensional array after sorting
@@ -70,6 +76,7 @@ timetable.function = {
 				} else output += ',' + value + ',1';
 			} else output = value + ',1';
 			core.function.setting.set('favouritetimetable', output);
+			core.function.stdout('favourites', timetable.function.favouriteHandler.get());
 		},
 		get: function () {
 			var output = core.function.setting.get('favouritetimetable');
@@ -81,10 +88,9 @@ timetable.function = {
 					'</span><br /><br />';
 				for (var person = 0; person < tfav2.length; person += 2) {
 					var favName=decodeURI(tfav2[person]).split(' ');
-					console.log(favName);
 					for (var name = 0; name < favName.length; name++){ favName[name]=favName[name][0].toUpperCase() + favName[name].slice(1);}
 					
-					output += timetable.function.linkfile(favName.join(' ')) + '<br />';
+					output += timetable.function.linkfile(favName.join(' '), true) + '<br />';
 				}
 			}
 			return output || '';
@@ -103,7 +109,7 @@ timetable.function = {
 			'<input type="submit" id="name" value="' + core.function.lang('formSubmit', 'timetable') + '" hidden="hidden" /> ' +
 			'</form>');
 		el('timetablequery').focus();
-		core.function.stdout('temp', core.function.lang('explanation', 'timetable') + '<br />' + timetable.function.favouriteHandler.get());
+		core.function.stdout('temp', core.function.lang('explanation', 'timetable') + '<br /><div id="favourites">' + timetable.function.favouriteHandler.get() + '</div>');
 		core.function.stdout('output','');
 		if (value(query) !=='') timetable.function.search(value(query));
 		core.performance.stop('timetable.function.init(\'' + value(query) + '\')');

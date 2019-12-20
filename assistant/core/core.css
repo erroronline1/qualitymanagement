@@ -380,23 +380,28 @@ hr {
 	margin: 1em;
 }
 
-/* /////////////////////////////////////////////////////////////////////////////////
-add a little fancyness
-//////////////////////////////////////////////////////////////////////////////////*/
 
-a:hover::after {
-	animation: activelink .25s infinite alternate;
+.singlefavouritehandler svg {
+	width:0;
 }
 
-@keyframes activelink {
+.singlefavouritehandler:hover svg {
+	animation: singlefavouritehandler .25s 1.5s normal forwards;*/
+}
+
+@keyframes singlefavouritehandler {
 	from {
-		transform: translate3d(0em, 0em, 0em);
+		width: 0;
 	}
 
 	to {
-		transform: translate3d(.25em, -.2em, 0em);
+		width: 2em;
 	}
 }
+
+/* /////////////////////////////////////////////////////////////////////////////////
+add a little fancyness
+//////////////////////////////////////////////////////////////////////////////////*/
 
 #content.slidedown {
 	animation-name: contentslidedown;
