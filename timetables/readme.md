@@ -8,7 +8,7 @@ these are microsoft office documents with some vba-macro code implemented
 if you have efficient electronic supported methods for time tracking of the employees or no need to track working time at all, please carry on!
 
 ## i come from worse
-until today we keep track of work time on paper. every employee writes down starting and ending time as well as breaks, has to calculate everthing at the end of the month and supervisors have to keep track of umpteen sheets, recalculate these and make sure all employees come for the work hours they are paid for. keeping track of their own timetables means infinite paper copies of past sheets. and in the end it is all about trust. and possible misuse.
+until the end of 2019 we kept track of work time on paper. every employee wrote down starting and ending time as well as breaks, had to calculate everthing at the end of the month and supervisors had to keep track of umpteen sheets, recalculate these and make sure all employees came for the work hours they are paid for. keeping track of their own timetables meant infinite paper copies of past sheets. and in the end it was all about trust. and possible misuse.
 
 ## welcome to the 21st century
 this is where automation might be beneficial. having to [use a hammer as a screwdriver](https://github.com/erroronline1/qualitymanagement#use-case) i decided for excel and did a neat excel timetable. as these are accessible through the assistant as well all sheets are accessible by all employees. this rose some concerns about the risk of manipulation by the hr so there was a additional security layer implemented.
@@ -33,8 +33,6 @@ here the user passwords are stored as well, complemented by timestamp of creatio
 
 ### flaws
 opening the file for the first time from the web or a network path will excel be loading it in protected mode. this causes an issue that can only be bypassed by reopening the file for excel will trust the source from then on. there will be an information about this, as this was the easiest way after several insufficent tries to handle this (leaving protected mode delays unprotecting after initializing macros. there is no application.wait available coming from protected view).
-
-password input will take place by inputbox so there is a plain text input without masking with asterisks, leaving a limitation regarding security. as of today i was not able to implement a userform or api-manipulation to handle this.
 
 passwords are stored in plain text. whether you like that or not, it makes it a lot easier to track possible vulnerabilities and editing sheets.
 
