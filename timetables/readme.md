@@ -2,13 +2,13 @@
 
 these are microsoft office documents with some vba-macro code implemented
 
-**unfortunately the excel-functions and sheet-code-names are german only for me having no access to an english environment. you have to translate them to your language if necessary. marking and counting weekends has to be set up changing the values of "sa" and "so" in formulas and conditional formatting**
+**unfortunately the excel-functions and sheet-code-names are german only for me having no access to an english environment. you have to translate them to your language if necessary, take account of modules as well. marking and counting weekends has to be set up changing the values of "sa" and "so" in formulas and conditional formatting**
 
 ## there might be better solutions
 if you have efficient electronic supported methods for time tracking of the employees or no need to track working time at all, please carry on!
 
 ## i come from worse
-until the end of 2019 we kept track of work time on paper. every employee wrote down starting and ending time as well as breaks, had to calculate everthing at the end of the month and supervisors had to keep track of umpteen sheets, recalculate these and make sure all employees came for the work hours they are paid for. keeping track of their own timetables meant infinite paper copies of past sheets. and in the end it was all about trust. and possible misuse.
+until the end of 2019 we kept track of work time on paper. every employee wrote down starting and ending time as well as breaks, had to calculate everthing at the end of the month and supervisors had to keep track of umpteen sheets, recalculate these and make sure all employees came for the work hours they were paid for. keeping track of their own timetables meant infinite paper copies of past sheets. and in the end it was all about trust. and possible misuse.
 
 ## welcome to the 21st century
 this is where automation might be beneficial. having to [use a hammer as a screwdriver](https://github.com/erroronline1/qualitymanagement#use-case) i decided for excel and did a neat excel timetable. as these are accessible through the assistant as well all sheets are accessible by all employees. this rose some concerns about the risk of manipulation by the hr so there was a additional security layer implemented.
@@ -30,6 +30,7 @@ the sheets are protected by default, only relevant cells can be changed by the u
 ### don't tell anyone
 the security is inversely proportional to the tech savvyness of the users. there is a very hidden sheet containing the masterpassword to unlock and relock sheets while initializing or creating the monthly sheet.
 here the user passwords are stored as well, complemented by timestamp of creation and user account. in case of integrity concerns these information might give a start for investigating. if you consider enhancing security protect the macro code with a password as well, but ponder on tech savvyness of employees vs. long term accessability even after you leave the company with the passwords...
+this sheet is also used for session persistent values that can not otherwise be handled due to vbas behaviour
 
 ### flaws
 opening the file for the first time from the web or a network path will excel be loading it in protected mode. this causes an issue that can only be bypassed by reopening the file for excel will trust the source from then on. there will be an information about this, as this was the easiest way after several insufficent tries to handle this (leaving protected mode delays unprotecting after initializing macros. there is no application.wait available coming from protected view).
@@ -37,3 +38,6 @@ opening the file for the first time from the web or a network path will excel be
 passwords are stored in plain text. whether you like that or not, it makes it a lot easier to track possible vulnerabilities and editing sheets.
 
 all this might not satisfy all security concerns but is considered reasonable.
+
+## maintainability
+i had to learn this one the hard way. on developing and testing i had to change the codebase several times in about 30 beta testers sheets without dumping their values. eventually i learned about importing modules. if you provide a subfolder with the main module codes these will be imported/updated on every opening of the sheet. if this is not possible the modules remain in their last imported version. you can hide the subfolder vb_library, make it read_only by account management or provide it temporarily after changes.
