@@ -12,43 +12,12 @@ Public Function Modules() as Object
     Modules.Add "Locals", ThisWorkbook.Path & "\vb_library\" & "Locals_" & ThisWorkbook.selectedLanguage & ".bas"
 End Function
 
-Public Function importModules() As Boolean
-    Dim lib As Variant, modloop As Variant, libraries
-    Set libraries = Modules()
-    On Error Resume Next
-    Application.DisplayAlerts = False
-	'rename existing modules and import external modules
-    For Each lib In libraries
-        With ThisWorkbook.VBProject.VBComponents
-            'renaming to _old because sometimes modules are removed on finishing of the code only, resulting in enumeration of module names
-            .Item(lib).Name = lib & "_OLD"
-            .Import libraries(lib)
-        End With
-    Next lib
-	'if no external modules have been found rename existing modules to default name
-    For Each lib In libraries
-		dim loaded as Boolean
-        For Each modloop In ThisWorkbook.VBProject.VBComponents
-			If (modloop.Name = lib) Then loaded = True: Exit For
-		Next modloop
-		
-		If loaded Then
-			ThisWorkbook.VBProject.VBComponents.Remove ThisWorkbook.VBProject.VBComponents(lib & "_OLD")
-		Else
-			ThisWorkbook.VBProject.VBComponents(lib & "_OLD").Name = lib
-		End If
-	Next lib
-    Application.DisplayAlerts = True
-    On Error GoTo 0
-    importModules = True
-End Function
-
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' events
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Public Sub OpenRoutine()
-    If importModules Then asyncOpen
+    If ThisWorkbook.importModules(Modules()) Then asyncOpen
 End Sub 
 
 Public Sub asyncOpen()
