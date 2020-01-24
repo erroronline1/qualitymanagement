@@ -20,16 +20,12 @@ Public Sub Protection(ByVal Sheet As String)
         Dim PW As String
         PW = maskedUserInput(maskedPrompt)
         If PW = "" Then
-            Dim PWaction As Boolean
             Select Case MsgBox(mprompt("resetPasswordText"), vbYesNo + vbDefaultButton2, mprompt("resetPasswordTitle"))
             Case vbYes:
-                PWaction = passwordHandler("set", PW)
+                passwordHandler "set", PW
             Case vbNo:
-                PWaction = False
-            End Select
-            If PWaction = False Then
                 GoTo undo
-            End If
+            End Select
         ElseIf passwordHandler("get", PW) Then
             Essentials.persistent "unlocked", "set", True
         ElseIf Not passwordHandler("get", PW) Then
@@ -40,19 +36,19 @@ Public Sub Protection(ByVal Sheet As String)
     Exit Sub
 
 undo:
-        ' undo last change if not exited before, unlocked has to be set otherwise this will be a password requiring change as well
+        ' undo last change if not exited before
         Essentials.undo
         On Error GoTo 0
 End Sub
 
 Public Function passwordHandler(ByVal action As String, uinput As String) As Boolean
-    'get last line of user passwords, Tabelle0 is sheet codename from settings sheet
-    Dim recentPassword As Integer: recentPassword = Tabelle0.Range("B" & Rows.Count).End(xlUp).row
+    'get last line of user passwords from settings sheet
+    Dim recentPassword As Integer: recentPassword = ThisWorkbook.Sheets("settings").Range("B" & Rows.Count).End(xlUp).row
     
     If action = "get" Then
         'last user password has to be found in line>3
         If recentPassword < 3 Then GoTo newPassword
-        If CStr(Tabelle0.Cells(recentPassword, 2).Value) = uinput Then passwordHandler = True
+        If CStr(ThisWorkbook.Sheets("settings").Cells(recentPassword, 2).Value) = uinput Then passwordHandler = True
     ElseIf action = "set" Then
         GoTo newPassword
     End If
@@ -85,10 +81,10 @@ newPassword:
         
         If userpass = userpassconfirm Then
             'add new password and timestamp for traceability
-            Tabelle0.Cells(recentPassword + 1, 2).Value = userpass 'new password
+            ThisWorkbook.Sheets("settings").Cells(recentPassword + 1, 2).Value = userpass 'new password
             'for security and traceability in case of possible violation
-            Tabelle0.Cells(recentPassword + 1, 3).Value = Now 'timestamp of setting
-            Tabelle0.Cells(recentPassword + 1, 4).Value = Environ("Username") 'account of setting
+            ThisWorkbook.Sheets("settings").Cells(recentPassword + 1, 3).Value = Now 'timestamp of setting
+            ThisWorkbook.Sheets("settings").Cells(recentPassword + 1, 4).Value = Environ("Username") 'account of setting
             'if new password is confirmed there is no need for another input postulated
             Essentials.persistent "unlocked", "set", True
             passwordHandler = True
@@ -99,8 +95,7 @@ End Function
 
 Public Function maskedUserInput(ByRef mprompt As Collection) As String
     'hide vbe window to prevent screen flashing
-    Application.VBE.MainWindow.Visible = False
-    
+'    Application.VBE.MainWindow.Visible = False
     ' create temp userform
     Dim TempForm: Set TempForm = ThisWorkbook.VBProject.VBComponents.Add(3)
     
