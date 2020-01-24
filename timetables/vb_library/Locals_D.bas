@@ -26,7 +26,7 @@ Public Function Language() As Collection
     Language.Add "Abbrechen", "queryPasswordCancel"
 
     'language chunks for input verification
-    Language.Add "Feiertag", "publicHoliday" 'also used in formula in addSheets-sub
+    Language.Add "Feiertag", "publicHoliday" 'also used in formula in addSheets-sub, according to Abence (see below)
     
     Language.Add "unerlaubte Eingabe", "invalidInputTitle"
     Language.Add "Es dürfen nicht gleichzeitig Arbeitsfreistellungen und Uhrzeiten eingetragen werden!", "invalidInputText"
@@ -48,6 +48,23 @@ Public Function Language() As Collection
     Language.Add "Bitte gib den Arbeitszeitübertrag in Stunden an (wenn Du von einer Erfassung auf Papier kommst, sonst 0)", "initTimeText"
     Language.Add "Abbruch", "initCancelTitle"
     Language.Add "Die Initialisierung konnte nicht durchgeführt werden. Bei erneutem Öffnen der Datei wirst Du wieder dazu aufgefordert.", "initCancelText"
+End Function
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' set absence reasons
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Public Function Absence() As Collection
+	'fuzzy handling: if you want to delete values add some empty key-pairs to overwrite. won't happen too often though
+    Set Absence = New Collection
+    Absence.Add Item:="", Key:="null"
+    Absence.Add "Krank", "sick"
+    Absence.Add "Urlaub", "vacation"
+    Absence.Add "Feiertag", "public_holiday"
+    Absence.Add "Berufsschule", "vocational_school"
+    Absence.Add "Dienstreise", "business_trip"
+    Absence.Add "Elternzeit", "parental_leave"
+    Absence.Add "siehe Anmerkung", "see_comment"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
