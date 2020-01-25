@@ -59,7 +59,7 @@ in general this system
 * supports free word design choices (as supposed to the aforementioned softwares styling limitations due to use of .rtf-templates)
 
 ## requirements
-* one somewhat experienced office user to customize the document-blueprints and vba-macros
+* one somewhat experienced office user to customize the document-blueprints and vba-codes
 * microsoft office 2010+ (tested with office 2010, 2016 and 2019 professional, word and excel)
 
 [back to top](#a-quality-management-software)
@@ -93,8 +93,7 @@ there is no installation routine. place the files to your desired accessible net
 ![sample folder structure](assets/folderstructure.png)
 * the provided folder structure might not be neccessarily your first choice and serves just as a sample. you have to change at least the default paths within the vba-macros and the assistant anyway.
 * even if you don't want to use the assistant, the documents semiautomated version control still might be useful for you. on the other hand the assistant is hardly possible to populate without the documents unless you write your own routines for that.
-* i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to pdfs and the assistant application should be granted for everyone.
-* before implementing this system to your company make sure your decisions for documenting the system itself are reliable (e.g. rows and columns in the list of documents in force in dependency to the vba-macro within the self registering docm-files). otherwise you might have to change a lot of code in a lot of documents. this isn't fun.
+* i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to pdfs, timetables and the assistant application should be granted for everyone.
 
 [back to top](#a-quality-management-software)
 
@@ -108,7 +107,8 @@ to customize this software to your needs it is definitely neccessary to have som
 
 # details
 ## the documents
-the vba-macros can be customized quite easily for i tried to have all important parts split to functions to be able to enable/disable these on demand as well as using variables to customize easily. in the best case all you have to do is to change the variables at the beginning of the macro-code. this applies to both docm and xlsm files.
+the vba-macros can be customized quite easily for i tried to have all important parts split to functions to be able to enable/disable these on demand as well as using variables to customize easily. in the best case all you have to do is to change the variables at the beginning of the macro-code. this applies to the administrative xlsm files.
+docm-documents and xlsm-timetables contain basically just functions to import outsourced modules and event handler. set up language and location of modules and you are almost ready to go. 
 
 * customize the variables for prompts to your language
 * you can provide default paths within the macro - but paths will always be selectable
@@ -117,12 +117,11 @@ the vba-macros can be customized quite easily for i tried to have all important 
 * archiving files with latest version number
 * exporting files to unchangeable pdf (you might want to overhaul them to editable forms, but that requires additional software)
 * updating the list of current documents in force
+* central code modules for documents and timesheets makes changing behaviour more easily at last
 
 on save of excel-lists
 * there will be an automated check if you have your documents fitting to all queried aspects
 * you will be asked if you want to export/update the files list for the assistant application
-
-*caveat: since every document contains the code to register itself, changes of the vba-code have to be done in every file later on. an update of the codebase might be possible following [this tutorial by charles pearson](http://www.cpearson.com/excel/vbe.aspx) but i did not include this out of fear to have problems with our companies security and antivir settings.*
 
 take notice of additional [readme-files](administration/readme.md) and samples within the subfolders.
 
@@ -137,7 +136,7 @@ take notice of additional [readme-files](administration/readme.md) and samples w
 ### overview of document bundles
 ![document bundles](assets/docm_documentbundles.png)
 
-### customize the vba-variables
+### customize the vba-variables within administrative sheets
 ![vba variables](assets/docm_vba.png)
 
 [back to top](#a-quality-management-software)
@@ -194,14 +193,14 @@ i tried to implement a preview on search forms using datalists. while it is not 
 the assistant is designed to hopefully transition seamlessly into windows 10 fluent design that is still to come to my company as time of writing. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be. i am not a fanboy in the first place, although i like microsofts os design. i just try to make it look as native as possible to not disturb the co-workers. it is hard enough to convince them to utilize quality management as well as this tool.
 
 ### changes and updates
-this software is purposed to be adapted to the companies needs in an flexible way. if you find something missing you can add functions quick and easily (within technical boundaries). i do exactly this and want to keep the open source distribution updated as well. as long as i am not aware that this software is used by a third party i will push to master and will not implement any version management or branching.
+this software is purposed to be adapted to the companies needs in an flexible way. if you find something missing you can add functions quite quick and easily (within technical boundaries). i do exactly this and want to keep the open source distribution updated as well. as long as i am not aware that this software is used by a third party i will push to master and will not implement any version management or branching.
 
 i maintain this open template as well as the official version in my company. while making changes to the program i repeatedly have to consider the individual parts. therefore all custom files are to be found within the library folder. these are seldom a subject of structural changes. most parts are quite dynamic and feed off the data files. customization might not be neccessary. if you do not customize anything within the main files any update from the latest commits should work flawless.
 
 [back to top](#a-quality-management-software)
 
 # disclaimer
-use at your own responsibility. as this system is or has been in real use with me being responsible, i did my best to make everything flawless. i also tried to make the documentation and comments as meaningful as i could. als always there might be parts that once seemed to be self-explanatory so a little bit of advanced javascript skills might come in handy.
+use at your own responsibility. as this system is or has been in real use with me being responsible, i did my best to make everything flawless. i also tried to make the documentation and comments as meaningful as i could. als always there might be parts that once seemed to be self-explanatory so a little bit of advanced javascript and vba skills might come in handy.
 
 this system does neither provide you with the content of your quality management system nor the necessary structure. you will have to set this one up for yourself. but this system might be flexible enough to match your needs in regards of version control, publishing and company wide access. i really tried to make the best hammer for screwing i could. of course i sewed everything to fit my own companies needs and quality management system. if your company decides for more fields you might have to take a deeper look into vba programming to customize that.
 but as the current deputy quality manager i strongly recommend to reconsider which type of information and extent your documentation must have to fit the norm.
