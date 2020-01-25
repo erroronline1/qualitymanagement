@@ -1,1 +1,2 @@
-this folder contains the current version of your valid documents. these are macro endabled and always at the latest state of your working draft. from here the automation on versioning, archiving, publishing and registering takes place.
+this folder contains the current version of your valid documents. these are macro enabled and always at the latest state of your working draft. from here the automation on versioning, archiving, publishing and registering takes place.
+sample files updated to auto import of outsourced modules as of january 2020.

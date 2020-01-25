@@ -3,12 +3,15 @@
 these are microsoft office documents with some vba-macro code implemented
 
 ## template_file.docm
-this is the main template containing the macro for self version control and self registration. edit the variables on the start of the macro to your language settings and documentation structure.
+this is the main template containing the basic functions for importing modules for version control and registration. you have to set up basically the language code according to available local modules and the level of parental folders according to the relative vb_library location. this is one level up by default.
+outsourced modules will be imported/updated if available.
+
 there are three important and processed fields within the document:
 * title, which is updated on load of the file
 * version and release date
 
-the field for page numbering is of no importance to the macro and can be deleted or moved. on saving you are asked if you want to update the version number and release date. you can set these automatically to the next version and the current date or set it manually. in either cases you will be processed through archiving, publishing and registering the document in the list of documents in force. if you have to do changes, don't want to change the version but want to export it (e.g. when editing with set release date) you will have to set the variables manually to the current state. if you cancel the initial request the file will be saved without version control.
+the field for page numbering is of no importance to the functions and can be deleted or moved.
+according to the modules currently you are asked on saving if you want to update the version number and release date. you can set these automatically to the next version and the current date or set it manually. in either cases you will be processed through archiving, publishing and registering the document in the list of documents in force. if you have to do changes, don't want to change the version but want to export it (e.g. when editing with set release date) you will have to set the variables manually to the current state. if you cancel the initial request the file will be saved without version control.
 you can archive the document without macros to avoid any accidential changes. the file name will be followed by the version number.
 you can publish the document as an uneditable pdf file (but you could implement editable field with third party application).
 afterwards on selecting the list of documents in force, the file will either add itself to the list or update its version, release date and number of pages.
