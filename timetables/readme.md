@@ -38,18 +38,18 @@ i had to learn this one the hard way. on developing and testing i had to change 
 if you change the layout of the tables make sure to adjust the cell addresses (A1 nad R1C1 notations both apply) within the essentials-module:
 
 settings:
-*addresses of settings in Essential.persistent
-*columns of password storage in Secure.passwordHandler
+* addresses of settings in Essential.persistent
+* columns of password storage in Secure.passwordHandler
 
 info-sheet:
-*address of absenceList for updating in Essentials.updateAbsence
+* address of absenceList for updating in Essentials.updateAbsence
 
 timetable-sheets:
-*columns of date, days and absence in Essentials.absenceHandler
-*rolumns and rows for day counting in Essentials.countDays
-*addresses of cells to be set plus formulas in Essentials.init
-*addresses of cells to be set, read plus formulas in Essentials.addSheets
-*addresses of cells to be read in Essentials.holidayReminder
+* columns of date, days and absence in Essentials.absenceHandler
+* rolumns and rows for day counting in Essentials.countDays
+* addresses of cells to be set plus formulas in Essentials.init
+* addresses of cells to be set, read plus formulas in Essentials.addSheets
+* addresses of cells to be read in Essentials.holidayReminder
 
 ### flaws
 opening the file for the first time from the web or a network path will excel be loading it in protected mode. this causes an issue that can only be bypassed by reopening the file for excel will trust the source from then on. there will be an information about this, as this was the easiest way after several insufficent tries to handle this (leaving protected mode delays unprotecting after initializing macros. there is no application.wait available coming from protected view).
