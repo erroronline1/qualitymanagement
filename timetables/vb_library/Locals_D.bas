@@ -47,7 +47,7 @@ Public Function Language() As Collection
     Language.Add "Arbeitszeitübertrag", "initTimeTitle"
     Language.Add "Bitte gib den Arbeitszeitübertrag in Stunden an (wenn Du von einer Erfassung auf Papier kommst, sonst 0)", "initTimeText"
     Language.Add "Abbruch", "initCancelTitle"
-    Language.Add "Die Initialisierung konnte nicht durchgeführt werden. Bei erneutem Öffnen der Datei wirst Du wieder dazu aufgefordert.", "initCancelText"
+    Language.Add "Die Initialisierung konnte nicht durchgeführt werden. Bei erneutem Öffnen der Datei wirst Du wieder dazu aufgefordert." & vbNewLine & vbNewLine & "Ohne Initialisierung werden unauthorisierte Änderungen nicht rückgängig gemacht.", "initCancelText"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

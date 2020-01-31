@@ -40,19 +40,18 @@ Public Sub CloseRoutine()
 End Sub 
 
 Public Sub ChangeRoutine(ByVal Sheet as String, ByVal Target As Range)
-    If not verificationOverride Then
+    If Not verificationOverride Then
         Secure.Protection Sheet
 		If Target.Row>=11 And Target.Row<=41 Then absenceHandler Sheet, Target
 	End If
 End Sub
 
 Public Sub undo()
-	If Not persistent("unlocked", "get", True) Then
-		Dim relock As Boolean: relock = True
-		persistent "unlocked", "set", True
+	If Val(Tabelle2.Cells(1, 4).Value) > 0 Then 'uninitialized file causes excel to crash
+		verificationOverride = True
+		Application.undo
+		verificationOverride = False
 	End If
-	Application.undo
-	If relock Then persistent "unlocked", "set", False
 End Sub
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -179,7 +178,29 @@ Public Function countDays(ByVal Days As String, ByVal returnType as String) As I
             countDays = countDays + 1
         End If
     Next cRow
+End Function
 
+Public Function calcHours(ByVal Come, ByVal Go, ByVal PauseA, ByVal PauseB) As Variant
+    Application.Volatile
+    If Come <> "" And Go <> "" Then
+        'round floats to the precision of eight, otherwise the comparison fails
+        Dim StepA: StepA = Round(6 / 24, 8) 'six hours
+        Dim MinA: MinA = Round(0.5 / 24, 8) 'min pause of 30 minutes at more than six hours
+        Dim StepB: StepB = Round(9 / 24, 8) 'nine hours
+        Dim MinB: MinB = Round(0.75 / 24, 8) 'min pause of 45 minutes at more than nine hours
+        calcHours = Round(Go - Come, 8)
+        If PauseA <> 0 And PauseA < 15 Then PauseA = 15
+        If PauseB <> 0 And PauseB < 15 Then PauseB = 15
+        If calcHours - PauseA - PauseB > StepB Then
+            calcHours = calcHours - MinB
+        ElseIf calcHours - PauseA - PauseB > StepA Then
+            calcHours = calcHours - MinA
+        Else
+            calcHours = calcHours - PauseA / 60 / 24 - PauseB / 60 / 24
+        End If
+    Else
+        calcHours = 0
+    End If
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -191,6 +212,7 @@ Public Function init() As Boolean
     Dim mprompt As New Collection
     Set mprompt = Locals.Language()
 
+	'actual initialization
     If Val(Tabelle2.Cells(1, 4).Value) < 1 Then
         Select Case MsgBox(mprompt("initWelcomeText"), vbOKCancel + vbInformation, mprompt("initWelcomeTitle"))
         Case vbOK:
@@ -211,7 +233,7 @@ Public Function init() As Boolean
                 'rename last timetable sheet to current month/year
                 Tabelle2.Name = prefix & newMonth & "." & newYear
                 'unprotect sheet and set values
-                persistent "unlocked", "set", True
+				verificationOverride = True
                 Tabelle2.Unprotect persistent("masterpass", "get", True)
                 Tabelle2.Range("D1").Value = newMonth
                 Tabelle2.Range("E1").Value = newYear
@@ -226,7 +248,7 @@ Public Function init() As Boolean
                 'reprotect sheet again
                 Tabelle2.Protect persistent("masterpass", "get", True), True, True
  
-				persistent "unlocked", "set", False
+				verificationOverride = False
                 init = True
                 
             Else:
@@ -245,8 +267,6 @@ End Function
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Public Sub addSheets()
-    'unlock sheets while adding new ones to avoid password query
-    persistent "unlocked", "set", True
     'avoid all user input checks while adding sheets
     verificationOverride = True
     'get last sheet
@@ -332,8 +352,6 @@ Public Sub addSheets()
         'set new sheets to true to remind for holidays on save if sheets are added - normally once a month
         persistent "newSheet", "set", True
     Wend
-    'lock sheets after adding new ones to force password query again
-    persistent "unlocked", "set", False
     'activate all user input checks after adding sheets
     verificationOverride = False
 

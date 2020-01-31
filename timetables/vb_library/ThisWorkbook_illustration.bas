@@ -9,13 +9,24 @@
 
 Option Explicit
 Public selectedLanguage As String
+Public parentPath
 
 Private Sub Workbook_Open()
     selectedLanguage = "EN"
+
+    'get parent path to vb_libraries to be imported
+    Dim path() As String
+    path() = Split(ThisWorkbook.path, "\")
+    Dim i As Integer
+    parentPath = ""
+    For i = 0 To UBound(path) - 0 'according to upward steps in folder hierarchy
+        parentPath = parentPath & path(i) & "\"
+    Next i
+    
     'load essentials as module and execute opening procedure
     Dim Essentials
     Set Essentials = CreateObject("Scripting.Dictionary")
-    Essentials.Add "Essentials", ThisWorkbook.Path & "\vb_library\Essentials.bas"
+    Essentials.Add "Essentials", parentPath & "vb_library\Essentials.bas"
 
     If importModules(Essentials) Then asyncOpen
 End Sub
@@ -31,15 +42,16 @@ End Sub
 Public Function importModules(ByVal libraries As Object) As Boolean
     Dim lib As Variant, modloop As Variant
     On Error Resume Next
-    Application.DisplayAlerts = False
+    'Application.DisplayAlerts = False
     'rename existing modules and import external modules
     For Each lib In libraries
-        With ThisWorkbook.VBProject.VBComponents
-            'renaming to _old because sometimes modules are removed on finishing of the code only, resulting in enumeration of module names
-            .Item(lib).Name = lib & "_OLD"
-            .Import libraries(lib)
-        End With
-
+		If Len(Dir(libraries(lib))) > 0 Then
+			With ThisWorkbook.VBProject.VBComponents
+					'renaming to _old because sometimes modules are removed on finishing of the code only, resulting in enumeration of module names
+					.Item(lib).name = lib & "_OLD"
+					.Import libraries(lib)
+			End With
+		End If
     Next lib
     'if no external modules have been found rename existing modules to default name
     For Each lib In libraries
@@ -47,7 +59,6 @@ Public Function importModules(ByVal libraries As Object) As Boolean
         For Each modloop In ThisWorkbook.VBProject.VBComponents
             If (modloop.Name = lib) Then loaded = True: Exit For
         Next modloop
-        
         If loaded Then
             ThisWorkbook.VBProject.VBComponents.Remove ThisWorkbook.VBProject.VBComponents(lib & "_OLD")
         Else

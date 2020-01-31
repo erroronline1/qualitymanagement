@@ -47,7 +47,7 @@ Public Function Language() As Collection
     Language.Add "Current amount of hours", "initTimeTitle"
     Language.Add "Please enter the current amount of tracked hours (or 0)", "initTimeText"
     Language.Add "Abort", "initCancelTitle"
-    Language.Add "Initialization could not be finished. You will be asked again on reopening this file.", "initCancelText"
+    Language.Add "Initialization could not be finished. You will be asked again on reopening this file." & vbNewLine & vbNewLine & "Withour proper initialization unauthorized changes will not be undone.", "initCancelText"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
