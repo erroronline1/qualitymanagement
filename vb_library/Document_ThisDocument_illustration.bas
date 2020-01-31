@@ -23,7 +23,7 @@ Private Sub Document_Open()
     'load essentials as module and execute opening procedure
     Dim Essentials
     Set Essentials = CreateObject("Scripting.Dictionary")
-    Essentials.Add "Essentials", parentPath & "vb_library\Essentials.bas"
+    Essentials.Add "Essentials", parentPath & "vb_library\Document_Essentials.bas"
 
     If importModules(Essentials) Then asyncOpen
 End Sub

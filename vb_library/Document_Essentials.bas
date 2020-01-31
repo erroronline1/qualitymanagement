@@ -13,7 +13,7 @@ Public setup As Collection
 
 Public Function Modules() as Object
     Set Modules= CreateObject("Scripting.Dictionary")
-    Modules.Add "Locals", ThisDocument.parentPath & "vb_library\" & "Locals_" & ThisDocument.selectedLanguage & ".bas"
+    Modules.Add "Locals", ThisDocument.parentPath & "vb_library\" & "Document_Locals_" & ThisDocument.selectedLanguage & ".bas"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
