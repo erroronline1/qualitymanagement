@@ -1,5 +1,4 @@
-'timetracking with excel
-'2020 by error on line 1 (erroronline.one)
+'(c) 2020 by error on line 1 (erroronline.one)
 'this is part of "a quality management software" available on https://github.com/erroronline1/qualitymanagement unter gnu license
 'set selectedLanguage in the Workbook_Open-sub and customize your language and location specific values in the Locale module
 
@@ -26,7 +25,7 @@ Private Sub Workbook_Open()
     'load essentials as module and execute opening procedure
     Dim Essentials
     Set Essentials = CreateObject("Scripting.Dictionary")
-    Essentials.Add "Essentials", parentPath & "vb_library\Timetable_Essentials.bas"
+    Essentials.Add "Essentials", parentPath & "vb_library\Timetable_Essentials.vba"
 
     If importModules(Essentials) Then asyncOpen
 End Sub

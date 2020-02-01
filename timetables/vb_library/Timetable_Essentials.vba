@@ -8,8 +8,8 @@ Public verificationOverride As Boolean
 
 Public Function Modules() as Object
 	Set Modules= CreateObject("Scripting.Dictionary")
-    Modules.Add "Secure", ThisWorkbook.Path & "\vb_library\" & "Timetable_Secure.bas"
-    Modules.Add "Locals", ThisWorkbook.Path & "\vb_library\" & "Timetable_Locals_" & ThisWorkbook.selectedLanguage & ".bas"
+    Modules.Add "Secure", ThisWorkbook.Path & "\vb_library\" & "Timetable_Secure.vba"
+    Modules.Add "Locals", ThisWorkbook.Path & "\vb_library\" & "Timetable_Locals_" & ThisWorkbook.selectedLanguage & ".vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

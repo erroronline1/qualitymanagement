@@ -1,5 +1,5 @@
 Attribute VB_Name = "Locals"
-'(c) 2019 by error on line 1 (erroronline.one)
+'(c) 2020 by error on line 1 (erroronline.one)
 'this is part of "a quality management software" available on https://github.com/erroronline1/qualitymanagement unter gnu license
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -21,9 +21,9 @@ Public Function setup() As Collection
         setup.Add "Enter new version or cancel to keep current", "manualVersioning.versionPrompt"
         setup.Add "Release date", "manualVersioning.releasedateTitle"
         setup.Add "Enter new release date or cancel to keep current", "manualVersioning.releasedatePrompt"
-        'prompt to archive current version without macros
-        setup.Add "Save a copy without macros to archive?", "archive.confirmPrompt"
-        setup.Add "saved. The file is stored in the archive without macros so there is no risk of accidentally updating something.", "archive.successPrompt"
+        'prompt to archive current version without code
+        setup.Add "Save a copy without code to archive?", "archive.confirmPrompt"
+        setup.Add "saved. The file is stored in the archive without code so there is no risk of accidentally updating something.", "archive.successPrompt"
         'prompt to publish document ad pdf-file
         setup.Add "Publish document as PDF-file? (Extension will be set automatically)", "publish.confirmPrompt"
         setup.Add "Document published as", "publish.successPrompt"

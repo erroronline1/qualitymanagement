@@ -1,4 +1,4 @@
-'(c) 2019 by error on line 1 (erroronline.one)
+'(c) 2020 by error on line 1 (erroronline.one)
 'this is part of "a quality management software" available on https://github.com/erroronline1/qualitymanagement unter gnu license
 
 Option Explicit
@@ -23,7 +23,7 @@ Private Sub Document_Open()
     'load essentials as module and execute opening procedure
     Dim Essentials
     Set Essentials = CreateObject("Scripting.Dictionary")
-    Essentials.Add "Essentials", parentPath & "vb_library\Document_Essentials.bas"
+    Essentials.Add "Essentials", parentPath & "vb_library\Document_Essentials.vba"
 
     If importModules(Essentials) Then asyncOpen
 End Sub

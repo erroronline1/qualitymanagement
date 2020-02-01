@@ -1,5 +1,5 @@
 Attribute VB_Name = "Locals"
-'(c) 2019 by error on line 1 (erroronline.one)
+'(c) 2020 by error on line 1 (erroronline.one)
 'this is part of "a quality management software" available on https://github.com/erroronline1/qualitymanagement unter gnu license
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -11,26 +11,26 @@ Attribute VB_Name = "Locals"
 Public Function setup() As Collection
     Set setup = New Collection
         'prompt to start version assignment
-        setup.Add Item:="Version und Veröffentlichungsdatum aktualisieren?", Key:="initiate.Title"
+        setup.Add Item:="Version und Verï¿½ffentlichungsdatum aktualisieren?", Key:="initiate.Title"
         setup.Add "Das Dokument '" & ThisDocument.Variables("title").Value & "' wird gespeichert." & vbNewLine & vbNewLine, "initiate.confirm"
         setup.Add "[Ja] um Versionstand automatisch auf Version V" & ThisDocument.Variables("version").Value + 1 & "." & Format(Date, "yyyymmdd") & " zu aktualisieren" & vbNewLine, "initiate.confirmYes"
         setup.Add "[Nein] um Versionsstand manuell anzupassen" & vbNewLine & vbNewLine, "initiate.confirmNo"
-        setup.Add "In beiden Fällen kann anschließend die aktuelle Version archiviert und veröffentlicht, sowie die Aktualisierung der Liste der gültigen Dokumente durchgeführt werden." & vbNewLine & vbNewLine & "[Abbrechen] um Versionsstand nicht zu ändern", "initiate.confirmCancel"
+        setup.Add "In beiden Fï¿½llen kann anschlieï¿½end die aktuelle Version archiviert und verï¿½ffentlicht, sowie die Aktualisierung der Liste der gï¿½ltigen Dokumente durchgefï¿½hrt werden." & vbNewLine & vbNewLine & "[Abbrechen] um Versionsstand nicht zu ï¿½ndern", "initiate.confirmCancel"
         'prompt to set version manually
         setup.Add "Version", "manualVersioning.versionTitle"
         setup.Add "Neuen Versionsstand angeben oder Abbrechen um Version beizubehalten", "manualVersioning.versionPrompt"
-        setup.Add "Veröffentlichungsdatum", "manualVersioning.releasedateTitle"
-        setup.Add "Neues Einführungsdatum angeben oder Abbrechen um Datum beizubehalten", "manualVersioning.releasedatePrompt"
-        'prompt to archive current version without macros
-        setup.Add "Kopie mit Versionsnummer ohne Macros im Archiv speichern?", "archive.confirmPrompt"
-        setup.Add "gespeichert. Im Archiv befindet sich die Datei ohne Macros. Dadurch wird der Inhalt nicht fälschlicherweise automatisch aktualisiert.", "archive.successPrompt"
+        setup.Add "Verï¿½ffentlichungsdatum", "manualVersioning.releasedateTitle"
+        setup.Add "Neues Einfï¿½hrungsdatum angeben oder Abbrechen um Datum beizubehalten", "manualVersioning.releasedatePrompt"
+        'prompt to archive current version without code
+        setup.Add "Kopie mit Versionsnummer ohne code im Archiv speichern?", "archive.confirmPrompt"
+        setup.Add "gespeichert. Im Archiv befindet sich die Datei ohne code. Dadurch wird der Inhalt nicht fï¿½lschlicherweise automatisch aktualisiert.", "archive.successPrompt"
         'prompt to publish document ad pdf-file
-        setup.Add "Dokument als PDF Veröffentlichen? (Dateiendung wird automatisch angepasst!)", "publish.confirmPrompt"
-        setup.Add "Dokument veröffentlicht als", "publish.successPrompt"
+        setup.Add "Dokument als PDF Verï¿½ffentlichen? (Dateiendung wird automatisch angepasst!)", "publish.confirmPrompt"
+        setup.Add "Dokument verï¿½ffentlicht als", "publish.successPrompt"
         'prompt and structure to update list of documents in force
-        setup.Add "Excel-Liste der gültigen Dokumente zur Aktualisierung des Versionsstandes wählen", "updateList.autoUpdatePrompt"
-        setup.Add "Automatische Aktualisierung nicht möglich!", "updateList.autoUpdateErrorTitle"
-        setup.Add "Die Liste der gültigen Dokumente wurde nicht ausgewählt!" & vbNewLine & "Nochmal versuchen oder abbrechen?" & vbNewLine & "(im zweiten Fall bitte manuell aktualisieren)", "updateList.autoUpdateErrorPrompt"
+        setup.Add "Excel-Liste der gï¿½ltigen Dokumente zur Aktualisierung des Versionsstandes wï¿½hlen", "updateList.autoUpdatePrompt"
+        setup.Add "Automatische Aktualisierung nicht mï¿½glich!", "updateList.autoUpdateErrorTitle"
+        setup.Add "Die Liste der gï¿½ltigen Dokumente wurde nicht ausgewï¿½hlt!" & vbNewLine & "Nochmal versuchen oder abbrechen?" & vbNewLine & "(im zweiten Fall bitte manuell aktualisieren)", "updateList.autoUpdateErrorPrompt"
         setup.Add "B", "updateList.documentTitle"
         setup.Add "C", "updateList.documentVersion"
         setup.Add "D", "updateList.documentPages"

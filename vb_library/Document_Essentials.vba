@@ -1,5 +1,5 @@
 Attribute VB_Name = "Essentials"
-'(c) 2019 by error on line 1 (erroronline.one)
+'(c) 2020 by error on line 1 (erroronline.one)
 'this is part of "a quality management software" available on https://github.com/erroronline1/qualitymanagement unter gnu license
 
 Option Explicit
@@ -13,7 +13,7 @@ Public setup As Collection
 
 Public Function Modules() as Object
     Set Modules= CreateObject("Scripting.Dictionary")
-    Modules.Add "Locals", ThisDocument.parentPath & "vb_library\" & "Document_Locals_" & ThisDocument.selectedLanguage & ".bas"
+    Modules.Add "Locals", ThisDocument.parentPath & "vb_library\" & "Document_Locals_" & ThisDocument.selectedLanguage & ".vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -34,8 +34,8 @@ End Sub
 
 Public Sub closeRoutine(ByVal Doc As Document, SaveAsUI As Boolean, Cancel As Boolean)
     'run procedures only if this window is active/in focus, not while autosaving other files in background _
-    Application.MacroContainer.Name = Doc makes sure to run only this files macros. without this the _
-    version control routines will be called from every opened document with the same macros
+    Application.MacroContainer.Name = Doc makes sure to run only this files code. without this the _
+    version control routines will be called from every opened document with the same code
     If Doc.ActiveWindow.Active And Application.MacroContainer.Name = Doc Then
       
         If Not Cancel And ActiveVersioning Then
@@ -122,7 +122,7 @@ Public Sub UpdateDocumentFields()
 End Sub
 
 Public Sub Archieve()
-    ''''''' archive file without macros, version number added to filename ''''''''
+    ''''''' archive file without code, version number added to filename ''''''''
     Dim fileSaveName As Variant
     Set fileSaveName = Application.FileDialog(msoFileDialogSaveAs)
     fileSaveName.InitialFileName = Replace(ThisDocument.FullName, ThisDocument.Variables("title"), ThisDocument.Variables("title") + "[" + ThisDocument.Variables("version") + "]")
