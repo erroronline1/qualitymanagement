@@ -2,3 +2,5 @@ this folder contains vba modules for version control, publishing and registering
 after import modules are installed and only overwritten if the remote files are found next time opening.
 
 the files are prepared to work on their own if no import file is found. supplying the source folder has the benefit of changes affecting all working draft documents automatic. be careful as well as glad changes have to be only done in one location mostly. yay!
+
+if you have to change code for the main module / thisDocument-class, there is a module prepared that will import the source code from the Document_ThisDocument_illustration.vba to overwrite, that you can implement (preferably temporary) from within the essentials-module. use case: changing paths, language or adding custom subs or funtions.

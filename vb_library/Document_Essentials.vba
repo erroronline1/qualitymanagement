@@ -14,6 +14,7 @@ Public setup As Collection
 Public Function Modules() as Object
     Set Modules= CreateObject("Scripting.Dictionary")
     Modules.Add "Locals", ThisDocument.parentPath & "vb_library\" & "Document_Locals_" & ThisDocument.selectedLanguage & ".vba"
+    'Modules.Add "Rewrite", ThisDocument.parentPath & "vb_library\" & "RewriteMain.vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -25,11 +26,13 @@ Public Sub openRoutine()
 End Sub
 
 Public Sub asyncOpen()
-        Set setup = Locals.setup
+    'Rewrite.rewriteMain
 
-        ActiveVersioning = True
-        On Error Resume Next
-        UpdateDocumentFields
+    Set setup = Locals.setup
+
+    ActiveVersioning = True
+    On Error Resume Next
+    UpdateDocumentFields
 End Sub
 
 Public Sub closeRoutine(ByVal Doc As Document, SaveAsUI As Boolean, Cancel As Boolean)
