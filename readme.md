@@ -45,11 +45,11 @@ this quality management software has been in use in context to [iso 13485:2015](
 
 # the core documents
 ## use case
-the office documents come with built-in vba-macros to handle document version control, its overview and export-handling. employees use mainly unchangeable pdf-files to fill out during workflow. each document registers and manages itself (kind of).
+the office documents come with built-in vba-code to handle document version control, its overview and export-handling. employees use mainly unchangeable pdf-files to fill out during workflow. each document registers and manages itself (kind of).
 
 ## what the documents do
 style the blueprints according to your desired corporate design whatever you like and however word allows you to. just make sure you don't delete the in-built fields.
-customize the variables within the vba-macros.
+customize the variables within the vba-code.
 
 in general this system
 * supports your version control
@@ -91,7 +91,7 @@ this tool provides your company with an application to have an easier access to 
 there is no installation routine. place the files to your desired accessible network-folders and customize them by hand. create or recreate your documents with the provided template_file.docm and let the workflow guide you through the registration.
 
 ![sample folder structure](assets/folderstructure.png)
-* the provided folder structure might not be neccessarily your first choice and serves just as a sample. you have to change at least the default paths within the vba-macros and the assistant anyway.
+* the provided folder structure might not be neccessarily your first choice and serves just as a sample. you have to change at least the default paths within the vba-code and the assistant anyway.
 * even if you don't want to use the assistant, the documents semiautomated version control still might be useful for you. on the other hand the assistant is hardly possible to populate without the documents unless you write your own routines for that.
 * i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to pdfs, timetables and the assistant application should be granted for everyone.
 
@@ -99,7 +99,7 @@ there is no installation routine. place the files to your desired accessible net
 
 # but i am no programmer!
 **main goal of this system is not to have a simple solution out of the box but to bypass administrative it restrictions. at least if you are a subdivision of a bigger company that has special rules you have to bypass somehow.**
-to customize this software to your needs it is definitely neccessary to have someone change values within the vba-macros as well as the javascript configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
+to customize this software to your needs it is definitely neccessary to have someone change values within the vba-code as well as the javascript configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
 **on the bright side everything is open source and can be maintained by any programmer/webdeveloper/webdeveloping agency that does javascript and knows how to access the visual basic editor via the office developer tab!**
 
 
@@ -107,17 +107,16 @@ to customize this software to your needs it is definitely neccessary to have som
 
 # details
 ## the documents
-the vba-macros can be customized quite easily for i tried to have all important parts split to functions to be able to enable/disable these on demand as well as using variables to customize easily. in the best case all you have to do is to change the variables at the beginning of the macro-code. this applies to the administrative xlsm files.
-docm-documents and xlsm-timetables contain basically just functions to import outsourced modules and event handler. set up language and location of modules and you are almost ready to go. 
+the vba-code can be customized quite easily for i tried to have all important parts split to functions to be able to enable/disable these on demand as well as using variables to customize easily. in the best case all you have to do is to change the variables within the locals-modules. office-documents contain basically just functions to import outsourced modules and event handler. set up language and location of modules and you are almost ready to go. 
 
 * customize the variables for prompts to your language
-* you can provide default paths within the macro - but paths will always be selectable
-* you can change rows and columns within the macro-setup of tables in case you want to provide different information on save of word-files
+* you can provide default paths within the code - but paths will always be selectable
+* you can change rows and columns within the local-setup of tables in case you want to provide different information on save of word-files
 * you will be guided through version control and can choose whether to auto-update version and release date or set these manually
 * archiving files with latest version number
 * exporting files to unchangeable pdf (you might want to overhaul them to editable forms, but that requires additional software)
 * updating the list of current documents in force
-* central code modules for documents and timesheets makes changing behaviour more easily at last
+* central code modules makes changes to desired behaviour more easily
 
 on save of excel-lists
 * there will be an automated check if you have your documents fitting to all queried aspects
@@ -136,7 +135,7 @@ take notice of additional [readme-files](administration/readme.md) and samples w
 ### overview of document bundles
 ![document bundles](assets/docm_documentbundles.png)
 
-### customize the vba-variables within administrative sheets
+### customize the vba-variables within the locals modules in the vb-library folders
 ![vba variables](assets/docm_vba.png)
 
 [back to top](#a-quality-management-software)
@@ -212,7 +211,7 @@ i was not able to find information if there are special requirements for a quali
 # license
 a quality management software - automate your paper based qms
 
-copyright (c) 2019  [by error on line 1](http://erroronline.one)
+copyright (c) 2020  [by error on line 1](http://erroronline.one)
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version. 
 
