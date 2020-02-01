@@ -1,6 +1,6 @@
 # one word or three to the time tables
 
-these are microsoft office documents with some vba-macro code implemented
+these are microsoft office documents with some vba-code code implemented
 
 **unfortunately the excel-functions and sheet-code-names are german only for me having no access to an english environment. you have to translate them to your language if necessary. take account of sheets, conditional formatting and modules. marking weekends might have to be adjusted by changing the current values of "sa" and "so" to your language environment abbreviations in formula of conditional formatting**
 
@@ -29,7 +29,7 @@ the sheets are protected by default, only relevant cells can be changed by the u
 
 ### don't tell anyone
 the security is inversely proportional to the tech savvyness of the users. there is a very hidden sheet containing the masterpassword to unlock and relock sheets while initializing or creating the monthly sheet.
-here the user passwords are stored as well, complemented by timestamp of creation and user account. in case of integrity concerns these information might give a start for investigating. if you consider enhancing security protect the macro code with a password as well, but ponder on tech savvyness of employees vs. long term accessability even after you leave the company with the passwords...
+here the user passwords are stored as well, complemented by timestamp of creation and user account. in case of integrity concerns these information might give a start for investigating. if you consider enhancing security protect the vba code with a password as well, but ponder on tech savvyness of employees vs. long term accessability even after you leave the company with the passwords...
 this sheet is also used for session persistent values that can not otherwise be handled due to vbas behaviour.
 
 ## maintainability
@@ -52,7 +52,7 @@ timetable-sheets:
 * addresses of cells to be read in Essentials.holidayReminder
 
 ### flaws
-opening the file for the first time from the web or a network path will excel be loading it in protected mode. this causes an issue that can only be bypassed by reopening the file for excel will trust the source from then on. there will be an information about this, as this was the easiest way after several insufficent tries to handle this (leaving protected mode delays unprotecting after initializing macros. there is no application.wait available coming from protected view).
+opening the file for the first time from the web or a network path will excel be loading it in protected mode. this causes an issue that can only be bypassed by reopening the file for excel will trust the source from then on. there will be an information about this, as this was the easiest way after several insufficent tries to handle this (leaving protected mode delays unprotecting after initializing code. there is no application.wait available coming from protected view).
 
 passwords are stored in plain text. whether you like that or not, it makes it a lot easier to track possible vulnerabilities and editing sheets.
 
