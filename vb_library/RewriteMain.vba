@@ -13,7 +13,7 @@ Sub rewriteMain()
 	'rewrite from file
 	With ThisDocument.VBProject
 		.VBComponents("ThisDocument").CodeModule.AddFromFile _
-		"D:\erroronline1\diverse dokumente\arbeit\stick\qm\aqms\vb_library\Document_ThisDocument_illustration.vba"
+		"E:\Quality Management\vb_library\Document_ThisDocument_illustration.vba"
 	End With
 	'delete module
     ThisDocument.VBProject.VBComponents.Remove ThisDocument.VBProject.VBComponents("Rewrite")
