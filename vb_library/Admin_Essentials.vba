@@ -15,6 +15,7 @@ Public Function Modules() as Object
     Set Modules= CreateObject("Scripting.Dictionary")
     Modules.Add "Locals", ThisWorkbook.parentPath & "vb_library\" & "Admin_Locals_" & ThisWorkbook.selectedLanguage & ".vba"
     Modules.Add "Specific", ThisWorkbook.parentPath & "vb_library\" & "Admin_" & ThisWorkbook.Name & ".vba"
+    'Modules.Add "Rewrite", "E:\Quality Management\vb_library\RewriteMain.vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -26,6 +27,7 @@ Public Sub openRoutine()
 End Sub
 
 Public Sub asyncOpen()
+    'Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", "E:\Quality Management\vb_library\Admin_ThisWorkbook_illustration.vba"
 End Sub
 
 Public Sub closeRoutine(ByVal SaveAsUI As Boolean, Cancel As Boolean)

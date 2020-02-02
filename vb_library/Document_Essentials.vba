@@ -26,7 +26,7 @@ Public Sub openRoutine()
 End Sub
 
 Public Sub asyncOpen()
-    'Rewrite.rewriteMain
+    'Rewrite.rewriteMain ThisDocument, "ThisDocument", "E:\Quality Management\vb_library\Document_ThisDocument_illustration.vba"
 
     Set setup = Locals.setup
 

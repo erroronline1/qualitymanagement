@@ -10,6 +10,7 @@ Public Function Modules() as Object
 	Set Modules= CreateObject("Scripting.Dictionary")
     Modules.Add "Secure", ThisWorkbook.Path & "\vb_library\" & "Timetable_Secure.vba"
     Modules.Add "Locals", ThisWorkbook.Path & "\vb_library\" & "Timetable_Locals_" & ThisWorkbook.selectedLanguage & ".vba"
+    'Modules.Add "Rewrite", "E:\Quality Management\vb_library\RewriteMain.vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -21,6 +22,8 @@ Public Sub OpenRoutine()
 End Sub 
 
 Public Sub asyncOpen()
+    'Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", "E:\Quality Management\timetables\vb_library\Timetable_ThisWorkbook_illustration.vba"
+
     'set unlocked to false on opening by default, this is essential. see functions comment.
     persistent "unlocked", "set", False
 
