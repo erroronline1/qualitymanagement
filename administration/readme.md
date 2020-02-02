@@ -1,6 +1,6 @@
 # one word or three to the core documents use
 
-these are microsoft office documents with some vba-code code implemented
+these are microsoft office documents with some vba-code implemented
 
 ## template_file.docm
 this is the main template containing the basic functions for importing modules for version control and registration. you have to set up basically the language code according to available local modules and the level of parental folders according to the relative vb_library location. this is one level up by default.
@@ -32,6 +32,9 @@ this list contains external documents in force and can contain other file lists.
 
 ## stocklist.xlsm
 the stocklist might contain all products and materials that have permission from the companies head. i am aware there are better solutions for stock administration but by time of writing my own companies software is worse than using excel for that. so this *is* an advance. the export function on save makes the list accessible and searchable for all employees using the assistant hence optimizing dialogue with inventory control. excel might freeze on export if the list contains 6k+ items, but it just takes some time, so no worries.
+
+## audit planner.xlsm
+the audit planner can be filled with a question set for internal audits. by exporting the list to the assistant the question set can be used to generate or customize the annual questionnaire (to the relief of the quality manager) and becomes accessible to the employees to reduce obstructions due to regulatory vocabulary.
 
 *please be aware that there are dependencies between column numbers and entries and the assistants filter function. the excel-list will be displayed in the same way within the assistant in the first place.*
 

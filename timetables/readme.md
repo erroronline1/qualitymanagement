@@ -1,6 +1,6 @@
 # one word or three to the time tables
 
-these are microsoft office documents with some vba-code code implemented
+these are microsoft office documents with some vba-code implemented
 
 **unfortunately the excel-functions and sheet-code-names are german only for me having no access to an english environment. you have to translate them to your language if necessary. take account of sheets, conditional formatting and modules. marking weekends might have to be adjusted by changing the current values of "sa" and "so" to your language environment abbreviations in formula of conditional formatting**
 

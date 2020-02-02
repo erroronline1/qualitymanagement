@@ -122,7 +122,10 @@ on save of excel-lists
 * there will be an automated check if you have your documents fitting to all queried aspects
 * you will be asked if you want to export/update the files list for the assistant application
 
-take notice of additional [readme-files](administration/readme.md) and samples within the subfolders.
+explanatory readme-files:
+* [administrative lists and document blueprint](administration/readme.md)
+* [timetable blueprints](timetables/readme.md)
+* [vba modules](vb-library/readme.md)
 
 [back to top](#a-quality-management-software)
 
@@ -157,7 +160,11 @@ there is a main html-file in the root folder, a core folder with the core functi
 
 *be aware that there are dependencies between the assistants datafiles, their objects and handling, and the documents vba and table-structure. it might become neccessary to change things on both sides.*
 
-take notice of additional [core-readme-file](assistant/core/readme.md), [modules-readme-file](assistant/modules/readme.md) and samples within the subfolders.
+explanatory readme-files:
+* [core-functions](assistant/core/readme.md), list of functions of the core-object and reusable methods
+* [modules](assistant/modules/readme.md), short explanation fof provided modules, architecture of modules and core-context
+
+### the access to your qm-system
 
 ![assistant home screen](assets/assistant_home.png)
 
