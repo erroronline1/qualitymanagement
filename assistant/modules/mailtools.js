@@ -107,7 +107,7 @@ mailtools.fn = {
 		Object.keys(mailtools.var.submodules).forEach(function (key) {
 			options[key] = [key, mailtools.var.submodules[key][core.var.selectedLanguage]];
 		});
-		core.fn.stdout('input', core.fn.insert.select(options, 'mailtoolsselection', 'mailtoolsselection', query, ' onchange="mailtools.function[this.options[this.selectedIndex].value+\'input\']()"') +
+		core.fn.stdout('input', core.fn.insert.select(options, 'mailtoolsselection', 'mailtoolsselection', query, ' onchange="mailtools.fn[this.options[this.selectedIndex].value+\'input\']()"') +
 			'<span class="inline" id="mailtoolgen"></span>');
 		if (value(query) !== '') eval('mailtools.fn.' + query + 'input()');
 		else core.fn.stdout('temp', core.fn.lang('useCaseDescription', 'mailtools'));
