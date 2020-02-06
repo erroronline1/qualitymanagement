@@ -23,29 +23,29 @@ timetable.api = {
 		}
 		if (found) {
 			queryString.shift();
-			display='<a href="javascript:core.fn.loadScript(\'modules/timetable.js\',\'timetable.function.init(\\\'' + queryString.join(' ') + '\\\')\')">' + core.var.modules.timetable.display[core.var.selectedLanguage] + (queryString.length>0 ? core.fn.lang('apiFound', 'timetable') + queryString.join(' '):'') + '</a>';
+			display='<a href="javascript:core.fn.loadScript(\'modules/timetable.js\',\'timetable.fn.init(\\\'' + queryString.join(' ') + '\\\')\')">' + core.var.modules.timetable.display[core.var.selectedLanguage] + (queryString.length>0 ? core.fn.lang('apiFound', 'timetable') + queryString.join(' '):'') + '</a>';
 			//add value and relevance
 			globalSearch.contribute('timetable', [display, 1]);
 		}
 		core.performance.stop('timetable.api.available(\'' + search + '\')');
 	},
 };
-timetable.function = {
+timetable.fn = {
 	search: function (query) {
 		query = query || el('timetablequery').value;
-		core.performance.start('timetable.function.input(\'' + value(query) + '\')'); //possible duplicate
+		core.performance.start('timetable.fn.input(\'' + value(query) + '\')'); //possible duplicate
 		if (value(query) !== '') {
 			//see https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/btoa
 			//core.fn.stdout('output', '<a href="'+timetable.var.path + window.btoa(unescape(encodeURIComponent(query.toLowerCase()))) + '.xlsm" target="wh">zur Tabelle von ' + query + '</a>');
-			core.fn.stdout('output', timetable.function.linkfile(query));
+			core.fn.stdout('output', timetable.fn.linkfile(query));
 		}
-		core.performance.stop('timetable.function.input(\'' + value(query) + '\')');
-		core.history.write(['timetable.function.init(\'\')']);
+		core.performance.stop('timetable.fn.input(\'' + value(query) + '\')');
+		core.history.write(['timetable.fn.init(\'\')']);
 	},
 	linkfile: function (name, favourite) {
-		var link='<a href="'+timetable.var.path + name.toLowerCase() + '.xlsm" onclick="timetable.function.favouriteHandler.set(\'' + timetable.function.favouriteHandler.prepare(name) + '\'); return;" target="_blank">' + core.fn.lang('linkTitle','timetable') + name + '</a> ';
+		var link='<a href="'+timetable.var.path + name.toLowerCase() + '.xlsm" onclick="timetable.fn.favouriteHandler.set(\'' + timetable.fn.favouriteHandler.prepare(name) + '\'); return;" target="_blank">' + core.fn.lang('linkTitle','timetable') + name + '</a> ';
 		if (value(favourite)==='') return link;
-		else return '<span class="singlefavouritehandler">' + link + core.fn.insert.icon('delete', false, false, 'onclick="timetable.function.favouriteHandler.set(\':' + timetable.function.favouriteHandler.prepare(name) + '\'); return;"') + '</span>';
+		else return '<span class="singlefavouritehandler">' + link + core.fn.insert.icon('delete', false, false, 'onclick="timetable.fn.favouriteHandler.set(\':' + timetable.fn.favouriteHandler.prepare(name) + '\'); return;"') + '</span>';
 	},
 	favouriteHandler: {
 		prepare: function (value) {
@@ -76,7 +76,7 @@ timetable.function = {
 				} else output += ',' + value + ',1';
 			} else output = value + ',1';
 			core.fn.setting.set('favouritetimetable', output);
-			core.fn.stdout('favourites', timetable.function.favouriteHandler.get());
+			core.fn.stdout('favourites', timetable.fn.favouriteHandler.get());
 		},
 		get: function () {
 			var output = core.fn.setting.get('favouritetimetable');
@@ -84,13 +84,13 @@ timetable.function = {
 
 				var tfav2 = output.split(',');
 				output = '<br />' + core.fn.lang('favouriteCaption', 'timetable') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
-					core.fn.insert.icon('delete', 'bigger', false, 'title="' + core.fn.lang('favouriteDeleteTitle', 'timetable') + '" onclick="timetable.function.favouriteHandler.reset(\'\')"') +
+					core.fn.insert.icon('delete', 'bigger', false, 'title="' + core.fn.lang('favouriteDeleteTitle', 'timetable') + '" onclick="timetable.fn.favouriteHandler.reset(\'\')"') +
 					'</span><br /><br />';
 				for (var person = 0; person < tfav2.length; person += 2) {
 					var favName=decodeURI(tfav2[person]).split(' ');
 					for (var name = 0; name < favName.length; name++){ favName[name]=favName[name][0].toUpperCase() + favName[name].slice(1);}
 					
-					output += timetable.function.linkfile(favName.join(' '), true) + '<br />';
+					output += timetable.fn.linkfile(favName.join(' '), true) + '<br />';
 				}
 			}
 			return output || '';
@@ -103,15 +103,15 @@ timetable.function = {
 	init: function (query) {
 		el('moduletimetable').checked = true; // highlight menu icon
 		core.fn.stdout('input',
-			'<form id="search" action="javascript:timetable.function.search();">' +
+			'<form id="search" action="javascript:timetable.fn.search();">' +
 			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.fn.lang('formInputPlaceholder', 'timetable') + '" id="timetablequery" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + '  />' +
-			'<span onclick="timetable.function.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
+			'<span onclick="timetable.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
 			'<input type="submit" id="name" value="' + core.fn.lang('formSubmit', 'timetable') + '" hidden="hidden" /> ' +
 			'</form>');
 		el('timetablequery').focus();
-		core.fn.stdout('temp', core.fn.lang('explanation', 'timetable') + '<br /><div id="favourites">' + timetable.function.favouriteHandler.get() + '</div>');
+		core.fn.stdout('temp', core.fn.lang('explanation', 'timetable') + '<br /><div id="favourites">' + timetable.fn.favouriteHandler.get() + '</div>');
 		core.fn.stdout('output','');
-		if (value(query) !=='') timetable.function.search(value(query));
-		core.performance.stop('timetable.function.init(\'' + value(query) + '\')');
+		if (value(query) !=='') timetable.fn.search(value(query));
+		core.performance.stop('timetable.fn.init(\'' + value(query) + '\')');
 	},
 };

@@ -599,7 +599,7 @@ function select_module() { //load module list and return the main menu
 			if (typeof core.var.modules[key] === 'object' && core.fn.setting.get('module_' + key) != 1) {
 				//create module-selector
 				opt = 'modules/' + key + '.js';
-				output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.fn.loadScript(\'' + opt + '\', \'' + key + '.function.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
+				output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.fn.loadScript(\'' + opt + '\', \'' + key + '.fn.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
 				slider.modules.push(key);
 			}
 		});

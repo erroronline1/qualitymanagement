@@ -18,11 +18,11 @@ inventoryControl: 'inventory.control@email.adr',
 		},
 		useCaseDescription: {
 			en: function () {
-				return (stocklist.function.search() ? 'There are currently ' + stocklist.function.search() + ' items listed. ' : '') +
+				return (stocklist.fn.search() ? 'There are currently ' + stocklist.fn.search() + ' items listed. ' : '') +
 					'These are the products that have permission to be ordered and used in production. Search for default items by &quot;manufacturer&quot and mess around with search terms.';
 			},
 			de: function () {
-				return (stocklist.function.search() ? 'Aktuell hat die Artikelliste ' + stocklist.function.search() + ' Einträge. ' : '') +
+				return (stocklist.fn.search() ? 'Aktuell hat die Artikelliste ' + stocklist.fn.search() + ' Einträge. ' : '') +
 					'An dieser Stelle könne alle zugelassenen Artikel eingesehen werden. Suche nach Standardeinträgen von &quot;Manufacturer&quot; und spiel mit Suchbegriffen.';
 			}
 		},

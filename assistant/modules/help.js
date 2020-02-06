@@ -21,7 +21,7 @@ help.api = {
 		if (typeof help_data !== 'undefined') {
 			var found = core.fn.smartSearch.lookup(search, help_data.content, true);
 			found.forEach(function (value) {
-				display = '<a href="javascript:core.fn.loadScript(\'modules/help.js\',\'help.function.init(\\\'' + help_data.content[value[0]][0] + '\\\')\')">' + help_data.content[value[0]][0] + '</a>';
+				display = '<a href="javascript:core.fn.loadScript(\'modules/help.js\',\'help.fn.init(\\\'' + help_data.content[value[0]][0] + '\\\')\')">' + help_data.content[value[0]][0] + '</a>';
 				//add value and relevance
 				globalSearch.contribute('help', [display, value[1]]);
 			});
@@ -29,10 +29,10 @@ help.api = {
 		core.performance.stop('help.api.processAfterImport(\'' + search + '\')');
 	}
 };
-help.function = {
+help.fn = {
 	search: function (query) {
 		query = query || el('helpquery').value;
-		core.performance.start('help.function.input(\'' + value(query) + '\')'); //possible duplicate
+		core.performance.start('help.fn.input(\'' + value(query) + '\')'); //possible duplicate
 		if (typeof help_data !== 'undefined') {
 			var list = '';
 			Object.keys(help_data.content).forEach(function (key) {
@@ -59,19 +59,19 @@ help.function = {
 				core.fn.stdout('output', list);
 			}
 		}
-		core.performance.stop('help.function.input(\'' + value(query) + '\')');
-		core.history.write(['help.function.init(\'' + value(query) + '\')']);
+		core.performance.stop('help.fn.input(\'' + value(query) + '\')');
+		core.history.write(['help.fn.init(\'' + value(query) + '\')']);
 	},
 	init: function (query) {
 		el('modulehelp').checked = true; // highlight menu icon
-		core.fn.loadScript(core.var.moduleDataDir + 'help.js', 'help.function.search(\'' + value(query) + '\')');
+		core.fn.loadScript(core.var.moduleDataDir + 'help.js', 'help.fn.search(\'' + value(query) + '\')');
 		core.fn.stdout('input',
-			'<form id="search" action="javascript:help.function.search();">' +
+			'<form id="search" action="javascript:help.fn.search();">' +
 			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.fn.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + '  />' +
-			'<span onclick="help.function.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
+			'<span onclick="help.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
 			'<input type="submit" id="artikelsuche" value="' + core.fn.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
 			'</form>');
 		el('helpquery').focus();
-		core.performance.stop('help.function.init(\'' + value(query) + '\')');
+		core.performance.stop('help.fn.init(\'' + value(query) + '\')');
 	},
 };

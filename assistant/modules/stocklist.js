@@ -30,7 +30,7 @@ stocklist.api = {
 			//	globalSearch.contribute('stocklist', display);
 			//});
 			if (found.length) {
-				display = '<a href="javascript:core.fn.loadScript(\'modules/stocklist.js\',\'stocklist.function.init(\\\'' + search + '\\\')\')">' + found.length + core.fn.lang('apiItemsFound', 'stocklist') + '</a>';
+				display = '<a href="javascript:core.fn.loadScript(\'modules/stocklist.js\',\'stocklist.fn.init(\\\'' + search + '\\\')\')">' + found.length + core.fn.lang('apiItemsFound', 'stocklist') + '</a>';
 				//add value and relevance
 				globalSearch.contribute('stocklist', [display, 1]);
 			}
@@ -38,7 +38,7 @@ stocklist.api = {
 		}
 	}
 };
-stocklist.function = {
+stocklist.fn = {
 	translate: {
 		returnselect: function () {
 			var output = new Object();
@@ -50,7 +50,7 @@ stocklist.function = {
 	},
 	search: function (query) {
 		query = query || el('itemname').value;
-		core.performance.start('stocklist.function.input(\'' + value(query) + '\')'); //possible duplicate
+		core.performance.start('stocklist.fn.input(\'' + value(query) + '\')'); //possible duplicate
 		var list = '';
 		if (typeof stocklist_data !== 'undefined') {
 			if (value(query) !== '') {
@@ -100,22 +100,22 @@ stocklist.function = {
 				return stocklist_data.content.length - 1;
 			}
 		}
-		core.performance.stop('stocklist.function.input(\'' + value(query) + '\')');
-		core.history.write(['stocklist.function.init(\'' + value(query) + '\')']);
+		core.performance.stop('stocklist.fn.input(\'' + value(query) + '\')');
+		core.history.write(['stocklist.fn.init(\'' + value(query) + '\')']);
 	},
 	init: function (query) {
 		el('modulestocklist').checked = true; // highlight menu icon
-		core.fn.loadScript(core.var.moduleDataDir + 'stocklist.js', 'stocklist.function.search(\'' + value(query) + '\')');
+		core.fn.loadScript(core.var.moduleDataDir + 'stocklist.js', 'stocklist.fn.search(\'' + value(query) + '\')');
 		core.fn.stdout('input',
-			'<form id="search" action="javascript:stocklist.function.search();">' +
+			'<form id="search" action="javascript:stocklist.fn.search();">' +
 			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.fn.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +
-			'<span onclick="stocklist.function.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
-			core.fn.insert.select(stocklist.function.translate.returnselect(), 'stockfilter', 'stockfilter', (core.fn.setting.get('stockfilter') || 'all'), 'onchange="core.fn.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.function.search();"') +
+			'<span onclick="stocklist.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
+			core.fn.insert.select(stocklist.fn.translate.returnselect(), 'stockfilter', 'stockfilter', (core.fn.setting.get('stockfilter') || 'all'), 'onchange="core.fn.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.fn.search();"') +
 			'<input type="submit" id="submit" value="' + core.fn.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
 			core.fn.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.google.de/#q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.fn.lang('webSearchTitle', 'stocklist') + '"') +
 			'</form>');
 		el('itemname').focus();
 		core.fn.stdout('temp', core.fn.lang('useCaseDescription', 'stocklist'));
-		core.performance.stop('stocklist.function.init(\'' + value(query) + '\')');
+		core.performance.stop('stocklist.fn.init(\'' + value(query) + '\')');
 	},
 };

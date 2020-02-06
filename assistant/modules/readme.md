@@ -74,7 +74,7 @@ be aware of these rules to handle your modules properly. these rules apply to su
 [error on line 1](http://erroronline.one)
 
 ## module structure
-each module consists of an object with properties and methods. the initiating method should be the callback function of module loading with `core.fn.loadScript('modules/modulename.js','modulename.function.init()')`. the overall structure of the modules data processing looks like this:
+each module consists of an object with properties and methods. the initiating method should be the callback function of module loading with `core.fn.loadScript('modules/modulename.js','modulename.fn.init()')`. the overall structure of the modules data processing looks like this:
 
 ```Javascript
 if (typeof modulename == 'undefined') var modulename={};
@@ -96,25 +96,25 @@ modulename.function= { //module behaviour
 			el('module{modulename}').checked=true; 
 		el('module{modulename}').checked=true; 
 		//import data file if applicable, return initial module content, process query from inter-module communication or global search
-		core.fn.loadScript(core.var.moduleDataDir + 'modulename.js', 'modulename.function.someFunction(\'' + value(query) + '\')');
+		core.fn.loadScript(core.var.moduleDataDir + 'modulename.js', 'modulename.fn.someFunction(\'' + value(query) + '\')');
 		//prepare your modules interface
 		core.fn.stdout('input', 'your menu');
 		core.fn.stdout('temp', 'your temporary output or additional forms');
 		core.fn.stdout('output', 'your output');
 		//stop performance monitoring that has been started by module calling and write history
-		core.performance.stop('modulename.function.init(\'' + value(query) + '\')');
-		core.history.write(['modulename.function.init(\'' + value(query) + '\')']);
+		core.performance.stop('modulename.fn.init(\'' + value(query) + '\')');
+		core.history.write(['modulename.fn.init(\'' + value(query) + '\')']);
 	},
 	someFunction: function(query){
 		//optinal performance monitoring for each function
-		core.performance.start('modulename.function.someFunction(\'' + value(query) + '\')');
+		core.performance.start('modulename.fn.someFunction(\'' + value(query) + '\')');
 		
 		//////////////////////////////////////////////////////
 		//do your magic here
 		//////////////////////////////////////////////////////
 
-		core.performance.stop('modulename.function.someFunction(\'' + value(query) + '\')');
-		core.history.write(['modulename.function.init(\'' + value(query) + '\')']);
+		core.performance.stop('modulename.fn.someFunction(\'' + value(query) + '\')');
+		core.history.write(['modulename.fn.init(\'' + value(query) + '\')']);
 	}
 };
 ```

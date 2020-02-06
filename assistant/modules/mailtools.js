@@ -23,24 +23,24 @@ mailtools.api = {
 		});
 		var found = core.fn.smartSearch.lookup(search, searchobject, true);
 		found.forEach(function (value) {
-			display = '<a href="javascript:core.fn.loadScript(\'modules/mailtools.js\',\'mailtools.function.init(\\\'' + searchobject[value[0]][1] + '\\\')\')">' + searchobject[value[0]][0] + '</a>';
+			display = '<a href="javascript:core.fn.loadScript(\'modules/mailtools.js\',\'mailtools.fn.init(\\\'' + searchobject[value[0]][1] + '\\\')\')">' + searchobject[value[0]][0] + '</a>';
 			//add value and relevance
 			globalSearch.contribute('mailtools', [display, value[1]]);
 		});
 		core.performance.stop('mailtools.api.available(\'' + search + '\')');
 	},
 };
-mailtools.function = {
+mailtools.fn = {
 	serialmailinput: function () {
 		core.fn.stdout('mailtoolgen', core.fn.insert.icon('refresh', 'bigger', false,
-			'onclick="mailtools.function.serialmailgen()" title="' + core.fn.lang('buttonGenTitle', 'mailtools') + '"'));
-		core.fn.stdout('temp', '<input type="button" value="' + core.fn.lang('buttonTestCaption', 'mailtools') + '" title="' + core.fn.lang('buttonTestTitle', 'mailtools') + '" onclick="mailtools.function.serialtest()" /><br /><br />' +
+			'onclick="mailtools.fn.serialmailgen()" title="' + core.fn.lang('buttonGenTitle', 'mailtools') + '"'));
+		core.fn.stdout('temp', '<input type="button" value="' + core.fn.lang('buttonTestCaption', 'mailtools') + '" title="' + core.fn.lang('buttonTestTitle', 'mailtools') + '" onclick="mailtools.fn.serialtest()" /><br /><br />' +
 			core.fn.lang('formRecipientListCaption', 'mailtools') + ':<br /><textarea id="names" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.fn.lang('formRecipientListPlaceholder', 'mailtools') + '"></textarea> ' +
 			'<textarea id="adresses" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.fn.lang('formRecipientMailPlaceholder', 'mailtools') + '"></textarea><br />' +
 			core.fn.lang('formContentCaption', 'mailtools') + ':<br /><input type="text" style="width:98%" id="subject" placeholder="' + core.fn.lang('formSubjectPlaceholder', 'mailtools') + '"><br />' +
 			'<textarea id="body" rows="10" style="width:98%;" placeholder="' + core.fn.lang('formBodyPlaceholder', 'mailtools') + '"></textarea>');
 			core.fn.stdout('output', '');
-		core.history.write(['mailtools.function.init(\'serialmail\')']);
+		core.history.write(['mailtools.fn.init(\'serialmail\')']);
 	},
 	serialtest: function () {
 		el('names').value = core.fn.lang('sampleNameValue', 'mailtools');
@@ -74,16 +74,16 @@ mailtools.function = {
 			(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.fn.insert.icon('outlook') + core.fn.lang('openOutlook', 'mailtools') + '</a>' : ''));
 		core.fn.stdout('output', '');
 		mailtools.var.disableOutputSelect = false;
-		core.history.write(['mailtools.function.init(\'signature\')']);
+		core.history.write(['mailtools.fn.init(\'signature\')']);
 	},
 	notavailableinput: function () {
 		core.fn.stdout('mailtoolgen', core.fn.insert.icon('refresh', 'bigger', false,
-			'onclick="mailtools.function.notavailablegen()" title="' + core.fn.lang('buttonGenTitle', 'mailtools') + '"'));
+			'onclick="mailtools.fn.notavailablegen()" title="' + core.fn.lang('buttonGenTitle', 'mailtools') + '"'));
 		core.fn.stdout('temp', core.fn.lang('notavailableFrom', 'mailtools') + ':<br /><input type="date" id="notfrom" placeholder="DD.MM.YYYY" /><br /><br />' +
 			core.fn.lang('notavailableTo', 'mailtools') + ':<br /><input type="date" id="notto" placeholder="DD.MM.YYYY" />' +
 			(core.var.outlookWebUrl ? '<br /><br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.fn.insert.icon('outlook') + core.fn.lang('openOutlook', 'mailtools') + '</a>' : ''));
 		core.fn.stdout('output', '');
-		core.history.write(['mailtools.function.init(\'notavailable\')']);
+		core.history.write(['mailtools.fn.init(\'notavailable\')']);
 	},
 	notavailablegen: function () {
 		//gets date inputs and sorts them to dd.mm.yyyy
@@ -109,10 +109,10 @@ mailtools.function = {
 		});
 		core.fn.stdout('input', core.fn.insert.select(options, 'mailtoolsselection', 'mailtoolsselection', query, ' onchange="mailtools.function[this.options[this.selectedIndex].value+\'input\']()"') +
 			'<span class="inline" id="mailtoolgen"></span>');
-		if (value(query) !== '') eval('mailtools.function.' + query + 'input()');
+		if (value(query) !== '') eval('mailtools.fn.' + query + 'input()');
 		else core.fn.stdout('temp', core.fn.lang('useCaseDescription', 'mailtools'));
-		core.performance.stop('mailtools.function.init(\'' + value(query) + '\')');
-		core.history.write(['mailtools.function.init(\'' + value(query) + '\')']);
+		core.performance.stop('mailtools.fn.init(\'' + value(query) + '\')');
+		core.history.write(['mailtools.fn.init(\'' + value(query) + '\')']);
 	},
 
 };
