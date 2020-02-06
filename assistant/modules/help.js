@@ -12,16 +12,16 @@ if (typeof help === 'undefined') var help = {};
 
 help.api = {
 	available: function (search) {
-		core.function.loadScript(core.var.moduleDataDir +'help.js',
+		core.fn.loadScript(core.var.moduleDataDir +'help.js',
 			'help.api.processAfterImport(\'' + search + '\')');
 		core.performance.stop('help.api.available(\'' + search + '\')');
 	},
 	processAfterImport: function (search) {
 		var display;
 		if (typeof help_data !== 'undefined') {
-			var found = core.function.smartSearch.lookup(search, help_data.content, true);
+			var found = core.fn.smartSearch.lookup(search, help_data.content, true);
 			found.forEach(function (value) {
-				display = '<a href="javascript:core.function.loadScript(\'modules/help.js\',\'help.function.init(\\\'' + help_data.content[value[0]][0] + '\\\')\')">' + help_data.content[value[0]][0] + '</a>';
+				display = '<a href="javascript:core.fn.loadScript(\'modules/help.js\',\'help.function.init(\\\'' + help_data.content[value[0]][0] + '\\\')\')">' + help_data.content[value[0]][0] + '</a>';
 				//add value and relevance
 				globalSearch.contribute('help', [display, value[1]]);
 			});
@@ -39,24 +39,24 @@ help.function = {
 				if (help_data.content[key][0]) list += '<a style="cursor:pointer" onclick="el(\'helpquery\').value=\'' + help_data.content[key][0] + '\'; el(\'search\').submit();">' + help_data.content[key][0] + '</a><br />';
 				else list += '<br />';
 			});
-			core.function.stdout('temp', '<span class="highlight">' + core.function.lang('tableOfContents', 'help') + ':</span><br />' + list);
+			core.fn.stdout('temp', '<span class="highlight">' + core.fn.lang('tableOfContents', 'help') + ':</span><br />' + list);
 			if (value(query) !== '') {
-				var found = core.function.smartSearch.lookup(query, help_data.content, true);
+				var found = core.fn.smartSearch.lookup(query, help_data.content, true);
 
 				// check if search matches item-list
 				if (found.length > 0) {
 					list = '';
-					core.function.smartSearch.relevance.init();
+					core.fn.smartSearch.relevance.init();
 					found.forEach(function (value) {
-						list += core.function.smartSearch.relevance.nextstep(value[1]);
-						var tresult = '<div class="items items71" onclick="core.function.toggleHeight(this)">' + core.function.insert.expand() +
+						list += core.fn.smartSearch.relevance.nextstep(value[1]);
+						var tresult = '<div class="items items71" onclick="core.fn.toggleHeight(this)">' + core.fn.insert.expand() +
 							'<span class="highlight">' + help_data.content[value[0]][0] + ':</span> ' + help_data.content[value[0]][1];
 
 						list += tresult +
 							'</div>';
 					});
-				} else list = core.function.lang('errorNothingFound', 'help', query);
-				core.function.stdout('output', list);
+				} else list = core.fn.lang('errorNothingFound', 'help', query);
+				core.fn.stdout('output', list);
 			}
 		}
 		core.performance.stop('help.function.input(\'' + value(query) + '\')');
@@ -64,12 +64,12 @@ help.function = {
 	},
 	init: function (query) {
 		el('modulehelp').checked = true; // highlight menu icon
-		core.function.loadScript(core.var.moduleDataDir + 'help.js', 'help.function.search(\'' + value(query) + '\')');
-		core.function.stdout('input',
+		core.fn.loadScript(core.var.moduleDataDir + 'help.js', 'help.function.search(\'' + value(query) + '\')');
+		core.fn.stdout('input',
 			'<form id="search" action="javascript:help.function.search();">' +
-			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.function.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + '  />' +
-			'<span onclick="help.function.search();" class="search">' + core.function.insert.icon('search') + '</span> ' +
-			'<input type="submit" id="artikelsuche" value="' + core.function.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
+			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.fn.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + '  />' +
+			'<span onclick="help.function.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
+			'<input type="submit" id="artikelsuche" value="' + core.fn.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
 			'</form>');
 		el('helpquery').focus();
 		core.performance.stop('help.function.init(\'' + value(query) + '\')');

@@ -4,10 +4,10 @@ stocklist.var = {
 	filter: function(){ //filters according to stocklist.xls
 		//id:[select value, select text, filter for smartsearch]
 		return {
-			all: ['all', core.function.lang('filterAll', 'stocklist'), 'true'],
-			conf: ['conf', core.function.lang('filterReadymade', 'stocklist'), 'stocklist_data.content[key][6]==\'yes\''],
-			nconf: ['nconf', core.function.lang('filterNoReadymade', 'stocklist'), 'stocklist_data.content[key][6]==\'no\''],
-			store: ['store', core.function.lang('filterStock', 'stocklist'), 'stocklist_data.content[key][7]!=\'no\''],
+			all: ['all', core.fn.lang('filterAll', 'stocklist'), 'true'],
+			conf: ['conf', core.fn.lang('filterReadymade', 'stocklist'), 'stocklist_data.content[key][6]==\'yes\''],
+			nconf: ['nconf', core.fn.lang('filterNoReadymade', 'stocklist'), 'stocklist_data.content[key][6]==\'no\''],
+			store: ['store', core.fn.lang('filterStock', 'stocklist'), 'stocklist_data.content[key][7]!=\'no\''],
 		};
 	},
 inventoryControl: 'inventory.control@email.adr',

@@ -16,7 +16,7 @@ correspondence.api = {
 		//loop through registered submodules, load them individually and let processAfterImport add smartSearch-results to globalSearch
 		Object.keys(correspondence.var.submodules).forEach(function (key) {
 			if (correspondence.var.submodules[key][0] !== '') {
-				core.function.loadScript(core.var.moduleDataDir + correspondence.var.submodules[key][0] + '.js',
+				core.fn.loadScript(core.var.moduleDataDir + correspondence.var.submodules[key][0] + '.js',
 					'correspondence.api.processAfterImport(\'' + search + '\', \'' + correspondence.var.submodules[key][0] + '\', \'' + correspondence.var.submodules[key][0] + '_data\')');
 			}
 		});
@@ -29,9 +29,9 @@ correspondence.api = {
 		Object.keys(object).forEach(function (key) {
 			searchobject.push([object[key]['title'], key]);
 		});
-		var found = core.function.smartSearch.lookup(search, searchobject, true);
+		var found = core.fn.smartSearch.lookup(search, searchobject, true);
 		found.forEach(function (value) {
-			display = '<a href="javascript:core.function.loadScript(\'modules/correspondence.js\',\'correspondence.function.init(\\\'' + submodule + '|' + searchobject[value[0]][1] + '\\\')\')">' + searchobject[value[0]][0] + '</a>';
+			display = '<a href="javascript:core.fn.loadScript(\'modules/correspondence.js\',\'correspondence.function.init(\\\'' + submodule + '|' + searchobject[value[0]][1] + '\\\')\')">' + searchobject[value[0]][0] + '</a>';
 			//add value and relevance
 			globalSearch.contribute('correspondence', [display, value[1]]);
 		});
@@ -61,18 +61,18 @@ correspondence.function = {
 			if (el('thirdperson').checked) index = 1;
 			var output = '';
 			Object.keys(contents).forEach(function (value) {
-				output += contents[value][core.function.languageSynthesis.outputLanguage()][index].replace(/\$(\w+?)\$/ig, function (match, group1) {
-					return core.function.languageSynthesis.output(group1)
+				output += contents[value][core.fn.languageSynthesis.outputLanguage()][index].replace(/\$(\w+?)\$/ig, function (match, group1) {
+					return core.fn.languageSynthesis.output(group1)
 				});
 				//legacy code for opt-out of output-blocks
-				//el('temp').innerHTML+=core.function.insert.checkbox(output.replace(/<br \/>/g,''), 'c'+value, checkbox[value]);
+				//el('temp').innerHTML+=core.fn.insert.checkbox(output.replace(/<br \/>/g,''), 'c'+value, checkbox[value]);
 				//el('output').innerHTML+=(checkbox[value]==1?output+'<br />':'');
 				output += '<br />';
 			});
-			core.function.stdout('output', output);
-			el('mailto').href = 'mailto:?body=' + core.function.escapeHTML(el('output').innerHTML, true);
+			core.fn.stdout('output', output);
+			el('mailto').href = 'mailto:?body=' + core.fn.escapeHTML(el('output').innerHTML, true);
 
-		} else core.function.popup(core.function.lang('errorSelectModules', 'correspondence'));
+		} else core.fn.popup(core.fn.lang('errorSelectModules', 'correspondence'));
 		core.history.write(['correspondence.function.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
 	},
 
@@ -82,45 +82,45 @@ correspondence.function = {
 			Object.keys(correspondence.var.selectedObject()).forEach(function (key) {
 				sel[key] = [key, correspondence.var.selectedObject()[key].title];
 			});
-			var output = core.function.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.function.gen()"') +
+			var output = core.fn.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.function.gen()"') +
 				'<br /><br />' +
-				'<input type="text" placeholder="' + core.function.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.function.gen()" /> ' + core.function.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.function.lang('webSearchTitle', 'correspondence') + '"') + '<br /><br />' +
+				'<input type="text" placeholder="' + core.fn.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.function.gen()" /> ' + core.fn.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.fn.lang('webSearchTitle', 'correspondence') + '"') + '<br /><br />' +
 				'<div class="inline">' +
-				core.function.insert.radio(core.function.lang('inputOptionMale', 'correspondence'), 'sex', 'male', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
-				core.function.insert.radio(core.function.lang('inputOptionFemale', 'correspondence'), 'sex', 'female', false, 'onchange="correspondence.function.gen()"') + ' ' +
+				core.fn.insert.radio(core.fn.lang('inputOptionMale', 'correspondence'), 'sex', 'male', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
+				core.fn.insert.radio(core.fn.lang('inputOptionFemale', 'correspondence'), 'sex', 'female', false, 'onchange="correspondence.function.gen()"') + ' ' +
 				'</div><div class="inline">' +
-				core.function.insert.radio(core.function.lang('inputOptionFirstperson', 'correspondence'), 'person', 'firstperson', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
-				core.function.insert.radio(core.function.lang('inputOptionThirdperson', 'correspondence'), 'person', 'thirdperson', false, 'onchange="correspondence.function.gen()"') + ' ' +
+				core.fn.insert.radio(core.fn.lang('inputOptionFirstperson', 'correspondence'), 'person', 'firstperson', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
+				core.fn.insert.radio(core.fn.lang('inputOptionThirdperson', 'correspondence'), 'person', 'thirdperson', false, 'onchange="correspondence.function.gen()"') + ' ' +
 				'</div><div class="inline">' +
-				core.function.languageSelection('onchange="correspondence.function.gen()"').join('<br />') +
+				core.fn.languageSelection('onchange="correspondence.function.gen()"').join('<br />') +
 				'</div><div class="inline">' +
-				core.function.insert.radio(core.function.lang('inputOptionFormal', 'correspondence'), 'age', 'adult', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
-				core.function.insert.radio(core.function.lang('inputOptionInformal', 'correspondence'), 'age', 'child', false, 'onchange="correspondence.function.gen()"') + '' +
+				core.fn.insert.radio(core.fn.lang('inputOptionFormal', 'correspondence'), 'age', 'adult', 1, 'onchange="correspondence.function.gen()"') + '<br />' +
+				core.fn.insert.radio(core.fn.lang('inputOptionInformal', 'correspondence'), 'age', 'child', false, 'onchange="correspondence.function.gen()"') + '' +
 				'</div>' +
 				(typeof additionalOptions !== "undefined" && additionalOptions ? '<br />' + additionalOptions : '') +
-				(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '" target="_blank">' + core.function.insert.icon('word') + core.function.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.function.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
-				'<br /><br /><a id="mailto" href="mailto:">' + core.function.insert.icon('email') + core.function.lang('openMailApp', 'correspondence') + '</a>' +
-				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.function.insert.icon('outlook') + core.function.lang('openOutlook', 'correspondence') + '</a>' : '');
-			core.function.stdout('temp', output);
+				(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '" target="_blank">' + core.fn.insert.icon('word') + core.fn.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.fn.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
+				'<br /><br /><a id="mailto" href="mailto:">' + core.fn.insert.icon('email') + core.fn.lang('openMailApp', 'correspondence') + '</a>' +
+				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.fn.insert.icon('outlook') + core.fn.lang('openOutlook', 'correspondence') + '</a>' : '');
+			core.fn.stdout('temp', output);
 			if (value(query) !== '') correspondence.function.gen(query);
-		} else core.function.popup(core.function.lang('errorSelectModules', 'correspondence'));
+		} else core.fn.popup(core.fn.lang('errorSelectModules', 'correspondence'));
 		core.performance.stop('correspondence.function.start(\'' + value(query) + '\')');
 		core.history.write(['correspondence.function.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
 	},
 
 	init: function (query) {
 		el('modulecorrespondence').checked = true; // highlight menu icon
-		correspondence.var.submodules.select[1] = core.function.lang('inputLoadSubmoduleDefault', 'correspondence');
+		correspondence.var.submodules.select[1] = core.fn.lang('inputLoadSubmoduleDefault', 'correspondence');
 		if (value(query) !== '') {
 			preset = query.split('|');
 		}
-		core.function.stdout('input', core.function.insert.select(correspondence.var.submodules,
-				'submodule', 'submodule', (typeof preset !== 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.function.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
-			core.function.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.function.gen()" title="' + core.function.lang('buttonGenTitle', 'correspondence') + '"'));
-		core.function.stdout('temp', core.function.lang('useCaseDescription', 'correspondence'));
+		core.fn.stdout('input', core.fn.insert.select(correspondence.var.submodules,
+				'submodule', 'submodule', (typeof preset !== 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.fn.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.function.start()\')"') +
+			core.fn.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.function.gen()" title="' + core.fn.lang('buttonGenTitle', 'correspondence') + '"'));
+		core.fn.stdout('temp', core.fn.lang('useCaseDescription', 'correspondence'));
 		if (value(query) !== '') {
 			correspondence.var['presetModule'] = preset[0];
-			core.function.loadScript(core.var.moduleDataDir + preset[0] + '.js', 'correspondence.function.start(\'' + preset[1] + '\')');
+			core.fn.loadScript(core.var.moduleDataDir + preset[0] + '.js', 'correspondence.function.start(\'' + preset[1] + '\')');
 		}
 		core.performance.stop('correspondence.function.init(\'' + value(query) + '\')');
 		core.history.write(['correspondence.function.init(\'' + value(query) + '\')']);

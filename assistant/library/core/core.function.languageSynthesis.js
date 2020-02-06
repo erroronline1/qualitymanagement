@@ -1,5 +1,5 @@
 //language builder concerning $dummies$ in js-data-files. can be extended in external js-data-files (recommended) or module-scripts
-core.function.languageSynthesis = {
+core.fn.languageSynthesis = {
 	// case:{	language:[ child male, child female, adult male, adult female]}
 	// this is awkward in english but makes the most sense in german. i don't know about other languages.
 	// sometimes this method requires special phrasing, but most of the time it gets the job well done.

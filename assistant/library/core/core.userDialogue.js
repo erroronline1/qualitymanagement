@@ -8,14 +8,14 @@ const heart=[style,	'color: #bf616a'].join(';');
 const link=[style,	'color: #a3be8c'].join(';');
 if (!isIE()) console.log('%c      coded with %c♥️ %cby error on line 1 - %c http://erroronline.one      ', main, heart, main, link);
 else console.log('coded with ♥️ by error on line 1 - http://erroronline.one');
-var developerAlert='Welcome to the console output of the ' + core.function.lang('title') + '!\n'
+var developerAlert='Welcome to the console output of the ' + core.fn.lang('title') + '!\n'
 					+ 'Please be aware that displaying the console results in a significant decrease of speed.\n';
 console.warn(developerAlert);
 
 var randomTip = {
 	show: function () {
 		// 	show random tip on startup
-		return '<span style="float:right" onclick="core.function.stdout(\'randomTip\', randomTip.show());">' + core.function.insert.icon('refresh') + '</span>' +
+		return '<span style="float:right" onclick="core.fn.stdout(\'randomTip\', randomTip.show());">' + core.fn.insert.icon('refresh') + '</span>' +
 			'<br /><span class="highlight">' + this.list[0][core.var.selectedLanguage] + ':</span>' +
 			'<br />' + this.list[Math.floor(Math.random() * (this.list.length - 1) + 1)][core.var.selectedLanguage] +
 			'';
@@ -131,11 +131,11 @@ var updateTracker = {
 	},
 	alert: function () {
 		//	display latest update hint on startup as long as it is not disabled
-		if (core.function.setting.get('settingStarthinweis' + this.latestMajorUpdate()) === false) {
+		if (core.fn.setting.get('settingStarthinweis' + this.latestMajorUpdate()) === false) {
 			text = this.list[this.latestMajorUpdate()][1] + '<br /><br />' +
-				core.function.insert.checkbox(core.function.lang('settingNotificationSelector'), 'sstarthinweis', (core.function.setting.get('settingStarthinweis' + this.latestMajorUpdate()) !== 1), 'onchange="core.function.setting.set(\'settingStarthinweis' + this.latestMajorUpdate() + '\',1)"') +
-				'<br /><small>' + core.function.lang('settingNotificationHint') + '</small>';
-			core.function.popup(text);
+				core.fn.insert.checkbox(core.fn.lang('settingNotificationSelector'), 'sstarthinweis', (core.fn.setting.get('settingStarthinweis' + this.latestMajorUpdate()) !== 1), 'onchange="core.fn.setting.set(\'settingStarthinweis' + this.latestMajorUpdate() + '\',1)"') +
+				'<br /><small>' + core.fn.lang('settingNotificationHint') + '</small>';
+			core.fn.popup(text);
 		}
 	},
 	list: [

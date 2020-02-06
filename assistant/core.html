@@ -21,7 +21,7 @@
 		//////////////////////////////////////////////////////////////
 	</script>
 	<script src="library/core/core.var.js"></script>
-	<script src="library/core/core.function.languageSynthesis.js"></script>
+	<script src="library/core/core.fn.languageSynthesis.js"></script>
 	<script src="library/core/core.userDialogue.js"></script>
 
 	<link href="core/core.css" rel="stylesheet" type="text/css" />
@@ -33,23 +33,23 @@
 	<header>
 		<script>
 			document.write('<nav class="home">' +
-				core.function.insert.icon('home', 'bigger', false,
-					'title="' + core.function.lang('homeMenuEntry') + '" onclick="slider.slide(\'null\'); core.function.init()"') +
-				core.function.insert.icon('back', 'bigger inactiveicon', 'titlebackbutton',
-					'title="' + core.function.lang('homeMenuBack') + '" onclick="core.history.go(\'back\')"') +
-				core.function.insert.icon('forth', 'bigger inactiveicon', 'titleforthbutton',
-					'title="' + core.function.lang('homeMenuForth') + '" onclick="core.history.go(\'forth\')"') +
-				core.function.insert.icon('refresh', 'bigger', false,
-					'title="' + core.function.lang('homeMenuRestart') + '" onclick="location.reload()"') +
+				core.fn.insert.icon('home', 'bigger', false,
+					'title="' + core.fn.lang('homeMenuEntry') + '" onclick="slider.slide(\'null\'); core.fn.init()"') +
+				core.fn.insert.icon('back', 'bigger inactiveicon', 'titlebackbutton',
+					'title="' + core.fn.lang('homeMenuBack') + '" onclick="core.history.go(\'back\')"') +
+				core.fn.insert.icon('forth', 'bigger inactiveicon', 'titleforthbutton',
+					'title="' + core.fn.lang('homeMenuForth') + '" onclick="core.history.go(\'forth\')"') +
+				core.fn.insert.icon('refresh', 'bigger', false,
+					'title="' + core.fn.lang('homeMenuRestart') + '" onclick="location.reload()"') +
 				'</nav>');
 			document.write('<article id="input"></article>');
 			document.write('<aside class="setting">' +
-				core.function.insert.icon('feedbackrequest', 'bigger', false,
-					'title="' + core.function.lang('homeMenuFeedbackRequest') +
+				core.fn.insert.icon('feedbackrequest', 'bigger', false,
+					'title="' + core.fn.lang('homeMenuFeedbackRequest') +
 					'" onclick="var win = window.open(\'mailto:\' + core.var.adminMail + \'?subject=\' + document.title, \'emailWindow\'); if (win && win.open && !win.closed) win.close(); return;"') +
-				core.function.insert.icon('settings', 'bigger', false,
-					'title="' + core.function.lang('settingMenuEntry') +
-					'" onclick="core.function.popup(core.function.setting.setup()); return;"') +
+				core.fn.insert.icon('settings', 'bigger', false,
+					'title="' + core.fn.lang('settingMenuEntry') +
+					'" onclick="core.fn.popup(core.fn.setting.setup()); return;"') +
 				'</aside>');
 		</script>
 	</header>
@@ -58,7 +58,7 @@
 		<nav id="menu">
 			<span id="title">
 				<script>
-					document.write(core.var.logo + '<div style="display:inline-block">' + core.function.lang('title') +
+					document.write(core.var.logo + '<div style="display:inline-block">' + core.fn.lang('title') +
 						'&nbsp;</div>');
 				</script>
 			</span><br /><br />
@@ -78,14 +78,14 @@
 
 	<script>
 		select_module();
-		document.title = core.function.lang('title');
+		document.title = core.fn.lang('title');
 		//load settings or defaults
-		var fontsize = document.body.style.fontSize = ((core.function.setting.get('settingFontsize') || 0) / 10 + 1) + 'em';
-		el('colortheme').href = 'core/' + ((core.function.setting.get('settingTheme') in core.var.themes ? core.function
+		var fontsize = document.body.style.fontSize = ((core.fn.setting.get('settingFontsize') || 0) / 10 + 1) + 'em';
+		el('colortheme').href = 'core/' + ((core.fn.setting.get('settingTheme') in core.var.themes ? core.fn
 			.setting.get('settingTheme') : 'default') || 'default') + '.css';
-		core.function.setting.get('settingSmallmenu') && el('menu').classList.add('small') && el('menuwidth').classList.add(
+		core.fn.setting.get('settingSmallmenu') && el('menu').classList.add('small') && el('menuwidth').classList.add(
 			'small');
-		core.function.init();
+		core.fn.init();
 		updateTracker.alert();
 	</script>
 </body>

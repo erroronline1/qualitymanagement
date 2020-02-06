@@ -44,10 +44,10 @@ documentlookup.var = {
 		},
 		errorNothingFound: {
 			en: function (query) {
-				return 'Query for document searched by <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.function.setting.get('settingFuzzySearch') ? '' : 'or fuzzy-search-setting ') + ', look for parts of query, in another document group or within record documents.  Please adhere to mimimum 3 character length.'
+				return 'Query for document searched by <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'or fuzzy-search-setting ') + ', look for parts of query, in another document group or within record documents.  Please adhere to mimimum 3 character length.'
 			},
 			de: function (query) {
-				return 'Es konnte kein Dokument mit dem Begriff <span class="highlight">' + query + '</span> gefunden werden. Bitte eventuell Schreibweise ' + (core.function.setting.get('settingFuzzySearch') ? '' : 'oder Fuzzy-Search-Einstellung ') + 'überprüfen, nach Wortteilen, in einer anderen Dokumengruppe oder bei den Nachweisdokumenten suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
+				return 'Es konnte kein Dokument mit dem Begriff <span class="highlight">' + query + '</span> gefunden werden. Bitte eventuell Schreibweise ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'oder Fuzzy-Search-Einstellung ') + 'überprüfen, nach Wortteilen, in einer anderen Dokumengruppe oder bei den Nachweisdokumenten suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
 			},
 		},
 	},
@@ -69,7 +69,7 @@ documentlookup.var = {
 	defaultFavourites:	'Protocol,10,' +
 						'AttendanceList,5,',
 	selectedModule: function () {
-		return (core.function.setting.get('lookup_bundle') || 'documentlookup_int');
+		return (core.fn.setting.get('lookup_bundle') || 'documentlookup_int');
 	},
 	selectedObject: function () {
 		return eval(documentlookup.var.selectedModule() + '_data');

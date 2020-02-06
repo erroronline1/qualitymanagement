@@ -24,12 +24,12 @@ var svgClassList = { //classList.add and *.remove not supported for svg in ie, t
 
 if (typeof core === 'undefined') var core = {};
 
-core.function = {
+core.fn = {
 	stdout: function(where, what){ //handles output, thus is suitable for unit-testing and debugging.
 		//can set array of where to same what, strings are converted to array automatically, 'console' is reserved
 		if (typeof where === 'string') where=[where];
 		where.forEach(function(w){
-			if (core.function.setting.get('settingOutputMonitor') || w==='console'){
+			if (core.fn.setting.get('settingOutputMonitor') || w==='console'){
 				var group= w + ' from ' + core.var.currentScope;
 				console.groupCollapsed(group);
 				console.log(what);
@@ -39,16 +39,16 @@ core.function = {
 		});
 	},
 	popup: function (text) { //toggle notification popup
-		otext = '<span style="display:block; width:100%; text-align:right;">' + core.function.insert.icon('closepopup', 'bigger', false, 'title="' + core.function.lang('popupCloseButton') + '" onclick="core.function.popup()"') + '</span>' + text;
+		otext = '<span style="display:block; width:100%; text-align:right;">' + core.fn.insert.icon('closepopup', 'bigger', false, 'title="' + core.fn.lang('popupCloseButton') + '" onclick="core.fn.popup()"') + '</span>' + text;
 		if (el('popup').style.opacity == '1' && typeof text === 'undefined') {
 			el('popup').style.opacity = '0';
 			el('popuptext').style.right = '-100vw';
 			setTimeout(function () {
 				el('popup').style.display = 'none';
-				core.function.stdout('popuptext', otext);
+				core.fn.stdout('popuptext', otext);
 			}, 100);
 		} else {
-			core.function.stdout('popuptext', otext);
+			core.fn.stdout('popuptext', otext);
 			el('popup').style.display = 'block';
 			el('popup').style.opacity = '1';
 			setTimeout(function () {
@@ -150,8 +150,8 @@ core.function = {
 
 			if (query.length > 0) {
 				//reminder: keep these kind of assignments out of loops for performance reasons!
-				var fuzzySearch = core.function.setting.get('settingFuzzySearch');
-				var fuzzyRatio = 2 - ((core.function.setting.get('settingFuzzyThreshold') || 5) * .1); //fuzzy ratio of 1.5 by default is quite reasonable determined through trial and error
+				var fuzzySearch = core.fn.setting.get('settingFuzzySearch');
+				var fuzzyRatio = 2 - ((core.fn.setting.get('settingFuzzyThreshold') || 5) * .1); //fuzzy ratio of 1.5 by default is quite reasonable determined through trial and error
 
 				Object.keys(dataBaseObject).forEach(function (key) {
 					var a = dataBaseObject[key],
@@ -184,7 +184,7 @@ core.function = {
 					}
 				});
 			}
-			return found.sort(core.function.sortBySecondColumn) || 0;
+			return found.sort(core.fn.sortBySecondColumn) || 0;
 		},
 		relevance: {
 			//used to make intersections between relevance levels
@@ -218,7 +218,7 @@ core.function = {
 	languageSelection: function (event) { //returns an array of radio inputs based on registered langages
 		var sel = new Array();
 		Object.keys(core.var.registeredLanguages).forEach(function (key) {
-			sel.push(core.function.insert.radio(core.var.registeredLanguages[key][1], 'lang', core.var.registeredLanguages[key][0], core.var.registeredLanguages[key][0] === core.var.selectedLanguage, event));
+			sel.push(core.fn.insert.radio(core.var.registeredLanguages[key][1], 'lang', core.var.registeredLanguages[key][0], core.var.registeredLanguages[key][0] === core.var.selectedLanguage, event));
 		});
 		return sel;
 	},
@@ -254,14 +254,14 @@ core.function = {
 				//set current scope(==module name), window title and load module.var-file
 				if (callback.indexOf('init') > -1 && scriptname in core.var.modules) {
 					core.var.currentScope = scriptname;
-					document.title = core.function.lang('title') + ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage];
+					document.title = core.fn.lang('title') + ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage];
 				}
 			}
 			//append node(s)
 			if (typeof scriptvar !== "undefined") document.head.appendChild(scriptvar);
 			setTimeout(function () {
 				document.head.appendChild(script);
-			}, core.function.setting.get('settingVarPreloadTime') || 50);
+			}, core.fn.setting.get('settingVarPreloadTime') || 50);
 		}
 	},
 
@@ -282,7 +282,7 @@ core.function = {
 			return output;
 		},
 		expand: function () {
-			return '<span class="itemresize" title="' + core.function.lang('itemResizeTitle') + '"></span>';
+			return '<span class="itemresize" title="' + core.fn.lang('itemResizeTitle') + '"></span>';
 		},
 		icon: function (icon, addclass, id, attributes) { //easy icon handler for inline svg
 			//key[viewbox,transform scale, d-path]
@@ -345,14 +345,14 @@ core.function = {
 		setup: function () { //displays settings menu
 			return '<div id="popupcontent">' +
 				'<article class="home" style="border-right:1px solid; line-height:3em">' +
-				'<span onclick="core.function.stdout(\'settingContent\', core.function.setting.setupMain());" style="cursor:pointer">' + core.function.insert.icon('generalsetting') + core.function.lang('settingMainCaption') + '</span><br />' +
-				'<span onclick="core.function.stdout(\'settingContent\', core.function.setting.setupModules());" style="cursor:pointer">' + core.function.insert.icon('moduleselector') + core.function.lang('settingModuleselectorCaption') + '</span><br />' +
-				'<span onclick="core.function.stdout(\'settingContent\', core.function.setting.setupAdvanced());" style="cursor:pointer">' + core.function.insert.icon('advancedsetting') + core.function.lang('settingAdvancedCaption') + '</span><br />' +
-				'<span onclick="core.function.stdout(\'settingContent\', core.function.setting.setupDebug());" style="cursor:pointer">' + core.function.insert.icon('bug') + 'Debugging</span><br />' +
-				'<span onclick="core.function.stdout(\'settingContent\', updateTracker.enlist());" style="cursor:pointer">' + core.function.insert.icon('update') + 'Updates</span><br />' +
-				'<span onclick="core.function.stdout(\'settingContent\', aboutNotification[core.var.selectedLanguage]+\'<hr />\'+core.function.lang(\'settingGeneralHint\')+\'<hr />\'+randomTip.enlist());" style="cursor:pointer">' + core.function.insert.icon('info') + 'About</span><br />' +
+				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupMain());" style="cursor:pointer">' + core.fn.insert.icon('generalsetting') + core.fn.lang('settingMainCaption') + '</span><br />' +
+				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupModules());" style="cursor:pointer">' + core.fn.insert.icon('moduleselector') + core.fn.lang('settingModuleselectorCaption') + '</span><br />' +
+				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupAdvanced());" style="cursor:pointer">' + core.fn.insert.icon('advancedsetting') + core.fn.lang('settingAdvancedCaption') + '</span><br />' +
+				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupDebug());" style="cursor:pointer">' + core.fn.insert.icon('bug') + 'Debugging</span><br />' +
+				'<span onclick="core.fn.stdout(\'settingContent\', updateTracker.enlist());" style="cursor:pointer">' + core.fn.insert.icon('update') + 'Updates</span><br />' +
+				'<span onclick="core.fn.stdout(\'settingContent\', aboutNotification[core.var.selectedLanguage]+\'<hr />\'+core.fn.lang(\'settingGeneralHint\')+\'<hr />\'+randomTip.enlist());" style="cursor:pointer">' + core.fn.insert.icon('info') + 'About</span><br />' +
 				'</article>' +
-				'<aside id="settingContent">' + core.function.setting.setupMain() + '</aside>' +
+				'<aside id="settingContent">' + core.fn.setting.setupMain() + '</aside>' +
 				'<div>';
 		},
 		setupMain: function () { //returns main settings
@@ -363,54 +363,54 @@ core.function = {
 					themeSelector[key] = [key, core.var.themes[key][core.var.selectedLanguage]];
 				});
 			}
-			return core.function.lang('settingThemeCaption') + ':<br />' + core.function.insert.select(themeSelector, 'settingTheme', 'settingTheme', (core.function.setting.get('settingTheme') || null), 'onchange="core.function.setting.theme(this.value)"') +
-				'<br /><br />' + core.function.lang('settingMenusizeCaption') + ':<br />' + core.function.insert.checkbox(core.function.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.function.setting.get('settingSmallmenu') || 0), 'onchange="core.function.setting.reversedswitch(\'settingSmallmenu\')"', core.function.lang('settingRestartNeccessary')) +
-				'<br />' + core.function.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (core.function.setting.get('settingFontsize') || 0) + '" onchange="core.function.setting.fontsize(this.value)" />' +
-				'<br />' + core.function.lang('settingLanguageCaption') + ':<br />' + core.function.insert.select(core.var.registeredLanguages, 'settingLanguage', 'settingLanguage', (core.var.selectedLanguage || null), 'title="' + core.function.lang('settingRestartNeccessary') + '" onchange="core.function.setting.set(\'settingLanguage\',(this.value))"') +
-				'<br /><br />' + core.function.insert.checkbox(core.function.lang('settingSearchOptionFuzzy'), 'settingFuzzySearch', (core.function.setting.get('settingFuzzySearch') || 0), 'onchange="core.function.setting.reversedswitch(\'settingFuzzySearch\')"') +
-				'<br /><small>' + core.function.lang('settingSearchOptionFuzzyHint') + '</small>' +
-				'<br />' + core.function.insert.checkbox(core.function.lang('settingCopyOptionSelector'), 'settingNewWindowCopy', (core.function.setting.get('settingNewWindowCopy') || 0), 'onchange="core.function.setting.reversedswitch(\'settingNewWindowCopy\')"') +
-				'<br /><small>' + core.function.lang('settingCopyOptionHint') + '</small>' +
-				'<br />' + core.function.insert.checkbox(core.function.lang('settingNotificationSelector'), 'settingStarthinweis' + updateTracker.latestMajorUpdate(), (core.function.setting.get('settingStarthinweis' + updateTracker.latestMajorUpdate()) != 1), 'onchange="core.function.setting.switch(\'settingStarthinweis' + updateTracker.latestMajorUpdate() + '\')"', core.function.lang('settingRestartNeccessary')) +
-				'<br /><small>' + core.function.lang('settingNotificationHint') + '</small>';
+			return core.fn.lang('settingThemeCaption') + ':<br />' + core.fn.insert.select(themeSelector, 'settingTheme', 'settingTheme', (core.fn.setting.get('settingTheme') || null), 'onchange="core.fn.setting.theme(this.value)"') +
+				'<br /><br />' + core.fn.lang('settingMenusizeCaption') + ':<br />' + core.fn.insert.checkbox(core.fn.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.fn.setting.get('settingSmallmenu') || 0), 'onchange="core.fn.setting.reversedswitch(\'settingSmallmenu\')"', core.fn.lang('settingRestartNeccessary')) +
+				'<br />' + core.fn.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (core.fn.setting.get('settingFontsize') || 0) + '" onchange="core.fn.setting.fontsize(this.value)" />' +
+				'<br />' + core.fn.lang('settingLanguageCaption') + ':<br />' + core.fn.insert.select(core.var.registeredLanguages, 'settingLanguage', 'settingLanguage', (core.var.selectedLanguage || null), 'title="' + core.fn.lang('settingRestartNeccessary') + '" onchange="core.fn.setting.set(\'settingLanguage\',(this.value))"') +
+				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingSearchOptionFuzzy'), 'settingFuzzySearch', (core.fn.setting.get('settingFuzzySearch') || 0), 'onchange="core.fn.setting.reversedswitch(\'settingFuzzySearch\')"') +
+				'<br /><small>' + core.fn.lang('settingSearchOptionFuzzyHint') + '</small>' +
+				'<br />' + core.fn.insert.checkbox(core.fn.lang('settingCopyOptionSelector'), 'settingNewWindowCopy', (core.fn.setting.get('settingNewWindowCopy') || 0), 'onchange="core.fn.setting.reversedswitch(\'settingNewWindowCopy\')"') +
+				'<br /><small>' + core.fn.lang('settingCopyOptionHint') + '</small>' +
+				'<br />' + core.fn.insert.checkbox(core.fn.lang('settingNotificationSelector'), 'settingStarthinweis' + updateTracker.latestMajorUpdate(), (core.fn.setting.get('settingStarthinweis' + updateTracker.latestMajorUpdate()) != 1), 'onchange="core.fn.setting.switch(\'settingStarthinweis' + updateTracker.latestMajorUpdate() + '\')"', core.fn.lang('settingRestartNeccessary')) +
+				'<br /><small>' + core.fn.lang('settingNotificationHint') + '</small>';
 		},
 		setupModules: function () { //returns module selector
 			if (typeof (core.var) !== 'undefined') {
 				var moduleSelector = '';
 				//create module-selector
 				Object.keys(core.var.modules).forEach(function (key) {
-					moduleSelector += core.function.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.function.setting.get('module_' + key) != 1), 'onchange="core.function.setting.switch(\'module_' + key + '\')"', core.function.lang('settingRestartNeccessary')) + '<br />';
+					moduleSelector += core.fn.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.fn.setting.get('module_' + key) != 1), 'onchange="core.fn.setting.switch(\'module_' + key + '\')"', core.fn.lang('settingRestartNeccessary')) + '<br />';
 				});
-			} else moduleSelector = core.function.lang('errorLoadingModules');
+			} else moduleSelector = core.fn.lang('errorLoadingModules');
 			return moduleSelector;
 		},
 		setupAdvanced: function () { //return advanced settings
-			return '<input type="button" onclick="core.function.setting.clear()" value="' + core.function.lang('settingResetApp') + '" title="' + core.function.lang('settingRestartNeccessary') + '" /><br />' +
-				'<br />' + core.function.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.function.setting.get('settingFuzzyThreshold') || 5) + '" onchange="core.function.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
-				'<br />' + core.function.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.function.setting.get('settingGlobalSearchTime') || 3) + '" onchange="core.function.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
-				'<br />' + core.function.lang('settingVarPreloadCaption') + ':<br /><input type="range" min="0" max="1000" step="50" value="' + (core.function.setting.get('settingVarPreloadTime') || 50) + '" onchange="core.function.setting.set(\'settingVarPreloadTime\',(this.value))" />' +
+			return '<input type="button" onclick="core.fn.setting.clear()" value="' + core.fn.lang('settingResetApp') + '" title="' + core.fn.lang('settingRestartNeccessary') + '" /><br />' +
+				'<br />' + core.fn.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.fn.setting.get('settingFuzzyThreshold') || 5) + '" onchange="core.fn.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
+				'<br />' + core.fn.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.fn.setting.get('settingGlobalSearchTime') || 3) + '" onchange="core.fn.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
+				'<br />' + core.fn.lang('settingVarPreloadCaption') + ':<br /><input type="range" min="0" max="1000" step="50" value="' + (core.fn.setting.get('settingVarPreloadTime') || 50) + '" onchange="core.fn.setting.set(\'settingVarPreloadTime\',(this.value))" />' +
 				'';
 		},
 		setupDebug: function () { //return debugging options
-			return core.function.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.function.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
-				'<br />' + core.function.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.function.setting.get('settingOutputMonitor') || 0), 'onchange="core.function.setting.reversedswitch(\'settingOutputMonitor\')"') +
+			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
+				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.fn.setting.get('settingOutputMonitor') || 0), 'onchange="core.fn.setting.reversedswitch(\'settingOutputMonitor\')"') +
 				'';
 		},
 		theme: function (theme) {
 			el('colortheme').href = 'core/' + theme + '.css';
-			core.function.setting.set('settingTheme', theme);
+			core.fn.setting.set('settingTheme', theme);
 		},
 		fontsize: function (value) {
 			fontsize = document.body.style.fontSize = (value / 10 + 1) + 'em';
-			core.function.setting.set('settingFontsize', value);
+			core.fn.setting.set('settingFontsize', value);
 		},
 		switch: function (name) { //on by default
-			if (el(name).checked) core.function.setting.unset(name);
-			else core.function.setting.set(name, 1);
+			if (el(name).checked) core.fn.setting.unset(name);
+			else core.fn.setting.set(name, 1);
 		},
 		reversedswitch: function (name) { //off by default
-			if (el(name).checked) core.function.setting.set(name, 1);
-			else core.function.setting.unset(name);
+			if (el(name).checked) core.fn.setting.set(name, 1);
+			else core.fn.setting.unset(name);
 		},
 
 		localStorage: function () { //returns boolean whether local storage is accessible
@@ -467,31 +467,31 @@ core.function = {
 	},
 
 	init: function (query) { //displays start screen
-		core.function.stdout('input',
+		core.fn.stdout('input',
 			'<form id="search" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
 			'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
-			core.function.lang('globalSearchPlaceholder') + '" class="search" ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
-			'<span onclick="globalSearch.search(el(\'globalsearch\').value);" class="search">' + core.function.insert.icon('search') + '</span>' +
-			'<input type="submit" id="submit" value="' + core.function.lang('formSubmit') + '" hidden="hidden" /> ' +
+			core.fn.lang('globalSearchPlaceholder') + '" class="search" ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
+			'<span onclick="globalSearch.search(el(\'globalsearch\').value);" class="search">' + core.fn.insert.icon('search') + '</span>' +
+			'<input type="submit" id="submit" value="' + core.fn.lang('formSubmit') + '" hidden="hidden" /> ' +
 			'</form>');
 		el('globalsearch').focus();
-		core.function.stdout('temp',
-			core.function.lang('greeting') + '<br />' +
+		core.fn.stdout('temp',
+			core.fn.lang('greeting') + '<br />' +
 			(core.var.letterTemplate ? '<br /><a href="' + core.var.letterTemplate + '" target="_blank">' +
-				core.function.insert.icon('word') + core.function.lang('openLetterTemplate') + '</a><br />' : '') +
+				core.fn.insert.icon('word') + core.fn.lang('openLetterTemplate') + '</a><br />' : '') +
 			(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' +
-				core.function.insert.icon('outlook') + core.function.lang('openOutlook') + '</a><br />' : '') +
+				core.fn.insert.icon('outlook') + core.fn.lang('openOutlook') + '</a><br />' : '') +
 			(core.var.publishedFolder ? '<br /><a href="' + core.var.publishedFolder + '" target="_blank">' +
-				core.function.insert.icon('pdf') + core.function.lang('openPublishedFolder') + '</a><br />' : '') +
+				core.fn.insert.icon('pdf') + core.fn.lang('openPublishedFolder') + '</a><br />' : '') +
 			'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>');
-			core.function.stdout('output', '');
+			core.fn.stdout('output', '');
 		core.var.currentScope = null;
 		Object.keys(core.var.modules).forEach(function (key) {
 			if (el('module' + key) != 'undefined') el('module' + key).checked = false;
 		});
-		document.title = core.function.lang('title')
+		document.title = core.fn.lang('title')
 		if (typeof query !== 'undefined') globalSearch.search(query);
-		core.history.write(['core.function.init(\'' + value(query) + '\')']);
+		core.history.write(['core.fn.init(\'' + value(query) + '\')']);
 	},
 };
 core.history = { //stores and restores last actions. since last actions can only occur after loading the modules scripts into scope
@@ -499,7 +499,7 @@ core.history = { //stores and restores last actions. since last actions can only
 	// be accessed through history. slidersettings are either stored as global setting or not at all.
 	// history will only store last modules, submodules and queries. store an array as a sequence of necessary function calls
 	// to come back to the desired point e.g.
-	// core.function.history.write(['core.function.init()',''globalSearch(\'' + search + '\')'']);
+	// core.fn.history.write(['core.fn.init()',''globalSearch(\'' + search + '\')'']);
 	// or use api-like callbacks within the modules
 	// this was implemented after performance monitor. you will see the parameters looking similar but since history
 	// will handle sequential callbacks as opposed to performance tracking this was not combined on purpose
@@ -528,7 +528,7 @@ core.history = { //stores and restores last actions. since last actions can only
 		if (typeof core.history.storage[core.history.storage.length - core.history.currentStep] !== 'undefined') {
 			core.history.storage[core.history.storage.length - core.history.currentStep].forEach(function (key) {
 				core.var.currentScope = key.substring(0, key.indexOf('.')) != 'core' ? key.substring(0, key.indexOf('.')) : null;
-				document.title = core.function.lang('title') + (core.var.currentScope ? ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage] : '');
+				document.title = core.fn.lang('title') + (core.var.currentScope ? ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage] : '');
 				slider.slide(core.var.currentScope);
 				core.performance.start(key);
 				eval(key);
@@ -549,13 +549,13 @@ core.history = { //stores and restores last actions. since last actions can only
 };
 core.performance = { //starts and dispays timers to console, assigned with function calls and can display additional results
 	start: function (track, group) {
-		if (core.function.setting.get('settingPerformanceMonitor')) {
+		if (core.fn.setting.get('settingPerformanceMonitor')) {
 			if (typeof group !== 'undefined') console.group(track);
 			console.time(track);
 		}
 	},
 	stop: function (track, info, group) {
-		if (core.function.setting.get('settingPerformanceMonitor')) {
+		if (core.fn.setting.get('settingPerformanceMonitor')) {
 			console.groupCollapsed(track);
 			console.timeEnd(track);
 			console.trace();
@@ -584,7 +584,7 @@ var slider = { //just fancy animation of content on module change
 		el('content').classList.remove('slideup', 'slidedown');
 		var newone = el('content').cloneNode(true);
 		el('content').parentNode.replaceChild(newone, el('content'));
-		core.function.stdout(['input', 'temp', 'output'], '');
+		core.fn.stdout(['input', 'temp', 'output'], '');
 		if (slider.modules.indexOf(mod) > slider.recent) el('content').classList.add('slideup')
 		if (slider.modules.indexOf(mod) < slider.recent) el('content').classList.add('slidedown')
 
@@ -594,26 +594,26 @@ var slider = { //just fancy animation of content on module change
 
 function select_module() { //load module list and return the main menu
 	if (typeof (core.var.modules) !== 'undefined') {
-		var output='<span style="font-size:200%; line-height:200%">' + core.var.logo + core.function.lang('title',false)+ '</span>';
+		var output='<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.lang('title',false)+ '</span>';
 		Object.keys(core.var.modules).forEach(function (key) {
-			if (typeof core.var.modules[key] === 'object' && core.function.setting.get('module_' + key) != 1) {
+			if (typeof core.var.modules[key] === 'object' && core.fn.setting.get('module_' + key) != 1) {
 				//create module-selector
 				opt = 'modules/' + key + '.js';
-				output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.function.loadScript(\'' + opt + '\', \'' + key + '.function.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
+				output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.fn.loadScript(\'' + opt + '\', \'' + key + '.function.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
 				slider.modules.push(key);
 			}
 		});
-		core.function.stdout('menu', output);
-	} else core.function.popup(core.function.lang('errorLoadingModules'));
+		core.fn.stdout('menu', output);
+	} else core.fn.popup(core.fn.lang('errorLoadingModules'));
 }
 
 function selectText(element) { //selection of output-content on click if not disabled
 	if (core.var.currentScope != null && (eval(core.var.currentScope).var.disableOutputSelect === "undefined" || !(eval(core.var.currentScope).var.disableOutputSelect))) {
-		if (core.function.setting.get('settingNewWindowCopy')) {
+		if (core.fn.setting.get('settingNewWindowCopy')) {
 			var win = window.open("", "win"),
 				doc = win.document;
 			doc.open("text/html", "replace");
-			doc.write('<html><head><title>' + core.function.lang('copycontentNewWindowCaption') + '</title><style>body {font-family:\'' + core.var.corporateFontFace + '\'; font-size:' + core.var.corporateFontSize + '; background-color:' + window.getComputedStyle(document.body, "").getPropertyValue("background-color") + '; font-color:' + window.getComputedStyle(document.body, "").getPropertyValue("color") + ';}</style></head><body onclick="window.self.close()"><div id="text">' + el(element).innerHTML + '</div></body></html>');
+			doc.write('<html><head><title>' + core.fn.lang('copycontentNewWindowCaption') + '</title><style>body {font-family:\'' + core.var.corporateFontFace + '\'; font-size:' + core.var.corporateFontSize + '; background-color:' + window.getComputedStyle(document.body, "").getPropertyValue("background-color") + '; font-color:' + window.getComputedStyle(document.body, "").getPropertyValue("color") + ';}</style></head><body onclick="window.self.close()"><div id="text">' + el(element).innerHTML + '</div></body></html>');
 			doc.close();
 
 			var text = doc.getElementById('text'),
@@ -656,31 +656,31 @@ var globalSearch = { //searches all modules using their api-methods from the sta
 				if (typeof core.var.modules[key] === 'object') {
 					//load every module and fire api function
 					opt = 'modules/' + key + '.js';
-					core.function.loadScript(opt, key + '.api.available(\'' + search + '\')');
+					core.fn.loadScript(opt, key + '.api.available(\'' + search + '\')');
 				}
 			});
 			setTimeout(function () {
 				globalSearch.display()
-			}, (core.function.setting.get('settingGlobalSearchTime') || 3) * 1000);
-			core.history.write(['core.function.init(\'' + search + '\')']);
+			}, (core.fn.setting.get('settingGlobalSearchTime') || 3) * 1000);
+			core.history.write(['core.fn.init(\'' + search + '\')']);
 		}
 	},
 	display: function () {
 		if (Object.keys(this.result).length) {
 			var displayResult = '<br />';
 			Object.keys(this.result).forEach(function (mod) {
-				displayResult += '<div class="items items143" onclick="core.function.toggleHeight(this)">' +
-					core.function.insert.expand() +
+				displayResult += '<div class="items items143" onclick="core.fn.toggleHeight(this)">' +
+					core.fn.insert.expand() +
 					core.var.modules[mod].icon + core.var.modules[mod].display[core.var.selectedLanguage] + '<br />';
-				globalSearch.result[mod].sort(core.function.sortBySecondColumn);
+				globalSearch.result[mod].sort(core.fn.sortBySecondColumn);
 				globalSearch.result[mod].forEach(function (key) {
 					//console.log(mod,key);
 					displayResult += key[0] + '<br />';
 				});
 				displayResult += '</div>';
 			});
-		} else var displayResult = core.function.lang('errorNothingFound', null, el('globalsearch').value);
-		core.function.stdout('output', displayResult);
+		} else var displayResult = core.fn.lang('errorNothingFound', null, el('globalsearch').value);
+		core.fn.stdout('output', displayResult);
 		document.body.style.cursor = 'default';
 		core.performance.stop('globalSearch', null, 'endgroup');
 	}

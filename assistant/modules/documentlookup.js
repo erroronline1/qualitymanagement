@@ -16,7 +16,7 @@ if (typeof documentlookup === 'undefined') var documentlookup = {};
 documentlookup.api = {
 	available: function (search) {
 		Object.keys(documentlookup.var.submodules).forEach(function (key) {
-			core.function.loadScript(core.var.moduleDataDir + key + '.js',
+			core.fn.loadScript(core.var.moduleDataDir + key + '.js',
 				'documentlookup.api.processAfterImport(\'' + search + '\', \'' + key + '_data\')');
 		});
 		core.performance.stop('documentlookup.api.available(\'' + search + '\')');
@@ -25,9 +25,9 @@ documentlookup.api = {
 		var display = '';
 		if (typeof objectname !== 'undefined') {
 			object = eval(objectname);
-			var found = core.function.smartSearch.lookup(search, object.content, true);
+			var found = core.fn.smartSearch.lookup(search, object.content, true);
 			found.forEach(function (value) {
-				display = documentlookup.function.linkfile([object.content[value[0]][0], object.content[value[0]][1]], false, (object.content[value[0]][2] ? core.function.lang('searchTitle', 'documentlookup') + object.content[value[0]][2] : false));
+				display = documentlookup.function.linkfile([object.content[value[0]][0], object.content[value[0]][1]], false, (object.content[value[0]][2] ? core.fn.lang('searchTitle', 'documentlookup') + object.content[value[0]][2] : false));
 				//add value and relevance
 				globalSearch.contribute('documentlookup', [display, value[1]]);
 			});
@@ -39,7 +39,7 @@ documentlookup.function = {
 	linkfile: function (url, track, title, favourite) {
 		var title = value(title) !== '' ? ' title="' + title + '" ' : '';
 		var displayName = ( url[1] ? url[1] : url[0].substring(url[0].lastIndexOf('/'), url[0].lastIndexOf('.')).substring(1))
-		if (value(favourite)!=='') return '<span class="singlefavouritehandler"><a href="' + url[0] + '" ' + title + ' onclick="documentlookup.function.favouriteHandler.set(\'' + documentlookup.function.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>' + core.function.insert.icon('delete', false, false, 'onclick="documentlookup.function.favouriteHandler.set(\':' + documentlookup.function.favouriteHandler.prepare(url[0]) + '\'); return;"') + '</span>';
+		if (value(favourite)!=='') return '<span class="singlefavouritehandler"><a href="' + url[0] + '" ' + title + ' onclick="documentlookup.function.favouriteHandler.set(\'' + documentlookup.function.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>' + core.fn.insert.icon('delete', false, false, 'onclick="documentlookup.function.favouriteHandler.set(\':' + documentlookup.function.favouriteHandler.prepare(url[0]) + '\'); return;"') + '</span>';
 		else if (track) return '<a href="' + url[0] + '" ' + title + ' onclick="documentlookup.function.favouriteHandler.set(\'' + documentlookup.function.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>';
 		return '<a href="' + url[0] + '" ' + title + ' target="_blank">' + displayName + '</a>'; 
 	},
@@ -48,7 +48,7 @@ documentlookup.function = {
 			return value.substring(value.lastIndexOf('/'), value.lastIndexOf('.')).substring(1).replace(/[^a-z0-9]/gi, '');
 		},
 		set: function (value) {
-			var output = core.function.setting.get('favouritedocs'),
+			var output = core.fn.setting.get('favouritedocs'),
 				deleteValue=false;
 			if (value.indexOf(':')==0){ //if preceded by : the value will be deleted from the favourite list
 				deleteValue=true
@@ -62,7 +62,7 @@ documentlookup.function = {
 					for (var i = 0; i < tfav.length; i += 2) {
 						if (!(deleteValue && tfav[i] === value)) favourites.push(new Array(tfav[i], parseInt(tfav[i + 1]) + (tfav[i] === value ? 1 : 0)));
 					}
-					favourites.sort(core.function.sortBySecondColumn);
+					favourites.sort(core.fn.sortBySecondColumn);
 					//reduce two dimensional array after sorting
 					for (i = 0; i < favourites.length; i++) {
 						favourites[i] = favourites[i].join(',');
@@ -71,11 +71,11 @@ documentlookup.function = {
 					output = favourites.join(',');
 				} else output += ',' + value + ',1';
 			} else output = value + ',1';
-			core.function.setting.set('favouritedocs', output);
-			core.function.stdout('favourites', documentlookup.function.favouriteHandler.get());
+			core.fn.setting.set('favouritedocs', output);
+			core.fn.stdout('favourites', documentlookup.function.favouriteHandler.get());
 		},
 		get: function () {
-			var output = core.function.setting.get('favouritedocs');
+			var output = core.fn.setting.get('favouritedocs');
 			if (output) {
 				var tfav = tfav2 = new Array();
 				//bring selected object into scope to avoid method callbacks in loops for performance reasons
@@ -86,11 +86,11 @@ documentlookup.function = {
 				});
 
 				var tfav2 = output.split(',');
-				output = '<br />' + core.function.lang('favouriteCaption', 'documentlookup') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
-					core.function.insert.icon('delete', 'bigger', false, 'title="' + core.function.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'\')"') +
-					core.function.insert.icon('clipboard', 'bigger', false, 'title="' + core.function.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + documentlookup.var.defaultFavourites + '\')"') +
-					core.function.insert.icon('refresh', 'bigger', false, 'title="' + core.function.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + core.function.setting.get('customfavouritedocs') + '\')"') +
-					core.function.insert.icon('save', 'bigger', false, 'title="' + core.function.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.customreset()"') +
+				output = '<br />' + core.fn.lang('favouriteCaption', 'documentlookup') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
+					core.fn.insert.icon('delete', 'bigger', false, 'title="' + core.fn.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'\')"') +
+					core.fn.insert.icon('clipboard', 'bigger', false, 'title="' + core.fn.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + documentlookup.var.defaultFavourites + '\')"') +
+					core.fn.insert.icon('refresh', 'bigger', false, 'title="' + core.fn.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.reset(\'' + core.fn.setting.get('customfavouritedocs') + '\')"') +
+					core.fn.insert.icon('save', 'bigger', false, 'title="' + core.fn.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.function.favouriteHandler.customreset()"') +
 					'</span><br /><br />';
 				for (var i = 0; i < tfav2.length; i += 2) {
 					if (tfav[tfav2[i]] !== undefined) output += tfav[tfav2[i]] + '<br />';
@@ -99,12 +99,12 @@ documentlookup.function = {
 			return output || '';
 		},
 		reset: function (output) {
-			core.function.setting.set('favouritedocs', output);
-			alert(core.function.lang('favouriteRestoreConfirm', 'documentlookup'));
+			core.fn.setting.set('favouritedocs', output);
+			alert(core.fn.lang('favouriteRestoreConfirm', 'documentlookup'));
 		},
 		customreset: function () {
-			core.function.setting.set('customfavouritedocs', core.function.setting.get('favouritedocs'));
-			alert(core.function.lang('favouriteSaveConfirm', 'documentlookup'));
+			core.fn.setting.set('customfavouritedocs', core.fn.setting.get('favouritedocs'));
+			alert(core.fn.lang('favouriteSaveConfirm', 'documentlookup'));
 		}
 	},
 	search: function (query) {
@@ -118,42 +118,42 @@ documentlookup.function = {
 			Object.keys(interimobject).forEach(function (key) {
 				list += documentlookup.function.linkfile([interimobject[key][0],interimobject[key][1]], true) + '<br />';
 			});
-			core.function.stdout('temp', list);
+			core.fn.stdout('temp', list);
 
 			if (value(query) !== '') {
-				var found = core.function.smartSearch.lookup(query, interimobject, true);
+				var found = core.fn.smartSearch.lookup(query, interimobject, true);
 
 				// check if search matches item-list and display result
 				if (found.length > 0) {
 					list = '';
-					core.function.smartSearch.relevance.init();
+					core.fn.smartSearch.relevance.init();
 					found.forEach(function (value) {
-						list += core.function.smartSearch.relevance.nextstep(value[1]);
-						list += documentlookup.function.linkfile([interimobject[value[0]][0],interimobject[value[0]][1]], true, (interimobject[value[0]][2] ? core.function.lang('searchTitle', 'documentlookup') + interimobject[value[0]][2] : false)) + '<br />';
+						list += core.fn.smartSearch.relevance.nextstep(value[1]);
+						list += documentlookup.function.linkfile([interimobject[value[0]][0],interimobject[value[0]][1]], true, (interimobject[value[0]][2] ? core.fn.lang('searchTitle', 'documentlookup') + interimobject[value[0]][2] : false)) + '<br />';
 					});
-					core.function.stdout('output', list);
+					core.fn.stdout('output', list);
 					list = '';
-				} else core.function.stdout('output', core.function.lang('errorNothingFound', 'documentlookup', query));
-			} else core.function.stdout('output', '<div id="favourites">' + (documentlookup.function.favouriteHandler.get() || '') + '</div>');
+				} else core.fn.stdout('output', core.fn.lang('errorNothingFound', 'documentlookup', query));
+			} else core.fn.stdout('output', '<div id="favourites">' + (documentlookup.function.favouriteHandler.get() || '') + '</div>');
 		}
 		core.performance.stop('documentlookup.function.search(\'' + value(query) + '\')', found);
 		core.history.write(['documentlookup.function.init(\'' + value(query) + '\')']);
 	},
 	init: function (query) {
 		el('moduledocumentlookup').checked = true; // highlight menu icon
-		core.function.loadScript(core.var.moduleDataDir + documentlookup.var.selectedModule() + '.js', 'documentlookup.function.search(\'' + value(query) + '\')');
+		core.fn.loadScript(core.var.moduleDataDir + documentlookup.var.selectedModule() + '.js', 'documentlookup.function.search(\'' + value(query) + '\')');
 		//prepare selection
 		var selection = {};
 		Object.keys(documentlookup.var.submodules).forEach(function (key) {
 			selection[key] = [key, documentlookup.var.submodules[key][core.var.selectedLanguage]];
 		});
-		core.function.stdout('input',
+		core.fn.stdout('input',
 			'<form id="search" action="javascript:documentlookup.function.search();">' +
-			'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.function.lang('searchPlaceholder', 'documentlookup') + '" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +
-			'<span onclick="documentlookup.function.search();" class="search">' + core.function.insert.icon('search') + '</span> ' +
-			core.function.insert.select(selection, 'lookup', 'lookup', (core.function.setting.get('lookup_bundle') || false), 'onchange="core.function.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.function.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.function.search()\');"') +
-			'<input type="submit" id="submit" value="' + core.function.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
-			'<a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.function.insert.icon('fileexplorer', 'bigger', false, 'title="' + core.function.lang('optionThirdType', 'documentlookup') + '"') + '</a>' +
+			'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.fn.lang('searchPlaceholder', 'documentlookup') + '" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +
+			'<span onclick="documentlookup.function.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
+			core.fn.insert.select(selection, 'lookup', 'lookup', (core.fn.setting.get('lookup_bundle') || false), 'onchange="core.fn.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.fn.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.function.search()\');"') +
+			'<input type="submit" id="submit" value="' + core.fn.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
+			'<a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.insert.icon('fileexplorer', 'bigger', false, 'title="' + core.fn.lang('optionThirdType', 'documentlookup') + '"') + '</a>' +
 			'</form>');
 		el('documentname').focus();
 		core.performance.stop('documentlookup.function.init(\'' + value(query) + '\')');

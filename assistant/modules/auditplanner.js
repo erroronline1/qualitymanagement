@@ -26,10 +26,10 @@ auditplanner.function = {
 				if (key>0){ //skip first item being header only
 					var checked = query == 'random' ? Math.random() >= 0.5 : (query == 'none' ? false : true);
 					
-					list += core.function.insert.checkbox(auditplanner_data.content[key][0] + ' ' + auditplanner_data.content[key][1], 'ap' + key, checked, 'onchange="auditplanner.function.output()"', false) + '<br />';
+					list += core.fn.insert.checkbox(auditplanner_data.content[key][0] + ' ' + auditplanner_data.content[key][1], 'ap' + key, checked, 'onchange="auditplanner.function.output()"', false) + '<br />';
 				}
 			});
-			core.function.stdout('temp', '<span class="highlight">' + core.function.lang('tableOfContents', 'auditplanner') + ':</span><br />' + list);
+			core.fn.stdout('temp', '<span class="highlight">' + core.fn.lang('tableOfContents', 'auditplanner') + ':</span><br />' + list);
 		}
 		core.performance.stop('auditplanner.function.select(\'' + value(query) + '\')');
 		auditplanner.function.output();
@@ -64,29 +64,29 @@ auditplanner.function = {
 					output += '<br />';
 				}
 			});
-			core.function.stdout('output', output);
+			core.fn.stdout('output', output);
 		}
 		core.performance.stop('auditplanner.function.output()');
 	},
 	start: function(query){
-		qnumOptions={1: [1, 'max. 1 ' + core.function.lang('selectOptionQuestion', 'auditplanner')],}
+		qnumOptions={1: [1, 'max. 1 ' + core.fn.lang('selectOptionQuestion', 'auditplanner')],}
 		while (Object.keys(qnumOptions).length<auditplanner.var.maximumQuestions) {
 			var index=Object.keys(qnumOptions).length+1;
-			qnumOptions[index]= [index, 'max. ' + index + ' ' + core.function.lang('selectOptionQuestions', 'auditplanner')];
+			qnumOptions[index]= [index, 'max. ' + index + ' ' + core.fn.lang('selectOptionQuestions', 'auditplanner')];
 		}
-		qnumOptions[index+1]= [auditplanner_data.content[0].length, core.function.lang('selectOptionAll', 'auditplanner') + ' (' + auditplanner_data.content[0].length + ')'];
-		core.function.stdout('input',
-			core.function.insert.select(qnumOptions, 'maxquestions', 'maxquestions', '3', 'onchange="auditplanner.function.output()"') +
-			core.function.insert.icon('refreshall', 'bigger inline', false, 'onclick="auditplanner.function.select()" title="' + core.function.lang('buttonAllTitle', 'auditplanner') + '"') +
-			core.function.insert.icon('refreshnone', 'bigger inline', false, 'onclick="auditplanner.function.select(\'none\')" title="' + core.function.lang('buttonNoneTitle', 'auditplanner') + '"') +
-			core.function.insert.icon('shuffle', 'bigger inline', false, 'onclick="auditplanner.function.select(\'random\')" title="' + core.function.lang('buttonShuffleTitle', 'auditplanner') + '"')
+		qnumOptions[index+1]= [auditplanner_data.content[0].length, core.fn.lang('selectOptionAll', 'auditplanner') + ' (' + auditplanner_data.content[0].length + ')'];
+		core.fn.stdout('input',
+			core.fn.insert.select(qnumOptions, 'maxquestions', 'maxquestions', '3', 'onchange="auditplanner.function.output()"') +
+			core.fn.insert.icon('refreshall', 'bigger inline', false, 'onclick="auditplanner.function.select()" title="' + core.fn.lang('buttonAllTitle', 'auditplanner') + '"') +
+			core.fn.insert.icon('refreshnone', 'bigger inline', false, 'onclick="auditplanner.function.select(\'none\')" title="' + core.fn.lang('buttonNoneTitle', 'auditplanner') + '"') +
+			core.fn.insert.icon('shuffle', 'bigger inline', false, 'onclick="auditplanner.function.select(\'random\')" title="' + core.fn.lang('buttonShuffleTitle', 'auditplanner') + '"')
 		);
 		auditplanner.function.select(value(query));
 	},
 	
 	init: function (query) {
 		el('moduleauditplanner').checked = true; // highlight menu icon
-		core.function.loadScript(core.var.moduleDataDir + 'auditplanner.js', 'auditplanner.function.start(\'' + value(query) + '\')');
+		core.fn.loadScript(core.var.moduleDataDir + 'auditplanner.js', 'auditplanner.function.start(\'' + value(query) + '\')');
 		
 		core.history.write(['auditplanner.function.init(\'' + value(query) + '\')']);
 		core.performance.stop('auditplanner.function.init(\'' + value(query) + '\')');

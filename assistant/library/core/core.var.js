@@ -10,55 +10,55 @@ core.var = {
 		//			}
 		//		},		
 		documentlookup: {
-			icon: core.function.insert.icon('document'),
+			icon: core.fn.insert.icon('document'),
 			display: {
 				en: "Document Lookup",
 				de: "Dokumentensuche",
 			}
 		},
 		documentbundles: {
-			icon: core.function.insert.icon('folder'),
+			icon: core.fn.insert.icon('folder'),
 			display: {
 				en: "Document Bundles",
 				de: "Dokumentenpakete"
 			}
 		},
 		stocklist: {
-			icon: core.function.insert.icon('shoppingcart'),
+			icon: core.fn.insert.icon('shoppingcart'),
 			display: {
 				en: "Stock List",
 				de: "Lager- und Artikelliste"
 			}
 		},
 		timetable: {
-			icon: core.function.insert.icon('clock'),
+			icon: core.fn.insert.icon('clock'),
 			display: {
 				en: "Timetable",
 				de: "Arbeitszeittabelle"
 			}
 		},
 		correspondence: {
-			icon: core.function.insert.icon('mail'),
+			icon: core.fn.insert.icon('mail'),
 			display: {
 				en: "Recommendation for Correspondence",
 				de: "Textvorschläge für Korrespondenz"
 			}
 		},
 		mailtools: {
-			icon: core.function.insert.icon('batchmail'),
+			icon: core.fn.insert.icon('batchmail'),
 			display: {
 				en: "Mail Tools",
 				de: "eMail Tools"
 			}
 		},
 		auditplanner:{
-			icon:core.function.insert.icon('checklist'),
+			icon:core.fn.insert.icon('checklist'),
             display: {	en:"Audit Planner",
 						de:"Auditplaner"
 			}
 		},
 		help: {
-			icon: core.function.insert.icon('faq'),
+			icon: core.fn.insert.icon('faq'),
 			display: {
 				en: "Help",
 				de: "Hilfe"
@@ -108,7 +108,7 @@ core.var = {
 		de: ["de", "deutsch"]
 	},
 	//	selected language in settings or desired default fallback
-	selectedLanguage: (core.function.setting.get('settingLanguage') || 'en'),
+	selectedLanguage: (core.fn.setting.get('settingLanguage') || 'en'),
 	//	mail for error reporting or feature request as shown in settings
 	adminMail: 'your@email.adr',
 	//	corporate design considerations for font. used for copied content. has to be installed on local machine
@@ -205,8 +205,8 @@ core.var = {
 			}
 		},
 		settingNotificationHint: {
-			en: 'New hints are shown on startup automatically. <a href="javascript:core.function.popup(updateTracker.enlist());">Show all hints</a>',
-			de: 'Neue Hinweise werden immer automatisch beim Start angezeigt. <a href="javascript:core.function.popup(updateTracker.enlist());">Alle Hinweise anzeigen</a>'
+			en: 'New hints are shown on startup automatically. <a href="javascript:core.fn.popup(updateTracker.enlist());">Show all hints</a>',
+			de: 'Neue Hinweise werden immer automatisch beim Start angezeigt. <a href="javascript:core.fn.popup(updateTracker.enlist());">Alle Hinweise anzeigen</a>'
 		},
 		settingFuzzyThresholdCaption: {
 			en: 'Fuzzy threshold (5 is a reasonable default)',
@@ -247,10 +247,10 @@ core.var = {
 		},
 		errorNothingFound: {
 			en: function (query) {
-				return 'Search for <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.function.setting.get('settingFuzzySearch') ? '' : 'or fuzzy-search-setting ') + 'or look for parts of query. Please adhere to mimimum 3 character length.'
+				return 'Search for <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'or fuzzy-search-setting ') + 'or look for parts of query. Please adhere to mimimum 3 character length.'
 			},
 			de: function (query) {
-				return 'Zum Begriff <span class="highlight">' + query + '</span> konnte nichts gefunden werden. Bitte eventuell Schreibweise ' + (core.function.setting.get('settingFuzzySearch') ? '' : 'oder Fuzzy-Search-Einstellung ') + 'überprüfen oder nach Wortteilen suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
+				return 'Zum Begriff <span class="highlight">' + query + '</span> konnte nichts gefunden werden. Bitte eventuell Schreibweise ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'oder Fuzzy-Search-Einstellung ') + 'überprüfen oder nach Wortteilen suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
 			},
 		},
 

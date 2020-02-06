@@ -12,7 +12,7 @@ if (typeof documentbundles === 'undefined') var documentbundles = {};
 
 documentbundles.api = {
 	available: function (search) {
-		core.function.loadScript(core.var.moduleDataDir + 'documentbundles.js',
+		core.fn.loadScript(core.var.moduleDataDir + 'documentbundles.js',
 			'documentbundles.api.processAfterImport(\'' + search + '\')');
 		core.performance.stop('documentbundles.api.available(\'' + search + '\')');
 	},
@@ -23,9 +23,9 @@ documentbundles.api = {
 			Object.keys(documentbundles_data).forEach(function (key) {
 				searchobject.push([key, key]);
 			});
-			var found = core.function.smartSearch.lookup(search, searchobject, true);
+			var found = core.fn.smartSearch.lookup(search, searchobject, true);
 			found.forEach(function (value) {
-				display = '<a href="javascript:core.function.loadScript(\'modules/documentbundles.js\',\'documentbundles.function.init(\\\'' + searchobject[value[0]][0] + '\\\')\')">' + searchobject[value[0]][0].replace(/_/g, " ") + '</a>';
+				display = '<a href="javascript:core.fn.loadScript(\'modules/documentbundles.js\',\'documentbundles.function.init(\\\'' + searchobject[value[0]][0] + '\\\')\')">' + searchobject[value[0]][0].replace(/_/g, " ") + '</a>';
 				//add value and relevance
 				globalSearch.contribute('documentbundles', [display, value[1]]);
 			});
@@ -45,7 +45,7 @@ documentbundles.function = {
 	serialPrint: function (files) {
 		/*
 			files=files.substring(1).replace(/\//g,'\\').split(',');
-			var batch=core.function.coreRootDir+'modules/packages.cmd';
+			var batch=core.fn.coreRootDir+'modules/packages.cmd';
 			try {
 				var shell = new ActiveXObject("WScript.Shell");
 				//shell.run('cmd /h & pause'); // do not delete if cmd is restricted on your system. this keeps a window open in case of need to mess around ;)
@@ -53,7 +53,7 @@ documentbundles.function = {
 				shell.run(command);
 			}
 			catch (e) {
-				core.function.popup('Bitte Oberfläche neu laden und ActiveX zulassen...');
+				core.fn.popup('Bitte Oberfläche neu laden und ActiveX zulassen...');
 			}
 		
 			//	modules/packages.cmd could contain
@@ -75,7 +75,7 @@ documentbundles.function = {
 			});
 			shell.run(command.slice(0, -2) + ' & exit');
 		} catch (e) {
-			core.function.popup(core.function.lang('errorNoActiveX', 'documentbundles'));
+			core.fn.popup(core.fn.lang('errorNoActiveX', 'documentbundles'));
 		}
 	},
 	gen: function (treatment) {
@@ -103,25 +103,25 @@ documentbundles.function = {
 					}
 				});
 			}
-			if (!!document.documentMode) primary += '<hr /><a href="javascript:documentbundles.function.serialPrint(\'' + serialPDFlist + '\')">' + core.function.lang('serialPrintLink', 'documentbundles', serialPrintExceptions.substring(2)) + '</a>';
-			primary += '<br /><br />' + core.function.lang('additionalInfo', 'documentbundles');
+			if (!!document.documentMode) primary += '<hr /><a href="javascript:documentbundles.function.serialPrint(\'' + serialPDFlist + '\')">' + core.fn.lang('serialPrintLink', 'documentbundles', serialPrintExceptions.substring(2)) + '</a>';
+			primary += '<br /><br />' + core.fn.lang('additionalInfo', 'documentbundles');
 			Object.keys(pack.secondary).forEach(function (index) {
 				secondary += documentbundles.function.linkfile(pack.secondary[index]);
 			});
-			core.function.stdout('temp', '<span class="highlight">' + core.function.lang('primaryCaption', 'documentbundles') + '</span><br />' + primary);
-			core.function.stdout('output', '<span class="highlight">' + core.function.lang('secondaryCaption', 'documentbundles') + '</span><br />' + secondary);
+			core.fn.stdout('temp', '<span class="highlight">' + core.fn.lang('primaryCaption', 'documentbundles') + '</span><br />' + primary);
+			core.fn.stdout('output', '<span class="highlight">' + core.fn.lang('secondaryCaption', 'documentbundles') + '</span><br />' + secondary);
 		}
 		core.history.write(['documentbundles.function.init(\'' + treatment + '\')']);
 	},
 	input: function (query) {
 		core.performance.start('documentbundles.function.input(\'' + value(query) + '\')'); //possible duplicate
 		if (typeof documentbundles_data !== 'undefined') {
-			var out = '<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.function.gen(sel)"><option value="">' + core.function.lang('selectDefault', 'documentbundles') + '</option>';
+			var out = '<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.function.gen(sel)"><option value="">' + core.fn.lang('selectDefault', 'documentbundles') + '</option>';
 			Object.keys(documentbundles_data).forEach(function (key) {
 				out += '<option id="' + key + '" value="' + key + '" ' + (query === key ? 'selected' : '') + '>' + key.replace(/_/g, " ") + '</option>';
 			});
 			out += '</select>';
-			core.function.stdout('input', out + '<span class="inline" style="padding-top:.375em">' + core.function.insert.checkbox(core.function.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.function.gen(sel)"') + '</span>');
+			core.fn.stdout('input', out + '<span class="inline" style="padding-top:.375em">' + core.fn.insert.checkbox(core.fn.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.function.gen(sel)"') + '</span>');
 			if (value(query) !== '') documentbundles.function.gen(query);
 		}
 		core.performance.stop('documentbundles.function.input(\'' + value(query) + '\')');
@@ -129,8 +129,8 @@ documentbundles.function = {
 	},
 	init: function (query) {
 		el('moduledocumentbundles').checked = true; // highlight menu icon
-		core.function.loadScript(core.var.moduleDataDir + 'documentbundles.js', 'documentbundles.function.input(\'' + value(query) + '\')');
-		core.function.stdout('temp', '<br />' + core.function.lang('useCaseDescription', 'documentbundles'));
+		core.fn.loadScript(core.var.moduleDataDir + 'documentbundles.js', 'documentbundles.function.input(\'' + value(query) + '\')');
+		core.fn.stdout('temp', '<br />' + core.fn.lang('useCaseDescription', 'documentbundles'));
 		core.performance.stop('documentbundles.function.init(\'' + value(query) + '\')');
 	},
 };

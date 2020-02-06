@@ -1,4 +1,4 @@
-//extend language-model object "core.function.languageBricks"
+//extend language-model object "core.fn.languageBricks"
 
 var additionalOptions = false;
 

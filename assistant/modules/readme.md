@@ -42,7 +42,7 @@ dependencies are: datalists for texts
 
 globalSearch api: returns texts blocks where headers match the search terms.
 
-currently i have no idea how to set this one up with an easy office interface because language synthesis is quite complex in this simple approach already. this module makes use of the `core.function.languageSynthesis` properties within library/core/core.function.languageSynthesis.js, adding new texts might require flexible additions to this core-function with all language support and in my company i am not sure about the ability to comprehend inserting $placeholders$ to a text. so currently adding meaning to this module will definitively need an understanding of the code.
+currently i have no idea how to set this one up with an easy office interface because language synthesis is quite complex in this simple approach already. this module makes use of the `core.fn.languageSynthesis` properties within library/core/core.fn.languageSynthesis.js, adding new texts might require flexible additions to this core-function with all language support and in my company i am not sure about the ability to comprehend inserting $placeholders$ to a text. so currently adding meaning to this module will definitively need an understanding of the code.
 
 ## mail tool
 creating serial letters is an office feature, but sending almost the same email to different recipients while manually changing the salutation is not that much fun. automate this by using this module. all you have to to is to click on the created links one after another and send the emails.
@@ -74,7 +74,7 @@ be aware of these rules to handle your modules properly. these rules apply to su
 [error on line 1](http://erroronline.one)
 
 ## module structure
-each module consists of an object with properties and methods. the initiating method should be the callback function of module loading with `core.function.loadScript('modules/modulename.js','modulename.function.init()')`. the overall structure of the modules data processing looks like this:
+each module consists of an object with properties and methods. the initiating method should be the callback function of module loading with `core.fn.loadScript('modules/modulename.js','modulename.function.init()')`. the overall structure of the modules data processing looks like this:
 
 ```Javascript
 if (typeof modulename == 'undefined') var modulename={};
@@ -96,11 +96,11 @@ modulename.function= { //module behaviour
 			el('module{modulename}').checked=true; 
 		el('module{modulename}').checked=true; 
 		//import data file if applicable, return initial module content, process query from inter-module communication or global search
-		core.function.loadScript(core.var.moduleDataDir + 'modulename.js', 'modulename.function.someFunction(\'' + value(query) + '\')');
+		core.fn.loadScript(core.var.moduleDataDir + 'modulename.js', 'modulename.function.someFunction(\'' + value(query) + '\')');
 		//prepare your modules interface
-		core.function.stdout('input', 'your menu');
-		core.function.stdout('temp', 'your temporary output or additional forms');
-		core.function.stdout('output', 'your output');
+		core.fn.stdout('input', 'your menu');
+		core.fn.stdout('temp', 'your temporary output or additional forms');
+		core.fn.stdout('output', 'your output');
 		//stop performance monitoring that has been started by module calling and write history
 		core.performance.stop('modulename.function.init(\'' + value(query) + '\')');
 		core.history.write(['modulename.function.init(\'' + value(query) + '\')']);
@@ -160,22 +160,22 @@ modules must contain functions to generate the modules output. some functions ar
 all modules are depentent on the main module, only some may have dependencies of other data-files.
 
 ## output containers
-container for output are named 'input', 'temp' and 'output' and can be accessed preferably via `core.function.stdout('input', content)` or `el('input').innerHTML` or whatever.
+container for output are named 'input', 'temp' and 'output' and can be accessed preferably via `core.fn.stdout('input', content)` or `el('input').innerHTML` or whatever.
 
 ## registering and loading of modules
-register and deregister modules in ROOT/core/config.js so they are accessible and listed on initial start. import js-files or other subscripts with `core.function.loadScript(url,callback);` files to be imported always have to be hardcoded (e.g. dropdown-list) because javascript having no indirect access to local file system (directory-listing etc.). this has to be done within modules as well. data-objects should be stored in `core.var.moduleDataDir`-folder prefixed with modulename_. therefore these can remain untouched if any changes occur for the main module-file and won't be affected during file-transfers in reviews.
+register and deregister modules in ROOT/core/config.js so they are accessible and listed on initial start. import js-files or other subscripts with `core.fn.loadScript(url,callback);` files to be imported always have to be hardcoded (e.g. dropdown-list) because javascript having no indirect access to local file system (directory-listing etc.). this has to be done within modules as well. data-objects should be stored in `core.var.moduleDataDir`-folder prefixed with modulename_. therefore these can remain untouched if any changes occur for the main module-file and won't be affected during file-transfers in reviews.
 
 ## module initialization
-initialization of module will be achieved by the callback functions of the core.function.loadScript-method. initialization should contain a default output for input (forms or explanatory text), might contain module information in temp and should clear output. even if the module-object is reinitialized on every module-call there is no way of initializing with the same function name because of some asynchronous variable handling or scope unknown to me resulting in calling the previous init-function and giving a lot of errors.
+initialization of module will be achieved by the callback functions of the core.fn.loadScript-method. initialization should contain a default output for input (forms or explanatory text), might contain module information in temp and should clear output. even if the module-object is reinitialized on every module-call there is no way of initializing with the same function name because of some asynchronous variable handling or scope unknown to me resulting in calling the previous init-function and giving a lot of errors.
 
 ## multi-language support
-the language bricks within the modules are to be defined. i recommend the same nesting and pattern than the core language model for easier source reading. within every module the language-blocks have to be filled up according to registered languages to avoid errors of undefined objects. the bricks can be called with `core.function.lang('brickName','modulename')` and will return the block in the selected language.
+the language bricks within the modules are to be defined. i recommend the same nesting and pattern than the core language model for easier source reading. within every module the language-blocks have to be filled up according to registered languages to avoid errors of undefined objects. the bricks can be called with `core.fn.lang('brickName','modulename')` and will return the block in the selected language.
 
 ## language synthesis
-the root language model core.function.languageSynthesis within the file library/core/core.function.languageSynthesis.js can be extended through assigning an additional property within the module-file for example:
+the root language model core.fn.languageSynthesis within the file library/core/core.fn.languageSynthesis.js can be extended through assigning an additional property within the module-file for example:
 
 ```Javascript
-core.function.languageSynthesis.property={
+core.fn.languageSynthesis.property={
 	registeredlanguage_1:['child male form', 'child female form', 'adult male form', 'adult female form'],
 	registeredlanguage_2:['child male form', 'child female form', 'adult male form', 'adult female form']
 	};
@@ -184,7 +184,7 @@ core.function.languageSynthesis.property={
 or
 
 ```javascript
-core.function.languageSynthesis.property={
+core.fn.languageSynthesis.property={
 	registeredlanguage_1:function(){/*todo*/ return value;},
 	registeredlanguage_2:function(){/*todo*/ return value;},
 	);
@@ -193,7 +193,7 @@ core.function.languageSynthesis.property={
 the former object structure absolutely makes sense in german. in english not really though but it is implemented that way, so if you want to reduce that you will have to make changes to the processing as well. you can make use of these properties by processing strings as e.g.
 
 ```javascript
-'this is a text where the term $property$ will be replaced.'.replace(/\$(\w+?)\$/ig,function(match,group1){return core.function.languageSynthesis.output(group1)});
+'this is a text where the term $property$ will be replaced.'.replace(/\$(\w+?)\$/ig,function(match,group1){return core.fn.languageSynthesis.output(group1)});
 ```
 
 the method handles the decision over values or functions on its own.
@@ -205,7 +205,7 @@ i have to admit i am a bit proud of this one. this method has to be handed over 
 output text is selected on click by default. to avoid this add a property `disableOutputSelect=true;` to module.var. this is considered not to be implemented global through registered-modules for being dynamically mutable if desired within the module itself (e.g. see mailtools).
 
 ## inter-module communication
-communication between modules is possible with use of localstorage or cookies. this has to be observed strictly, because of possible failures and dependencies of js-data-files. there might be spaghetti! use the `core.function.setting` method and always make sure to have proper default and error handling in case of missing data. initiating functions of submodules partially accept queries to handle preselections.
+communication between modules is possible with use of localstorage or cookies. this has to be observed strictly, because of possible failures and dependencies of js-data-files. there might be spaghetti! use the `core.fn.setting` method and always make sure to have proper default and error handling in case of missing data. initiating functions of submodules partially accept queries to handle preselections.
 
 ## api
 every module has to contain an api-method that returns some value (at least a `return;`). the api-module is called by the global search from the start site. lack of the api will result in errors. every registered module will be called even if the user has deselected it in the settings (so the user might get a feeling of content and meaning of modules and has a guaranteed meaningful access).
