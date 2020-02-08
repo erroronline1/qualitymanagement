@@ -36,6 +36,10 @@ stocklist.api = {
 			}
 			core.performance.stop('stocklist.api.processAfterImport(\'' + search + '\')');
 		}
+	},
+	addToCart: function(index){
+		// this only makes sense in case of the ticketorder-module
+		core.fn.setting.set('moduleExchangeTicketorder', core.fn.setting.get('moduleExchangeTicketorder') + index + ",");
 	}
 };
 stocklist.fn = {
@@ -85,12 +89,13 @@ stocklist.fn = {
 						for (var h = 0; h < stocklist_data.content[0].length; h++) {
 							if (stocklist_data.content[value[0]][h]!='') {
 								tresult += '<p><span class="highlight">' + stocklist_data.content[0][h] + ':</span> ' + mklink(stocklist_data.content[value[0]][h]) + '</p>';
-								mailbody += stocklist_data.content[0][h] + ': ' + stocklist_data.content[value[0]][h] + "\n";
+								mailbody += stocklist_data.content[0][h] + ': ' + stocklist_data.content[value[0]][h] + "<br />";
 							}
 						}
 						list += tresult +
-							'<a title="' + maillanguage.helpChangeItemTitle + '" onclick="return confirm(\'' + maillanguage.helpChangeItemPopup + '\');" href="mailto:' + stocklist.var.inventoryControl + '?subject=' + core.fn.escapeHTML(maillanguage.helpChangeItemSubject) + '&body=' + core.fn.escapeHTML(mailbody) + '">' + maillanguage.helpChangeItemCaption + '</a> ' +
-							'<a title="' + maillanguage.helpDeleteItemTitle + '" onclick="return confirm(\'' + maillanguage.helpDeleteItemPopup + '\');" href="mailto:' + stocklist.var.inventoryControl + '?subject=' + core.fn.escapeHTML(maillanguage.helpDeleteItemSubject) + '&body=' + core.fn.escapeHTML(mailbody) + '">' + maillanguage.helpDeleteItemCaption + '</a> ' +
+							'<a title="' + maillanguage.helpChangeItemTitle + '" onclick="return confirm(\'' + maillanguage.helpChangeItemPopup + '\');" href="javascript:core.fn.dynamicMailto(\'' + stocklist.var.inventoryControl + '\',\'' + maillanguage.helpChangeItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpChangeItemCaption + '</a> ' +
+							'<a title="' + maillanguage.helpDeleteItemTitle + '" onclick="return confirm(\'' + maillanguage.helpDeleteItemPopup + '\');" href="javascript:core.fn.dynamicMailto(\'' + stocklist.var.inventoryControl + '\',\'' + maillanguage.helpDeleteItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpDeleteItemCaption + '</a> ' +
+							('ticketorder' in core.var.modules ? '<span style="float:right">' + core.fn.insert.icon('shoppingcart', 'bigger', false, 'onclick="stocklist.api.addToCart(' + value[0] + '); this.parentElement.style.backgroundColor=\'#a3be8c\';"') + '</span>' : '')+
 							'</div>';
 					});
 				} else list = core.fn.lang('errorNothingFound', 'stocklist', query);
