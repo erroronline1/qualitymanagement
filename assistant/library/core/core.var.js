@@ -14,55 +14,71 @@ core.var = {
 			display: {
 				en: "Document Lookup",
 				de: "Dokumentensuche",
-			}
+			},
+			wide: false,
 		},
 		documentbundles: {
 			icon: core.fn.insert.icon('folder'),
 			display: {
 				en: "Document Bundles",
 				de: "Dokumentenpakete"
-			}
+			},
+			wide: false,
 		},
 		stocklist: {
-			icon: core.fn.insert.icon('shoppingcart'),
+			icon: core.fn.insert.icon('shelf'),
 			display: {
 				en: "Stock List",
 				de: "Lager- und Artikelliste"
-			}
+			},
+			wide: false,
+		},
+		ticketorder: {
+			icon: core.fn.insert.icon('shoppingcart'),
+			display: {
+				en: "Orders",
+				de: "Bestellungen"
+			},
+			wide: true,
 		},
 		timetable: {
 			icon: core.fn.insert.icon('clock'),
 			display: {
 				en: "Timetable",
 				de: "Arbeitszeittabelle"
-			}
+			},
+			wide: false,
 		},
 		correspondence: {
 			icon: core.fn.insert.icon('mail'),
 			display: {
 				en: "Recommendation for Correspondence",
 				de: "Textvorschläge für Korrespondenz"
-			}
+			},
+			wide: false,
 		},
 		mailtools: {
 			icon: core.fn.insert.icon('batchmail'),
 			display: {
 				en: "Mail Tools",
 				de: "eMail Tools"
-			}
+			},
+			wide: false,
 		},
 		auditplanner:{
 			icon:core.fn.insert.icon('checklist'),
             display: {	en:"Audit Planner",
 						de:"Auditplaner"
-			}
+			},
+			wide: false,
 		},
 		help: {
 			icon: core.fn.insert.icon('faq'),
 			display: {
 				en: "Help",
 				de: "Hilfe"
-			}
+			},
+			wide: false,
 		},
 	},
 	themes: {
@@ -109,6 +125,8 @@ core.var = {
 	},
 	//	selected language in settings or desired default fallback
 	selectedLanguage: (core.fn.setting.get('settingLanguage') || 'en'),
+	//  size for content of mails for mailto, browser dependent, can be set in advanced settings
+	directMailSize: (core.fn.setting.get('settingDirectMailSize') || 2048),
 	//	mail for error reporting or feature request as shown in settings
 	adminMail: 'your@email.adr',
 	//	corporate design considerations for font. used for copied content. has to be installed on local machine
@@ -219,6 +237,18 @@ core.var = {
 		settingVarPreloadCaption: {
 			en: 'Delay between loading modules data and functions in milliseconds (Edge)',
 			de: 'Millisekunden Ladeverzögerung zwischen Moduldaten und -funktionen (Edge)'
+		},
+		settingMailSizeDeterminationCaption:{
+			en: 'Browser dependent maximum size for direct email',
+			de: 'Maximale Browserabhängige Größe für Direkt-eMails',
+		},
+		settingMailSizeDeterminationCheck:{
+			en: 'Verify setting',
+			de: 'Einstellung auf Funktion prüfen',
+		},
+		settingMailSizeDeterminationHint:{
+			en: 'If your browser supports the setting a mail will open without further use that can be closed afterwards. If not reduce the setting value and try again. Finally a restart of application is necessary. A possible overflow might make a restart of the browser necessary.',
+			de: 'Wenn der Browser die Einstellung unterstützt öffnet sich ein eMail-Fenster das keine weitere Verwendung hat und anschließend geschlossen werden kann. Ist dies nicht der Fall muss der Wert reduziert und erneut geprüft werden. Anschließen ist ein Neustart der Oberfläche erforderlich. Es kann zu einer Überforderung des Browsers kommen der seinen Neustart erfordert.',
 		},
 		settingGeneralHint: {
 			en: 'Local security settings can result in loss of settings on closing browser window.',

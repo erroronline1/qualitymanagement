@@ -25,6 +25,31 @@ var svgClassList = { //classList.add and *.remove not supported for svg in ie, t
 if (typeof core === 'undefined') var core = {};
 
 core.fn = {
+	maxMailSize: function (){
+		if (confirm(core.fn.lang('settingMailSizeDeterminationHint'))){
+			for (var i=core.fn.setting.get('settingDirectMailSize'); i>256; i--) {
+				var good=1, num='';
+				for (var j=0;j<i;j++) num += 'a';
+				try {location.href='mailto:?body='+num}
+				catch (e) {good=0;}
+				if (good==1) {break;}
+			}
+		}
+		return;
+	},
+	dynamicMailto: function (address, subject, body) {
+		var mail = document.createElement('a');
+		body=value(body);
+		if (body.length > core.var.directMailSize) body='';
+		mail.href = 'mailto:' + value(address) + '?subject=' + core.fn.escapeHTML(value(subject), true) + '&body=' + core.fn.escapeHTML(body, true);
+		mail.click();
+		return;
+	},
+	escapeHTML: function (text, br2nl) { //primary use for escaping special chars for mailto
+		if (br2nl !== "undefined" || br2nl) text = text.replace(/<br \/>|<br>/g, "\n");
+		return encodeURI(text);
+	},
+
 	stdout: function(where, what){ //handles output, thus is suitable for unit-testing and debugging.
 		//can set array of where to same what, strings are converted to array automatically, 'console' is reserved
 		if (typeof where === 'string') where=[where];
@@ -66,18 +91,6 @@ core.fn = {
 			behavior: 'smooth'
 		});
 		//override for anchor node in ie11 is not recognized because of reasons
-	},
-
-	escapeHTML: function (text, br2nl) { //primary use for escaping special chars for mailto
-		if (br2nl !== "undefined") text = text.replace(/<br \/>|<br>/g, "\n");
-		return text
-			.replace(/\s/g, "%20")
-			.replace(/&/g, "%26")
-			.replace(/</g, "%3C")
-			.replace(/>/g, "%3E")
-			.replace(/"/g, "%22")
-			.replace(/'/g, "%27")
-			.replace(/\n/g, "%0D%0A");
 	},
 
 	sortBySecondColumn: function (a, b) { //for two-dimensional arrays
@@ -255,6 +268,7 @@ core.fn = {
 				if (callback.indexOf('init') > -1 && scriptname in core.var.modules) {
 					core.var.currentScope = scriptname;
 					document.title = core.fn.lang('title') + ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage];
+					if (core.var.modules[core.var.currentScope].wide) el('temp').classList.add('contentWide'); else el('temp').classList.remove('contentWide');					
 				}
 			}
 			//append node(s)
@@ -304,6 +318,7 @@ core.fn = {
 				clipboard: ['0 0 2048 2048', '1,-1', 'M1792 1792v-1792h-1536v1792h512q0 53 20 99.5t55 81.5t81.5 55t99.5 20t99.5 -20t81.5 -55t55 -81.5t20 -99.5h512zM640 1536h768v128h-256v128q0 27 -10 50t-27.5 40.5t-40.5 27.5t-50 10t-50 -10t-40.5 -27.5t-27.5 -40.5t-10 -50v-128h-256v-128zM1664 1664h-128 v-256h-1024v256h-128v-1536h1280v1536zM768 1152h768v-128h-768v128zM768 768h768v-128h-768v128zM768 384h768v-128h-768v128zM512 1152h128v-128h-128v128zM512 768h128v-128h-128v128zM512 384h128v-128h-128v128z'],
 				document: ['0 0 2048 2048', '1,-1', 'M1792 1499v-1499h-1664v2048h1115zM1280 1536h293l-293 293v-293zM1664 128v1280h-512v512h-896v-1792h1408z'],
 				folder: ['0 0 2048 2048', '1,-1', 'M1920 1280q26 0 49.5 -10t41 -27.5t27.5 -40.5t10 -49q0 -30 -14 -58l-419 -839h-1615v1408q0 27 10 50t27.5 40.5t40.5 27.5t50 10h352q45 0 77.5 -9.5t58 -23.5t45.5 -31t40.5 -31t44 -23.5t54.5 -9.5h736q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50v-256h256zM128 591l309 618q17 33 47.5 52t67.5 19h984v256h-736q-45 0 -77.5 9.5t-58 23.5t-45.5 31t-40.5 31t-44 23.5t-54.5 9.5h-352v-1073zM1920 1152h-1368l-384 -768h1368z'],
+				shelf: ['0 0 2048 2048', '1,-1', 'M2048 2048v-2048h-2048v2048h2048zM1920 1920h-640v-512h640v512zM1280 768h640v512h-640v-512zM128 1920v-1152h1024v1152h-1024zM128 128h640v512h-640v-512zM1920 128v512h-1024v-512h1024z'],
 				shoppingcart: ['0 0 2048 2048', '1,-1', 'M1600 512q40 0 75 -15t61 -41t41 -61t15 -75t-15 -75t-41 -61t-61 -41t-75 -15t-75 15t-61 41t-41 61t-15 75q0 31 11 64h-534q11 -33 11 -64q0 -40 -15 -75t-41 -61t-61 -41t-75 -15t-75 15t-61 41t-41 61t-15 75q0 55 29.5 102t79.5 71l-432 1299h-189v128h281l85 -256 h1682l-298 -896h-1085l85 -256h850zM409 1536l213 -640h1035l213 640h-1461zM768 320q0 26 -19 45t-45 19t-45 -19t-19 -45t19 -45t45 -19t45 19t19 45zM1600 256q26 0 45 19t19 45t-19 45t-45 19t-45 -19t-19 -45t19 -45t45 -19z'],
 				argument: ['0 0 2048 2048', '1,-1', 'M958 720q101 -40 184 -106.5t142 -152.5t91.5 -187t32.5 -210v-64h-128v64q0 119 -45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224v-64h-128v64q0 109 32.5 210t91.5 187t142 152.5t184 106.5q-45 31 -81 72t-61 88.5 t-38.5 100t-13.5 107.5q0 93 35.5 174.5t96 142t142 96t174.5 35.5t174.5 -35.5t142 -96t96 -142t35.5 -174.5q0 -55 -13.5 -107.5t-38.5 -100t-61 -88.5t-81 -72zM704 768q66 0 124 25t101.5 68.5t69 102t25.5 124.5t-25.5 124t-69 101.5t-101.5 69t-124 25.5t-124.5 -25.5 t-102 -69t-68.5 -101.5t-25 -124t25 -124.5t68.5 -102t102 -68.5t124.5 -25zM2048 2048v-1024h-256l-384 -384v384h-128v128h256v-203l203 203h181v768h-1280v-230q-32 -4 -64.5 -10.5t-63.5 -17.5v386h1536z'],
 				signature: ['0 0 2048 2048', '1,-1', 'M1984 256q26 0 45 -18.5t19 -45.5q0 -24 -17 -44q-30 -35 -69 -62.5t-83 -46.5t-91 -29t-92 -10q-99 0 -183 38.5t-152 109.5q-49 51 -109 79.5t-132 28.5q-70 0 -131.5 -28.5t-109.5 -79.5l-9.5 -9t-23 -22.5l-29.5 -29.5t-30.5 -30t-25 -25t-12.5 -13q-19 -19 -45 -19 t-45 19t-19 45t19 45q54 54 102 104t100 88t114 60.5t145 22.5q99 0 183 -38.5t152 -109.5q49 -51 109 -79.5t132 -28.5q76 0 132 28.5t109 79.5q11 10 21.5 15t25.5 5zM1235 1758q14 -8 23 -23t9 -32q0 -8 -2 -15t-5 -14l-707 -1415q-9 -19 -28 -28l-173 -87 q-32 -16 -69 -16h-9.5t-9.5 1l-47 -94q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 12 7 30t16.5 37.5t19.5 36.5t15 28q-26 40 -26 87v165q0 16 7 29l576 1152l-65 32l-237 -474q-8 -16 -23.5 -25.5t-33.5 -9.5q-26 0 -45 19t-19 45q0 13 7 29l239 478 q16 32 43 50.5t63 18.5q35 0 66.5 -17t61.5 -32l71 142q8 17 23.5 26t33.5 9q13 0 22 -4q12 24 23.5 47.5t26 42.5t35.5 30.5t53 11.5t61 -15l94 -47q32 -16 50.5 -42.5t18.5 -63.5q0 -34 -15.5 -63.5t-29.5 -58.5zM1033 1859l87 -43l29 58l-87 43zM1117 1674l-192 96 l-669 -1337v-150q0 -11 8 -19t19 -8q4 0 16.5 5t29 13t35 17.5t35.5 18.5t30 16t19 10z'],
@@ -326,7 +341,8 @@ core.fn = {
 				clock:['0 0 2048 2048', '1,-1', 'M1024 0q-142 0 -272.5 36.5t-244.5 103t-207.5 160t-160 207.5t-103 245t-36.5 272t36.5 272t103 245t160 207.5t207.5 160t245 103t272 36.5t272 -36.5t245 -103t207.5 -160t160 -207.5t103 -245t36.5 -272q0 -142 -36.5 -272.5t-103 -244.5t-160 -207.5t-207.5 -160t-245 -103t-272 -36.5zM1024 1920q-123 0 -237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5t32 -237.5t90.5 -214t140.5 -181.5t181.5 -140.5t214 -90.5t237.5 -32t237.5 32t214 90.5t181.5 140.5t140.5 181.5t90.5 214t32 237.5t-32 237.5t-90.5 214t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32zM1024 1024v640h-128v-768h512v128h-384z'],
 				refreshall:['0 0 2048 2048', '1,-1', 'M2048 1024q0 -140 -37 -272t-106 -248t-167.5 -212.5t-220.5 -163.5h275v-128h-512v512h128v-294q117 55 211.5 139.5t161 189.5t103 226.5t36.5 250.5q0 123 -32 237.5t-90.5 214t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32t-237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5q0 -150 48 -289t135 -253t208 -197.5t266 -123.5l-34 -123q-110 31 -208.5 84t-182 124t-150.5 159t-113.5 187t-71.5 208t-25 224q0 141 36.5 272t103.5 244.5t160.5 207t207 160.5t244.5 103.5t272 36.5t272 -36.5t244.5 -103.5t207 -160.5t160.5 -207t103.5 -244.5t36.5 -272zM1536 1024l-768 -443v886z'],
 				refreshnone:['0 0 2048 2048', '1,-1', 'M2048 1024q0 -140 -37 -272t-106 -248t-167.5 -212.5t-220.5 -163.5h275v-128h-512v512h128v-294q117 55 211.5 139.5t161 189.5t103 226.5t36.5 250.5q0 123 -32 237.5t-90.5 214t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32t-237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5q0 -150 48 -289t135 -253t208 -197.5t266 -123.5l-34 -123q-110 31 -208.5 84t-182 124t-150.5 159t-113.5 187t-71.5 208t-25 224q0 141 36.5 272t103.5 244.5t160.5 207t207 160.5t244.5 103.5t272 36.5t272 -36.5t244.5 -103.5t207 -160.5t160.5 -207t103.5 -244.5t36.5 -272zM1536 1024l-768 -443v886zM896 802l384 222l-384 222v-444z'],
-				};
+				translate:['0 0 2048 2048', '1,-1', 'M601 896l298 -896h-134l-86 256h-334l-86 -256h-134l298 896h178zM637 384l-125 374l-125 -374h250zM640 1792v-384h256v-128h-384v512h128zM257 899q-60 45 -108 102t-81 122t-50.5 137.5t-17.5 147.5q0 88 23 170t64.5 153t100 129.5t129.5 100t153 64.5t170 23t170 -23t153 -64.5t129.5 -100t100 -129.5t64.5 -153t23 -170q0 -32 -3.5 -64t-9.5 -64h-133q8 32 13 64t5 64q0 106 -40.5 199t-110 162.5t-162.5 110t-199 40.5t-199 -40.5t-162.5 -110t-110 -162.5t-40.5 -199q0 -110 45.5 -208.5t126.5 -171.5zM2030 606q2 -8 2 -13v-96q0 -4 -2 -12q-8 -2 -13 -2q-40 1 -79 2t-79 1h-321v-33q0 -52 1 -104t3 -104v-4q0 -24 -9 -48t-29 -38q-14 -10 -39.5 -15.5t-54.5 -8t-56.5 -3t-43.5 -0.5q-6 0 -19 0.5t-18 5.5q-3 3 -7 16t-6 18q-7 26 -16.5 48.5t-23.5 45.5q34 -4 68 -5.5t68 -1.5q24 0 36.5 7.5t12.5 33.5v190h-319q-40 0 -80 -1l-80 -2q-8 0 -12 3q-2 6 -2 11v96q0 3 0.5 7.5t2.5 6.5q6 2 11 2l80 -2t80 -1h319q-2 26 -2.5 52.5t-5.5 52.5q20 -2 39.5 -3.5t39.5 -3.5q2 0 3.5 -0.5t3.5 -0.5q35 25 67 53t64 57h-308q-42 0 -83.5 -1t-83.5 -2q-8 0 -12 3q-2 6 -2 11v95q0 4 2 12q8 2 12 2q42 -1 83.5 -2t83.5 -1h373q16 0 30 4.5t25 4.5q8 0 23 -12t30 -28t26.5 -32.5t11.5 -24.5q0 -10 -6.5 -15.5t-14.5 -9.5q-14 -7 -27 -18t-25 -21q-52 -43 -104.5 -83.5t-109.5 -77.5v-11h321q40 0 79 1t79 2q7 0 13 -3zM1391 1159q0 30 -1 61t-8 60q69 0 137 -6q6 -1 12.5 -3t6.5 -10q0 -5 -3 -12t-5 -12q-2 -6 -3.5 -16t-2 -21.5t-0.5 -22v-16.5v-13h296q42 0 83.5 1t83.5 2q7 0 13 -3q3 -5 3 -10q-1 -17 -2 -35.5t-1 -35.5v-58q0 -36 1 -72.5t2 -72.5q0 -3 -0.5 -7t-2.5 -6q-8 -2 -13 -2t-25 -0.5t-41 -0.5q-19 0 -34 1t-17 3q-2 8 -2.5 24t-0.5 36q0 33 1 68t1 52h-802v-14.5t0.5 -25t0.5 -31v-33.5q0 -29 -1 -52.5t-3 -25.5q-8 -2 -13 -2h-102q-11 0 -13 3t-2 13q1 40 1 79v79v58t-1 58q0 5 2 11q8 2 13 2q42 -1 83.5 -2t83.5 -1h275v11z'],
+			};
 			addclass = addclass || '';
 			try {
 				var rtrn = '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + asset[icon][0] + '\" style=\"transform: scale(' + asset[icon][1] + ');\" class=\"icon ' + addclass + '\" ' + (value(id) != '' ? ' id=\"' + id + '\" ' : '') + (value(attributes) != '' ? ' ' + attributes : '') + '><path d=\"' + asset[icon][2] + '\"></path></svg>';
@@ -389,7 +405,8 @@ core.fn = {
 				'<br />' + core.fn.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.fn.setting.get('settingFuzzyThreshold') || 5) + '" onchange="core.fn.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
 				'<br />' + core.fn.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.fn.setting.get('settingGlobalSearchTime') || 3) + '" onchange="core.fn.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
 				'<br />' + core.fn.lang('settingVarPreloadCaption') + ':<br /><input type="range" min="0" max="1000" step="50" value="' + (core.fn.setting.get('settingVarPreloadTime') || 50) + '" onchange="core.fn.setting.set(\'settingVarPreloadTime\',(this.value))" />' +
-				'';
+				'<br />' + core.fn.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="256" max="32768" step="256" value="' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '" onchange="core.fn.setting.set(\'settingDirectMailSize\',(this.value))" title="' + core.fn.lang('settingRestartNeccessary') + '" />' +
+				'<br /><input type="button" onclick="core.fn.maxMailSize()" value="' + core.fn.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.lang('settingMailSizeDeterminationHint') +'" />';
 		},
 		setupDebug: function () { //return debugging options
 			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
