@@ -202,6 +202,10 @@ content box-items
 	border: 1px solid transparent;
 }
 
+.contentWide:hover{
+	flex-grow:3.8;
+}
+
 .items {
 	margin-bottom: .5em;
 	padding: .5em;
@@ -386,7 +390,7 @@ hr {
 }
 
 .singlefavouritehandler:hover svg {
-	animation: singlefavouritehandler .25s 1.5s normal forwards;*/
+	animation: singlefavouritehandler .25s 1.5s normal forwards;
 }
 
 @keyframes singlefavouritehandler {
