@@ -90,6 +90,10 @@ var randomTip = {
 			en:'Some browsers are slower than others (looking at you Edge!). If the global search or modules do not load properly add a little delay in the advanced settings.',
 			de:'Manche Browser sind langsamer als andere (fühle dich angesprochen Edge!). Wenn die globale Suche oder die Module nicht richtig laden gib ihnen bei den erweiterten Einstellungen etwas mehr Zeit.'
 		},
+		{
+			en:'Generated text may be pasted to the email occasionally. It depends on the browser. The texts length can be customized to the browsers abilities in the advanced settings.',
+			de:'Generierter Text wird unter Umständen direkt in die eMail eingefügt. Das hängt vom Browser ab. Die Länge des Textes kann bei den erweiterten Einstellungen an den Browser angepasst werden. '
+		},
 		//	module specific tips
 		{
 			en: 'Remember pointing our errors to the inventory control via email.',

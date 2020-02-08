@@ -70,7 +70,7 @@ correspondence.fn = {
 				output += '<br />';
 			});
 			core.fn.stdout('output', output);
-			el('mailto').href = 'mailto:?body=' + core.fn.escapeHTML(el('output').innerHTML, true);
+			el('mailto').href = 'javascript:core.fn.dynamicMailto(\'\',\'\',\'' + el('output').innerHTML +'\')';
 
 		} else core.fn.popup(core.fn.lang('errorSelectModules', 'correspondence'));
 		core.history.write(['correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
@@ -99,7 +99,7 @@ correspondence.fn = {
 				'</div>' +
 				(typeof additionalOptions !== "undefined" && additionalOptions ? '<br />' + additionalOptions : '') +
 				(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '" target="_blank">' + core.fn.insert.icon('word') + core.fn.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.fn.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
-				'<br /><br /><a id="mailto" href="mailto:">' + core.fn.insert.icon('email') + core.fn.lang('openMailApp', 'correspondence') + '</a>' +
+				'<br /><br /><a id="mailto" href="javascript:core.fn.dynamicMailto()">' + core.fn.insert.icon('email') + core.fn.lang('openMailApp', 'correspondence') + '</a>' +
 				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.fn.insert.icon('outlook') + core.fn.lang('openOutlook', 'correspondence') + '</a>' : '');
 			core.fn.stdout('temp', output);
 			if (value(query) !== '') correspondence.fn.gen(query);

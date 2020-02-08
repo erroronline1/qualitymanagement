@@ -10,13 +10,17 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `svgClassList()` polyfill for adding/removing classes to svg classList
 
+`core.fn.maxMailSize()` tests whether the browser can handle the maximum body size for maito according to advanced settings
+
+`core.fn.dynamicMailto(address, subject, body)` prefills mailto:-actions, opens mail-client and handles browser dependent maximum body size
+
+`core.fn.escapeHTML(text, br2nl)` returns a string with escaped special chars for mailto anchors
+
 `core.fn.stdout(where, what)` serves as a wrapper for output to innerHTML, but can be used for debugging easily by setting/adding 'console' to *where*
 
 `core.fn.popup(text)` shows or updates a modal box if text is provided, hides it if function called with null value
 
 `core.fn.toggelHeight(toggleel)` toggles the class list of given element to expand or shrink it
-
-`core.fn.escapeHTML(text, br2nl)` returns a string with escaped special chars for mailto anchors
 
 `core.fn.sortBySecondColumn(a, b)` sorts two dimensional arrays as paramter for sort()
 

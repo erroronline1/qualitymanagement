@@ -46,8 +46,8 @@
 			document.write('<aside class="setting">' +
 				core.fn.insert.icon('feedbackrequest', 'bigger', false,
 					'title="' + core.fn.lang('homeMenuFeedbackRequest') +
-					'" onclick="var win = window.open(\'mailto:\' + core.var.adminMail + \'?subject=\' + document.title, \'emailWindow\'); if (win && win.open && !win.closed) win.close(); return;"') +
-				core.fn.insert.icon('settings', 'bigger', false,
+					'" onclick="core.fn.dynamicMailto(core.var.adminMail, document.title)"') +
+					core.fn.insert.icon('settings', 'bigger', false,
 					'title="' + core.fn.lang('settingMenuEntry') +
 					'" onclick="core.fn.popup(core.fn.setting.setup()); return;"') +
 				'</aside>');

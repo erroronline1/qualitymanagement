@@ -57,7 +57,7 @@ mailtools.fn = {
 			else {
 				var output = '';
 				for (var i = 0; i < names.length; i++) {
-					output += '<a href="mailto:' + adresses[i] + '?subject=' + el('subject').value + '&body=' + core.fn.lang('outputSalutation', 'mailtools', names[i]) + '%20' + encodeURI(names[i]) + ',%0A%0A' + encodeURI(el('body').value) + '">' + core.fn.lang('outputMailTo', 'mailtools') + ' ' + names[i] + ' &lt;' + adresses[i] + '&gt;</a><br />';
+					output += '<a href="javascript:core.fn.dynamicMailto(\'' + adresses[i] + '\',\'' + el('subject').value + '\',\'' + core.fn.lang('outputSalutation', 'mailtools', names[i]) + ' ' + names[i] + ',\n\n' + el('body').value + '\')">' + core.fn.lang('outputMailTo', 'mailtools') + ' ' + names[i] + ' &lt;' + adresses[i] + '&gt;</a><br />';
 				}
 				disableOutputSelect = true;
 				core.fn.stdout('output', output);
