@@ -281,10 +281,10 @@ core.fn = {
 
 	insert: { //handle repetitive design patterns
 		checkbox: function (label, id, checked, additionalProperty, title) {
-			return '<label class="custominput"' + (title ? ' title="' + title + '"' : '') + '>' + label + '<input type="checkbox" id="' + id + '" ' + (checked ? 'checked="checked" ' : '') + (additionalProperty ? additionalProperty : '') + ' /><span class="checkmark"></span></label>';
+			return '<label class="custominput"' + (title ? ' title="' + title + '"' : '') + '>' + label + '<input type="checkbox" id="' + id + '" ' + (eval(checked) ? 'checked="checked" ' : '') + (additionalProperty ? additionalProperty : '') + ' /><span class="checkmark"></span></label>';
 		},
 		radio: function (label, name, id, checked, additionalProperty, title) {
-			return '<label class="custominput"' + (title ? ' title="' + title + '"' : '') + '>' + label + '<input type="radio" name="' + name + '" id="' + id + '" ' + (checked ? 'checked="checked"' : '') + (additionalProperty ? additionalProperty : '') + ' /><span class="checkmark"></span></label>';
+			return '<label class="custominput"' + (title ? ' title="' + title + '"' : '') + '>' + label + '<input type="radio" name="' + name + '" id="' + id + '" ' + (eval(checked) ? 'checked="checked"' : '') + (additionalProperty ? additionalProperty : '') + ' /><span class="checkmark"></span></label>';
 		},
 		select: function (options, name, id, selected, additionalProperty) {
 			// output has to be object with optionId:[value,label] pairs
@@ -380,14 +380,14 @@ core.fn = {
 				});
 			}
 			return core.fn.lang('settingThemeCaption') + ':<br />' + core.fn.insert.select(themeSelector, 'settingTheme', 'settingTheme', (core.fn.setting.get('settingTheme') || null), 'onchange="core.fn.setting.theme(this.value)"') +
-				'<br /><br />' + core.fn.lang('settingMenusizeCaption') + ':<br />' + core.fn.insert.checkbox(core.fn.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.fn.setting.get('settingSmallmenu') || 0), 'onchange="core.fn.setting.reversedswitch(\'settingSmallmenu\')"', core.fn.lang('settingRestartNeccessary')) +
+				'<br /><br />' + core.fn.lang('settingMenusizeCaption') + ':<br />' + core.fn.insert.checkbox(core.fn.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.fn.setting.get('settingSmallmenu') || 0), 'onchange="core.fn.setting.switch(\'settingSmallmenu\')"', core.fn.lang('settingRestartNeccessary')) +
 				'<br />' + core.fn.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (core.fn.setting.get('settingFontsize') || 0) + '" onchange="core.fn.setting.fontsize(this.value)" />' +
 				'<br />' + core.fn.lang('settingLanguageCaption') + ':<br />' + core.fn.insert.select(core.var.registeredLanguages, 'settingLanguage', 'settingLanguage', (core.var.selectedLanguage || null), 'title="' + core.fn.lang('settingRestartNeccessary') + '" onchange="core.fn.setting.set(\'settingLanguage\',(this.value))"') +
-				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingSearchOptionFuzzy'), 'settingFuzzySearch', (core.fn.setting.get('settingFuzzySearch') || 0), 'onchange="core.fn.setting.reversedswitch(\'settingFuzzySearch\')"') +
+				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingSearchOptionFuzzy'), 'settingFuzzySearch', (core.fn.setting.get('settingFuzzySearch') || 0), 'onchange="core.fn.setting.switch(\'settingFuzzySearch\')"') +
 				'<br /><small>' + core.fn.lang('settingSearchOptionFuzzyHint') + '</small>' +
-				'<br />' + core.fn.insert.checkbox(core.fn.lang('settingCopyOptionSelector'), 'settingNewWindowCopy', (core.fn.setting.get('settingNewWindowCopy') || 0), 'onchange="core.fn.setting.reversedswitch(\'settingNewWindowCopy\')"') +
+				'<br />' + core.fn.insert.checkbox(core.fn.lang('settingCopyOptionSelector'), 'settingNewWindowCopy', (core.fn.setting.get('settingNewWindowCopy') || 0), 'onchange="core.fn.setting.switch(\'settingNewWindowCopy\')"') +
 				'<br /><small>' + core.fn.lang('settingCopyOptionHint') + '</small>' +
-				'<br />' + core.fn.insert.checkbox(core.fn.lang('settingNotificationSelector'), 'settingStarthinweis' + updateTracker.latestMajorUpdate(), (core.fn.setting.get('settingStarthinweis' + updateTracker.latestMajorUpdate()) != 1), 'onchange="core.fn.setting.switch(\'settingStarthinweis' + updateTracker.latestMajorUpdate() + '\')"', core.fn.lang('settingRestartNeccessary')) +
+				'<br />' + core.fn.insert.checkbox(core.fn.lang('settingNotificationSelector'), 'settingNotificationHide' + updateTracker.latestMajorUpdate(), (core.fn.setting.get('settingNotificationHide' + updateTracker.latestMajorUpdate())), 'onchange="core.fn.setting.switch(\'settingNotificationHide' + updateTracker.latestMajorUpdate() + '\')"', core.fn.lang('settingRestartNeccessary')) +
 				'<br /><small>' + core.fn.lang('settingNotificationHint') + '</small>';
 		},
 		setupModules: function () { //returns module selector
@@ -395,7 +395,8 @@ core.fn = {
 				var moduleSelector = '';
 				//create module-selector
 				Object.keys(core.var.modules).forEach(function (key) {
-					moduleSelector += core.fn.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.fn.setting.get('module_' + key) != 1), 'onchange="core.fn.setting.switch(\'module_' + key + '\')"', core.fn.lang('settingRestartNeccessary')) + '<br />';
+					console.log (key, core.fn.setting.isset('module_' + key), core.fn.setting.get('module_' + key), core.var.modules[key].enabledByDefault);
+					moduleSelector += core.fn.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.fn.setting.isset('module_' + key)?core.fn.setting.get('module_' + key):core.var.modules[key].enabledByDefault), 'onchange="core.fn.setting.set(\'module_' + key + '\', el(\'module_' + key + '\').checked)"', core.fn.lang('settingRestartNeccessary')) + '<br />';
 				});
 			} else moduleSelector = core.fn.lang('errorLoadingModules');
 			return moduleSelector;
@@ -409,8 +410,8 @@ core.fn = {
 				'<br /><input type="button" onclick="core.fn.maxMailSize()" value="' + core.fn.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.lang('settingMailSizeDeterminationHint') +'" />';
 		},
 		setupDebug: function () { //return debugging options
-			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.reversedswitch(\'settingPerformanceMonitor\')"') +
-				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.fn.setting.get('settingOutputMonitor') || 0), 'onchange="core.fn.setting.reversedswitch(\'settingOutputMonitor\')"') +
+			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingPerformanceMonitor\')"') +
+				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.fn.setting.get('settingOutputMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingOutputMonitor\')"') +
 				'';
 		},
 		theme: function (theme) {
@@ -421,11 +422,7 @@ core.fn = {
 			fontsize = document.body.style.fontSize = (value / 10 + 1) + 'em';
 			core.fn.setting.set('settingFontsize', value);
 		},
-		switch: function (name) { //on by default
-			if (el(name).checked) core.fn.setting.unset(name);
-			else core.fn.setting.set(name, 1);
-		},
-		reversedswitch: function (name) { //off by default
+		switch: function (name) { // off/false by default
 			if (el(name).checked) core.fn.setting.set(name, 1);
 			else core.fn.setting.unset(name);
 		},
@@ -464,6 +461,15 @@ core.fn = {
 				} else return false;
 			}
 		},
+		isset: function (name) {
+			if (this.localStorage()) {
+				if (window.localStorage.getItem(name) == null) return false;
+				else return true;
+			} else {
+				if (document.cookie.indexOf(name + '=') > -1) return true;
+				else return false;
+			}
+		},
 		unset: function (name) {
 			if (this.localStorage()) {
 				window.localStorage.removeItem(name);
@@ -476,7 +482,6 @@ core.fn = {
 				window.localStorage.clear();
 			} else {
 				document.cookie.split(";").forEach(function (c) {
-					console.log(c.replace(/^ +/g, "").replace(/=.*/g, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;"));
 					document.cookie = c.replace(/^ +/g, "").replace(/=.*/g, "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;");
 				});
 			}
@@ -504,7 +509,7 @@ core.fn = {
 			core.fn.stdout('output', '');
 		core.var.currentScope = null;
 		Object.keys(core.var.modules).forEach(function (key) {
-			if (el('module' + key) != 'undefined') el('module' + key).checked = false;
+			if (el('module' + key) != 'undefined' && el('module' + key) != null) el('module' + key).checked = false;
 		});
 		document.title = core.fn.lang('title')
 		if (typeof query !== 'undefined') globalSearch.search(query);
@@ -613,7 +618,7 @@ function select_module() { //load module list and return the main menu
 	if (typeof (core.var.modules) !== 'undefined') {
 		var output='<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.lang('title',false)+ '</span>';
 		Object.keys(core.var.modules).forEach(function (key) {
-			if (typeof core.var.modules[key] === 'object' && core.fn.setting.get('module_' + key) != 1) {
+			if (typeof core.var.modules[key] === 'object' && (core.fn.setting.isset('module_' + key)?eval(core.fn.setting.get('module_' + key)):core.var.modules[key].enabledByDefault)) {
 				//create module-selector
 				opt = 'modules/' + key + '.js';
 				output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.fn.loadScript(\'' + opt + '\', \'' + key + '.fn.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
