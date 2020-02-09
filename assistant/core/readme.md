@@ -48,13 +48,13 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.fn.setting.setup()` returns the content of the settings to display within the popup modal. all the other setting methods are for this primarily but
 
-`core.fn.setting.switch(name)` toggles a cookie in terms of on by default
-
-`core.fn.setting.reversedswitch(name)` toggles a cookie in terms of off by default
+`core.fn.setting.switch(name)` toggles a setting to true in terms of off/false by default
 
 `core.fn.setting.set(name, value)` stores data in localstorage or cookie. in the latter case for about one year
 
 `core.fn.setting.get(name)` returns the value of localstorage.item or cookie *name* or false
+
+`core.fn.setting.isset(name)` returns boolean of existence of localstorage.item or cookie *name*. the getter might not be sufficient in case of actual 0 or false values
 
 `core.fn.setting.unset(name)` unsets localstorage.item or cookie *name*
 

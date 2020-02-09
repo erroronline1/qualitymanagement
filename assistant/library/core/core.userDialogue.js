@@ -135,9 +135,9 @@ var updateTracker = {
 	},
 	alert: function () {
 		//	display latest update hint on startup as long as it is not disabled
-		if (core.fn.setting.get('settingStarthinweis' + this.latestMajorUpdate()) === false) {
+		if (core.fn.setting.get('settingNotificationHide' + this.latestMajorUpdate()) === false) {
 			text = this.list[this.latestMajorUpdate()][1] + '<br /><br />' +
-				core.fn.insert.checkbox(core.fn.lang('settingNotificationSelector'), 'sstarthinweis', (core.fn.setting.get('settingStarthinweis' + this.latestMajorUpdate()) !== 1), 'onchange="core.fn.setting.set(\'settingStarthinweis' + this.latestMajorUpdate() + '\',1)"') +
+				core.fn.insert.checkbox(core.fn.lang('settingNotificationSelector'), 'settingNotificationHide' + updateTracker.latestMajorUpdate(), (core.fn.setting.get('settingNotificationHide' + this.latestMajorUpdate())), 'onchange="core.fn.setting.switch(\'settingNotificationHide' + this.latestMajorUpdate() + '\')"', core.fn.lang('settingRestartNeccessary')) +
 				'<br /><small>' + core.fn.lang('settingNotificationHint') + '</small>';
 			core.fn.popup(text);
 		}
