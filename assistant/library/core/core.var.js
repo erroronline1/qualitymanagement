@@ -7,7 +7,9 @@ core.var = {
 		//			display: {  en:"english caption",
 		//						de:"german caption",
 		//						extend languages as desired
-		//			}
+		//			},
+		//			enabledByDefault: boolean e.g. hiding for testing in production or modules of no general use
+		//			wide: boolean to make the temp-container wide for content on mouseover
 		//		},		
 		documentlookup: {
 			icon: core.fn.insert.icon('document'),
@@ -15,6 +17,7 @@ core.var = {
 				en: "Document Lookup",
 				de: "Dokumentensuche",
 			},
+			enabledByDefault: true,
 			wide: false,
 		},
 		documentbundles: {
@@ -23,6 +26,7 @@ core.var = {
 				en: "Document Bundles",
 				de: "Dokumentenpakete"
 			},
+			enabledByDefault: true,
 			wide: false,
 		},
 		stocklist: {
@@ -31,6 +35,7 @@ core.var = {
 				en: "Stock List",
 				de: "Lager- und Artikelliste"
 			},
+			enabledByDefault: true,
 			wide: false,
 		},
 		ticketorder: {
@@ -39,6 +44,7 @@ core.var = {
 				en: "Orders",
 				de: "Bestellungen"
 			},
+			enabledByDefault: true,
 			wide: true,
 		},
 		timetable: {
@@ -47,14 +53,17 @@ core.var = {
 				en: "Timetable",
 				de: "Arbeitszeittabelle"
 			},
+			enabledByDefault: true,
 			wide: false,
 		},
 		correspondence: {
 			icon: core.fn.insert.icon('mail'),
 			display: {
 				en: "Recommendation for Correspondence",
+			enabledByDefault: true,
 				de: "Textvorschläge für Korrespondenz"
 			},
+			enabledByDefault: true,
 			wide: false,
 		},
 		mailtools: {
@@ -63,6 +72,7 @@ core.var = {
 				en: "Mail Tools",
 				de: "eMail Tools"
 			},
+			enabledByDefault: true,
 			wide: false,
 		},
 		auditplanner:{
@@ -70,6 +80,7 @@ core.var = {
             display: {	en:"Audit Planner",
 						de:"Auditplaner"
 			},
+			enabledByDefault: true,
 			wide: false,
 		},
 		help: {
@@ -78,6 +89,7 @@ core.var = {
 				en: "Help",
 				de: "Hilfe"
 			},
+			enabledByDefault: true,
 			wide: false,
 		},
 	},
@@ -216,10 +228,10 @@ core.var = {
 		},
 		settingNotificationSelector: {
 			en: function () {
-				return 'Show hint #' + (updateTracker.latestMajorUpdate() + 1) + ' on startup';
+				return 'Hide hint #' + (updateTracker.latestMajorUpdate() + 1) + ' on startup';
 			},
 			de: function () {
-				return 'Hinweis #' + (updateTracker.latestMajorUpdate() + 1) + ' beim Start anzeigen';
+				return 'Hinweis #' + (updateTracker.latestMajorUpdate() + 1) + ' beim Start verbergen';
 			}
 		},
 		settingNotificationHint: {
