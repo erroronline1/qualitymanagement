@@ -30,7 +30,7 @@ core.fn = {
 			for (var i=core.fn.setting.get('settingDirectMailSize'); i>256; i--) {
 				var good=1, num='';
 				for (var j=0;j<i;j++) num += 'a';
-				try {location.href='mailto:?body='+num}
+				try {location.href='mailto:thisIsSupposedToBeACasuallyLongTest@eMail.address?body='+num}
 				catch (e) {good=0;}
 				if (good==1) {break;}
 			}
@@ -406,8 +406,11 @@ core.fn = {
 				'<br />' + core.fn.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.fn.setting.get('settingFuzzyThreshold') || 5) + '" onchange="core.fn.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
 				'<br />' + core.fn.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.fn.setting.get('settingGlobalSearchTime') || 3) + '" onchange="core.fn.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
 				'<br />' + core.fn.lang('settingVarPreloadCaption') + ':<br /><input type="range" min="0" max="1000" step="50" value="' + (core.fn.setting.get('settingVarPreloadTime') || 50) + '" onchange="core.fn.setting.set(\'settingVarPreloadTime\',(this.value))" />' +
-				'<br />' + core.fn.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="256" max="32768" step="256" value="' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '" onchange="core.fn.setting.set(\'settingDirectMailSize\',(this.value))" title="' + core.fn.lang('settingRestartNeccessary') + '" />' +
-				'<br /><input type="button" onclick="core.fn.maxMailSize()" value="' + core.fn.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.lang('settingMailSizeDeterminationHint') +'" />';
+				//  as of 2-2020 chrome, edge and ie11 support up to 2^11 characters leaving 2048 minus mailto:{xxx}?subject={xxx}&body=
+				//  only firefox seemingly supports up to 2^15 characters (32768 - the afore mentioned)
+				// therefore the odd numbers with 75 chracters substracted from threshold
+				'<br />' + core.fn.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="181" max="32693" step="256" value="' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '" onchange="core.fn.setting.set(\'settingDirectMailSize\',(this.value)); el(\'currentDirectMailSize\').innerHTML=this.value" title="' + core.fn.lang('settingRestartNeccessary') + '" />' +
+				' <span id="currentDirectMailSize">' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.maxMailSize()" value="' + core.fn.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.lang('settingMailSizeDeterminationHint') +'" />';
 		},
 		setupDebug: function () { //return debugging options
 			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingPerformanceMonitor\')"') +

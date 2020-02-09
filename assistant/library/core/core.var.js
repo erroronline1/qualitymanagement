@@ -138,7 +138,10 @@ core.var = {
 	//	selected language in settings or desired default fallback
 	selectedLanguage: (core.fn.setting.get('settingLanguage') || 'en'),
 	//  size for content of mails for mailto, browser dependent, can be set in advanced settings
-	directMailSize: (core.fn.setting.get('settingDirectMailSize') || 2048),
+	//  as of 2-2020 chrome, edge and ie11 support up to 2^11 characters leaving 2048 minus mailto:{xxx}?subject={xxx}&body=
+	//  only firefox seemingly supports up to 2^15 characters (32768 - the afore mentioned)
+	// therefore the odd numbers with 75 chracters substracted from threshold
+	directMailSize: (core.fn.setting.get('settingDirectMailSize') || 2048-75),
 	//	mail for error reporting or feature request as shown in settings
 	adminMail: 'your@email.adr',
 	//	corporate design considerations for font. used for copied content. has to be installed on local machine
@@ -259,8 +262,8 @@ core.var = {
 			de: 'Einstellung auf Funktion prüfen',
 		},
 		settingMailSizeDeterminationHint:{
-			en: 'If your browser supports the setting a mail will open without further use that can be closed afterwards. If not reduce the setting value and try again. Finally a restart of application is necessary. A possible overflow might make a restart of the browser necessary.',
-			de: 'Wenn der Browser die Einstellung unterstützt öffnet sich ein eMail-Fenster das keine weitere Verwendung hat und anschließend geschlossen werden kann. Ist dies nicht der Fall muss der Wert reduziert und erneut geprüft werden. Anschließen ist ein Neustart der Oberfläche erforderlich. Es kann zu einer Überforderung des Browsers kommen der seinen Neustart erfordert.',
+			en: 'If your browser supports the setting a mail will open without further use that can be closed afterwards. If not reduce the setting value and try again. Finally a restart of application is necessary. A possible overflow might make a restart of the browser necessary. Tested browsers support the closest smaller value to 2048, only Firefox is capable of almost up to 32500 characters.',
+			de: 'Wenn der Browser die Einstellung unterstützt öffnet sich ein eMail-Fenster das keine weitere Verwendung hat und anschließend geschlossen werden kann. Ist dies nicht der Fall muss der Wert reduziert und erneut geprüft werden. Anschließen ist ein Neustart der Oberfläche erforderlich. Es kann zu einer Überforderung des Browsers kommen der seinen Neustart erfordert. Die gestesteten Brwoser unterstützen den nächstkleineren Wert zu 2048, nur Firefox schafft bis zu 35500 Zeichen.',
 		},
 		settingGeneralHint: {
 			en: 'Local security settings can result in loss of settings on closing browser window.',
