@@ -43,13 +43,13 @@ Public Function importModules(ByVal libraries As Object) As Boolean
     'Application.DisplayAlerts = False
     'rename existing modules and import external modules
     For Each lib In libraries
-		If Len(Dir(libraries(lib))) > 0 Then
-			With ThisWorkbook.VBProject.VBComponents
-					'renaming to _old because sometimes modules are removed on finishing of the code only, resulting in enumeration of module names
-					.Item(lib).name = lib & "_OLD"
-					.Import libraries(lib)
-			End With
-		End If
+        If Len(Dir(libraries(lib))) > 0 Then
+            With ThisWorkbook.VBProject.VBComponents
+                'renaming to _old because sometimes modules are removed on finishing of the code only, resulting in enumeration of module names
+                .Item(lib).name = lib & "_OLD"
+                .Import libraries(lib)
+            End With
+        End If
     Next lib
     'if no external modules have been found rename existing modules to default name
     For Each lib In libraries
