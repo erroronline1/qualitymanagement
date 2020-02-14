@@ -49,6 +49,11 @@ mailtools.fn = {
 		el('body').value = core.fn.lang('sampleBodyValue', 'mailtools');
 	},
 	serialmailgen: function () {
+		if (el('body').value.replace('\n', '<br />').length > core.var.directMailSize) {
+			alert(core.fn.lang('errorMailSizeExport'));
+			return;
+		}
+		
 		if (!el('names').value || !el('adresses').value || !el('body').value || !el('subject').value) core.fn.popup(core.fn.lang('errorNoContent', 'mailtools'));
 		else {
 			var names = el('names').value.split(/\n/g),
@@ -57,7 +62,7 @@ mailtools.fn = {
 			else {
 				var output = '';
 				for (var i = 0; i < names.length; i++) {
-					output += '<a href="javascript:core.fn.dynamicMailto(\'' + adresses[i] + '\',\'' + el('subject').value + '\',\'' + core.fn.lang('outputSalutation', 'mailtools', names[i]) + ' ' + names[i] + ',\n\n' + el('body').value + '\')">' + core.fn.lang('outputMailTo', 'mailtools') + ' ' + names[i] + ' &lt;' + adresses[i] + '&gt;</a><br />';
+					output += '<a href="javascript:core.fn.dynamicMailto(\'' + adresses[i] + '\',\'' + el('subject').value + '\',\'' + core.fn.lang('outputSalutation', 'mailtools', names[i]) + ' ' + names[i] + ',<br /><br />' + el('body').value.replace('\n', '<br />') + '\')">' + core.fn.lang('outputMailTo', 'mailtools') + ' ' + names[i] + ' &lt;' + adresses[i] + '&gt;</a><br />';
 				}
 				disableOutputSelect = true;
 				core.fn.stdout('output', output);

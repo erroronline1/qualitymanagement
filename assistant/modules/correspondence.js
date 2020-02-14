@@ -70,7 +70,9 @@ correspondence.fn = {
 				output += '<br />';
 			});
 			core.fn.stdout('output', output);
-			el('mailto').href = 'javascript:core.fn.dynamicMailto(\'\',\'\',\'' + el('output').innerHTML +'\')';
+			//reassign variable value for mailto after actual output
+			if (output.length > core.var.directMailSize) output=core.fn.lang('errorMailSizeExport');
+			el('mailto').href = 'javascript:core.fn.dynamicMailto(\'\',\'\',\'' + output +'\')';
 
 		} else core.fn.popup(core.fn.lang('errorSelectModules', 'correspondence'));
 		core.history.write(['correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
