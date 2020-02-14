@@ -95,7 +95,7 @@ stocklist.fn = {
 						list += tresult +
 							'<a title="' + maillanguage.helpChangeItemTitle + '" onclick="return confirm(\'' + maillanguage.helpChangeItemPopup + '\');" href="javascript:core.fn.dynamicMailto(\'' + stocklist.var.inventoryControl + '\',\'' + maillanguage.helpChangeItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpChangeItemCaption + '</a> ' +
 							'<a title="' + maillanguage.helpDeleteItemTitle + '" onclick="return confirm(\'' + maillanguage.helpDeleteItemPopup + '\');" href="javascript:core.fn.dynamicMailto(\'' + stocklist.var.inventoryControl + '\',\'' + maillanguage.helpDeleteItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpDeleteItemCaption + '</a> ' +
-							((typeof core.var.modules['ticketorder'] === 'object' && (core.fn.setting.isset('module_ticketorder')?eval(core.fn.setting.get('module_ticketorder')):core.var.modules['ticketorder'].enabledByDefault))
+							(stocklist_data.content[value[0]][0] && (typeof core.var.modules['ticketorder'] === 'object' && (core.fn.setting.isset('module_ticketorder')?eval(core.fn.setting.get('module_ticketorder')):core.var.modules['ticketorder'].enabledByDefault))
 							? '<span style="float:right">' + core.fn.insert.icon('shoppingcart', 'bigger', false, 'onclick="stocklist.api.addToCart(' + value[0] + '); this.parentElement.style.backgroundColor=\'#a3be8c\';"') + '</span>' : '')+
 							'</div>';
 					});
