@@ -15,12 +15,13 @@ timetable.api = {
 		var queryString=search.split(/\W/),
 			searchTerms=timetable.var.searchTerms[core.var.selectedLanguage],
 			found=false;
-		for (var i = 0 ; i < searchTerms.length; i++){
-			if (searchTerms[i].toLowerCase().indexOf(queryString[0].toLowerCase()) > -1) {
+		if (typeof searchTerms !== 'undefined') {
+			var found = core.fn.smartSearch.lookup(search, searchTerms, true);
+			found.forEach(function (value) {
 				found=true;
-				break;
-			}
+			});
 		}
+
 		if (found) {
 			queryString.shift();
 			display='<a href="javascript:core.fn.loadScript(\'modules/timetable.js\',\'timetable.fn.init(\\\'' + queryString.join(' ') + '\\\')\')">' + core.var.modules.timetable.display[core.var.selectedLanguage] + (queryString.length>0 ? core.fn.lang('apiFound', 'timetable') + queryString.join(' '):'') + '</a>';
@@ -36,7 +37,6 @@ timetable.fn = {
 		core.performance.start('timetable.fn.input(\'' + value(query) + '\')'); //possible duplicate
 		if (value(query) !== '') {
 			//see https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/btoa
-			//core.fn.stdout('output', '<a href="'+timetable.var.path + window.btoa(unescape(encodeURIComponent(query.toLowerCase()))) + '.xlsm" target="wh">zur Tabelle von ' + query + '</a>');
 			core.fn.stdout('output', timetable.fn.linkfile(query));
 		}
 		core.performance.stop('timetable.fn.input(\'' + value(query) + '\')');
