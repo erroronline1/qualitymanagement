@@ -71,6 +71,13 @@ Public Function LastRowOrColumn(ByVal WB As Workbook, ByVal rowcol As String, By
     End If
 End Function
 
+Public Function convertColumn (ByVal destinationFormat As String, ByVal inputColumn As Variant ) As Variant
+    If destinationFormat = "2letter" Then
+        convertColumn = Split(Cells(1, inputColumn).Address(True, False), "$")(0)
+    ElseIf destinationFormat = "2number" Then
+        convertColumn = Range(inputColumn & 1).Column
+    End If
+End Function
 
 Public Function Path2Link(ByVal path As Variant, ByVal replacePath As Boolean, ByVal doc2pdf As Boolean) As String
     'can replace path segments, extension and makes path html-comprehensible, which works for excel links as well
@@ -100,16 +107,10 @@ Public Sub basicTableToJSON(var As Collection)
         'maximum rows of matrix according to main column
         Dim matrixallrows As Integer: matrixallrows = ThisWorkbook.Worksheets(var("matrix.sheet")).Range(var("matrix.startColumn") & Rows.Count).End(xlUp).Row
         'maximum columns of matrix according to header row or var("matrix.maxColumns")
-        Dim matrixcols As Integer
-        If var("matrix.maxColumns") Then
-            matrixcols = ThisWorkbook.Worksheets(var("matrix.sheet")).Range(var("matrix.startColumn") & 1).Column + var("matrix.maxColumns")
-        Else
-            matrixcols = ThisWorkbook.Worksheets(var("matrix.sheet")).Cells(var("matrix.headerRow"), Columns.Count).End(xlToLeft).Column
-        End If
-        Dim colLetter As String: colLetter = Split(Cells(1, matrixcols).Address(True, False), "$")(0)
+        Dim matrixcols As Integer: matrixcols = Essentials.LastRowOrColumn(ThisWorkbook, "cols", var("matrix.sheet"), var("matrix.headerRow"), var("matrix.startColumn"), var("matrix.maxColumns"))
         'load ranges into one-dimensional array variable variant _
         to avoid uneccessary interaction between excel-shets and vba for performance reasons
-        Dim msheet As Variant: msheet = ThisWorkbook.Worksheets(var("matrix.sheet")).Range(var("matrix.startColumn") & var("matrix.headerRow") & ":" & colLetter & matrixallrows)
+        Dim msheet As Variant: msheet = ThisWorkbook.Worksheets(var("matrix.sheet")).Range(var("matrix.startColumn") & var("matrix.headerRow") & ":" & Essentials.convertColumn("2letter", matrixcols) & matrixallrows)
         'loop through the matrix and set up JS-Object row-wise
         Dim mrow As Long
         Dim mcol As Long
@@ -179,4 +180,19 @@ Public Sub doclistExport(var As Collection, ByVal replacePath as Boolean, ByVal 
             MsgBox var("export.ErrorMsg")
         End If
     End If
+End Sub
+
+Public Sub exportXLS(var As Variant)
+    'exports a excel-file without macros
+    Dim fileSaveName As Variant
+    fileSaveName = Application.GetSaveAsFilename(InitialFileName:=var("export.xlsDefaultFile"), FileFilter:="Excel (*.xlsx), *.xlsx", Title:=var("export.xlsPrompt"))
+    If fileSaveName <> False Then
+        ThisWorkbook.Sheets().Copy
+        Dim WB As Workbook
+        Set WB = ActiveWorkbook
+        WB.SaveAs Filename:=fileSaveName, FileFormat:=xlOpenXMLWorkbook, _
+            Password:="", WriteResPassword:="", ReadOnlyRecommended:=False, _
+            CreateBackup:=False
+        ActiveWorkbook.Close False
+   End If
 End Sub
