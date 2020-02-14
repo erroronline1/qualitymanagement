@@ -15,7 +15,7 @@ Public Function setupAuditPlanner() As Collection
     setupAuditPlanner.Add 2, "matrix.headerRow" 'customize header row, starting point for matrix
     setupAuditPlanner.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
     setupAuditPlanner.Add "E:\Quality Management\assistant\library\module.data\auditplanner.js", "export.defaultFile" 'default path to export file
-    setupAuditPlanner.Add "Liste fÃ¼r Assistenten bereitstellen?", "export.prompt" 'save dialogue header, customize to your language
+    setupAuditPlanner.Add "Liste für Assistenten bereitstellen?", "export.prompt" 'save dialogue header, customize to your language
     setupAuditPlanner.Add "auditplanner_data", "export.objectName" 'name of json-object
     setupAuditPlanner.Add False, "export.dontSkipEmpty" 'whether to skip empty cells or not depending on structure of assistants processing algorithm
     setupAuditPlanner.Add "3", "m.contentcolumn" 'customize query column (numbered), output only if content is set
@@ -28,10 +28,63 @@ Public Function setupStocklist() As Collection
     setupStocklist.Add 1, "matrix.headerRow" 'customize header row, starting point for matrix
     setupStocklist.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
     setupStocklist.Add "E:\Quality Management\assistant\library\module.data\stocklist.js", "export.defaultFile" 'default path to export file
-    setupStocklist.Add "Liste fÃ¼r Assistenten bereitstellen?", "export.prompt" 'save dialogue header, customize to your language
+    setupStocklist.Add "Liste für Assistenten bereitstellen?", "export.prompt" 'save dialogue header, customize to your language
     setupStocklist.Add "stocklist_data", "export.objectName" 'name of json-object
     setupStocklist.Add True, "export.dontSkipEmpty"'whether to skip empty cells or not depending on structure of assistants processing algorithm
     setupStocklist.Add "3", "m.contentcolumn" 'customize query column (numbered), output only if content is set
+End Function
+
+Public Function setupTicketSystem() As Collection
+    Set setupTicketSystem = New Collection
+    setupTicketSystem.Add Item:="TICKETS", Key:="matrix.sheet" 'select sheet to process content
+    setupTicketSystem.Add "A", "matrix.startColumn" 'customize content column, starting point for matrix
+    setupTicketSystem.Add 1, "matrix.headerRow" 'customize header row, starting point for matrix
+    setupTicketSystem.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
+    setupTicketSystem.Add "E:\Quality Management\assistant\library\module.data\ticketorder.js", "export.defaultFile" 'default path to export file
+    setupTicketSystem.Add "Liste für Assistenten bereitstellen?", "export.prompt" 'save dialogue header, customize to your language
+    setupTicketSystem.Add "ticketorder_data", "export.objectName" 'name of json-object
+    setupTicketSystem.Add false, "export.dontSkipEmpty"'whether to skip empty cells or not depending on structure of assistants processing algorithm
+    setupTicketSystem.Add "1", "m.contentcolumn" 'customize query column (numbered), output only if content is set
+    setupTicketSystem.Add "Daten wurden bereitgestellt und die Tabelle zur nächsten Verwendung geleert.", "export.success" 'success message
+    setupTicketSystem.Add "Es waren keine Daten verfügbar!", "export.error" 'error message
+    setupTicketSystem.Add "Beleg Nummer", "header.column1" 'column header for filtered column
+    setupTicketSystem.Add "Bestellt am", "header.column2" 'column header for filtered column
+    setupTicketSystem.Add "Artikel", "header.column4" 'column header for filtered column
+    setupTicketSystem.Add "Geliefert am", "header.column5" 'column header for filtered column
+    setupTicketSystem.Add "Bestellte Menge", "header.column7" 'column header for filtered column
+    setupTicketSystem.Add "Gelieferte Menge", "header.column8" 'column header for filtered column
+    setupTicketSystem.Add "Warenrückstand", "header.column9" 'column header for filtered column
+End Function
+
+Public Function TicketSystemPattern(byVal columnNumber As String) as String
+    ' these regex patterns are strongly dependent on your erp-data. structure of development platform looked like _
+    [null]  [orderRecordNumber, 2020-02-05 00:00:00.0]  [vendorCode, iDontKnow]  [iDontKnow, something something item description]  [deliverDate]  [null]  [1.0]  [0.0]  [1.0]  [unitCode]  [iDontKnow]  [null]  [iDontCare] _
+    containing encrypted ids for vendor, package size, etc. that are of too little importance to be extensive decrypted _
+    this will have to be customized to your erp-system. case numbers according to table columns
+    Select Case columnNumber
+        Case 2 'extract order date                  
+            TicketSystemPattern = "\[(.+?),(.+?)\]"
+        Case 4 'extract item description
+            TicketSystemPattern = "\[.+?,(.+?)\]"
+        Case 5 'extract delivery date
+            TicketSystemPattern = "\[(.*?)\]"
+        Case 7 'extract ordered number
+            TicketSystemPattern = "\[(.*?)\]"
+        Case 8 'extract deliveres number
+            TicketSystemPattern = "\[(.*?)\]"
+        Case 9 'extract delivery difference
+            TicketSystemPattern = "\[(.*?)\]"
+        Case Else
+            TicketSystemPattern = ""
+    End Select
+End Function
+
+Public Function setupExternalExport() As Collection
+    Set setupExternalExport = New Collection
+    setupExternalExport.Add Item:="Listen für den Assistenten bereitstellen?", Key:="initiate.Confirm" 'query to export
+    setupExternalExport.Add "Listen veröffentlichen?", "initiate.Title" 'title for query to export
+    setupExternalExport.Add "Kopie der Liste ohne Code bereitstellen?", "export.xlsPrompt"
+    setupExternalExport.Add "E:\Quality Management\published\list of external documents.xlsx", "export.xlsDefaultFile"
 End Function
 
 Public Function setupExternalDocuments() As Collection
@@ -46,8 +99,8 @@ Public Function setupExternalDocuments() As Collection
     'export variables
     setupExternalDocuments.Add "E:\Quality Management\assistant\library\module.data\documentlookup_ext.js", "export.defaultFile"
     setupExternalDocuments.Add "documentlookup_ext_data", "export.objectName"
-    setupExternalDocuments.Add "Liste der externen Dokumente fÃ¼r den Assistenten bereitstellen?", "export.prompt"
-    setupExternalDocuments.Add "Export abgebrochen, es wurde keine Zieldatei gewÃ¤hlt.", "export.ErrorMsg"
+    setupExternalDocuments.Add "Liste der externen Dokumente für den Assistenten bereitstellen?", "export.prompt"
+    setupExternalDocuments.Add "Export abgebrochen, es wurde keine Zieldatei gewählt.", "export.ErrorMsg"
 End Function
 
 Public Function setupExternalContracts() As Collection
@@ -62,8 +115,8 @@ Public Function setupExternalContracts() As Collection
     'export variables
     setupExternalContracts.Add "E:\Quality Management\published\assistant\library\module.data\documentlookup_contract.js", "export.defaultFile"
     setupExternalContracts.Add "documentlookup_contract_data", "export.objectName"
-    setupExternalContracts.Add "Liste der externen VertrÃ¤ge fÃ¼r den Assistenten bereitstellen?", "export.prompt"
-    setupExternalContracts.Add "Export abgebrochen, es wurde keine Zieldatei gewÃ¤hlt.", "export.ErrorMsg"
+    setupExternalContracts.Add "Liste der externen Verträge für den Assistenten bereitstellen?", "export.prompt"
+    setupExternalContracts.Add "Export abgebrochen, es wurde keine Zieldatei gewählt.", "export.ErrorMsg"
 End Function
 
 Public Function setupInternalDocuments() As Collection
@@ -97,26 +150,26 @@ Public Function setupInternalDocuments() As Collection
         
     'export variables
     setupInternalDocuments.Add "documentlookup_int_data", "export.objectName" 'name of json-object
-    setupInternalDocuments.Add "Inhalte verÃ¶ffentlichen?", "initiate.Title"
+    setupInternalDocuments.Add "Inhalte veröffentlichen?", "initiate.Title"
     setupInternalDocuments.Add "Kopie der Liste ohne Code bereitstellen," & vbNewLine & _
-            "Liste der Dokumente fÃ¼r den Assistenten bereitstellen," & vbNewLine & _
-            "Dokumentenpakete fÃ¼r den Assistenten bereitstellen??" & vbNewLine & vbNewLine & _
-            "Es wird nicht empfohlen die Bereitstellung im Rahmen der Dokumentenregistrierung durchzufÃ¼hren!", "initiate.Confirm"
+            "Liste der Dokumente für den Assistenten bereitstellen," & vbNewLine & _
+            "Dokumentenpakete für den Assistenten bereitstellen??" & vbNewLine & vbNewLine & _
+            "Es wird nicht empfohlen die Bereitstellung im Rahmen der Dokumentenregistrierung durchzuführen!", "initiate.Confirm"
     'document list
     setupInternalDocuments.Add "E:\Quality Management\assistant\library\module.data\documentlookup_int.js", "export.listdefaultFile"
-    setupInternalDocuments.Add "Liste interner Dokumente fÃ¼r den Assistenten bereitstellen?", "export.listPrompt"
-    setupInternalDocuments.Add "Dateipfad fÃ¼r DOCM-Dateien...", "export.replaceFromTitle"
-    setupInternalDocuments.Add "Bitte den Pfad der DOCM-Dateien angeben der durch die nÃ¤chste Eingabe ersetzt werden soll.", "export.replaceFromPrompt"
+    setupInternalDocuments.Add "Liste interner Dokumente für den Assistenten bereitstellen?", "export.listPrompt"
+    setupInternalDocuments.Add "Dateipfad für DOCM-Dateien...", "export.replaceFromTitle"
+    setupInternalDocuments.Add "Bitte den Pfad der DOCM-Dateien angeben der durch die nächste Eingabe ersetzt werden soll.", "export.replaceFromPrompt"
     setupInternalDocuments.Add "E:\Quality Management\documents", "export.replaceFromDefaultPath"
-    setupInternalDocuments.Add "Dateipfad fÃ¼r PDF-Dateien...", "export.replaceToTitle"
+    setupInternalDocuments.Add "Dateipfad für PDF-Dateien...", "export.replaceToTitle"
     setupInternalDocuments.Add "Bitte den Pad der PDF-Dateien Angeben, der den Pfad der DOCM-Dateien ersetzt..", "export.replaceToPrompt"
     setupInternalDocuments.Add "E:\Quality Management\published", "export.replaceToDefaultPath"
-    setupInternalDocuments.Add "Export abgebrochen, es wurde keine Zieldatei gewÃ¤hlt.", "export.ErrorMsg"
+    setupInternalDocuments.Add "Export abgebrochen, es wurde keine Zieldatei gewählt.", "export.ErrorMsg"
     'document bundles
-    setupInternalDocuments.Add "Dokumentenpakete fÃ¼r den Assistenten bereitstellen?", "export.bundlePrompt"
+    setupInternalDocuments.Add "Dokumentenpakete für den Assistenten bereitstellen?", "export.bundlePrompt"
     setupInternalDocuments.Add "E:\Quality Management\assistant\library\module.data\documentbundles.js", "export.bundleDefaultFile"
     setupInternalDocuments.Add "E:\Quality Management\assistant\library\module.data\", "export.bundleDefaultFolder"
     'export without code
-    setupInternalDocuments.Add "Excel-Datei ohne Code verÃ¶ffentlichen?", "export.xlsPrompt"
+    setupInternalDocuments.Add "Excel-Datei ohne Code veröffentlichen?", "export.xlsPrompt"
     setupInternalDocuments.Add "E:\Quality Management\published\list of documents.xlsx", "export.xlsDefaultFile"
 End Function

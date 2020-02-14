@@ -34,6 +34,59 @@ Public Function setupStocklist() As Collection
     setupStocklist.Add "3", "m.contentcolumn" 'customize query column (numbered), output only if content is set
 End Function
 
+Public Function setupTicketSystem() As Collection
+    Set setupTicketSystem = New Collection
+    setupTicketSystem.Add Item:="TICKETS", Key:="matrix.sheet" 'select sheet to process content
+    setupTicketSystem.Add "A", "matrix.startColumn" 'customize content column, starting point for matrix
+    setupTicketSystem.Add 1, "matrix.headerRow" 'customize header row, starting point for matrix
+    setupTicketSystem.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
+    setupTicketSystem.Add "E:\Quality Management\assistant\library\module.data\ticketorder.js", "export.defaultFile" 'default path to export file
+    setupTicketSystem.Add "Export List to the assistant?", "export.prompt" 'save dialogue header, customize to your language
+    setupTicketSystem.Add "ticketorder_data", "export.objectName" 'name of json-object
+    setupTicketSystem.Add false, "export.dontSkipEmpty"'whether to skip empty cells or not depending on structure of assistants processing algorithm
+    setupTicketSystem.Add "1", "m.contentcolumn" 'customize query column (numbered), output only if content is set
+    setupTicketSystem.Add "Data successfully exported. The table has been cleared for next use.", "export.success" 'success message
+    setupTicketSystem.Add "There was no data available!", "export.error" 'error message setupTicketSystem.Add "Beleg Nummer", "header.column1" 'column header for filtered column
+    setupTicketSystem.Add "Order record", "header.column1" 'column header for filtered column
+    setupTicketSystem.Add "Ordered on", "header.column2" 'column header for filtered column
+    setupTicketSystem.Add "Item description", "header.column4" 'column header for filtered column
+    setupTicketSystem.Add "Delivered on", "header.column5" 'column header for filtered column
+    setupTicketSystem.Add "Ordered amount", "header.column7" 'column header for filtered column
+    setupTicketSystem.Add "Delivered Amount", "header.column8" 'column header for filtered column
+    setupTicketSystem.Add "Backlog amount", "header.column9" 'column header for filtered column
+End Function
+
+Public Function TicketSystemPattern(byVal columnNumber As String) as String
+    ' these regex patterns are strongly dependent on your erp-data. structure of development platform looked like _
+    [null]  [orderRecordNumber, 2020-02-05 00:00:00.0]  [vendorCode, iDontKnow]  [iDontKnow, something something item description]  [deliverDate]  [null]  [1.0]  [0.0]  [1.0]  [unitCode]  [iDontKnow]  [null]  [iDontCare] _
+    containing encrypted ids for vendor, package size, etc. that are of too little importance to be extensive decrypted _
+    this will have to be customized to your erp-system. case numbers according to table columns
+    Select Case columnNumber
+        Case 2 'extract order date                  
+            TicketSystemPattern = "\[(.+?),(.+?)\]"
+        Case 4 'extract item description
+            TicketSystemPattern = "\[.+?,(.+?)\]"
+        Case 5 'extract delivery date
+            TicketSystemPattern = "\[(.*?)\]"
+        Case 7 'extract ordered number
+            TicketSystemPattern = "\[(.*?)\]"
+        Case 8 'extract deliveres number
+            TicketSystemPattern = "\[(.*?)\]"
+        Case 9 'extract delivery difference
+            TicketSystemPattern = "\[(.*?)\]"
+        Case Else
+            TicketSystemPattern = ""
+    End Select
+End Function
+
+Public Function setupExternalExport() As Collection
+    Set setupExternalExport = New Collection
+    setupExternalExport.Add Item:="Export lists to the assistant?", Key:="initiate.Confirm" 'query to export
+    setupExternalExport.Add "Export lists to the assistant?", "initiate.Title" 'title for query to export
+    setupExternalExport.Add "Publish a copy of the list without code?", "export.xlsPrompt"
+    setupExternalExport.Add "E:\Quality Management\published\list of external documents.xlsx", "export.xlsDefaultFile"
+End Function
+
 Public Function setupExternalDocuments() As Collection
     Set setupExternalDocuments = New Collection
     setupExternalDocuments.Add Item:="DocumentList", Key:="matrix.sheet" 'select sheet to process content
