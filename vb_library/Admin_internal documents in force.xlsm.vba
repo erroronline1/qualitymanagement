@@ -103,6 +103,8 @@ Public Sub bundleExport(var As Variant)
             Dim file As Variant
             Dim path As String
             Dim intermediate As String
+            Dim bundlemaxcolumns as Variant: bundlemaxcolumns=Essentials.LastRowOrColumn(ThisWorkbook, "cols", var("bundles.sheet"), var("bundles.headerRow"), var("bundles.displayColumn"), var("bundles.maxColumns"))
+            
             Dim finally As String: finally = "//this file was automatically created by <" & ThisWorkbook.Name &">" & vbNewLine & vbNewLine & _
                 "var EXCEPTIONS={" & vbNewLine
             
@@ -118,7 +120,7 @@ Public Sub bundleExport(var As Variant)
             assignment.Add var("bundles.startColumn"), "matrix.startColumn"
             assignment.Add headerrow.Row, "matrix.headerRow"
             assignment.Add 2, "matrix.maxRows"
-            assignment.Add var("bundles.maxColumns"), "matrix.maxColumns"
+            assignment.Add bundlemaxcolumns, "matrix.maxColumns"
             assignment.Add var("documentlist.sheet"), "compare.sheet"
             assignment.Add var("documentlist.displayColumn"), "compare.displayColumn"
             assignment.Add var("documentlist.headerRow"), "compare.headerRow"
@@ -162,8 +164,7 @@ Public Sub bundleExport(var As Variant)
             assignment.Add var("bundles.startColumn"), "matrix.startColumn"
             assignment.Add headerrow.Row, "matrix.headerRow"
             assignment.Add var("bundles.maxRows"), "matrix.maxRows"
-            assignment.Add 50, "matrix.maxColumns"
-''''''''''''assignment.Add var("bundles.maxColumns"), "matrix.maxColumns" ' i have no freaking clue why the value is not processed!!! therefore i set up a convenient high value
+            assignment.Add bundlemaxcolumns, "matrix.maxColumns"
             assignment.Add var("documentlist.sheet"), "compare.sheet"
             assignment.Add var("documentlist.displayColumn"), "compare.displayColumn"
             assignment.Add var("documentlist.headerRow"), "compare.headerRow"
@@ -224,10 +225,9 @@ Public Function Assign(var As Variant) As Variant
     Dim matrixallrows As Integer: matrixallrows = Essentials.LastRowOrColumn(ThisWorkbook, "rows", var("matrix.sheet"), var("matrix.headerRow"), var("matrix.displayColumn"), var("matrix.maxRows"))
     'maximum columns of matrix according to header row or var("matrix.maxColumns")
     Dim matrixcols As Integer: matrixcols = Essentials.LastRowOrColumn(ThisWorkbook, "cols", var("matrix.sheet"), var("matrix.headerRow"), var("matrix.displayColumn"), var("matrix.maxColumns"))
-    Dim colLetter As String: colLetter = Split(Cells(1, matrixcols).Address(True, False), "$")(0)
     'load ranges into one-dimensional array variable variant _
     to avoid uneccessary interaction between excel-shets and vba for performance reasons
-    Dim msheet As Variant: msheet = ThisWorkbook.Worksheets(var("matrix.sheet")).Range(var("matrix.startColumn") & var("matrix.headerRow") + 1 & ":" & colLetter & matrixallrows)
+    Dim msheet As Variant: msheet = ThisWorkbook.Worksheets(var("matrix.sheet")).Range(var("matrix.startColumn") & var("matrix.headerRow") + 1 & ":" & Essentials.convertColumn("2letter", matrixcols) & matrixallrows)
     Dim mcomp As Variant: mcomp = ThisWorkbook.Worksheets(var("matrix.sheet")).Range(var("matrix.displayColumn") & var("matrix.headerRow") + 1 & ":" & var("matrix.displayColumn") & matrixallrows)
     Dim csheet As Variant
     If var("caller") = "doclist" Then csheet = var("compare.range").Offset(1, 0).Resize(var("compare.range").Rows.Count - 1).Cells
@@ -310,29 +310,27 @@ Public Sub exportXLS(var As Variant)
 
             'insert links to documentbundles
             Dim matrixcols As Integer: matrixcols = Essentials.LastRowOrColumn(WB, "cols", var("bundles.sheet"), var("bundles.headerRow"), var("bundles.startColumn"), var("bundles.maxColumns"))
-            Dim colLetter As String: colLetter = Split(Cells(1, matrixcols).Address(True, False), "$")(0)
             Dim matrixallrows As Integer: matrixallrows = Essentials.LastRowOrColumn(WB, "rows", var("bundles.sheet"), var("bundles.headerRow"), var("bundles.displayColumn"), var("bundles.maxRows"))
             Dim compareallrows As Integer: compareallrows = Essentials.LastRowOrColumn(WB, "rows", var("documentlist.sheet"), var("documentlist.headerRow"), var("documentlist.displayColumn"), var("documentlist.maxRows"))
             'load ranges into one-dimensional array variable variant _
             to avoid uneccessary interaction between excel-shets and vba for performance reasons
-            Dim msheet As Variant: msheet = WB.Worksheets(var("bundles.sheet")).Range(var("bundles.startColumn") & var("bundles.headerRow") + 1 & ":" & colLetter & matrixallrows)
+            Dim msheet As Variant: msheet = WB.Worksheets(var("bundles.sheet")).Range(var("bundles.startColumn") & var("bundles.headerRow") + 1 & ":" & Essentials.convertColumn("2letter", matrixcols) & matrixallrows)
             Dim csheet As Variant: csheet = WB.Worksheets(var("documentlist.sheet")).Range(var("documentlist.displayColumn") & var("documentlist.headerRow") + 1 & ":" & var("documentlist.linkColumn") & compareallrows)
             Dim crow As Long
             Dim mcol As Long
             For mrow = LBound(msheet, 1) To UBound(msheet, 1)
                 For mcol = LBound(msheet, 2) To UBound(msheet, 2)
                     If msheet(mrow, mcol) <> "" Then
-                        colLetter = Split(Cells(mrow, mcol + 1).Address(True, False), "$")(0)
                         'write content as link (in case it will not be found, e.g. external documents
                         WB.Worksheets(var("bundles.sheet")).Hyperlinks.Add _
-                        Anchor:=WB.Worksheets(var("bundles.sheet")).Range(colLetter & mrow + var("bundles.headerRow")), _
+                        Anchor:=WB.Worksheets(var("bundles.sheet")).Range(Essentials.convertColumn("2letter", mcol + 1) & mrow + var("bundles.headerRow")), _
                         Address:=msheet(mrow, mcol), _
                         TextToDisplay:=msheet(mrow, mcol)
                         For crow = LBound(csheet, 1) To UBound(csheet, 1)
                             If msheet(mrow, mcol) = csheet(crow, 1) Then
                                 'overwrite content link if found in document list
                                 WB.Worksheets(var("bundles.sheet")).Hyperlinks.Add _
-                                Anchor:=WB.Worksheets(var("bundles.sheet")).Range(colLetter & mrow + var("bundles.headerRow")), _
+                                Anchor:=WB.Worksheets(var("bundles.sheet")).Range(Essentials.convertColumn("2letter", mcol + 1) & mrow + var("bundles.headerRow")), _
                                 Address:=csheet(crow, UBound(csheet, 2)), _
                                 TextToDisplay:=csheet(crow, 1)
                             End If
