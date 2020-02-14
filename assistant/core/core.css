@@ -202,8 +202,8 @@ content box-items
 	border: 1px solid transparent;
 }
 
-.contentWide:hover{
-	flex-grow:3.8;
+.contentWide:hover {
+	flex-grow: 3.8;
 }
 
 .items {
@@ -386,7 +386,7 @@ hr {
 
 
 .singlefavouritehandler svg {
-	width:0;
+	width: 0;
 }
 
 .singlefavouritehandler:hover svg {
