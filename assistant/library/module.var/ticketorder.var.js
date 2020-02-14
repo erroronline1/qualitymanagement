@@ -2,6 +2,33 @@ if (typeof ticketorder === 'undefined') var ticketorder = {};
 
 ticketorder.var = {
 	lang: {
+		/////////////////////////////////////////////////////
+		// erp chunks
+		//////////////////////////////////////////////////////
+		formErpInputPlaceholder: {
+			en: 'ticket, order record or item description',
+			de: 'Ticket, Belegnummer oder Artikelbeschreibung'
+		},
+		filterNofilter:{
+			en:'no filter',
+			de:'ungefiltert',
+		},
+		filterClosed:{
+			en:'closed',
+			de:'abgeschlossen',
+		},
+		filterOpen:{
+			en:'open',
+			de:'offen',
+		},
+		queryMailSubject: {
+			en: 'Inquiry regarding order record ',
+			de: 'Rückfrage Bestellung Beleg Nummer ',
+		},
+
+		/////////////////////////////////////////////////////
+		// module chunks
+		//////////////////////////////////////////////////////
 		formInputPlaceholder: {
 			en: 'date ticket',
 			de: 'Ticket datieren'
@@ -26,13 +53,21 @@ ticketorder.var = {
 			en: 'retour&sup2;',
 			de: 'Rücksendung&sup2;'
 		},
+		service: {
+			en: 'service / warranty&sup2;',
+			de: 'Service / Garantie&sup2;'
+		},
 		orderer: {
 			en: 'orderer',
 			de: 'Besteller'
 		},
 		ordererDept: {
-			en: 'select department',
-			de: 'Bereich wählen'
+			en: 'deliver to',
+			de: 'Auslieferung an'
+		},
+		ordererCostUnit: {
+			en: 'cost unit',
+			de: 'Kostenstelle'
 		},
 		ordererContact: {
 			en: 'call back eMail or number',
@@ -53,6 +88,10 @@ ticketorder.var = {
 		orderReferralTicket: {
 			en: 'referral ticket&sup2;',
 			de: 'Referenzticket&sup2;'
+		},
+		orderNeededBy: {
+			en: 'delivery by',
+			de: 'Lieferung bis'
 		},
 		orderAdd: {
 			en: 'add item',
@@ -78,8 +117,12 @@ ticketorder.var = {
 			en: 'Retoure related to ticket ',
 			de: 'Retoure in Zusammenhang mit Ticket ',
 		},
+		serviceMailSubject: {
+			en: 'Service / warranty case related to ticket ',
+			de: 'Service / Garantiefall in Zusammenhang mit Ticket ',
+		},
 		ticketTranslate:{
-			en: 'This ticket war generated on\n',
+			en: 'This ticket was generated on\n',
 			de: 'Dieses Ticket wurde generiert am\n',
 		},
 		deleteCart:{
@@ -90,10 +133,10 @@ ticketorder.var = {
 			en: 'One or more order numbers contains wildcards. Please specify model, size or type.',
 			de: 'Eine oder mehrere Bestellnummern enhalten Platzhalter. Bitte Modell, Größe oder Typ konkretisieren.',
 		},
-	},
-	searchTerms:{
-		en: ['ticket','order'],
-		de: ['Ticket','Bestellung']
+		apiItemsFound: {
+			en: ' tickets found',
+			de: ' Tickets gefunden'
+		}
 	},
 	disableOutputSelect: true,
 	inventoryControl: 'inventory.control@email.adr',
@@ -104,12 +147,14 @@ ticketorder.var = {
 			['Order number', '15em'],
 			['Item description', '20em'],
 			['Quantity', '5em'],
+			['Unit', '5em'],
 		],
 		de:[['Ticket', '10em'],
 			['Lieferant', '15em'],
 			['Artikelnummer', '15em'],
 			['Artikelbezeichnung, Ausführung', '20em'],
 			['Anzahl', '5em'],
+			['Einheit', '5em'],
 		],
 	},
 	orderFieldsToCopy: {
@@ -124,12 +169,27 @@ ticketorder.var = {
 		'Workshop A',
 		'Workshop B',
 	],
+	orderCostUnit: [
+		'Common',
+		'Office',
+		'Workshop A',
+		'Workshop B',
+	],
 	apiTranslate: {
 		fieldCorrelation:{ // index of order fields in correlation to fiels in stock list
 			1: 1,
 			2: 3,
 			3: 2,
+			5: 5,
 		},
 		orderNumberWildcard: '(X)', // if this is part of the item number
+	},
+	filter: function(){ //filters according to module.data/ticketorder.js
+		//id:[select value, select text, filter for smartsearch]
+		return {
+			nofilter: ['nofilter', core.fn.lang('filterNofilter', 'ticketorder'), 'true'],
+			closed: ['closed', core.fn.lang('filterClosed', 'ticketorder'), 'ticketorder_data.content[key][3]!=\'\''],
+			open: ['open', core.fn.lang('filterOpen', 'ticketorder'), 'ticketorder_data.content[key][3]==\'\''],
+		};
 	},
 };
