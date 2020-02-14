@@ -38,11 +38,21 @@ core.fn = {
 		return;
 	},
 	dynamicMailto: function (address, subject, body) {
-		var mail = document.createElement('a');
 		body=value(body);
-		if (body.length > core.var.directMailSize) body='';
-		mail.href = 'mailto:' + value(address) + '?subject=' + core.fn.escapeHTML(value(subject), true) + '&body=' + core.fn.escapeHTML(body, true);
-		mail.click();
+		if (body.length > core.var.directMailSize) body=core.fn.lang('errorMailSizeExport');
+		var mail, content = 'mailto:' + value(address) + '?' + (value(subject).length ? 'subject=' + core.fn.escapeHTML(value(subject), true) : '') + (value(subject).length  && body.length ? '&' : '') +(body.length ? 'body=' + core.fn.escapeHTML(body, true) : '');
+		
+		if (core.fn.setting.get('settingMailtoMethod')) { //this might switch in future
+			//this elegant way works with windows 10
+			mail = document.createElement('a');
+			mail.href = content;
+			mail.click();
+		}
+		else {
+			//this legacy way works with windows 7 but may leave a window/tab
+			mail = window.open(content, 'emailWindow');
+			if (mail && mail.open && !mail.closed) mail.close();
+		}
 		return;
 	},
 	escapeHTML: function (text, br2nl) { //primary use for escaping special chars for mailto
@@ -395,7 +405,6 @@ core.fn = {
 				var moduleSelector = '';
 				//create module-selector
 				Object.keys(core.var.modules).forEach(function (key) {
-					console.log (key, core.fn.setting.isset('module_' + key), core.fn.setting.get('module_' + key), core.var.modules[key].enabledByDefault);
 					moduleSelector += core.fn.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.fn.setting.isset('module_' + key)?core.fn.setting.get('module_' + key):core.var.modules[key].enabledByDefault), 'onchange="core.fn.setting.set(\'module_' + key + '\', el(\'module_' + key + '\').checked)"', core.fn.lang('settingRestartNeccessary')) + '<br />';
 				});
 			} else moduleSelector = core.fn.lang('errorLoadingModules');
@@ -406,11 +415,12 @@ core.fn = {
 				'<br />' + core.fn.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.fn.setting.get('settingFuzzyThreshold') || 5) + '" onchange="core.fn.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
 				'<br />' + core.fn.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.fn.setting.get('settingGlobalSearchTime') || 3) + '" onchange="core.fn.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
 				'<br />' + core.fn.lang('settingVarPreloadCaption') + ':<br /><input type="range" min="0" max="1000" step="50" value="' + (core.fn.setting.get('settingVarPreloadTime') || 50) + '" onchange="core.fn.setting.set(\'settingVarPreloadTime\',(this.value))" />' +
-				//  as of 2-2020 chrome, edge and ie11 support up to 2^11 characters leaving 2048 minus mailto:{xxx}?subject={xxx}&body=
+				//  as of 2-2020 chrome, edge and ie11 support somewhere (but not exactly) up to 2^11 characters minus mailto:{xxx}?subject={xxx}&body=
 				//  only firefox seemingly supports up to 2^15 characters (32768 - the afore mentioned)
-				// therefore the odd numbers with 75 chracters substracted from threshold
-				'<br />' + core.fn.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="181" max="32693" step="256" value="' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '" onchange="core.fn.setting.set(\'settingDirectMailSize\',(this.value)); el(\'currentDirectMailSize\').innerHTML=this.value" title="' + core.fn.lang('settingRestartNeccessary') + '" />' +
-				' <span id="currentDirectMailSize">' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.maxMailSize()" value="' + core.fn.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.lang('settingMailSizeDeterminationHint') +'" />';
+				'<br />' + core.fn.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="100" max="32400" step="300" value="' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '" onchange="core.fn.setting.set(\'settingDirectMailSize\',(this.value)); el(\'currentDirectMailSize\').innerHTML=this.value" title="' + core.fn.lang('settingRestartNeccessary') + '" />' +
+				' <span id="currentDirectMailSize">' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.maxMailSize()" value="' + core.fn.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.lang('settingMailSizeDeterminationHint') +'" />' +
+				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingMailtoMethod'), 'settingMailtoMethod', (core.fn.setting.get('settingMailtoMethod') || 0), 'onchange="core.fn.setting.switch(\'settingMailtoMethod\')"') +
+				'<br /><small>' + core.fn.lang('settingMailtoMethodHint') + '</small>';
 		},
 		setupDebug: function () { //return debugging options
 			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingPerformanceMonitor\')"') +
@@ -555,6 +565,7 @@ core.history = { //stores and restores last actions. since last actions can only
 				core.var.currentScope = key.substring(0, key.indexOf('.')) != 'core' ? key.substring(0, key.indexOf('.')) : null;
 				document.title = core.fn.lang('title') + (core.var.currentScope ? ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage] : '');
 				slider.slide(core.var.currentScope);
+				if (core.var.currentScope != null && core.var.modules[core.var.currentScope].wide) el('temp').classList.add('contentWide'); else el('temp').classList.remove('contentWide');					
 				core.performance.start(key);
 				eval(key);
 			});
