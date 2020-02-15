@@ -2,6 +2,19 @@
 
 automate your paper based qms
 
+[![last-commit](https://img.shields.io/github/last-commit/erroronline1/qualitymanagement.svg?style=flat-square)](https://github.com/erroronline1/qualitymanagement/commits/master)
+![repo-size](https://img.shields.io/github/repo-size/erroronline1/qualitymanagement.svg?style=flat-square)
+![code-size](https://img.shields.io/github/languages/code-size/erroronline1/qualitymanagement.svg?style=flat-square)
+![license](https://img.shields.io/github/license/erroronline1/qualitymanagement.svg?style=flat-square)
+[![demo](https://img.shields.io/website?style=flat-square&down_message=demo%20unavailable&up_message=demo%20available&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
+
+compatible with
+
+![word](https://img.shields.io/badge/office%20word-2010,%202016,%202019-blue?style=flat-square&logo=microsoft-word)
+![excel](https://img.shields.io/badge/office%20excel-2010,%202016,%202019-brightgreen?style=flat-square&logo=microsoft-excel)
+![ie11](https://img.shields.io/badge/internet%20explorer-11-blue?style=flat-square&logo=internet-explorer)
+![browsers](https://img.shields.io/badge/real%20browsers-firefox,%20chrome,%20edge-orange?style=flat-square)
+
 ## table of contents
 
 * [use case](#use-case)
@@ -57,6 +70,7 @@ in general this system
 * makes sure you took every aspect into account regarding the norm - but you can modify checkpoints to your needs
 * makes sure everyone has access to documents and functions you decide to is supposed to - in case your quality manager calls in sick there is still access to the system (as supposed to a software i saw whose document access was fully dependent on profile login and license number)
 * supports free word design choices (as supposed to the aforementioned softwares styling limitations due to use of .rtf-templates)
+* has a built in interface for general availability of information - data export to the assistant
 
 ## requirements
 * one somewhat experienced office user to customize the document-blueprints and vba-codes
@@ -71,9 +85,9 @@ this tool serves as an assistive layer to access your companies documents in for
 ## what this tool does
 this tool provides your company with an application to have an easier access to your quality management system. if you provide your employees with access via this assistant it might be way more easy to have them use only the latest documentation version. it does access files that could be reached by file-explorer as well, but avoiding the latter way prevents the employees to make copies that may become obsolete, at least to some degree.
 
-* global access to documentation for every employee
-* easy lookup methods for finding documents regardless of storage path, in case alternative search term are provided it is even more easy to find these
-* automated update of contents with built-in vba-interface
+* global access to qm-related ressources for every employee
+* easy lookup methods for finding documents, materials and orders regardless of storage path or restricted erp-access, in case alternative search term are provided it is even more easy to find these
+* easy content updates directly from the provided vba-interfaces
 * compatible to ms ie11 because it was built for it, tested successfully with firefox, chrome and edge as well
 * easily extendable with modules for various custom data automation
 
@@ -83,7 +97,8 @@ this tool provides your company with an application to have an easier access to 
 * serial print of document packages requires active-x which is only available in ie11. this option will not be shown if not accessible
 * patience with coworkers blaming 'your' assistant for every network failure, printer settings and their inability to read the literal hints and descriptions
 
-[visit the working demo](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
+[![visit demo](https://img.shields.io/website?style=flat-square&down_message=demo%20currently%20unavailable&up_message=visit%20working%20demo&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
+
 
 [back to top](#a-quality-management-software)
 
@@ -107,11 +122,11 @@ to customize this software to your needs it is definitely neccessary to have som
 
 # details
 ## the documents
-the vba-code can be customized quite easily for i tried to have all important parts split to functions to be able to enable/disable these on demand as well as using variables to customize easily. in the best case all you have to do is to change the variables within the locals-modules. office-documents contain basically just functions to import outsourced modules and event handler. set up language and location of modules and you are almost ready to go. 
+the vba-code can be customized quite easily for i tried to have all important parts split to functions and modules to be able to enable/disable these on demand as well as using variables to customize easily. in the best case all you have to do is to change the variables within the locals-modules. office-documents contain basically just functions to import outsourced modules and event handler. set up language and location of modules and you are almost ready to go. 
 
 * customize the variables for prompts to your language
 * you can provide default paths within the code - but paths will always be selectable
-* you can change rows and columns within the local-setup of tables in case you want to provide different information on save of word-files
+* you can change rows and columns within the local-setup of tables in case you want to provide different information on save of office-files
 * you will be guided through version control and can choose whether to auto-update version and release date or set these manually
 * archiving files with latest version number
 * exporting files to unchangeable pdf (you might want to overhaul them to editable forms, but that requires additional software)
@@ -122,8 +137,10 @@ on save of excel-lists
 * there will be an automated check if you have your documents fitting to all queried aspects
 * you will be asked if you want to export/update the files list for the assistant application
 
-### why office though?
-it's widely agreed upon that excel does not serve as a sufficient database. on the other hand most people are experienced with office to the degree where all this can be considered usable.
+*be aware that word 2019 has a different format output of doc- and pdf-files. this may lead to differing page-numbers registered to the list of documents in force and actual page-numbers in the accessible pdf-files.*
+
+### why excel though?
+it's widely agreed upon that excel does not serve as a sufficient database. on the other hand most people are experienced with excel to the degree where they do not have angst starting the application. it is available on most business setups and definetly more easy to handle and customize than access. if your datasets of documents in charge exceed excels capabilities your qm-system got out of hand anyway. if your stocklist exceeds excels capabilities you did not bothering reading to this point anyway because of using a more sufficient software for this. or it got out of hand as well. in this case you probably should tidy up.
 
 explanatory readme-files:
 * [administrative lists and document blueprint](administration/readme.md)
@@ -172,7 +189,7 @@ timetracking with excel as an addon. not quite related to quality management in 
 ## the assistant
 there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. then there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-libraray](http://vanilla.js-com). in case you have restricted access to your it i can recommend [notepad++ portabale](https://notepad-plus-plus.org/download/) out of personal experience.
 
-[visit the working demo](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
+[![visit demo](https://img.shields.io/website?style=flat-square&down_message=demo%20currently%20unavailable&up_message=visit%20working%20demo&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
 
 * the assistant is built using js-ecmascript 5 on purpose because of required compatibility to ms ie11. unfortunately this still is the default browser to date in many companies. the css is not compatible to previous versions of ie. there might be browserhacks and polyfills.
 * the assistant is designed to handle multiple language support, comes with english and german and can be extended as desired. extend the lang-objects in every module, the config-file and register the languages in this config-file to make them available.
