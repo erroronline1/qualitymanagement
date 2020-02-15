@@ -97,9 +97,9 @@ there is no installation routine. place the files to your desired accessible net
 
 [back to top](#a-quality-management-software)
 
-# but i am no programmer!
+# bUt I aM nO pRoGrAmMeR!
 **main goal of this system is not to have a simple solution out of the box but to bypass administrative it restrictions. at least if you are a subdivision of a bigger company that has special rules you have to bypass somehow.**
-to customize this software to your needs it is definitely neccessary to have someone change values within the vba-code as well as the javascript configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
+to customize this software to your needs it is definitely neccessary to have someone change values within the vba-code- and the javascript-configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
 **on the bright side everything is open source and can be maintained by any programmer/webdeveloper/webdeveloping agency that does javascript and knows how to access the visual basic editor via the office developer tab!**
 
 
@@ -122,6 +122,9 @@ on save of excel-lists
 * there will be an automated check if you have your documents fitting to all queried aspects
 * you will be asked if you want to export/update the files list for the assistant application
 
+### why office though?
+it's widely agreed upon that excel does not serve as a sufficient database. on the other hand most people are experienced with office to the degree where all this can be considered usable.
+
 explanatory readme-files:
 * [administrative lists and document blueprint](administration/readme.md)
 * [timetable blueprints](timetables/readme.md)
@@ -130,16 +133,39 @@ explanatory readme-files:
 [back to top](#a-quality-management-software)
 
 ### overview of documents in force and assertion of checkpoints
-![documents in force](assets/docm_documentsinforce.png)
+![documents in force](assets/xlsm_documentsinforce.png)
+
+docm-files as working draft will register and update their version in this table. assign checkpoints to have a regulatory context. this list serves as the interface for the documents module for the assistant too. export will be executed on save.
 
 ### overview of matched checkpoints
-![checkpoints](assets/docm_checkpoints.png)
+![checkpoints](assets/xlsm_checkpoints.png)
+
+this list should contain all relevant considerable chapters. on save documents will be assigned back to the list to clarify if every chapter is met.
 
 ### overview of document bundles
-![document bundles](assets/docm_documentbundles.png)
+![document bundles](assets/xlsm_documentbundles.png)
+
+assign documents to regulary common used bundles. this also serves as the interface for the assistants bundles module. export will be executed on save.
+
+### overview of external documents in force
+![external documents in force](assets/xlsm_externaldocuments.png)
+
+this list serves as an overview of acknowledged external documents in use as well as the interface for the assistants document module on save.
+
+### audit planner
+![audit planner](assets/xlsm_auditplanner.png)
+
+this sort of database contains questionsets for internal audits regarding all relevant topics. on save an export for the assistants module will be executed.
 
 ### customize the vba-variables within the locals modules in the vb-library folders
-![vba variables](assets/docm_vba.png)
+![vba variables](assets/xlsm_vba.png)
+
+hopefully all relevant variables can be set here to customize the code to optional rearrangements of the different tables layout.
+
+### timetables
+![timetables](assets/xlsm_timetable.png)
+
+timetracking with excel as an addon. not quite related to quality management in the first place but can come in handy and is implemented in the general process surface of the assistant as well.
 
 [back to top](#a-quality-management-software)
 
