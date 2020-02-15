@@ -86,7 +86,7 @@ correspondence.fn = {
 			});
 			var output = core.fn.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.fn.gen()"') +
 				'<br /><br />' +
-				'<input type="text" placeholder="' + core.fn.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.fn.gen()" /> ' + core.fn.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.google.de/#q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.fn.lang('webSearchTitle', 'correspondence') + '"') + '<br /><br />' +
+				'<input type="text" placeholder="' + core.fn.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.fn.gen()" /> ' + core.fn.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.ecosia.org/search?q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.fn.lang('webSearchTitle', 'correspondence') + '"') + '<br /><br />' +
 				'<div class="inline">' +
 				core.fn.insert.radio(core.fn.lang('inputOptionMale', 'correspondence'), 'sex', 'male', 1, 'onchange="correspondence.fn.gen()"') + '<br />' +
 				core.fn.insert.radio(core.fn.lang('inputOptionFemale', 'correspondence'), 'sex', 'female', false, 'onchange="correspondence.fn.gen()"') + ' ' +
