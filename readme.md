@@ -77,7 +77,7 @@ still this system support you with version control, archiving and publishing qua
 ```
 the name is inspired by [alfredo mosers bottle lights](https://www.bbc.com/news/magazine-23536914) that have an extraordinary effect by combining ressources that have nothing in common in the first place. while bottle lights still make no electric light bulb they serve their purpose better than expected, illuminating thousands of homes with materials that presumably have nothing to do with illumination in the first place.
 
-while not expecting to influence as many lives as the real bottle light i do hope this software does a better job at supporting quality management as you would usually expect from word-, excel- and javascript-files, and dare to dream it might make any difference.
+while not expecting to influence as many lives as the real bottle light i do hope this software does a better job at supporting quality management as you would usually expect from word-, excel- and javascript-files, and dare to dream it might make a difference or someone.
 
 and yes, whether or not i should use ascii to do a logo, i most certainly can.
 
@@ -86,6 +86,8 @@ and yes, whether or not i should use ascii to do a logo, i most certainly can.
 * popular coding languages, amateur friendly 
 * scalable
 * strictly local, no internet connection necessary
+* no external dependecies, frameworks, libraries
+* minimal system requirements
 
 [back to top](#bottle-light-quality-management-software)
 
