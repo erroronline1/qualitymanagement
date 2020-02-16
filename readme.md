@@ -59,7 +59,7 @@ while it makes way more sense to automate quality management using assistive tec
 
 this quality management software has been in use in context to [iso 13485:2015](https://www.iso.org/search.html?q=13485%3A2016) and was approved by the certification authority.
 
-[back to top](#a-quality-management-software)
+[back to top](#bottle-light-quality-management-software)
 
 # about bottle light qms
 if your company does not have the ressources to test out different expensive qm-software-solutions until you find one to suit your needs and you somehow make use of the simple tools you have access to, bottle light qms might be a good start for you.
@@ -100,7 +100,7 @@ in general this system
 * one somewhat experienced office user to customize the document-blueprints and vba-codes
 * microsoft office 2010+ (tested with office 2010, 2016 and 2019 professional, word and excel)
 
-[back to top](#a-quality-management-software)
+[back to top](#bottle-light-quality-management-software)
 
 # the assistant
 ## use case
@@ -124,7 +124,7 @@ this tool provides your company with an application to have an easier access to 
 [![visit demo](https://img.shields.io/website?style=flat-square&down_message=demo%20currently%20unavailable&up_message=visit%20working%20demo&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
 
 
-[back to top](#a-quality-management-software)
+[back to top](#bottle-light-quality-management-software)
 
 # installation
 there is no installation routine. place the files to your desired accessible network-folders and customize them by hand. create or recreate your documents with the provided template_file.docm and let the workflow guide you through the registration.
@@ -134,14 +134,14 @@ there is no installation routine. place the files to your desired accessible net
 * even if you don't want to use the assistant, the documents semiautomated version control still might be useful for you. on the other hand the assistant is hardly possible to populate without the documents unless you write your own routines for that.
 * i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to pdfs, timetables and the assistant application should be granted for everyone.
 
-[back to top](#a-quality-management-software)
+[back to top](#bottle-light-quality-management-software)
 
 # bUt I aM nO pRoGrAmMeR!
 to customize this software to your needs it is definitely neccessary to have someone change values within the vba-code- and the javascript-configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
 i was hoping to have done enough documentation and commenting, so maybe you might as well get a grasp on changing the setting-files yourself. 
 **on the bright side everything is open source and can be maintained by any programmer/webdeveloper/webdeveloping agency that does javascript and knows how to access the visual basic editor via the office developer tab!**
 
-[back to top](#a-quality-management-software)
+[back to top](#bottle-light-quality-management-software)
 
 # details
 ## the documents
@@ -170,7 +170,7 @@ explanatory readme-files:
 * [timetable blueprints](timetables/readme.md)
 * [vba modules](vb-library/readme.md)
 
-[back to top](#a-quality-management-software)
+[back to top](#bottle-light-quality-management-software)
 
 ### overview of documents in force and assertion of checkpoints
 ![documents in force](assets/xlsm_documentsinforce.png)
@@ -207,7 +207,7 @@ hopefully all relevant variables can be set here to customize the code to option
 
 timetracking with excel as an addon. not quite related to quality management in the first place but can come in handy and is implemented in the general process surface of the assistant as well.
 
-[back to top](#a-quality-management-software)
+[back to top](#bottle-light-quality-management-software)
 
 ## the assistant
 there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. then there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-libraray](http://vanilla.js-com). in case you have restricted access to your it i can recommend [notepad++ portabale](https://notepad-plus-plus.org/download/) out of personal experience.
@@ -234,7 +234,7 @@ explanatory readme-files:
 
 ![assistant home screen](assets/assistant_home.png)
 
-[back to top](#a-quality-management-software)
+[back to top](#bottle-light-quality-management-software)
 
 ### comes with different themes
 ![assistant themes](assets/assistant_themes.png)
@@ -258,7 +258,7 @@ the provided modules are filled with dummies. the general multi-language support
 * audit planner ![assistant audit planner](assets/assistant_auditplanner.png)
 * help (simplyfied for me not being english native and should be customized to your own companies comprehension of interwebz and nerd-stuff-thingies) ![assistant help](assets/assistant_help.png)
 
-[back to top](#a-quality-management-software)
+[back to top](#bottle-light-quality-management-software)
 
 ### thoughts and considerations
 i tried to implement a preview on search forms using datalists. while it is not a big problem to update these dynamically i ran into two major issues: the cross-browser behaviour is very different and quirky. and using this in combination with fuzzy search and 6k+ items in stock-list slows everything horribly down. it would have been nice to have but ended up in some hours wasted.
@@ -270,7 +270,7 @@ this software is purposed to be adapted to the companies needs in an flexible wa
 
 i maintain this open template as well as the official version in my company. while making changes to the program i repeatedly have to consider the individual parts. therefore all custom files are to be found within the library folder. these are seldom a subject of structural changes. most parts are quite dynamic and feed off the data files. customization might not be neccessary. if you do not customize anything within the main files any update from the latest commits should work flawless.
 
-[back to top](#a-quality-management-software)
+[back to top](#bottle-light-quality-management-software)
 
 # disclaimer
 use at your own responsibility. as this system is or has been in real use with me being responsible, i did my best to make everything flawless. i also tried to make the documentation and comments as meaningful as i could. als always there might be parts that once seemed to be self-explanatory so a little bit of advanced javascript and vba skills might come in handy.
@@ -280,7 +280,7 @@ but as the current deputy quality manager i strongly recommend to reconsider whi
 
 i was not able to find information if there are special requirements for a quality management software. regarding iso 13485 there are no restrictions what to use. you will have to take your own responsibility for any kind of software - even an amateurs work. you will just have to rate the risk, how to handle that and set up the process of validation of software application for this. as this software supports your paper-based documentation it is up to your own document content, process definitions and reliable form completion by your employees to make sure your qm/documentation meets all regulatory requirements.
 
-[back to top](#a-quality-management-software)
+[back to top](#bottle-light-quality-management-software)
 
 # license
 bottle light quality management software
@@ -293,4 +293,4 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program; if not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
 
-[back to top](#a-quality-management-software)
+[back to top](#bottle-light-quality-management-software)
