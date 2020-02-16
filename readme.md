@@ -2,11 +2,11 @@
 
 ```
       m
-	 / \    automate your paper based qms with
-	|...|
-	|...|   bottle light quality management software
-	|___|	by error on line 1 (erroronline.one)
-	/ | \
+     / \    automate your paper based qms with
+    |...|
+    |...|   bottle light quality management software
+    |___|	by error on line 1 (erroronline.one)
+    / | \
 ```
 
 [![last-commit](https://img.shields.io/github/last-commit/erroronline1/qualitymanagement.svg?style=flat-square)](https://github.com/erroronline1/qualitymanagement/commits/master)
@@ -68,11 +68,11 @@ still this system support you with version control, archiving and publishing qua
 
 ```
       m
-	 / \    
-	|...|
-	|...|   bottle light quality management software
-	|___|	by error on line 1 (erroronline.one)
-	/ | \
+     / \    
+    |...|
+    |...|   bottle light quality management software
+    |___|	by error on line 1 (erroronline.one)
+    / | \
 ```
 the name is inspired by [alfredo mosers bottle lights](https://www.bbc.com/news/magazine-23536914) that have an extraordinary effect by combining ressources that have nothing in common in the first place. while bottle lights still make no electric light bulb they serve their purpose better than expected, illuminating thousands of homes with materials that presumably have nothing to do with illumination in the first place.
 
