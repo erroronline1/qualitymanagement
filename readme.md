@@ -1,6 +1,13 @@
-# a quality management software
+# bottle light quality management software
 
-automate your paper based qms
+```
+      m
+	 / \    automate your paper based qms with
+	|...|
+	|...|   bottle light quality management software
+	|___|	by error on line 1 (erroronline.one)
+	/ | \
+```
 
 [![last-commit](https://img.shields.io/github/last-commit/erroronline1/qualitymanagement.svg?style=flat-square)](https://github.com/erroronline1/qualitymanagement/commits/master)
 ![repo-size](https://img.shields.io/github/repo-size/erroronline1/qualitymanagement.svg?style=flat-square)
@@ -18,6 +25,7 @@ compatible with
 ## table of contents
 
 * [use case](#use-case)
+* [about bottle light qms](#about-bottle-light-qms)
 * [the core documents](#the-core-documents)
 	* [use case](#use-case-1)
 	* [what the documents do](#what-the-documents-do)
@@ -43,10 +51,7 @@ compatible with
 while it makes way more sense to automate quality management using assistive technology and digitalizing everything, this is not always possible. therefore this quality management software has a very specific use case depending on your environment:
 
 * your quality managment and documentation is still mainly paper-based
-* your quality manager is fed up with manual version control, archiving, publishing and keeping the overview list of documents clean
-* your company does not have the ressources to test out different expensive qm-software-solutions until you find one to suit your needs
 * employees have access to the it-infrastructure and printers, e.g. via network and group-accounts
-* your it-department is stubborn and unflexible so you have to make use of the tools you have access to, even if you have to fasten screws with a hammer because you don't get a screwdriver
 * your company relies on microsoft office
 * there is at least one tech-savvy employee interested in getting things done
 
@@ -55,6 +60,25 @@ while it makes way more sense to automate quality management using assistive tec
 this quality management software has been in use in context to [iso 13485:2015](https://www.iso.org/search.html?q=13485%3A2016) and was approved by the certification authority.
 
 [back to top](#a-quality-management-software)
+
+# about bottle light qms
+if your company does not have the ressources to test out different expensive qm-software-solutions until you find one to suit your needs and you somehow make use of the simple tools you have access to, bottle light qms might be a good start for you.
+by using quite basic ressources like microsoft office word and excel and standard browsers it also is able to bypass weird system restrictions. editing (if necessary) can be done via any given text editor.
+still this system support you with version control, archiving and publishing quality related documents and ressources.
+
+```
+      m
+	 / \    
+	|...|
+	|...|   bottle light quality management software
+	|___|	by error on line 1 (erroronline.one)
+	/ | \
+```
+the name is inspired by [alfredo mosers bottle lights](https://www.bbc.com/news/magazine-23536914) that have an extraordinary effect by combining ressources that have nothing in common in the first place. while bottle lights still make no electric light bulb they serve their purpose better than expected, illuminating thousands of homes with materials that presumably have nothing to do with illumination in the first place.
+
+while not expecting to influence as many lives as the real bottle light i do hope this software does a better job at supporting quality management as you would usually expect from word-, excel- and javascript-files.
+
+and yes, whether or not i should use ascii to do a logo, i most certainly can.
 
 # the core documents
 ## use case
@@ -113,10 +137,9 @@ there is no installation routine. place the files to your desired accessible net
 [back to top](#a-quality-management-software)
 
 # bUt I aM nO pRoGrAmMeR!
-**main goal of this system is not to have a simple solution out of the box but to bypass administrative it restrictions. at least if you are a subdivision of a bigger company that has special rules you have to bypass somehow.**
 to customize this software to your needs it is definitely neccessary to have someone change values within the vba-code- and the javascript-configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
+i was hoping to have done enough documentation and commenting, so maybe you might as well get a grasp on changing the setting-files yourself. 
 **on the bright side everything is open source and can be maintained by any programmer/webdeveloper/webdeveloping agency that does javascript and knows how to access the visual basic editor via the office developer tab!**
-
 
 [back to top](#a-quality-management-software)
 
@@ -260,7 +283,7 @@ i was not able to find information if there are special requirements for a quali
 [back to top](#a-quality-management-software)
 
 # license
-a quality management software - automate your paper based qms
+bottle light quality management software
 
 copyright (c) 2020  [by error on line 1](http://erroronline.one)
 

@@ -1,6 +1,10 @@
 Attribute VB_Name = "Essentials"
-'(c) 2020 by error on line 1 (erroronline.one)
-'this is part of "a quality management software" available on https://github.com/erroronline1/qualitymanagement unter gnu license
+'     m
+'    / \    part of
+'   |...|
+'   |...|   bottle light quality management software
+'   |___|	by error on line 1 (erroronline.one) available on https://github.com/erroronline1/qualitymanagement
+'   / | \
 
 Option Explicit
 Public ActiveVersioning As Boolean

@@ -1,5 +1,9 @@
-'(c) 2020 by error on line 1 (erroronline.one)
-'this is part of "a quality management software" available on https://github.com/erroronline1/qualitymanagement unter gnu license
+'     m
+'    / \    part of
+'   |...|
+'   |...|   bottle light quality management software
+'   |___|	by error on line 1 (erroronline.one) available on https://github.com/erroronline1/qualitymanagement
+'   / | \
 'set selectedLanguage in the Workbook_Open-sub and customize your language and location specific values in the Locale module
 
 'be aware that changing the tables layout will have an effect on the code as well.

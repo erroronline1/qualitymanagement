@@ -1,4 +1,10 @@
 Attribute VB_Name = "Essentials"
+'     m
+'    / \    part of
+'   |...|
+'   |...|   bottle light quality management software
+'   |___|	by error on line 1 (erroronline.one) available on https://github.com/erroronline1/qualitymanagement
+'   / | \
 Option Explicit
 Public verificationOverride As Boolean
 
