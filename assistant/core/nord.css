@@ -101,7 +101,7 @@ input[type='range'] {
 	border-color: rgba(0, 0, 0, .5);
 }
 
-.checkmark {
+.checkmark, #mailtoLimitBar  {
 	border-color: rgba(255, 255, 255, 1);
 }
 
@@ -193,4 +193,14 @@ hr {
 
 #popup {
 	background-color: rgba(0, 0, 0, .5);
+}
+
+#mailtoLimit.green {
+	background-color:#a3be8c;
+}
+#mailtoLimit.orange {
+	background-color:#d08770;
+}
+#mailtoLimit.red {
+	background-color:#bf616a;
 }

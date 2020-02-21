@@ -168,6 +168,10 @@ core.var = {
 			en: 'Copy text, close window with left mouse button',
 			de: 'Text kopieren, linke Maustaste schließt das Fenster wieder'
 		},
+		mailtoLimitBar: {
+			en: 'indicates if the desired text size can be exported to email directly',
+			de: 'zeigt an, ob die gewünschte Textlänge direkt in die eMail exportiert werden kann'
+		},
 		popupCloseButton: {
 			en: 'close',
 			de: 'schließen'

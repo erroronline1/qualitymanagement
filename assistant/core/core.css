@@ -203,7 +203,7 @@ content box-items
 }
 
 .contentWide:hover {
-	flex-grow: 3.8;
+	flex-grow:3.8;
 }
 
 .items {
@@ -384,9 +384,16 @@ hr {
 	margin: 1em;
 }
 
+#mailtoLimitBar {
+	display:block;
+	height:.5em;
+	border:1px solid;
+}
+
+#mailtoLimit {height:100%;}
 
 .singlefavouritehandler svg {
-	width: 0;
+	width:0;
 }
 
 .singlefavouritehandler:hover svg {
