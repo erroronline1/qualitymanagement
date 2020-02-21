@@ -135,7 +135,7 @@ ticketorder.fn = {
 			});
 		ordererDeptList.unshift(['', core.fn.lang('ordererDept', 'ticketorder')]);
 		ordererCostUnitList.unshift(['', core.fn.lang('ordererCostUnit', 'ticketorder')]);
-		if (core.fn.setting.get('moduleExchangeTicketorder')) form += '<input type="button" style="float:right" value="' + core.fn.lang('deleteCart', 'ticketorder') + '" onclick="core.fn.setting.unset(\'moduleExchangeTicketorder\');" />';
+		if (core.fn.setting.get('moduleExchangeTicketorder')) form += '<input type="button" id="deleteCart" style="float:right" value="' + core.fn.lang('deleteCart', 'ticketorder') + '" onclick="core.fn.setting.unset(\'moduleExchangeTicketorder\');" />';
 		form += '<form action="javascript:ticketorder.fn.exportform()">';
 		form += '<br /><input type="text" id="orderer" required placeholder="' + core.fn.lang('orderer', 'ticketorder') + '" title="' + core.fn.lang('orderer', 'ticketorder') + '" /> ';
 		form += core.fn.insert.select(ordererDeptList, 'ordererDept', 'ordererDept', core.fn.setting.get('ticketorderDept'), 'required title="' + core.fn.lang('ordererDept', 'ticketorder') +'"');
@@ -241,6 +241,7 @@ ticketorder.fn = {
 		core.fn.stdout('output', output);
 		ticketorder.var.disableOutputSelect = false;
 		core.fn.setting.unset('moduleExchangeTicketorder')
+		el('deleteCart').style.display='none';
 	},
 	start: function(query){
 		if (typeof ticketorder_data !== 'undefined') {
