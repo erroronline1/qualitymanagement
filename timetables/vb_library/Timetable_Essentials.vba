@@ -16,7 +16,7 @@ Public Function Modules() as Object
 	Set Modules= CreateObject("Scripting.Dictionary")
     Modules.Add "Secure", ThisWorkbook.Path & "\vb_library\" & "Timetable_Secure.vba"
     Modules.Add "Locals", ThisWorkbook.Path & "\vb_library\" & "Timetable_Locals_" & ThisWorkbook.selectedLanguage & ".vba"
-    'Modules.Add "Rewrite", "E:\Quality Management\vb_library\RewriteMain.vba"
+    'Modules.Add "Rewrite", ThisWorkbook.Path & "\vb_library\RewriteMain.vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -28,7 +28,7 @@ Public Sub OpenRoutine()
 End Sub 
 
 Public Sub asyncOpen()
-    'Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", "E:\Quality Management\timetables\vb_library\Timetable_ThisWorkbook_illustration.vba"
+    'Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", ThisWorkbook.Path & "\vb_library\Timetable_ThisWorkbook_illustration.vba"
 
     'set unlocked to false on opening by default, this is essential. see functions comment.
     persistent "unlocked", "set", False
@@ -38,7 +38,7 @@ Public Sub asyncOpen()
         Set mprompt = Locals.Language()
         MsgBox (mprompt("restartFromProtectedView"))
     Else
-		If init() Then addSheets
+        If init() Then addSheets
     End If
 
 End Sub
@@ -181,9 +181,9 @@ Public Function countDays(ByVal Days As String, ByVal returnType as String) As I
             If f = cDay Then cDayInWorkdays = True: Exit For
         Next f
         If (returnType="workdays" And _
-			cDayInWorkdays And ActiveSheet.Range(absenceColumn & cRow).Value = "" ) Or _
+			cDayInWorkdays And (ActiveSheet.Range(absenceColumn & cRow).Value = "" Or ActiveSheet.Range(absenceColumn & cRow).Value = Locals.Absence()("overtime"))) Or _
             (returnType="vacation" And _
-			cDayInWorkdays And ActiveSheet.Range(absenceColumn & cRow).Value = Locals.Absence()("vacation") ) Then
+			cDayInWorkdays And ActiveSheet.Range(absenceColumn & cRow).Value = Locals.Absence()("vacation")) Then
             countDays = countDays + 1
         End If
     Next cRow
@@ -263,6 +263,8 @@ Public Function init() As Boolean
             Else:
                 MsgBox mprompt("initCancelText"), vbOKOnly + vbExclamation, mprompt("initCancelTitle")
             End If
+            'set to recent local formulas
+            Locals.updateXLSfunctions
         Case vbCancel:
             MsgBox mprompt("initCancelText"), vbOKOnly + vbExclamation, mprompt("initCancelTitle")
         End Select
@@ -322,14 +324,9 @@ Public Sub addSheets()
         Dim mprompt As New Collection
         Set mprompt = Locals.Language()
 
-        'insert formula for auto-holiday
-        For row = 11 To 41
-            Cells(row, 3).FormulaLocal = "=publicHolidays(A" & row & ")"
-            'insert formula for auto short break
-            Cells(row, 6).FormulaLocal = "=WENN(E" & row & "-D" & row & "-(G" & row & "/60/24)>9/24;15;0)"
-            'insert formula for auto long break
-            Cells(row, 7).FormulaLocal = "=WENN(E" & row & "-D" & row & ">6/24;30;0)"
-        Next row
+        'clear/default values/formulas for holidays and breaks are updated from Local.updateXLSfunctions
+        Locals.updateXLSfunctions
+
         'clear other inputs from former month. this has to be done separately for cells that are not locked, otherwise an error occurs becoause of restrictions
         'clear last comments
         Range("I11:I47").ClearContents

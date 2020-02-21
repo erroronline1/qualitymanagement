@@ -22,7 +22,7 @@ on start of a new month a new sheet is added automatically, so no one has to car
 
 on first opening of the file the user will be prompted to initialise the sheet. this will update the initial sheet to the current month and write the latest hours and holidays to the table. afterwards the user can personalize additional information within the sheet and start tracking. all surrounding information but the time and holiday entries will be copied to the next month, so there is no need to insert it regularly.
 
-*there are formulas that have to be written to the new monthly sheet by vba. remember to change these too as you change formulas in the sheets.*
+*there are formulas that have to be written to the new monthly sheet by vba. remember to change these too as you change formulas in the sheets. local tinted formulas (eg "wennfehler", ugly german for "iferror") can be found within the locals-module and update on initialization and while adding new sheets.*
 
 ### security
 the sheets are protected by default, only relevant cells can be changed by the user. on the first change after opening the user will have to enter a password. if this is not set already a personal password can be chosen. if forgotten a new one can be chosen as well. there will be no prompt until the next opening of the document. this reduces the risk of manipulation by accident or other employees.
@@ -50,6 +50,7 @@ timetable-sheets:
 * addresses of cells to be set plus formulas in Essentials.init
 * addresses of cells to be set, read plus formulas in Essentials.addSheets
 * addresses of cells to be read in Essentials.holidayReminder
+* addresses of cells to reset with local formulas and conditional formatting in Locals.updateXLSfunctions
 
 ### flaws
 opening the file for the first time from the web or a network path will excel be loading it in protected mode. this causes an issue that can only be bypassed by reopening the file for excel will trust the source from then on. there will be an information about this, as this was the easiest way after several insufficent tries to handle this (leaving protected mode delays unprotecting after initializing code. there is no application.wait available coming from protected view).

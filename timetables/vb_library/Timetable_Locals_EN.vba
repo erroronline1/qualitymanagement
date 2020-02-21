@@ -61,6 +61,7 @@ Public Function Absence() As Collection
     Absence.Add "Sick", "sick"
     Absence.Add "Vacation", "vacation"
     Absence.Add "public holiday", "public_holiday"
+    Absence.Add "overtime compensation", "overtime"
     Absence.Add "vocational school", "vocational_school"
     Absence.Add "business trip", "business_trip"
     Absence.Add "parantal leave", "parental_leave"
@@ -100,3 +101,53 @@ Public Function publicHolidays(ByVal givenDate) As String
 		Next hDay
 	End If
 End Function
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' handle formulas for the last sheet, also considering formulalocal
+' these are the formulas that might have to be customized to your language. all other formulas are considered universal
+' if you change anything it will be updated on initialization and while adding new sheets
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Public Sub updateXLSfunctions()
+
+    'conditional formatting on empty mandatory fields
+    With Range("=D2:D5,D43")
+        .FormatConditions.Delete
+        .FormatConditions.Add Type:=xlExpression, Formula1:="=ISTLEER(D2)"
+        .FormatConditions(1).Interior.Color = RGB(240, 184, 183)
+    End With
+    'conditional formatting on regular non working days
+    With Range("=$B$11:$B$41")
+        .FormatConditions.Delete
+        .FormatConditions.Add Type:=xlExpression, Formula1:="=WENNFEHLER(NICHT(FINDEN(B11;$D$5))*FALSCH;WAHR)"
+        .FormatConditions(1).Interior.Color = RGB(191, 191, 191)
+    End With
+    'conditional formatting on wrong break inputs
+    With Range("=$F$11:$G$41")
+        .FormatConditions.Delete
+        .FormatConditions.Add Type:=xlExpression, Formula1:="=UND(F11<>0;F11<15)"
+        .FormatConditions(1).Font.Color = RGB(255, 192, 0)
+    End With
+
+    Dim row as Integer
+    For row = 11 To 41
+        'date list according to month
+        If row = 11 Then Range("A" & row).FormulaLocal = "=DATUM(E1;D1;1)"
+        If row > 11 Then Range("A" & row).FormulaLocal = "=WENNFEHLER(WENN(UND(A" & row - 1 & "<>" & Chr(34) & Chr(34) & ";A" & row - 1 & "+1<=MONATSENDE(A" & row - 1 & ";0));A" & row - 1 & "+1;" & Chr(34) & Chr(34) & ");" & Chr(34) & Chr(34) & ")"
+        'day name
+        Range("B" & row).FormulaLocal = "=TEXT(A" & row & ";" & Chr(34) & "TTT" & Chr(34) & ")"
+        'holiday auto insertion
+        Range("C" & row).FormulaLocal = "=publicHolidays(A" & row & ")"
+        'insert formula for auto short break
+        Range("F" & row).FormulaLocal = "=WENN(E" & row & "-D" & row & "-(G" & row & "/60/24)>9/24;15;0)"
+        'insert formula for auto long break
+        Range("G" & row).FormulaLocal = "=WENN(E" & row & "-D" & row & ">6/24;30;0)"
+    Next row
+
+    'sum monthly worktime
+    Range("H43").FormulaLocal = "=SUMME(H11:H41)*24"
+
+    'sum considering overtime and correction
+    Range("H47").FormulaLocal = "=SUMME(H44:H46)"
+
+End Sub
