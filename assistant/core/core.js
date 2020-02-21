@@ -39,7 +39,7 @@ core.fn = {
 	},
 	dynamicMailto: function (address, subject, body) {
 		body=value(body);
-		if (body.length > core.var.directMailSize) body=core.fn.lang('errorMailSizeExport');
+		if (core.fn.escapeHTML(body, true).length > core.var.directMailSize) body=core.fn.lang('errorMailSizeExport');
 		var mail, content = 'mailto:' + value(address) + '?' + (value(subject).length ? 'subject=' + core.fn.escapeHTML(value(subject), true) : '') + (value(subject).length  && body.length ? '&' : '') +(body.length ? 'body=' + core.fn.escapeHTML(body, true) : '');
 		
 		if (core.fn.setting.get('settingMailtoMethod')) { //this might switch in future
@@ -54,6 +54,22 @@ core.fn = {
 			if (mail && mail.open && !mail.closed) mail.close();
 		}
 		return;
+	},
+	mailtoLimit: function (body){
+		var bodysize=core.fn.escapeHTML(body, true).length;
+		el('mailtoLimit').style.width = Math.min( bodysize/core.var.directMailSize, 1) * 100 + "%";
+		if (bodysize > core.var.directMailSize) {
+			el('mailtoLimit').classList.remove('green','orange');
+			el('mailtoLimit').classList.add('red');
+		}
+		else if (bodysize > core.var.directMailSize * .8) {
+			el('mailtoLimit').classList.remove('green','red');
+			el('mailtoLimit').classList.add('orange');
+		}
+		else {
+			el('mailtoLimit').classList.remove('orange','red');
+			el('mailtoLimit').classList.add('green');
+		}
 	},
 	escapeHTML: function (text, br2nl) { //primary use for escaping special chars for mailto
 		if (br2nl !== "undefined" || br2nl) text = text.replace(/<br \/>|<br>/g, "\n");
@@ -278,7 +294,7 @@ core.fn = {
 				if (callback.indexOf('init') > -1 && scriptname in core.var.modules) {
 					core.var.currentScope = scriptname;
 					document.title = core.fn.lang('title') + ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage];
-					if (core.var.modules[core.var.currentScope].wide) el('temp').classList.add('contentWide'); else el('temp').classList.remove('contentWide');					
+					if (core.var.modules[core.var.currentScope].wide) el('temp').classList.add('contentWide'); else el('temp').classList.remove('contentWide');
 				}
 			}
 			//append node(s)
@@ -307,6 +323,10 @@ core.fn = {
 		},
 		expand: function () {
 			return '<span class="itemresize" title="' + core.fn.lang('itemResizeTitle') + '"></span>';
+		},
+		mailtoLimit: function(width) {
+//			if (value(width)=='') width='100%';
+			return '<div id="mailtoLimitBar" style="width:' + (width || '100%' ) + '" title="' + core.fn.lang('mailtoLimitBar') + '"><div id="mailtoLimit"></div></div>';
 		},
 		icon: function (icon, addclass, id, attributes) { //easy icon handler for inline svg
 			//key[viewbox,transform scale, d-path]
@@ -526,6 +546,7 @@ core.fn = {
 		});
 		document.title = core.fn.lang('title')
 		if (typeof query !== 'undefined') globalSearch.search(query);
+		el('temp').classList.remove('contentWide')
 		core.history.write(['core.fn.init(\'' + value(query) + '\')']);
 	},
 };
@@ -568,6 +589,7 @@ core.history = { //stores and restores last actions. since last actions can only
 				if (core.var.currentScope != null && core.var.modules[core.var.currentScope].wide) el('temp').classList.add('contentWide'); else el('temp').classList.remove('contentWide');					
 				core.performance.start(key);
 				eval(key);
+
 			});
 		}
 		core.history.buttoncolor();
