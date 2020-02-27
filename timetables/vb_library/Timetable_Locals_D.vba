@@ -110,22 +110,21 @@ End Function
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Public Sub updateXLSfunctions()
-
+    Application.ScreenUpdating = False
+    'delete all conditional formats for latest sheet. must be unprotected
+    ThisWorkbook.Sheets(Sheets.Count).Cells.FormatConditions.Delete
     'conditional formatting on empty mandatory fields
     With Range("=D2:D5,D43")
-        .FormatConditions.Delete
         .FormatConditions.Add Type:=xlExpression, Formula1:="=ISTLEER(D2)"
         .FormatConditions(1).Interior.Color = RGB(240, 184, 183)
     End With
     'conditional formatting on regular non working days
     With Range("=$B$11:$B$41")
-        .FormatConditions.Delete
         .FormatConditions.Add Type:=xlExpression, Formula1:="=WENNFEHLER(NICHT(FINDEN(B11;$D$5))*FALSCH;WAHR)"
         .FormatConditions(1).Interior.Color = RGB(191, 191, 191)
     End With
     'conditional formatting on wrong break inputs
     With Range("=$F$11:$G$41")
-        .FormatConditions.Delete
         .FormatConditions.Add Type:=xlExpression, Formula1:="=UND(F11<>0;F11<15)"
         .FormatConditions(1).Font.Color = RGB(255, 192, 0)
     End With
@@ -150,5 +149,5 @@ Public Sub updateXLSfunctions()
 
     'sum considering overtime and correction
     Range("H47").FormulaLocal = "=SUMME(H44:H46)"
-
+    Application.ScreenUpdating = True
 End Sub

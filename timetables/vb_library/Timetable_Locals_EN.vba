@@ -109,7 +109,9 @@ End Function
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Public Sub updateXLSfunctions()
-
+    Application.ScreenUpdating = False
+    'delete all conditional formats for latest sheet. must be unprotected
+    ThisWorkbook.Sheets(Sheets.Count).Cells.FormatConditions.Delete
     'conditional formatting on empty mandatory fields
     With Range("=D2:D5,D43")
         .FormatConditions.Delete
@@ -149,5 +151,6 @@ Public Sub updateXLSfunctions()
 
     'sum considering overtime and correction
     Range("H47").FormulaLocal = "=SUMME(H44:H46)"
+    Application.ScreenUpdating = True
 
 End Sub
