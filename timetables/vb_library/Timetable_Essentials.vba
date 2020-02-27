@@ -40,7 +40,6 @@ Public Sub asyncOpen()
     Else
         If init() Then addSheets
     End If
-
 End Sub
 
 Public Sub CloseRoutine()
@@ -254,17 +253,16 @@ Public Function init() As Boolean
                 Else
                     Tabelle2.Range("D46").FormulaLocal = "=D44-D45"
                 End If
+                'set to recent local formulas
+                Locals.updateXLSfunctions
                 'reprotect sheet again
                 Tabelle2.Protect persistent("masterpass", "get", True), True, True
  
 				verificationOverride = False
                 init = True
-                
             Else:
                 MsgBox mprompt("initCancelText"), vbOKOnly + vbExclamation, mprompt("initCancelTitle")
             End If
-            'set to recent local formulas
-            Locals.updateXLSfunctions
         Case vbCancel:
             MsgBox mprompt("initCancelText"), vbOKOnly + vbExclamation, mprompt("initCancelTitle")
         End Select
