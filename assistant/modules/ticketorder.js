@@ -67,10 +67,10 @@ ticketorder.fn = {
 			return output;
 		},
 		newTicket: function (){
-			return new Date().getTime().toString(16)
+			return new Date().getTime().toString(36)
 		},
 		ticketDate: function (ticket) {
-			var timestamp=parseInt(ticket,16);
+			var timestamp=parseInt(ticket,36);
 			if (timestamp<new Date(2020,1,1,0,0,0,0)) timestamp=NaN;
 			var date = new Date(timestamp);
 			prompt(core.fn.lang('ticketTranslate', 'ticketorder'), date.getDate() + '.' + (date.getMonth()+1) + '.' + date.getFullYear() + ' - ' + date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes() + (isNaN(date.getDate())?' BATMAN!':''));
