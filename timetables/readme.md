@@ -18,11 +18,11 @@ the sheets calculate the effective work hours within the month based on weekly h
 all in all every employee can look up exactly the state of current hours and holidays, can review all previous months and doesn't have to calculate everything manually.
 
 ### automation
-on start of a new month a new sheet is added automatically, so no one has to care about that. in this case there will be also a (monthly) reminder to plan paid leave if there are to many holidays left in relation to remaining days of the year.
+on start of a new month a new sheet is added automatically, so no one has to care about that. in this case there will be also a (monthly) reminder to plan paid leave if there are too many holidays left in relation to remaining days of the year.
 
 on first opening of the file the user will be prompted to initialise the sheet. this will update the initial sheet to the current month and write the latest hours and holidays to the table. afterwards the user can personalize additional information within the sheet and start tracking. all surrounding information but the time and holiday entries will be copied to the next month, so there is no need to insert it regularly.
 
-*there are formulas that have to be written to the new monthly sheet by vba. remember to change these too as you change formulas in the sheets. local tinted formulas (eg "wennfehler", ugly german for "iferror") can be found within the locals-module and update on initialization and while adding new sheets.*
+*there are formulas that have to be written to the new monthly sheet by vba. remember to change these too as you change formulas in the sheets. local tinted formulas (eg "wennfehler", ugly german for "iferror") can be found within the locals-module and update on initialization and while adding new sheets. all other formulas are simply arithmetic.*
 
 ### security
 the sheets are protected by default, only relevant cells can be changed by the user. on the first change after opening the user will have to enter a password. if this is not set already a personal password can be chosen. if forgotten a new one can be chosen as well. there will be no prompt until the next opening of the document. this reduces the risk of manipulation by accident or other employees.
@@ -60,3 +60,5 @@ passwords are stored in plain text. whether you like that or not, it makes it a 
 all this might not satisfy all security concerns but is considered reasonable.
 
 adjustments within the trust center might be necessary.
+
+there might be errors on opening multiple timetables at once, most notably with excel 2010. i still haven't learned why. all tests succeeded being used solo.
