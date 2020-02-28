@@ -26,13 +26,10 @@ Public Function Language() As Collection
     Language.Add "Cancel", "queryPasswordCancel"
 
     'language chunks for input verification
-    Language.Add "public holiday", "publicHoliday" 'also used in formula in addSheets-sub, according to Abence (see below)
-    
     Language.Add "Forbidden Input", "invalidInputTitle"
     Language.Add "You are not allowed to enter absence and time at once!", "invalidInputText"
 
     'language chunks for initialization and holiday reminder
-
     Language.Add "You just switched from protected view. For everything to work properly please reopen the file. This is because of an Excel bug. Afterwards everything should work flawless.", "restartFromProtectedView"
 
     Language.Add "Reminder For Paid Leave", "holidayReminderTitle"
@@ -60,8 +57,8 @@ Public Function Absence() As Collection
     Absence.Add Item:="", Key:="null"
     Absence.Add "Sick", "sick"
     Absence.Add "Vacation", "vacation"
-    Absence.Add "public holiday", "public_holiday"
-    Absence.Add "overtime compensation", "overtime"
+    Absence.Add "overtime compensation", "overtime" 'this key is called by Essentials.countDays and affects the calculation of overtime (full overtime compensation)
+    Absence.Add "public holiday", "public_holiday" 'this key is called by Essentials.absenceHandler and Essentials.countDays and affects the calculation of overtime (full overtime add up)
     Absence.Add "vocational school", "vocational_school"
     Absence.Add "business trip", "business_trip"
     Absence.Add "parantal leave", "parental_leave"
@@ -148,9 +145,7 @@ Public Sub updateXLSfunctions()
 
     'sum monthly worktime
     Range("H43").FormulaLocal = "=SUMME(H11:H41)*24"
-
     'sum considering overtime and correction
     Range("H47").FormulaLocal = "=SUMME(H44:H46)"
     Application.ScreenUpdating = True
-
 End Sub

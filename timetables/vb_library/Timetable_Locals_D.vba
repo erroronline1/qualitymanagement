@@ -27,13 +27,10 @@ Public Function Language() As Collection
     Language.Add "Abbrechen", "queryPasswordCancel"
 
     'language chunks for input verification
-    Language.Add "Feiertag", "publicHoliday" 'also used in formula in addSheets-sub, according to Abence (see below)
-    
     Language.Add "unerlaubte Eingabe", "invalidInputTitle"
     Language.Add "Es dürfen nicht gleichzeitig Arbeitsfreistellungen und Uhrzeiten eingetragen werden!", "invalidInputText"
 
     'language chunks for initialization and holiday reminder
-
     Language.Add "Du kommst aus der geschützten Ansicht. Damit alles funktioniert bitte die Datei schließen und nochmals öffnen. Grund dafür ist ein Fehler in Excel. Danach sollte alles funktionieren.", "restartFromProtectedView"
 
     Language.Add "Urlaubswarnung", "holidayReminderTitle"
@@ -61,8 +58,8 @@ Public Function Absence() As Collection
     Absence.Add Item:="", Key:="null"
     Absence.Add "Krank", "sick"
     Absence.Add "Urlaub", "vacation"
-    Absence.Add "Überzeit", "overtime"
-    Absence.Add "Feiertag", "public_holiday"
+    Absence.Add "Überzeit", "overtime" 'this key is called by Essentials.countDays and affects the calculation of overtime (full overtime compensation)
+    Absence.Add "Feiertag", "public_holiday" 'this key is called by Essentials.absenceHandler and Essentials.countDays and affects the calculation of overtime (full overtime add up)
     Absence.Add "Berufsschule", "vocational_school"
     Absence.Add "Dienstreise", "business_trip"
     Absence.Add "Elternzeit", "parental_leave"
@@ -146,7 +143,6 @@ Public Sub updateXLSfunctions()
 
     'sum monthly worktime
     Range("H43").FormulaLocal = "=SUMME(H11:H41)*24"
-
     'sum considering overtime and correction
     Range("H47").FormulaLocal = "=SUMME(H44:H46)"
     Application.ScreenUpdating = True
