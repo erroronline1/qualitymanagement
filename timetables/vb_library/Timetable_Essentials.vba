@@ -13,7 +13,7 @@ Public verificationOverride As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Public Function Modules() as Object
-	Set Modules= CreateObject("Scripting.Dictionary")
+    Set Modules= CreateObject("Scripting.Dictionary")
     Modules.Add "Secure", ThisWorkbook.Path & "\vb_library\" & "Timetable_Secure.vba"
     Modules.Add "Locals", ThisWorkbook.Path & "\vb_library\" & "Timetable_Locals_" & ThisWorkbook.selectedLanguage & ".vba"
     'Modules.Add "Rewrite", ThisWorkbook.Path & "\vb_library\RewriteMain.vba"
@@ -38,28 +38,28 @@ Public Sub asyncOpen()
         Set mprompt = Locals.Language()
         MsgBox (mprompt("restartFromProtectedView"))
     Else
-        If init() Then addSheets
+        If init() Then addSheets ': Calculate 'should avoid display weird uncalculated cell values on startup but does cause error most probably with excel2010
     End If
 End Sub
 
 Public Sub CloseRoutine()
-	updateAbsence
+    updateAbsence
     If persistent("newSheet", "get", True) Then holidayReminder
 End Sub 
 
 Public Sub ChangeRoutine(ByVal Sheet as String, ByVal Target As Range)
     If Not verificationOverride Then
         Secure.Protection Sheet
-		If Target.Row>=11 And Target.Row<=41 Then absenceHandler Sheet, Target
-	End If
+        If Target.Row>=11 And Target.Row<=41 Then absenceHandler Sheet, Target
+    End If
 End Sub
 
 Public Sub undo()
-	If Val(Tabelle2.Cells(1, 4).Value) > 0 Then 'uninitialized file causes excel to crash
-		verificationOverride = True
-		Application.undo
-		verificationOverride = False
-	End If
+    If Val(ThisWorkbook.Sheets(2).Cells(1, 4).Value) > 0 Then 'uninitialized file causes excel to crash
+        verificationOverride = True
+        Application.undo
+        verificationOverride = False
+    End If
 End Sub
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -69,33 +69,33 @@ End Sub
 Public Function persistent(value As String, action As String, setter As Boolean) As Variant
     'runtime properties have to be written to the setting sheet because on closing a user-form all public/global values are gone. this were some wild hours.
     'returns always the last setting regardless of setter on get-call
-	Dim column As Integer
-	If value="masterpass" Then
-		persistent = ThisWorkbook.Sheets("settings").Cells(1, 2).Value
-	Else
-		If value = "unlocked" Then column = 2
-		If value = "newSheet" Then column = 3
-		If action = "set" Then ThisWorkbook.Sheets("settings").Cells(2, column).Value = CInt(setter)
-		persistent = CBool(ThisWorkbook.Sheets("settings").Cells(2, column).Value)
-	End If
+    Dim column As Integer
+    If value="masterpass" Then
+        persistent = ThisWorkbook.Sheets("settings").Cells(1, 2).Value
+    Else
+        If value = "unlocked" Then column = 2
+        If value = "newSheet" Then column = 3
+        If action = "set" Then ThisWorkbook.Sheets("settings").Cells(2, column).Value = CInt(setter)
+        persistent = CBool(ThisWorkbook.Sheets("settings").Cells(2, column).Value)
+    End If
 End Function
 
 Public Sub updateAbsence()
-	'update absence reasons in asyncOpen crashes application if other files are opened
-	ThisWorkbook.Worksheets("info").Unprotect persistent("masterpass", "get", True)
-	Dim rng As Range, absenceItem, absenceIterator
-	'set where to find list in info-sheet
-	Dim absenceList(2): absenceList(0) = "10": absenceList(1) = "A"
-	'write from local module
-	For Each absenceItem in Locals.Absence()
-		ThisWorkbook.Sheets("info").Range(absenceList(1) & absenceList(0) + absenceIterator).Value = absenceItem
-		absenceIterator = absenceIterator + 1
-	Next absenceItem
-	'define range
-	Set rng = ThisWorkbook.Worksheets("info").Range(ThisWorkbook.Sheets("info").Cells(absenceList(0), absenceList(1)), ThisWorkbook.Sheets("info").Cells(ThisWorkbook.Sheets("info").Rows.Count, absenceList(1)).End(xlUp))
-	'update name for dropdown according to range
-	ThisWorkbook.Names("absence").RefersTo = rng
-	ThisWorkbook.Sheets("info").Protect persistent("masterpass", "get", True), True, True
+    'update absence reasons in asyncOpen crashes application if other files are opened
+    ThisWorkbook.Worksheets("info").Unprotect persistent("masterpass", "get", True)
+    Dim rng As Range, absenceItem, absenceIterator
+    'set where to find list in info-sheet
+    Dim absenceList(2): absenceList(0) = "10": absenceList(1) = "A"
+    'write from local module
+    For Each absenceItem in Locals.Absence()
+        ThisWorkbook.Sheets("info").Range(absenceList(1) & absenceList(0) + absenceIterator).Value = absenceItem
+        absenceIterator = absenceIterator + 1
+    Next absenceItem
+    'define range
+    Set rng = ThisWorkbook.Worksheets("info").Range(ThisWorkbook.Sheets("info").Cells(absenceList(0), absenceList(1)), ThisWorkbook.Sheets("info").Cells(ThisWorkbook.Sheets("info").Rows.Count, absenceList(1)).End(xlUp))
+    'update name for dropdown according to range
+    ThisWorkbook.Names("absence").RefersTo = rng
+    ThisWorkbook.Sheets("info").Protect persistent("masterpass", "get", True), True, True
 End Sub
 
 Public Sub absenceHandler(ByVal cSheet, ByVal Range)
@@ -108,33 +108,33 @@ Public Sub absenceHandler(ByVal cSheet, ByVal Range)
     Dim cell As Range
     For Each cell In Range
         If Not cell.Locked Then
-			Dim colrow() As String: colrow() = Split(Right(CStr(cell.Address), Len(CStr(cell.Address)) - 1), "$")
+            Dim colrow() As String: colrow() = Split(Right(CStr(cell.Address), Len(CStr(cell.Address)) - 1), "$")
 
-			'allowed values in c
-			Dim allowedWorkOnAbsence As Boolean
-			allowedWorkOnAbsence=(  Worksheets(cSheet).Range("C" & colrow(1)).Value="" Or _
-									Worksheets(cSheet).Range("C" & colrow(1)).Value=mprompt("publicHoliday") Or _
-									Worksheets(cSheet).Range("C" & colrow(1)).Value=Locals.publicHolidays(Worksheets(cSheet).Range("A" & colrow(1)).Value))
-			'warning and undo
-			'if row between 11 and 41
-			'and current column is c and existing values in d or e
-			'or current column is d or e and existing value in c
-			If colrow(1) >= 11 And colrow(1) <= 41 _
-				And ( _
-					(colrow(0) = "C" And _
-					Not allowedWorkOnAbsence And _
-					(Worksheets(cSheet).Range("D" & colrow(1)).Value <> "" Or Worksheets(cSheet).Range("E" & colrow(1)).Value <> "")) _
-				Or _
-					(((colrow(0) = "D" And Worksheets(cSheet).Range(colrow(0) & colrow(1)).Value <> "") Or _
-					(colrow(0) = "E" And Worksheets(cSheet).Range(colrow(0) & colrow(1)).Value <> "")) And _
-					Not allowedWorkOnAbsence) _
-				) Then
-			
-				MsgBox mprompt("invalidInputText"), vbCritical, mprompt("invalidInputTitle")
-				undo
-			End If
-		End If
-	Next cell
+            'allowed values in column c
+            Dim allowedWorkOnAbsence As Boolean
+            allowedWorkOnAbsence=(  Worksheets(cSheet).Range("C" & colrow(1)).Value="" Or _
+                                    Worksheets(cSheet).Range("C" & colrow(1)).Value=Locals.Absence("public_holiday") Or _
+                                    Worksheets(cSheet).Range("C" & colrow(1)).Value=Locals.publicHolidays(Worksheets(cSheet).Range("A" & colrow(1)).Value))
+            'warning and undo
+            'if row between 11 and 41
+            'and current column is c and existing values in d or e
+            'or current column is d or e and existing value in c
+            If colrow(1) >= 11 And colrow(1) <= 41 _
+                And ( _
+                    (colrow(0) = "C" And _
+                    Not allowedWorkOnAbsence And _
+                    (Worksheets(cSheet).Range("D" & colrow(1)).Value <> "" Or Worksheets(cSheet).Range("E" & colrow(1)).Value <> "")) _
+                Or _
+                    (((colrow(0) = "D" And Worksheets(cSheet).Range(colrow(0) & colrow(1)).Value <> "") Or _
+                    (colrow(0) = "E" And Worksheets(cSheet).Range(colrow(0) & colrow(1)).Value <> "")) And _
+                    Not allowedWorkOnAbsence) _
+                ) Then
+            
+                MsgBox mprompt("invalidInputText"), vbCritical, mprompt("invalidInputTitle")
+                undo
+            End If
+        End If
+    Next cell
     Exit Sub
 
 undo:
@@ -143,8 +143,7 @@ undo:
 End Sub
 
 Public Function workDays(ByVal Days As String) As Object
-	' get typicl workdays as an array
-    'read typical workdays to array
+    'get typical workdays as an array
     Dim regExPattern As String: regExPattern = "\w+"
     Dim regEx As New RegExp
     With regEx
@@ -157,12 +156,12 @@ Public Function workDays(ByVal Days As String) As Object
 End Function
 
 Public Function workDaysNum(Byval Days as String) As Integer
-	workDaysNum=workDays(Days).Count
+    workDaysNum=workDays(Days).Count
 End Function
 
 Public Function countDays(ByVal Days As String, ByVal returnType as String) As Integer
-	Application.Volatile
-	' calculate netto work days
+    Application.Volatile
+    ' calculate net work days
     Dim fromRow As Integer: fromRow = 11
     Dim dateColumn As String: dateColumn = "A"
     Dim dayColumn As String: dayColumn = "B"
@@ -180,9 +179,9 @@ Public Function countDays(ByVal Days As String, ByVal returnType as String) As I
             If f = cDay Then cDayInWorkdays = True: Exit For
         Next f
         If (returnType="workdays" And _
-			cDayInWorkdays And (ActiveSheet.Range(absenceColumn & cRow).Value = "" Or ActiveSheet.Range(absenceColumn & cRow).Value = Locals.Absence()("overtime"))) Or _
+            cDayInWorkdays And (ActiveSheet.Range(absenceColumn & cRow).Value = "" Or ActiveSheet.Range(absenceColumn & cRow).Value = Locals.Absence()("overtime"))) Or _
             (returnType="vacation" And _
-			cDayInWorkdays And ActiveSheet.Range(absenceColumn & cRow).Value = Locals.Absence()("vacation")) Then
+            cDayInWorkdays And ActiveSheet.Range(absenceColumn & cRow).Value = Locals.Absence()("vacation")) Then
             countDays = countDays + 1
         End If
     Next cRow
@@ -216,14 +215,16 @@ End Function
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Public Function init() As Boolean
-    'Tabelle2 is the sheet codename from the first timetable by default
     Dim mprompt As New Collection
     Set mprompt = Locals.Language()
+    Dim initialSheet
+    Set initialSheet = ThisWorkbook.Sheets(Sheets.Count)
 
-	'actual initialization
-    If Val(Tabelle2.Cells(1, 4).Value) < 1 Then
+    'actual initialization
+    If Val(initialSheet.Cells(1, 4).Value) < 1 Then
         Select Case MsgBox(mprompt("initWelcomeText"), vbOKCancel + vbInformation, mprompt("initWelcomeTitle"))
         Case vbOK:
+            Worksheets(Sheets(Sheets.Count).Name).Activate
            
             Dim holiday As Variant
             Dim time As Variant
@@ -237,28 +238,28 @@ Public Function init() As Boolean
                 If newMonth < 10 Then
                     prefix = prefix & "0"
                 End If
-        
                 'rename last timetable sheet to current month/year
-                Tabelle2.Name = prefix & newMonth & "." & newYear
+                initialSheet.Name = prefix & newMonth & "." & newYear
+                
                 'unprotect sheet and set values
-				verificationOverride = True
-                Tabelle2.Unprotect persistent("masterpass", "get", True)
-                Tabelle2.Range("D1").Value = newMonth
-                Tabelle2.Range("E1").Value = newYear
-                Tabelle2.Range("D44").Value = CDec(holiday)
-                Tabelle2.Range("H45").Value = CDec(time)
+                verificationOverride = True
+                initialSheet.Unprotect persistent("masterpass", "get", True)
+                initialSheet.Range("D1").Value = newMonth
+                initialSheet.Range("E1").Value = newYear
+                initialSheet.Range("D44").Value = CDec(holiday)
+                initialSheet.Range("H45").Value = CDec(time)
                 'consider new amount of holiday in january only
                 If newMonth = 1 Then
-                    Tabelle2.Range("D46").FormulaLocal = "=D43+D44-D45"
+                    initialSheet.Range("D46").FormulaLocal = "=D43+D44-D45"
                 Else
-                    Tabelle2.Range("D46").FormulaLocal = "=D44-D45"
+                    initialSheet.Range("D46").FormulaLocal = "=D44-D45"
                 End If
                 'set to recent local formulas
                 Locals.updateXLSfunctions
+
                 'reprotect sheet again
-                Tabelle2.Protect persistent("masterpass", "get", True), True, True
- 
-				verificationOverride = False
+                initialSheet.Protect persistent("masterpass", "get", True), True, True
+                verificationOverride = False
                 init = True
             Else:
                 MsgBox mprompt("initCancelText"), vbOKOnly + vbExclamation, mprompt("initCancelTitle")
@@ -316,13 +317,8 @@ Public Sub addSheets()
         Range("D1").Value = newMonth
         Range("E1").Value = newYear
         
-        'clear inputs from former month and rewrite fomula for holidays
-        Range("C11:G41").ClearContents 'holidays, start- and end-time
-        
-        Dim mprompt As New Collection
-        Set mprompt = Locals.Language()
-
-        'clear/default values/formulas for holidays and breaks are updated from Local.updateXLSfunctions
+        'clear inputs from former month and rewrite formulas
+        Range("C11:G41").ClearContents 'holidays, start- and end-time, breaks
         Locals.updateXLSfunctions
 
         'clear other inputs from former month. this has to be done separately for cells that are not locked, otherwise an error occurs becoause of restrictions
@@ -371,7 +367,7 @@ Public Sub holidayReminder()
     'this is called by the save-event and presumes that the last sheet is recent and up-to-date
     Dim mprompt As New Collection
     Set mprompt = Locals.Language()
-	On Error Resume Next
+    On Error Resume Next
     'goto last sheet
     Worksheets(Sheets(Sheets.Count).Name).Activate
     'get paid leave counts
@@ -381,5 +377,5 @@ Public Sub holidayReminder()
     If plRest / plWhole > yearRest / 365 Then
         MsgBox mprompt("holidayReminderChunk0") & plRest & mprompt("holidayReminderChunk1") & yearRest & mprompt("holidayReminderChunk2"), vbOKOnly + vbExclamation, mprompt("holidayReminderTitle")
     End If
-	On Error GoTo 0
+    On Error GoTo 0
 End Sub
