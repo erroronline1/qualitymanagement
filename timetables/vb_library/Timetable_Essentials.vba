@@ -55,7 +55,7 @@ Public Sub ChangeRoutine(ByVal Sheet as String, ByVal Target As Range)
 End Sub
 
 Public Sub undo()
-    If Val(ThisWorkbook.Sheets(2).Cells(1, 4).Value) > 0 Then 'uninitialized file causes excel to crash
+    If Val(ThisWorkbook.Sheets(3).Cells(1, 4).Value) > 0 Then 'uninitialized file causes excel to crash
         verificationOverride = True
         Application.undo
         verificationOverride = False
@@ -376,6 +376,7 @@ Public Sub holidayReminder()
     Dim yearRest As Integer: yearRest = DateDiff("d", Date, "31/12/" & DatePart("yyyy", Date))
     If plRest / plWhole > yearRest / 365 Then
         MsgBox mprompt("holidayReminderChunk0") & plRest & mprompt("holidayReminderChunk1") & yearRest & mprompt("holidayReminderChunk2"), vbOKOnly + vbExclamation, mprompt("holidayReminderTitle")
+        persistent "newSheet", "set", False
     End If
     On Error GoTo 0
 End Sub
