@@ -73,7 +73,7 @@ core.fn = {
 	},
 	escapeHTML: function (text, br2nl) { //primary use for escaping special chars for mailto
 		if (br2nl !== "undefined" || br2nl) text = text.replace(/<br \/>|<br>/g, "\n");
-		return encodeURI(text);
+		return encodeURIComponent(text);
 	},
 
 	stdout: function(where, what){ //handles output, thus is suitable for unit-testing and debugging.
