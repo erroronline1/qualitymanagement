@@ -17,8 +17,8 @@
 
 compatible with
 
-![word](https://img.shields.io/badge/office%20word-2010,%202016,%202019-blue?style=flat-square&logo=microsoft-word)
-![excel](https://img.shields.io/badge/office%20excel-2010,%202016,%202019-brightgreen?style=flat-square&logo=microsoft-excel)
+![word](https://img.shields.io/badge/office%20word-2010,%202013,%202019-blue?style=flat-square&logo=microsoft-word)
+![excel](https://img.shields.io/badge/office%20excel-2010,%202013,%202019-brightgreen?style=flat-square&logo=microsoft-excel)
 ![ie11](https://img.shields.io/badge/internet%20explorer-11-blue?style=flat-square&logo=internet-explorer)
 ![browsers](https://img.shields.io/badge/real%20browsers-firefox,%20chrome,%20edge-orange?style=flat-square)
 
@@ -58,7 +58,7 @@ while it makes way more sense to automate quality management using assistive tec
 
 and you do not plan to change this within the near future.
 
-this system has been in use in context to [iso 13485:2015](https://www.iso.org/search.html?q=13485%3A2016) and was approved by the certification authority.
+this system has been in use in context to [iso 13485:2015](https://www.iso.org/search.html?q=13485%3A2015) and was approved by the certification authority.
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -109,7 +109,7 @@ in general this system
 
 ## requirements
 * one somewhat experienced office user to customize the document-blueprints and vba-codes
-* microsoft office 2010+ (tested with office 2010, 2016 and 2019 professional, word and excel)
+* microsoft office 2010+ (tested with office 2010, 2013 and 2019 professional, word and excel)
 
 [back to top](#bottle-light-quality-management-software)
 
