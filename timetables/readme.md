@@ -17,6 +17,13 @@ this is where automation might be beneficial. following the idea of the [bottle 
 the sheets calculate the effective work hours within the month based on weekly hours, count working days and take several special cases in account to reduce these if necessary (weekends, holidays, sick leave, etc.). breaks are deducted by default according to german work laws, unless the registered breaks are longer than the required minimum. holidays are counted as well and subtracted from the annual amount. every sheet fetches the values from the previous month.
 all in all every employee can look up exactly the state of current hours and holidays, can review all previous months and doesn't have to calculate everything manually.
 
+### different models
+currently there are two work model types: 9to5 and part time with home office. some calculations and excel-formulas differ, so there is a special handling within the vba-files.
+
+* examples for 9to5: jane doe and max mustermann
+* examples for part time with homeoffice: john doe and monika musterfrau
+
+
 ### automation
 on start of a new month a new sheet is added automatically, so no one has to care about that. in this case there will be also a (monthly) reminder to plan paid leave if there are too many holidays left in relation to remaining days of the year.
 
