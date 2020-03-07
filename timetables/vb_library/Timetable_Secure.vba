@@ -1,4 +1,10 @@
 Attribute VB_Name = "Secure"
+'     m
+'    / \    part of
+'   |...|
+'   |...|   bottle light quality management software
+'   |___|	by error on line 1 (erroronline.one) available on https://github.com/erroronline1/qualitymanagement
+'   / | \
 Option Explicit
 Public userInput As String
 Public maskedPrompt As New Collection
