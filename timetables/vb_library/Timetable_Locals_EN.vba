@@ -1,4 +1,10 @@
 Attribute VB_Name = "Locals"
+'     m
+'    / \    part of
+'   |...|
+'   |...|   bottle light quality management software
+'   |___|	by error on line 1 (erroronline.one) available on https://github.com/erroronline1/qualitymanagement
+'   / | \
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' set language chunks for messages according to your language. save with countrycode and embed in essentials accordingly
@@ -100,30 +106,32 @@ Public Function publicHolidays(ByVal givenDate) As String
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' handle formulas for the last sheet, also considering formulalocal
-' these are the formulas that might have to be customized to your language. all other formulas are considered universal
-' if you change anything it will be updated on initialization and while adding new sheets
+' handle formulas for the timetracking sheets, also considering formulalocal
+' these are the formulas that might have to be customized to your language. all other formulas within Essentials are considered
+' universal arithmetic. if you change anything it will be updated on initialization and the last sheet on opening the file
+' (e.g. for overwriting legacy code
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Public Sub updateXLSfunctions()
+Public Sub updateXLSfunctions(ByVal cSheet As Variant)
     Application.ScreenUpdating = False
-    'delete all conditional formats for latest sheet. must be unprotected
-    ThisWorkbook.Sheets(Sheets.Count).Cells.FormatConditions.Delete
+    'delete all conditional formats for given or latest sheet. must be unprotected
+    If cSheet = "" Then
+        ThisWorkbook.Sheets(Sheets.Count).Cells.FormatConditions.Delete
+    Else
+        ThisWorkbook.Sheets(cSheet).Cells.FormatConditions.Delete
+    End If
     'conditional formatting on empty mandatory fields
     With Range("=D2:D5,D43")
-        .FormatConditions.Delete
         .FormatConditions.Add Type:=xlExpression, Formula1:="=ISTLEER(D2)"
         .FormatConditions(1).Interior.Color = RGB(240, 184, 183)
     End With
     'conditional formatting on regular non working days
     With Range("=$B$11:$B$41")
-        .FormatConditions.Delete
         .FormatConditions.Add Type:=xlExpression, Formula1:="=WENNFEHLER(NICHT(FINDEN(B11;$D$5))*FALSCH;WAHR)"
         .FormatConditions(1).Interior.Color = RGB(191, 191, 191)
     End With
     'conditional formatting on wrong break inputs
     With Range("=$F$11:$G$41")
-        .FormatConditions.Delete
         .FormatConditions.Add Type:=xlExpression, Formula1:="=UND(F11<>0;F11<15)"
         .FormatConditions(1).Font.Color = RGB(255, 192, 0)
     End With
@@ -135,14 +143,38 @@ Public Sub updateXLSfunctions()
         If row > 11 Then Range("A" & row).FormulaLocal = "=WENNFEHLER(WENN(UND(A" & row - 1 & "<>" & Chr(34) & Chr(34) & ";A" & row - 1 & "+1<=MONATSENDE(A" & row - 1 & ";0));A" & row - 1 & "+1;" & Chr(34) & Chr(34) & ");" & Chr(34) & Chr(34) & ")"
         'day name
         Range("B" & row).FormulaLocal = "=TEXT(A" & row & ";" & Chr(34) & "TTT" & Chr(34) & ")"
-        'holiday auto insertion
-        Range("C" & row).FormulaLocal = "=publicHolidays(A" & row & ")"
-        'insert formula for auto short break
-        Range("F" & row).FormulaLocal = "=WENN(E" & row & "-D" & row & "-(G" & row & "/60/24)>9/24;15;0)"
-        'insert formula for auto long break
-        Range("G" & row).FormulaLocal = "=WENN(E" & row & "-D" & row & ">6/24;30;0)"
+
+        'update/insert holiday auto insertion on empty cells
+        Dim udc As Variant
+        udc = Range("C" & row).value
+        If IsError(udc) Then udc = ""
+        If udc = "" Then Range("C" & row).FormulaLocal = "=publicHolidays(A" & row & ")"
+
+        If ThisWorkbook.Workmodel="Standard" Then
+            'update/insert formula for auto short break on empty cells
+            udc = Range("C" & row).value
+            If IsError(udc) Then udc = ""
+            If udc = "" Then Range("F" & row).FormulaLocal = "=WENN(E" & row & "-D" & row & "-(G" & row & "/60/24)>9/24;15;0)"
+            'update/insert formula for auto long break on empty cells
+            udc = Range("C" & row).value
+            If IsError(udc) Then udc = ""
+            If udc = "" Then Range("G" & row).FormulaLocal = "=WENN(E" & row & "-D" & row & ">6/24;30;0)"
+        ElseIf ThisWorkbook.Workmodel="Homeoffice" Then
+            'update/insert holiday auto insertion on empty cells
+            udc = Range("C" & row).value
+            If IsError(udc) Then udc = ""
+            If udc = "" Then Range("C" & row).FormulaLocal = "=publicHolidays(A" & row & ")"
+            'update/insert formula for auto short break on empty cells
+            udc = Range("C" & row).value
+            If IsError(udc) Then udc = ""
+            If udc = "" Then Range("F" & row).FormulaLocal = "=WENN(E" & row & "-D" & row & ">6/24;WENN(E" & row & "-D" & row & ">9/24;45;30);0)"
+        End If
     Next row
 
+    'update countDays
+    Range("D8").FormulaLocal= "=countDays(D5; " & Chr(34) & "workdays" & Chr(34) & "; TEIL(ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1);FINDEN(" & Chr(34) & "]" & Chr(34) & ";ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1))+1;31))"
+    Range("D45").FormulaLocal= "=countDays(D5; " & Chr(34) & "vacation" & Chr(34) & "; TEIL(ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1);FINDEN(" & Chr(34) & "]" & Chr(34) & ";ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1))+1;31))"
+    
     'sum monthly worktime
     Range("H43").FormulaLocal = "=SUMME(H11:H41)*24"
     'sum considering overtime and correction

@@ -16,7 +16,7 @@ Public Function Modules() as Object
     Set Modules= CreateObject("Scripting.Dictionary")
     Modules.Add "Secure", ThisWorkbook.Path & "\vb_library\" & "Timetable_Secure.vba"
     Modules.Add "Locals", ThisWorkbook.Path & "\vb_library\" & "Timetable_Locals_" & ThisWorkbook.selectedLanguage & ".vba"
-    'Modules.Add "Rewrite", ThisWorkbook.Path & "\vb_library\RewriteMain.vba"
+    'Modules.Add "Rewrite", ThisWorkbook.Path & "\..\vb_library\RewriteMain.vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -28,7 +28,8 @@ Public Sub OpenRoutine()
 End Sub 
 
 Public Sub asyncOpen()
-    'Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", ThisWorkbook.Path & "\vb_library\Timetable_ThisWorkbook_illustration.vba"
+    'Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", ThisWorkbook.Path & "\vb_library\Timetable_ThisWorkbook_" & ThisWorkbook.Workmodel & ".vba"
+    'Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", ThisWorkbook.Path & "\vb_library\Timetable_ThisWorkbook_Standard.vba"
 
     'set unlocked to false on opening by default, this is essential. see functions comment.
     persistent "unlocked", "set", False
@@ -51,6 +52,9 @@ Public Sub ChangeRoutine(ByVal Sheet as String, ByVal Target As Range)
     If Not verificationOverride Then
         Secure.Protection Sheet
         If Target.Row>=11 And Target.Row<=41 Then absenceHandler Sheet, Target
+        'recalculate
+        ActiveSheet.EnableCalculation = False
+        ActiveSheet.EnableCalculation = True
     End If
 End Sub
 
@@ -159,9 +163,9 @@ Public Function workDaysNum(Byval Days as String) As Integer
     workDaysNum=workDays(Days).Count
 End Function
 
-Public Function countDays(ByVal Days As String, ByVal returnType as String) As Integer
-    Application.Volatile
-    ' calculate net work days
+Public Function countDays(ByVal Days As String, ByVal returnType as String, ByVal cSheet as String) As Integer
+    Application.volatile
+   ' calculate net work days
     Dim fromRow As Integer: fromRow = 11
     Dim dateColumn As String: dateColumn = "A"
     Dim dayColumn As String: dayColumn = "B"
@@ -174,21 +178,21 @@ Public Function countDays(ByVal Days As String, ByVal returnType as String) As I
     
     For cRow = fromRow To fromRow + maxDays - 1
         cDayInWorkdays = False
-        cDay = ActiveSheet.Range(dayColumn & cRow)
+        cDay = ThisWorkbook.Sheets(csheet).Range(dayColumn & cRow)
         For Each f In oMatches
             If f = cDay Then cDayInWorkdays = True: Exit For
         Next f
         If (returnType="workdays" And _
-            cDayInWorkdays And (ActiveSheet.Range(absenceColumn & cRow).Value = "" Or ActiveSheet.Range(absenceColumn & cRow).Value = Locals.Absence()("overtime"))) Or _
+            cDayInWorkdays And (ThisWorkbook.Sheets(csheet).Range(absenceColumn & cRow).Value = "" Or ThisWorkbook.Sheets(csheet).Range(absenceColumn & cRow).Value = Locals.Absence()("overtime"))) Or _
             (returnType="vacation" And _
-            cDayInWorkdays And ActiveSheet.Range(absenceColumn & cRow).Value = Locals.Absence()("vacation")) Then
+            cDayInWorkdays And ThisWorkbook.Sheets(csheet).Range(absenceColumn & cRow).Value = Locals.Absence()("vacation")) Then
             countDays = countDays + 1
         End If
     Next cRow
 End Function
 
-Public Function calcHours(ByVal Come, ByVal Go, ByVal PauseA, ByVal PauseB) As Variant
-    Application.Volatile
+Public Function calcHours(ByVal Come, ByVal Go, ByVal PauseA, ByVal PauseBOrHomeoffice) As Variant
+    Application.volatile
     If Come <> "" And Go <> "" Then
         'round floats to the precision of eight, otherwise the comparison fails
         Dim StepA: StepA = Round(6 / 24, 8) 'six hours
@@ -197,13 +201,24 @@ Public Function calcHours(ByVal Come, ByVal Go, ByVal PauseA, ByVal PauseB) As V
         Dim MinB: MinB = Round(0.75 / 24, 8) 'min pause of 45 minutes at more than nine hours
         calcHours = Round(Go - Come, 8)
         If PauseA <> 0 And PauseA < 15 Then PauseA = 15
-        If PauseB <> 0 And PauseB < 15 Then PauseB = 15
-        If calcHours - PauseA - PauseB > StepB Then
-            calcHours = calcHours - MinB
-        ElseIf calcHours - PauseA - PauseB > StepA Then
-            calcHours = calcHours - MinA
-        Else
-            calcHours = calcHours - PauseA / 60 / 24 - PauseB / 60 / 24
+
+        If ThisWorkbook.Workmodel="Standard" Then
+            If PauseBOrHomeoffice <> 0 And PauseBOrHomeoffice < 15 Then PauseBOrHomeoffice = 15
+            If calcHours - PauseA - PauseBOrHomeoffice > StepB Then
+                calcHours = calcHours - MinB
+            ElseIf calcHours - PauseA - PauseBOrHomeoffice > StepA Then
+                calcHours = calcHours - MinA
+            Else
+                calcHours = calcHours - PauseA / 60 / 24 - PauseBOrHomeoffice / 60 / 24
+            End If
+        ElseIf ThisWorkbook.Workmodel="Homeoffice" Then
+            If calcHours - PauseA > StepB Then
+                calcHours = calcHours - MinB + PauseBOrHomeoffice / 60 / 24
+            ElseIf calcHours - PauseA > StepA Then
+                calcHours = calcHours - MinA + PauseBOrHomeoffice / 60 / 24
+            Else
+                calcHours = calcHours - PauseA / 60 / 24 + PauseBOrHomeoffice / 60 / 24
+            End If
         End If
     Else
         calcHours = 0
@@ -255,7 +270,7 @@ Public Function init() As Boolean
                     initialSheet.Range("D46").FormulaLocal = "=D44-D45"
                 End If
                 'set to recent local formulas
-                Locals.updateXLSfunctions
+                Locals.updateXLSfunctions ""
 
                 'reprotect sheet again
                 initialSheet.Protect persistent("masterpass", "get", True), True, True
@@ -318,8 +333,8 @@ Public Sub addSheets()
         Range("E1").Value = newYear
         
         'clear inputs from former month and rewrite formulas
-        Range("C11:G41").ClearContents 'holidays, start- and end-time, breaks
-        Locals.updateXLSfunctions
+        Range("C11:G41").ClearContents 'holidays, start- and end-time, breaks/homeoffice
+        Locals.updateXLSfunctions ""
 
         'clear other inputs from former month. this has to be done separately for cells that are not locked, otherwise an error occurs becoause of restrictions
         'clear last comments
@@ -352,12 +367,24 @@ Public Sub addSheets()
         'set new sheets to true to remind for holidays on save if sheets are added - normally once a month
         persistent "newSheet", "set", True
     Wend
+
+    'update legacy sheets while beta testing, could be reduced to activation of last sheet for performance reason later on _
+    beware keeping everything updating. in case of calculatory changes this might also have an effect on past sheets messing everything up! _
+    so change firstlegacy as desired, with caution
+    Dim legacy As Long, firstlegacy
+    firstlegacy=Sheets.Count - 6 'change to Sheets.Count for latest sheet or Sheet-Counts - desired amount of past sheets to update. 
+    if firstlegacy < 3 Then firstlegacy = 3 'correction if less than desired amount is available
+    For legacy = firstlegacy To Sheets.Count 
+        'activate, handle protection and update sheets
+        Worksheets(Sheets(legacy).Name).Activate
+        ActiveSheet.Unprotect persistent("masterpass", "get", True)
+        Locals.updateXLSfunctions Sheets(legacy).Name
+        ActiveSheet.Protect persistent("masterpass", "get", True), True, True
+    Next legacy
+
     'activate all user input checks after adding sheets
     verificationOverride = False
-
-    'activate last sheet by default
-    Worksheets(Sheets(Sheets.Count).Name).Activate
-End Sub
+    End Sub
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' holiday reminder

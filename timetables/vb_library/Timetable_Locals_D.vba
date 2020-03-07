@@ -1,4 +1,10 @@
 Attribute VB_Name = "Locals"
+'     m
+'    / \    part of
+'   |...|
+'   |...|   bottle light quality management software
+'   |___|	by error on line 1 (erroronline.one) available on https://github.com/erroronline1/qualitymanagement
+'   / | \
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' set language chunks for messages according to your language. save with countrycode and embed in essentials accordingly
@@ -11,8 +17,9 @@ Public Function Language() As Collection
     
     'language chunks for security
     Language.Add Item:="Persönliches Kennwort vergeben", Key:="setPasswordTitle"
-    Language.Add "Bitte ein persönliches Kennwort vergeben um Änderungen durch dritte zu vermeiden. Die Sicherheit des Kennworts obliegt der eigenen Verantwortung." & vbNewLine & vbNewLine & "Vorschläge gibt es unter http://erroronline.one/column3/passwort.php", "setPasswordText"
-    Language.Add "Persönliches Kennwort bestätigen", "setPasswordConfirmTitle"
+    Language.Add "Bitte ein persönliches Kennwort vergeben um Änderungen durch dritte zu vermeiden. Die Sicherheit des Kennworts obliegt der eigenen Verantwortung." & _
+        vbNewLine & vbNewLine & "Vorschläge gibt es unter http://erroronline.one/column3/passwort.php", "setPasswordText"
+    Language.Add "Persönliches Kennwort bestäigen", "setPasswordConfirmTitle"
     Language.Add "Bitte ein persönliches Kennwort zur Sicherheit erneut eingeben.", "setPasswordConfirmText"
     Language.Add "Die Kennwörter stimmen nicht überein!", "setPasswordError"
     Language.Add "OK", "setPasswordOK"
@@ -39,13 +46,16 @@ Public Function Language() As Collection
     Language.Add " Tagen zu nehmen.", "holidayReminderChunk2"
 
     Language.Add "Initialisierung", "initWelcomeTitle"
-    Language.Add "Jetzt kann es losgehen!" & vbNewLine & vbNewLine & "Die Arbeitszeiterfassung wird mit mit dem aktuellen Monat gestartet." & vbNewLine & vbNewLine & "Vor der ersten Benutzung müssen zwei Werte angegeben werden, damit die automatischen Berechnungen funktionieren. Nach deren Abschluss kannst Du die Angaben direkt auf dem Blatt ändern, so wie es in den Informationen steht - beachte ggf. auch die farblich markierten Bereiche." & vbNewLine & vbNewLine & "Zudem wirst Du aufgefordert ein persönliches Kennwort zu erstellen. Du wirst im Folgenden durch den Prozess geleitet...", "initWelcomeText"
+    Language.Add "Jetzt kann es losgehen!" & vbNewLine & vbNewLine & "Die Arbeitszeiterfassung wird mit mit dem aktuellen Monat gestartet." & _
+        vbNewLine & vbNewLine & "Vor der ersten Benutzung müssen zwei Werte angegeben werden, damit die automatischen Berechnungen funktionieren. Nach deren Abschluss kannst Du die Angaben direkt auf dem Blatt ändern, so wie es in den Informationen steht - beachte ggf. auch die farblich markierten Bereiche." & _
+        vbNewLine & vbNewLine & "Zudem wirst Du aufgefordert ein persönliches Kennwort zu erstellen. Du wirst im Folgenden durch den Prozess geleitet...", "initWelcomeText"
     Language.Add "Resturlaub", "initHolidayTitle"
     Language.Add "Bitte gib die Tage Resturlaub an (wenn Du von einer Erfassung auf Papier kommst, sonst 0)", "initHolidayText"
     Language.Add "Arbeitszeitübertrag", "initTimeTitle"
     Language.Add "Bitte gib den Arbeitszeitübertrag in Stunden an (wenn Du von einer Erfassung auf Papier kommst, sonst 0)", "initTimeText"
     Language.Add "Abbruch", "initCancelTitle"
-    Language.Add "Die Initialisierung konnte nicht durchgeführt werden. Bei erneutem Öffnen der Datei wirst Du wieder dazu aufgefordert." & vbNewLine & vbNewLine & "Ohne Initialisierung werden unauthorisierte Änderungen nicht rückgängig gemacht.", "initCancelText"
+    Language.Add "Die Initialisierung konnte nicht durchgeführt werden. Bei erneutem Öffnen der Datei wirst Du wieder dazu aufgefordert." & _
+        vbNewLine & vbNewLine & "Ohne Initialisierung werden unauthorisierte Änderungen nicht rückgängig gemacht.", "initCancelText"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -101,15 +111,20 @@ Public Function publicHolidays(ByVal givenDate) As String
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' handle formulas for the last sheet, also considering formulalocal
-' these are the formulas that might have to be customized to your language. all other formulas are considered universal
-' if you change anything it will be updated on initialization and while adding new sheets
+' handle formulas for the timetracking sheets, also considering formulalocal
+' these are the formulas that might have to be customized to your language. all other formulas within Essentials are considered
+' universal arithmetic. if you change anything it will be updated on initialization and the last sheet on opening the file
+' (e.g. for overwriting legacy code
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Public Sub updateXLSfunctions()
+Public Sub updateXLSfunctions(ByVal cSheet As Variant)
     Application.ScreenUpdating = False
-    'delete all conditional formats for latest sheet. must be unprotected
-    ThisWorkbook.Sheets(Sheets.Count).Cells.FormatConditions.Delete
+    'delete all conditional formats for given or latest sheet. must be unprotected
+    If cSheet = "" Then
+        ThisWorkbook.Sheets(Sheets.Count).Cells.FormatConditions.Delete
+    Else
+        ThisWorkbook.Sheets(cSheet).Cells.FormatConditions.Delete
+    End If
     'conditional formatting on empty mandatory fields
     With Range("=D2:D5,D43")
         .FormatConditions.Add Type:=xlExpression, Formula1:="=ISTLEER(D2)"
@@ -133,14 +148,38 @@ Public Sub updateXLSfunctions()
         If row > 11 Then Range("A" & row).FormulaLocal = "=WENNFEHLER(WENN(UND(A" & row - 1 & "<>" & Chr(34) & Chr(34) & ";A" & row - 1 & "+1<=MONATSENDE(A" & row - 1 & ";0));A" & row - 1 & "+1;" & Chr(34) & Chr(34) & ");" & Chr(34) & Chr(34) & ")"
         'day name
         Range("B" & row).FormulaLocal = "=TEXT(A" & row & ";" & Chr(34) & "TTT" & Chr(34) & ")"
-        'holiday auto insertion
-        Range("C" & row).FormulaLocal = "=publicHolidays(A" & row & ")"
-        'insert formula for auto short break
-        Range("F" & row).FormulaLocal = "=WENN(E" & row & "-D" & row & "-(G" & row & "/60/24)>9/24;15;0)"
-        'insert formula for auto long break
-        Range("G" & row).FormulaLocal = "=WENN(E" & row & "-D" & row & ">6/24;30;0)"
+
+        'update/insert holiday auto insertion on empty cells
+        Dim udc As Variant
+        udc = Range("C" & row).value
+        If IsError(udc) Then udc = ""
+        If udc = "" Then Range("C" & row).FormulaLocal = "=publicHolidays(A" & row & ")"
+
+        If ThisWorkbook.Workmodel="Standard" Then
+            'update/insert formula for auto short break on empty cells
+            udc = Range("C" & row).value
+            If IsError(udc) Then udc = ""
+            If udc = "" Then Range("F" & row).FormulaLocal = "=WENN(E" & row & "-D" & row & "-(G" & row & "/60/24)>9/24;15;0)"
+            'update/insert formula for auto long break on empty cells
+            udc = Range("C" & row).value
+            If IsError(udc) Then udc = ""
+            If udc = "" Then Range("G" & row).FormulaLocal = "=WENN(E" & row & "-D" & row & ">6/24;30;0)"
+        ElseIf ThisWorkbook.Workmodel="Homeoffice" Then
+            'update/insert holiday auto insertion on empty cells
+            udc = Range("C" & row).value
+            If IsError(udc) Then udc = ""
+            If udc = "" Then Range("C" & row).FormulaLocal = "=publicHolidays(A" & row & ")"
+            'update/insert formula for auto short break on empty cells
+            udc = Range("C" & row).value
+            If IsError(udc) Then udc = ""
+            If udc = "" Then Range("F" & row).FormulaLocal = "=WENN(E" & row & "-D" & row & ">6/24;WENN(E" & row & "-D" & row & ">9/24;45;30);0)"
+        End If
     Next row
 
+    'update countDays
+    Range("D8").FormulaLocal= "=countDays(D5; " & Chr(34) & "workdays" & Chr(34) & "; TEIL(ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1);FINDEN(" & Chr(34) & "]" & Chr(34) & ";ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1))+1;31))"
+    Range("D45").FormulaLocal= "=countDays(D5; " & Chr(34) & "vacation" & Chr(34) & "; TEIL(ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1);FINDEN(" & Chr(34) & "]" & Chr(34) & ";ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1))+1;31))"
+    
     'sum monthly worktime
     Range("H43").FormulaLocal = "=SUMME(H11:H41)*24"
     'sum considering overtime and correction
