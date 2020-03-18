@@ -2,7 +2,9 @@
 
 these are microsoft office documents with some vba-code implemented
 
-**unfortunately the excel-functions and sheet-code-names are german only for me having no access to an english environment. you have to translate them to your language if necessary. take account of sheets, conditional formatting and modules. marking weekends might have to be adjusted by changing the current values of "sa" and "so" to your language environment abbreviations in formula of conditional formatting**
+**unfortunately the excel-functions and sheet-code-names are german only for me having no access to an english environment. you have to translate them to your language if necessary. take account of sheets, conditional formatting and modules. marking weekends might have to be adjusted by changing the current values of "sa" and "so" to your language environment abbreviations in formula of conditional formatting.**
+
+**be aware that this is currently in a permanent beta-status due to my lack of vba-skills and the sheets awaiting confirmation by the highly excel skilled personnel board possibly making spontaneous changes necessary. also these files (read: me) sometimes have difficulties dealing with different os- and office-versions.**
 
 ## there might be better solutions
 if you have efficient electronic supported methods for time tracking of the employees or no need to track working time at all, please carry on!
