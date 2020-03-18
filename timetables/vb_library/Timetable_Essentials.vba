@@ -7,6 +7,7 @@ Attribute VB_Name = "Essentials"
 '   / | \
 Option Explicit
 Public verificationOverride As Boolean
+Public selectedLanguage As String
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' general module handler
@@ -16,7 +17,7 @@ Public Function Modules() as Object
     Set Modules= CreateObject("Scripting.Dictionary")
     Modules.Add "Secure", ThisWorkbook.Path & "\vb_library\" & "Timetable_Secure.vba"
     Modules.Add "Locals", ThisWorkbook.Path & "\vb_library\" & "Timetable_Locals_" & ThisWorkbook.selectedLanguage & ".vba"
-    'Modules.Add "Rewrite", ThisWorkbook.Path & "\..\vb_library\RewriteMain.vba"
+    'Modules.Add "Rewrite", ThisWorkbook.Path & "\vb_library\RewriteMain.vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -28,8 +29,8 @@ Public Sub OpenRoutine()
 End Sub 
 
 Public Sub asyncOpen()
-    'Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", ThisWorkbook.Path & "\vb_library\Timetable_ThisWorkbook_" & ThisWorkbook.Workmodel & ".vba"
-    'Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", ThisWorkbook.Path & "\vb_library\Timetable_ThisWorkbook_Standard.vba"
+'    Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", ThisWorkbook.Path & "\vb_library\Timetable_ThisWorkbook_" & ThisWorkbook.Workmodel & ".vba"
+    persistent "Workmodel", "set", ThisWorkbook.Workmodel
 
     'set unlocked to false on opening by default, this is essential. see functions comment.
     persistent "unlocked", "set", False
@@ -39,7 +40,7 @@ Public Sub asyncOpen()
         Set mprompt = Locals.Language()
         MsgBox (mprompt("restartFromProtectedView"))
     Else
-        If init() Then addSheets ': Calculate 'should avoid display weird uncalculated cell values on startup but does cause error most probably with excel2010
+        If init() Then addSheets ': Calculate 'should avoid displaying weird uncalculated cell values on startup but does cause error most probably with excel2010
     End If
 End Sub
 
@@ -70,7 +71,7 @@ End Sub
 ' standard runtime functions
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Public Function persistent(value As String, action As String, setter As Boolean) As Variant
+Public Function persistent(value As String, action As String, setter As Variant) As Variant
     'runtime properties have to be written to the setting sheet because on closing a user-form all public/global values are gone. this were some wild hours.
     'returns always the last setting regardless of setter on get-call
     Dim column As Integer
@@ -79,8 +80,14 @@ Public Function persistent(value As String, action As String, setter As Boolean)
     Else
         If value = "unlocked" Then column = 2
         If value = "newSheet" Then column = 3
-        If action = "set" Then ThisWorkbook.Sheets("settings").Cells(2, column).Value = CInt(setter)
-        persistent = CBool(ThisWorkbook.Sheets("settings").Cells(2, column).Value)
+        If value = "Workmodel" Then column = 4
+        If TypeName(setter)="Boolean" Then
+            If action = "set" Then ThisWorkbook.Sheets("settings").Cells(2, column).Value = CInt(setter)
+            persistent = CBool(ThisWorkbook.Sheets("settings").Cells(2, column).Value)
+        Else
+            If action = "set" Then ThisWorkbook.Sheets("settings").Cells(2, column).Value = CStr(setter)
+            persistent = CStr(ThisWorkbook.Sheets("settings").Cells(2, column).Value)
+        End If
     End If
 End Function
 
@@ -194,6 +201,8 @@ End Function
 Public Function calcHours(ByVal Come, ByVal Go, ByVal PauseA, ByVal PauseBOrHomeoffice) As Variant
     Application.volatile
     If Come <> "" And Go <> "" Then
+        'reassign global value after user form passwordinput flushes these
+        ThisWorkbook.Workmodel = persistent("Workmodel", "get", "Workmodel")
         'round floats to the precision of eight, otherwise the comparison fails
         Dim StepA: StepA = Round(6 / 24, 8) 'six hours
         Dim MinA: MinA = Round(0.5 / 24, 8) 'min pause of 30 minutes at more than six hours
@@ -371,16 +380,16 @@ Public Sub addSheets()
     'update legacy sheets while beta testing, could be reduced to activation of last sheet for performance reason later on _
     beware keeping everything updating. in case of calculatory changes this might also have an effect on past sheets messing everything up! _
     so change firstlegacy as desired, with caution
-    Dim legacy As Long, firstlegacy
-    firstlegacy=Sheets.Count - 6 'change to Sheets.Count for latest sheet or Sheet-Counts - desired amount of past sheets to update. 
-    if firstlegacy < 3 Then firstlegacy = 3 'correction if less than desired amount is available
-    For legacy = firstlegacy To Sheets.Count 
+'    Dim legacy As Long, firstlegacy
+'    firstlegacy=Sheets.Count - 6 'change to Sheets.Count for latest sheet or Sheet-Counts - desired amount of past sheets to update. 
+'    if firstlegacy < 3 Then firstlegacy = 3 'correction if less than desired amount is available
+'    For legacy = firstlegacy To Sheets.Count 
         'activate, handle protection and update sheets
-        Worksheets(Sheets(legacy).Name).Activate
-        ActiveSheet.Unprotect persistent("masterpass", "get", True)
-        Locals.updateXLSfunctions Sheets(legacy).Name
-        ActiveSheet.Protect persistent("masterpass", "get", True), True, True
-    Next legacy
+'        Worksheets(Sheets(legacy).Name).Activate
+'        ActiveSheet.Unprotect persistent("masterpass", "get", True)
+'        Locals.updateXLSfunctions Sheets(legacy).Name
+'        ActiveSheet.Protect persistent("masterpass", "get", True), True, True
+'    Next legacy
 
     'activate all user input checks after adding sheets
     verificationOverride = False
