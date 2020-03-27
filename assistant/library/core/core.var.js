@@ -150,6 +150,13 @@ core.var = {
 	outlookWebUrl: 'https://exc20/owa/auth/logon.aspx', //if you have it installed else null
 	publishedFolder: 'file:///E:/Quality Management/published',
 
+	//supported OSs
+	oss:{
+		win7: 'Windows 7',
+		win10: 'Windows 10'
+	},
+	selectedOs:function (){return core.fn.setting.get('settingSelectedOs') || 'win7';},
+	
 	//text-blocks within the core file and reusable textblocks for modules
 	lang: {
 		title: {
@@ -255,6 +262,10 @@ core.var = {
 		settingFuzzyThresholdCaption: {
 			en: 'Fuzzy threshold (5 is a reasonable default)',
 			de: 'Fuzzy Schwellenwert (5 ist ein guter Standard)'
+		},
+		settingSelectedOsCaption: {
+			en: 'used operation system',
+			de: 'genutztes Betriebssystem'
 		},
 		settingGlobalSearchCaption: {
 			en: 'Seconds to deliver global search results',

@@ -94,6 +94,10 @@ var randomTip = {
 			en:'Generated text may be pasted to the email occasionally. It depends on the browser. The texts length can be customized to the browsers abilities in the advanced settings.',
 			de:'Generierter Text wird unter Umständen direkt in die eMail eingefügt. Das hängt vom Browser ab. Die Länge des Textes kann bei den erweiterten Einstellungen an den Browser angepasst werden. '
 		},
+		{
+			en:'Some functions need operating system specific settings. The used operating system can be set in the advanced settings.',
+			de:'Manche Funktionen benötigen betriebssystem-spezifische Einstellungen. Das genutzte Betriebsystem kann bei den erweiterten Einstellungen gewählt werden.'
+		},
 		//	module specific tips
 		{
 			en: 'Remember pointing our errors to the inventory control via email.',

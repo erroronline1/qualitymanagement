@@ -1,7 +1,10 @@
 if (typeof documentbundles === 'undefined') var documentbundles = {};
 
 documentbundles.var = {
-	serialPrintShellCommand: '"' + 'C:/Program Files/Adobe/Reader 11.0/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t',
+	serialPrintShellCommand: { //making use of core.var.selectedOs()
+		win7: '"' + 'C:/Program Files/Adobe/Reader 11.0/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t',
+		win10: '"' + 'C:/Program Files (x86)/Adobe/Reader 11.0/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t'
+	},
 	lang: {
 		useCaseDescription: {
 			en: 'Shown are all required documents. Process descriptions are applicable.',

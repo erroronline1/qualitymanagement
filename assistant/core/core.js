@@ -431,8 +431,15 @@ core.fn = {
 			return moduleSelector;
 		},
 		setupAdvanced: function () { //return advanced settings
-			return '<input type="button" onclick="core.fn.setting.clear()" value="' + core.fn.lang('settingResetApp') + '" title="' + core.fn.lang('settingRestartNeccessary') + '" /><br />' +
-				'<br />' + core.fn.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.fn.setting.get('settingFuzzyThreshold') || 5) + '" onchange="core.fn.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
+			var osSelector = new Object();
+			//create os-selector
+			Object.keys(core.var.oss).forEach(function (key) {
+				osSelector[key] = [key, core.var.oss[key]];
+			});
+
+		return '<input type="button" onclick="core.fn.setting.clear()" value="' + core.fn.lang('settingResetApp') + '" title="' + core.fn.lang('settingRestartNeccessary') + '" /><br />' +
+				'<br />' + core.fn.lang('settingSelectedOsCaption') + ':<br />' + core.fn.insert.select(osSelector, 'settingSelectedOs', 'settingSelectedOs', core.var.selectedOs(), 'onchange="core.fn.setting.set(\'settingSelectedOs\',this.value)"') +
+				'<br /><br />' + core.fn.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.fn.setting.get('settingFuzzyThreshold') || 5) + '" onchange="core.fn.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
 				'<br />' + core.fn.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.fn.setting.get('settingGlobalSearchTime') || 3) + '" onchange="core.fn.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
 				'<br />' + core.fn.lang('settingVarPreloadCaption') + ':<br /><input type="range" min="0" max="1000" step="50" value="' + (core.fn.setting.get('settingVarPreloadTime') || 50) + '" onchange="core.fn.setting.set(\'settingVarPreloadTime\',(this.value))" />' +
 				//  as of 2-2020 chrome, edge and ie11 support somewhere (but not exactly) up to 2^11 characters minus mailto:{xxx}?subject={xxx}&body=
