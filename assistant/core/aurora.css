@@ -5,12 +5,12 @@ font/foreground colors
 body,
 input,
 select {
-	color: rgb(236, 239, 244);
+	color: rgb(46, 52, 64);
 }
 
 select option,
 select optgroup {
-	color: #333
+	color: rgb(46, 52, 64)
 }
 
 #menu,
@@ -20,16 +20,16 @@ select optgroup {
 #popuptext label,
 #popuptext svg,
 ::selection {
-	color: rgb(236, 239, 244);
-	fill: rgb(236, 239, 244)
+	color: rgb(46, 52, 64);
+	fill: rgb(46, 52, 64)
 }
 
 .icon {
-	fill: rgb(236, 239, 244);
+	fill: rgb(46, 52, 64);
 }
 
 .inactiveicon {
-	fill: rgba(255, 255, 255, .3);
+	fill: rgba(46, 52, 64, .3);
 }
 
 input[type='text'],
@@ -42,7 +42,7 @@ span.search .icon,
 }
 
 textarea {
-	color: rgb(236, 239, 244) !important;
+	color: #333 !important;
 }
 
 input[type='button'],
@@ -50,8 +50,8 @@ input[type='button'],
 input[type='submit'],
 #popuptext input[type='submit'],
 .button {
-	fill: rgb(236, 239, 244);
-	color: rgb(236, 239, 244);
+	fill: #fff;
+	color: #fff;
 }
 
 .highlight,
@@ -60,11 +60,11 @@ a:hover::after {
 }
 
 a:link {
-	color: rgb(136, 192, 208);
+	color: rgb(94, 129, 172);
 }
 
 a:visited {
-	color: #ebcb8b;
+	color: rgb(208, 135, 112);
 }
 
 /*///////////////////////////////////////////// 
@@ -72,7 +72,7 @@ borders
 /////////////////////////////////////////////*/
 
 .bigger:hover {
-	border: 1px solid rgba(255, 255, 255, .2);
+	border: 1px solid rgba(76, 86, 106, .2);
 }
 
 input,
@@ -81,7 +81,7 @@ span.search,
 textarea {
 	border-width: 1px;
 	border-style: solid;
-	border-color: rgb(216, 222, 233);
+	border-color: rgba(76, 86, 106, .5);
 }
 
 input.search {
@@ -98,19 +98,19 @@ input[type='range'] {
 
 .itemresize,
 .itemresize::before {
-	border-color: rgba(0, 0, 0, .5);
+	border-color: rgba(46, 52, 64, .5);
 }
 
 .checkmark, #mailtoLimitBar  {
-	border-color: rgb(236, 239, 244);
+	border-color: rgba(46, 52, 64, .5);
 }
 
 #popuptext .checkmark {
-	border-color: rgb(236, 239, 244);
+	border-color: rgba(46, 52, 64, .5);
 }
 
 #popuptext {
-	box-shadow: 0 0 1em .125em rgba(0, 0, 0, .5)
+	box-shadow: 0 0 1em .125em rgba(46, 52, 64, .5)
 }
 
 /*///////////////////////////////////////////// 
@@ -118,7 +118,12 @@ background colors
 /////////////////////////////////////////////*/
 
 body {
-	background-color: rgb(46, 52, 64);
+	background-color: rgb(216, 222, 233);
+	background: linear-gradient(90deg,	 rgb(180, 142, 173) 0%,
+	rgb(191, 97, 106) 25%,
+	rgb(208, 135, 112) 50%,
+	rgb(235, 203, 139) 75%,
+	rgb(163, 190, 140) 100%);
 }
 
 ::selection {
@@ -128,29 +133,29 @@ body {
 input,
 select,
 span.search {
-	background-color: rgb(236, 239, 244);
+	background-color: #fff;
 }
 
 #temp {
-	background-color: rgb(59, 66, 82);
+	background-color: rgb(229, 233, 240);
 }
 
 #output {
-	background-color: rgb(67, 76, 94);
+	background-color: rgb(236, 239, 244);
 }
 
 .items {
-	background-color: rgba(0, 0, 0, .03);
+	background-color: rgba(46, 52, 64, .035);
 }
 
 .itemresize,
 .itemresize::before {
-	background-color: #4c566a;
+	background-color: #eee;
 }
 
 #menu,
 #popuptext {
-	background-color: rgba(46, 52, 64, .9);
+	background-color: rgb(143, 188, 187);
 }
 
 svg,
@@ -161,7 +166,7 @@ textarea {
 }
 
 .bigger:hover {
-	background-color: rgba(255, 255, 255, .2);
+	background-color: rgba(46, 52, 64, .07);
 }
 
 input[type='button'],
@@ -175,24 +180,24 @@ hr {
 
 .checkmark::after,
 .custominput input:checked~.checkmark {
-	background-color: rgba(255, 255, 255, .8);
+	background-color: rgba(46, 52, 64, .6);
 }
 
 .custominput input:checked~.checkmark::after {
-	background-color: #445057;
+	background-color: rgba(236, 239, 244, .9);
 }
 
 #popuptext .checkmark::after,
 #popuptext .custominput input:checked~.checkmark {
-	background-color: rgba(255, 255, 255, .8);
+	background-color: rgba(46, 52, 64, .6);
 }
 
 #popuptext .custominput input:checked~.checkmark::after {
-	background-color: #445057;
+	background-color: rgba(236, 239, 244, .9);
 }
 
 #popup {
-	background-color: rgba(0, 0, 0, .5);
+	background-color: rgba(46, 52, 64, .5);
 }
 
 #mailtoLimit.green {

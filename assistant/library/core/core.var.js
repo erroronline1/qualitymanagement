@@ -96,29 +96,37 @@ core.var = {
 	themes: {
 		//		theme.css-filename: { en: 'english title', de: 'german title', extend languages as desired },
 		default: {
-			en: 'default',
-			de: 'standard'
+			en: 'Default',
+			de: 'Standard'
 		},
 		light: {
-			en: 'light',
-			de: 'hell'
-		},
-		dark: {
-			en: 'dark',
-			de: 'dunkel'
-		},
-		rose: {
-			en: 'rose',
-			de: 'rosé'
-		},
-		orange: {
-			en: 'orange',
-			de: 'fox'
+			en: 'Snow Storm',
+			de: 'Schneesturm'
 		},
 		nord: {
-			en: 'nord',
-			de: 'nord'
-		}
+			en: 'Polar Night',
+			de: 'Polarnacht'
+		},
+		green: {
+			en: 'Greenland',
+			de: 'Grönland'
+		},
+		aurora: {
+			en: 'Aurora',
+			de: 'Aurora'
+		},
+		orange: {
+			en: 'Reindeer',
+			de: 'Rentier'
+		},
+		dark: {
+			en: 'Deep Black',
+			de: 'Tiefschwarz'
+		},
+		rose: {
+			en: 'Rose',
+			de: 'Rosé'
+		},
 	},
 	//	rootdir in case different handling of source files is necessary over developement and production sites
 	coreRootDir: location.pathname.substring(1, location.pathname.lastIndexOf('/')).replace(/%20/g, " ") + '/',

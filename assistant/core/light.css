@@ -5,12 +5,12 @@ font/foreground colors
 body,
 input,
 select {
-	color: #333;
+	color: rgb(46, 52, 64);
 }
 
 select option,
 select optgroup {
-	color: #333
+	color: rgb(46, 52, 64)
 }
 
 #menu,
@@ -20,16 +20,16 @@ select optgroup {
 #popuptext label,
 #popuptext svg,
 ::selection {
-	color: #000;
-	fill: #000
+	color: rgb(46, 52, 64);
+	fill: rgb(46, 52, 64)
 }
 
 .icon {
-	fill: rgba(0, 0, 0, 1);
+	fill: rgb(46, 52, 64);
 }
 
 .inactiveicon {
-	fill: rgba(0, 0, 0, .3);
+	fill: rgba(46, 52, 64, .3);
 }
 
 input[type='text'],
@@ -56,15 +56,15 @@ input[type='submit'],
 
 .highlight,
 a:hover::after {
-	color: rgb(197, 43, 92)
+	color: rgb(191, 97, 106);
 }
 
 a:link {
-	color: rgba(0, 164, 201, 1);
+	color: rgb(94, 129, 172);
 }
 
 a:visited {
-	color: rgba(179, 177, 16, .8);
+	color: rgb(208, 135, 112);
 }
 
 /*///////////////////////////////////////////// 
@@ -72,7 +72,7 @@ borders
 /////////////////////////////////////////////*/
 
 .bigger:hover {
-	border: 1px solid rgba(0, 0, 0, .2);
+	border: 1px solid rgba(76, 86, 106, .2);
 }
 
 input,
@@ -81,7 +81,7 @@ span.search,
 textarea {
 	border-width: 1px;
 	border-style: solid;
-	border-color: #bbb;
+	border-color: rgba(76, 86, 106, .5);
 }
 
 input.search {
@@ -98,19 +98,19 @@ input[type='range'] {
 
 .itemresize,
 .itemresize::before {
-	border-color: rgba(0, 0, 0, .5);
+	border-color: rgba(46, 52, 64, .5);
 }
 
 .checkmark, #mailtoLimitBar  {
-	border-color: rgba(0, 0, 0, .5);
+	border-color: rgba(46, 52, 64, .5);
 }
 
 #popuptext .checkmark {
-	border-color: rgba(0, 0, 0, .5);
+	border-color: rgba(46, 52, 64, .5);
 }
 
 #popuptext {
-	box-shadow: 0 0 1em .125em rgba(0, 0, 0, .5)
+	box-shadow: 0 0 1em .125em rgba(46, 52, 64, .5)
 }
 
 /*///////////////////////////////////////////// 
@@ -118,7 +118,7 @@ background colors
 /////////////////////////////////////////////*/
 
 body {
-	background-color: rgba(235, 235, 235, .9);
+	background-color: rgb(216, 222, 233);
 }
 
 ::selection {
@@ -132,15 +132,15 @@ span.search {
 }
 
 #temp {
-	background-color: rgba(255, 255, 255, .7);
+	background-color: rgb(229, 233, 240);
 }
 
 #output {
-	background-color: rgba(255, 255, 255, .9);
+	background-color: rgb(236, 239, 244);
 }
 
 .items {
-	background-color: rgba(0, 0, 0, .035);
+	background-color: rgba(46, 52, 64, .035);
 }
 
 .itemresize,
@@ -150,7 +150,7 @@ span.search {
 
 #menu,
 #popuptext {
-	background-color: rgba(235, 235, 235, .9);
+	background-color: rgb(216, 222, 233);
 }
 
 svg,
@@ -161,7 +161,7 @@ textarea {
 }
 
 .bigger:hover {
-	background-color: rgba(0, 0, 0, .07);
+	background-color: rgba(46, 52, 64, .07);
 }
 
 input[type='button'],
@@ -170,12 +170,12 @@ input[type='submit'],
 #popuptext input[type='submit'],
 .button,
 hr {
-	background-color: rgb(197, 43, 92);
+	background-color: rgb(191, 97, 106);
 }
 
 .checkmark::after,
 .custominput input:checked~.checkmark {
-	background-color: rgba(0, 0, 0, .6);
+	background-color: rgba(46, 52, 64, .6);
 }
 
 .custominput input:checked~.checkmark::after {
@@ -184,7 +184,7 @@ hr {
 
 #popuptext .checkmark::after,
 #popuptext .custominput input:checked~.checkmark {
-	background-color: rgba(0, 0, 0, .6);
+	background-color: rgba(46, 52, 64, .6);
 }
 
 #popuptext .custominput input:checked~.checkmark::after {
@@ -192,15 +192,15 @@ hr {
 }
 
 #popup {
-	background-color: rgba(0, 0, 0, .5);
+	background-color: rgba(46, 52, 64, .5);
 }
 
 #mailtoLimit.green {
-	background-color:rgb(0, 255, 0);
+	background-color:#a3be8c;
 }
 #mailtoLimit.orange {
-	background-color:rgb(255, 128, 0);
+	background-color:#d08770;
 }
 #mailtoLimit.red {
-	background-color:rgb(255, 0, 0);
+	background-color:#bf616a;
 }
