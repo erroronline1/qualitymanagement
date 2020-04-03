@@ -12,12 +12,12 @@ if (typeof timetable === 'undefined') var timetable = {};
 
 timetable.api = {
 	available: function (search) {
-		var queryString=search.split(/\W/),
+		var queryString=search.split(/\s/),
 			searchTerms=timetable.var.searchTerms[core.var.selectedLanguage],
 			found=false;
 		if (typeof searchTerms !== 'undefined') {
-			var found = core.fn.smartSearch.lookup(search, searchTerms, true);
-			found.forEach(function (value) {
+			var termsFound = core.fn.smartSearch.lookup(search, searchTerms, true);
+			termsFound.forEach(function (value) {
 				found=true;
 			});
 		}
