@@ -454,15 +454,20 @@ core.fn = {
 		},
 		setupDebug: function () { //return debugging options
 			var settingsDump = '';
-			if (core.fn.setting.localStorage()) settingsDump = JSON.stringify(localStorage, null, '\t')
-			else document.cookie.split(";").forEach(function (c) {
+			if (this.localStorage()) settingsDump = JSON.stringify(localStorage, null, '\t')
+			else document.cookie.split("; ").forEach(function (c) {
 				settingsDump += c + '\n';
 			});
 			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingPerformanceMonitor\')"') +
 				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.fn.setting.get('settingOutputMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingOutputMonitor\')"') +
-				'<br />Stored Settings:<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
+				'<br /><br />'+core.fn.lang('settingDebugDumpCaption')+':<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
+				'<br /><input type="text" placeholder="'+ core.fn.lang('settingDeleteDistinctPlaceholder') +'" id="deleteDistinctSettings" />' +
+				core.fn.insert.icon('delete', 'bigger', false,
+					'title="'+ core.fn.lang('settingDeleteDistinctPlaceholder') +'" ' +
+					'onclick="el(\'deleteDistinctSettings\').value.split(/\\W/).forEach(function(s){if (s) core.fn.setting.unset(s)});"') +
+				'<br />' +
 				core.fn.insert.icon('feedbackrequest', 'bigger', false,
-					'title="' + core.fn.lang('homeMenuFeedbackRequest') +
+					'title="' + core.fn.lang('settingMailDebugDump') +
 					'" onclick="core.fn.dynamicMailto(core.var.adminMail, \'' + core.fn.lang('title') + ' - Debug Settings\')"');
 		},
 		theme: function (theme) {
