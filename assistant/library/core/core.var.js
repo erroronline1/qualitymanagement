@@ -247,14 +247,6 @@ core.var = {
 			en: 'No need to adjust font. Left mouse button closes window.',
 			de: 'Umgeht die Notwendigkeit die Schriftart anpassen zu müssen. Linke Maustaste schließt das Fenster.'
 		},
-		settingMailtoMethod:{
-			en: 'Open email without annoying new browser tab',
-			de: 'eMails öffnen ohne störenden neuen Browsertab'
-		},
-		settingMailtoMethodHint:{
-			en: 'Does not work with Windows 7.',
-			de: 'Funktioniert nicht unter Windows 7.'
-		},
 		settingNotificationSelector: {
 			en: function () {
 				return 'Hide hint #' + (updateTracker.latestMajorUpdate() + 1) + ' on startup';
@@ -267,13 +259,18 @@ core.var = {
 			en: 'New hints are shown on startup automatically. <a href="javascript:core.fn.popup(updateTracker.enlist());">Show all hints</a>',
 			de: 'Neue Hinweise werden immer automatisch beim Start angezeigt. <a href="javascript:core.fn.popup(updateTracker.enlist());">Alle Hinweise anzeigen</a>'
 		},
+
+		settingResetApp: {
+			en: 'Reset application',
+			de: 'Alle Einstellungen zurücksetzen'
+		},
+		settingSelectedOsCaption: {
+			en: 'used environment',
+			de: 'genutzte Betriebsumgebung'
+		},
 		settingFuzzyThresholdCaption: {
 			en: 'Fuzzy threshold (5 is a reasonable default)',
 			de: 'Fuzzy Schwellenwert (5 ist ein guter Standard)'
-		},
-		settingSelectedOsCaption: {
-			en: 'used operation system',
-			de: 'genutztes Betriebssystem'
 		},
 		settingGlobalSearchCaption: {
 			en: 'Seconds to deliver global search results',
@@ -295,6 +292,28 @@ core.var = {
 			en: 'If your browser supports the setting a mail will open without further use that can be closed afterwards. If not reduce the setting value and try again. Finally a restart of application is necessary. A possible overflow might make a restart of the browser necessary. Tested browsers support the closest smaller value to 2000, only Firefox is capable of almost up to 32500 characters.',
 			de: 'Wenn der Browser die Einstellung unterstützt öffnet sich ein eMail-Fenster das keine weitere Verwendung hat und anschließend geschlossen werden kann. Ist dies nicht der Fall muss der Wert reduziert und erneut geprüft werden. Anschließen ist ein Neustart der Oberfläche erforderlich. Es kann zu einer Überforderung des Browsers kommen der seinen Neustart erfordert. Die gestesteten Browser unterstützen den nächstkleineren Wert zu 2000, nur Firefox schafft bis zu 35500 Zeichen.',
 		},
+		settingMailtoMethod:{
+			en: 'Open email without annoying new browser tab',
+			de: 'eMails öffnen ohne störenden neuen Browsertab'
+		},
+		settingMailtoMethodHint:{
+			en: 'Does not work with Windows 7.',
+			de: 'Funktioniert nicht unter Windows 7.'
+		},
+
+		settingDebugDumpCaption:{
+			en: 'currently stored settings',
+			de: 'aktuell gespeicherte Einstellungen'
+		},
+		settingDeleteDistinctPlaceholder:{
+			en: 'delete distingt settings, csv',
+			de: 'Einstellungen gezielt löschen, kommagetrennt'
+		},
+		settingMailDebugDump:{
+			en: 'open mail to send settings',
+			de: 'eMail öffnen um Einstellungen zu versenden'
+		},
+
 		settingGeneralHint: {
 			en: 'Local security settings can result in loss of settings on closing browser window.',
 			de: 'Lokale Sicherheitseinstellungen können dazu führen, dass beim Schließen des Browser-Fensters die Einstellungen verloren gehen.'
@@ -302,10 +321,6 @@ core.var = {
 		settingRestartNeccessary: {
 			en: 'restart of application neccessary',
 			de: 'Neustart der Oberfläche erforderlich'
-		},
-		settingResetApp: {
-			en: 'Reset application',
-			de: 'Alle Einstellungen zurücksetzen'
 		},
 
 		errorLoadingModules: {
