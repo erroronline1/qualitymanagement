@@ -4,7 +4,7 @@ font/foreground colors
 
 body,
 input,
-select {
+textarea {
 	color: rgb(236, 239, 244);
 }
 
@@ -19,6 +19,7 @@ select optgroup {
 #popuptext,
 #popuptext label,
 #popuptext svg,
+#popuptext textarea,
 ::selection {
 	color: rgb(236, 239, 244);
 	fill: rgb(236, 239, 244)
@@ -35,14 +36,9 @@ select optgroup {
 input[type='text'],
 select,
 span.search,
-span.search .icon,
-[placeholder] {
+span.search .icon {
 	color: #666;
 	fill: #666;
-}
-
-textarea {
-	color: rgb(236, 239, 244) !important;
 }
 
 input[type='button'],
@@ -101,7 +97,8 @@ input[type='range'] {
 	border-color: rgba(0, 0, 0, .5);
 }
 
-.checkmark, #mailtoLimitBar  {
+.checkmark,
+#mailtoLimitBar {
 	border-color: rgb(236, 239, 244);
 }
 
@@ -196,11 +193,13 @@ hr {
 }
 
 #mailtoLimit.green {
-	background-color:#a3be8c;
+	background-color: #a3be8c;
 }
+
 #mailtoLimit.orange {
-	background-color:#d08770;
+	background-color: #d08770;
 }
+
 #mailtoLimit.red {
-	background-color:#bf616a;
+	background-color: #bf616a;
 }
