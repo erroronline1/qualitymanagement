@@ -25,49 +25,52 @@ var svgClassList = { //classList.add and *.remove not supported for svg in ie, t
 if (typeof core === 'undefined') var core = {};
 
 core.fn = {
-	maxMailSize: function (){
-		if (confirm(core.fn.lang('settingMailSizeDeterminationHint'))){
-			for (var i=core.fn.setting.get('settingDirectMailSize'); i>256; i--) {
-				var good=1, num='';
-				for (var j=0;j<i;j++) num += 'a';
-				try {location.href='mailto:thisIsSupposedToBeACasuallyLongTest@eMail.address?body='+num}
-				catch (e) {good=0;}
-				if (good==1) {break;}
+	maxMailSize: function () {
+		if (confirm(core.fn.lang('settingMailSizeDeterminationHint'))) {
+			for (var i = core.fn.setting.get('settingDirectMailSize'); i > 256; i--) {
+				var good = 1,
+					num = '';
+				for (var j = 0; j < i; j++) num += 'a';
+				try {
+					location.href = 'mailto:thisIsSupposedToBeACasuallyLongTest@eMail.address?body=' + num
+				} catch (e) {
+					good = 0;
+				}
+				if (good == 1) {
+					break;
+				}
 			}
 		}
 		return;
 	},
 	dynamicMailto: function (address, subject, body) {
-		body=value(body);
-		if (core.fn.escapeHTML(body, true).length > core.var.directMailSize) body=core.fn.lang('errorMailSizeExport');
-		var mail, content = 'mailto:' + value(address) + '?' + (value(subject).length ? 'subject=' + core.fn.escapeHTML(value(subject), true) : '') + (value(subject).length  && body.length ? '&' : '') +(body.length ? 'body=' + core.fn.escapeHTML(body, true) : '');
-		
+		body = value(body);
+		if (core.fn.escapeHTML(body, true).length > core.var.directMailSize) body = core.fn.lang('errorMailSizeExport');
+		var mail, content = 'mailto:' + value(address) + '?' + (value(subject).length ? 'subject=' + core.fn.escapeHTML(value(subject), true) : '') + (value(subject).length && body.length ? '&' : '') + (body.length ? 'body=' + core.fn.escapeHTML(body, true) : '');
+
 		if (core.fn.setting.get('settingMailtoMethod')) { //this might switch in future
 			//this elegant way works with windows 10
 			mail = document.createElement('a');
 			mail.href = content;
 			mail.click();
-		}
-		else {
+		} else {
 			//this legacy way works with windows 7 but may leave a window/tab
 			mail = window.open(content, 'emailWindow');
 			if (mail && mail.open && !mail.closed) mail.close();
 		}
 		return;
 	},
-	mailtoLimit: function (body){
-		var bodysize=core.fn.escapeHTML(body, true).length;
-		el('mailtoLimit').style.width = Math.min( bodysize/core.var.directMailSize, 1) * 100 + "%";
+	mailtoLimit: function (body) {
+		var bodysize = core.fn.escapeHTML(body, true).length;
+		el('mailtoLimit').style.width = Math.min(bodysize / core.var.directMailSize, 1) * 100 + "%";
 		if (bodysize > core.var.directMailSize) {
-			el('mailtoLimit').classList.remove('green','orange');
+			el('mailtoLimit').classList.remove('green', 'orange');
 			el('mailtoLimit').classList.add('red');
-		}
-		else if (bodysize > core.var.directMailSize * .8) {
-			el('mailtoLimit').classList.remove('green','red');
+		} else if (bodysize > core.var.directMailSize * .8) {
+			el('mailtoLimit').classList.remove('green', 'red');
 			el('mailtoLimit').classList.add('orange');
-		}
-		else {
-			el('mailtoLimit').classList.remove('orange','red');
+		} else {
+			el('mailtoLimit').classList.remove('orange', 'red');
 			el('mailtoLimit').classList.add('green');
 		}
 	},
@@ -76,17 +79,17 @@ core.fn = {
 		return encodeURIComponent(text);
 	},
 
-	stdout: function(where, what){ //handles output, thus is suitable for unit-testing and debugging.
+	stdout: function (where, what) { //handles output, thus is suitable for unit-testing and debugging.
 		//can set array of where to same what, strings are converted to array automatically, 'console' is reserved
-		if (typeof where === 'string') where=[where];
-		where.forEach(function(w){
-			if (core.fn.setting.get('settingOutputMonitor') || w==='console'){
-				var group= w + ' from ' + core.var.currentScope;
+		if (typeof where === 'string') where = [where];
+		where.forEach(function (w) {
+			if (core.fn.setting.get('settingOutputMonitor') || w === 'console') {
+				var group = w + ' from ' + core.var.currentScope;
 				console.groupCollapsed(group);
 				console.log(what);
 				console.groupEnd(group);
 			}
-			if (w !== 'console') document.getElementById(w).innerHTML=what;
+			if (w !== 'console') document.getElementById(w).innerHTML = what;
 		});
 	},
 	popup: function (text) { //toggle notification popup
@@ -294,7 +297,8 @@ core.fn = {
 				if (callback.indexOf('init') > -1 && scriptname in core.var.modules) {
 					core.var.currentScope = scriptname;
 					document.title = core.fn.lang('title') + ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage];
-					if (core.var.modules[core.var.currentScope].wide) el('temp').classList.add('contentWide'); else el('temp').classList.remove('contentWide');
+					if (core.var.modules[core.var.currentScope].wide) el('temp').classList.add('contentWide');
+					else el('temp').classList.remove('contentWide');
 				}
 			}
 			//append node(s)
@@ -324,9 +328,9 @@ core.fn = {
 		expand: function () {
 			return '<span class="itemresize" title="' + core.fn.lang('itemResizeTitle') + '"></span>';
 		},
-		mailtoLimit: function(width) {
-//			if (value(width)=='') width='100%';
-			return '<div id="mailtoLimitBar" style="width:' + (width || '100%' ) + '" title="' + core.fn.lang('mailtoLimitBar') + '"><div id="mailtoLimit"></div></div>';
+		mailtoLimit: function (width) {
+			//			if (value(width)=='') width='100%';
+			return '<div id="mailtoLimitBar" style="width:' + (width || '100%') + '" title="' + core.fn.lang('mailtoLimitBar') + '"><div id="mailtoLimit"></div></div>';
 		},
 		icon: function (icon, addclass, id, attributes) { //easy icon handler for inline svg
 			//key[viewbox,transform scale, d-path]
@@ -368,16 +372,15 @@ core.fn = {
 				bug: ['0 0 2048 2048', '1,-1', 'M1608 1151q65 -2 122 -27.5t99 -68.5t66.5 -100.5t24.5 -122.5v-192h-128v192q0 32 -10.5 61.5t-29 54t-44.5 42t-57 26.5q6 -29 9.5 -59.5t3.5 -60.5v-256q0 -7 -1 -13t-2 -13l6 6q60 -60 92 -138t32 -163t-32 -162.5t-92 -137.5l-90 90q42 42 64 95.5t22 113.5q0 68 -31 132q-31 -100 -90.5 -183t-139.5 -142t-176.5 -92t-201.5 -33t-201.5 33t-176.5 92t-139.5 142t-90.5 183q-31 -64 -31 -132q0 -60 22 -113.5t64 -95.5l-90 -90q-60 60 -92.5 137.5t-32.5 162.5t32.5 163t92.5 138l6 -6q-1 7 -2 13t-1 13v256q0 30 3.5 60.5t9.5 59.5q-31 -9 -57 -26.5t-44.5 -42t-29 -54t-10.5 -61.5v-192h-128v192q0 65 24.5 122.5t66.5 100.5t99 68.5t122 27.5q31 70 80 135q-57 10 -105.5 38.5t-83.5 70.5t-55 94.5t-20 110.5v192h128v-192q0 -40 15 -75t41 -61t61 -41t75 -15h64v-3q47 35 96 59q-15 32 -23.5 66.5t-8.5 69.5q0 70 31 135l-140 140l90 90l127 -127q45 39 98.5 60.5t113.5 21.5t113.5 -21.5t98.5 -60.5l127 127l90 -90l-140 -140q31 -65 31 -135q0 -35 -8.5 -69.5t-23.5 -66.5q26 -13 49.5 -27.5t46.5 -31.5v3h64q40 0 75 15t61 41t41 61t15 75v192h128v-192q0 -58 -20 -110.5t-55 -94.5t-83.5 -70.5t-105.5 -38.5q49 -65 80 -135zM1024 1792q-40 0 -75 -15t-61 -41t-41 -61t-15 -75q0 -50 24 -90q42 11 83.5 17.5t84.5 6.5t84.5 -6.5t83.5 -17.5q24 40 24 90q0 40 -15 75t-41 61t-61 41t-75 15zM1536 896q0 104 -41 197t-110.5 163t-162.5 111t-198 41t-198 -41t-162.5 -111t-110.5 -163t-41 -197v-256q0 -106 40.5 -199t110 -162.5t162.5 -110t199 -40.5t199 40.5t162.5 110t110 162.5t40.5 199v256z'],
 				shuffle: ['0 0 2048 2048', '1,-1', 'M1765 1408q-127 -4 -240.5 -35.5t-215 -87t-192.5 -132.5t-172 -170q-34 -39 -68 -76t-72 -72q-168 -153 -372 -238t-433 -85v128q131 0 248.5 30.5t222.5 86t198.5 134t177.5 174.5q35 41 70.5 79t75.5 74q81 72 170.5 130t187 99t202 63.5t213.5 25.5l-147 147l90 90l302 -301l-302 -301l-90 90zM805 1212q-22 -24 -42.5 -48.5t-43.5 -48.5q-74 68 -157.5 122.5t-174.5 92.5t-188 58t-199 20v128q229 0 433 -85.5t372 -238.5zM1709 877l302 -301l-302 -301l-90 90l147 147q-110 3 -215.5 26t-203.5 64.5t-188.5 100.5t-171.5 133q22 24 42.5 48.5t43.5 48.5q72 -66 152 -119t167.5 -91t181 -59t191.5 -24l-146 147z'],
 				pdf: ['0 0 2048 2048', '1,-1', 'M1920 384h-128v-384h-1664v384h-128v1024h128v640h1243l421 -421v-219h128v-1024zM1408 1664h165l-165 165v-165zM256 1408h1408v128h-384v384h-1024v-512zM1664 384h-1408v-256h1408v256zM1792 1280h-1664v-768h1664v768zM448 1152q40 0 75 -15t61 -41t41 -61t15 -75t-15 -75t-41 -61t-61 -41t-75 -15h-64v-128h-128v512h192zM448 896q26 0 45 19t19 45t-19 45t-45 19h-64v-128h64zM896 1152q53 0 99.5 -20t81.5 -55t55 -81.5t20 -99.5t-20 -99.5t-55 -81.5t-81.5 -55t-99.5 -20h-128v512h128zM896 768q27 0 50 10t40.5 27.5t27.5 40.5t10 50t-10 50t-27.5 40.5t-40.5 27.5t-50 10v-256zM1280 1152h320v-128h-192v-128h192v-128h-192v-128h-128v512z'],
-				clock:['0 0 2048 2048', '1,-1', 'M1024 0q-142 0 -272.5 36.5t-244.5 103t-207.5 160t-160 207.5t-103 245t-36.5 272t36.5 272t103 245t160 207.5t207.5 160t245 103t272 36.5t272 -36.5t245 -103t207.5 -160t160 -207.5t103 -245t36.5 -272q0 -142 -36.5 -272.5t-103 -244.5t-160 -207.5t-207.5 -160t-245 -103t-272 -36.5zM1024 1920q-123 0 -237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5t32 -237.5t90.5 -214t140.5 -181.5t181.5 -140.5t214 -90.5t237.5 -32t237.5 32t214 90.5t181.5 140.5t140.5 181.5t90.5 214t32 237.5t-32 237.5t-90.5 214t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32zM1024 1024v640h-128v-768h512v128h-384z'],
-				refreshall:['0 0 2048 2048', '1,-1', 'M2048 1024q0 -140 -37 -272t-106 -248t-167.5 -212.5t-220.5 -163.5h275v-128h-512v512h128v-294q117 55 211.5 139.5t161 189.5t103 226.5t36.5 250.5q0 123 -32 237.5t-90.5 214t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32t-237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5q0 -150 48 -289t135 -253t208 -197.5t266 -123.5l-34 -123q-110 31 -208.5 84t-182 124t-150.5 159t-113.5 187t-71.5 208t-25 224q0 141 36.5 272t103.5 244.5t160.5 207t207 160.5t244.5 103.5t272 36.5t272 -36.5t244.5 -103.5t207 -160.5t160.5 -207t103.5 -244.5t36.5 -272zM1536 1024l-768 -443v886z'],
-				refreshnone:['0 0 2048 2048', '1,-1', 'M2048 1024q0 -140 -37 -272t-106 -248t-167.5 -212.5t-220.5 -163.5h275v-128h-512v512h128v-294q117 55 211.5 139.5t161 189.5t103 226.5t36.5 250.5q0 123 -32 237.5t-90.5 214t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32t-237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5q0 -150 48 -289t135 -253t208 -197.5t266 -123.5l-34 -123q-110 31 -208.5 84t-182 124t-150.5 159t-113.5 187t-71.5 208t-25 224q0 141 36.5 272t103.5 244.5t160.5 207t207 160.5t244.5 103.5t272 36.5t272 -36.5t244.5 -103.5t207 -160.5t160.5 -207t103.5 -244.5t36.5 -272zM1536 1024l-768 -443v886zM896 802l384 222l-384 222v-444z'],
-				translate:['0 0 2048 2048', '1,-1', 'M601 896l298 -896h-134l-86 256h-334l-86 -256h-134l298 896h178zM637 384l-125 374l-125 -374h250zM640 1792v-384h256v-128h-384v512h128zM257 899q-60 45 -108 102t-81 122t-50.5 137.5t-17.5 147.5q0 88 23 170t64.5 153t100 129.5t129.5 100t153 64.5t170 23t170 -23t153 -64.5t129.5 -100t100 -129.5t64.5 -153t23 -170q0 -32 -3.5 -64t-9.5 -64h-133q8 32 13 64t5 64q0 106 -40.5 199t-110 162.5t-162.5 110t-199 40.5t-199 -40.5t-162.5 -110t-110 -162.5t-40.5 -199q0 -110 45.5 -208.5t126.5 -171.5zM2030 606q2 -8 2 -13v-96q0 -4 -2 -12q-8 -2 -13 -2q-40 1 -79 2t-79 1h-321v-33q0 -52 1 -104t3 -104v-4q0 -24 -9 -48t-29 -38q-14 -10 -39.5 -15.5t-54.5 -8t-56.5 -3t-43.5 -0.5q-6 0 -19 0.5t-18 5.5q-3 3 -7 16t-6 18q-7 26 -16.5 48.5t-23.5 45.5q34 -4 68 -5.5t68 -1.5q24 0 36.5 7.5t12.5 33.5v190h-319q-40 0 -80 -1l-80 -2q-8 0 -12 3q-2 6 -2 11v96q0 3 0.5 7.5t2.5 6.5q6 2 11 2l80 -2t80 -1h319q-2 26 -2.5 52.5t-5.5 52.5q20 -2 39.5 -3.5t39.5 -3.5q2 0 3.5 -0.5t3.5 -0.5q35 25 67 53t64 57h-308q-42 0 -83.5 -1t-83.5 -2q-8 0 -12 3q-2 6 -2 11v95q0 4 2 12q8 2 12 2q42 -1 83.5 -2t83.5 -1h373q16 0 30 4.5t25 4.5q8 0 23 -12t30 -28t26.5 -32.5t11.5 -24.5q0 -10 -6.5 -15.5t-14.5 -9.5q-14 -7 -27 -18t-25 -21q-52 -43 -104.5 -83.5t-109.5 -77.5v-11h321q40 0 79 1t79 2q7 0 13 -3zM1391 1159q0 30 -1 61t-8 60q69 0 137 -6q6 -1 12.5 -3t6.5 -10q0 -5 -3 -12t-5 -12q-2 -6 -3.5 -16t-2 -21.5t-0.5 -22v-16.5v-13h296q42 0 83.5 1t83.5 2q7 0 13 -3q3 -5 3 -10q-1 -17 -2 -35.5t-1 -35.5v-58q0 -36 1 -72.5t2 -72.5q0 -3 -0.5 -7t-2.5 -6q-8 -2 -13 -2t-25 -0.5t-41 -0.5q-19 0 -34 1t-17 3q-2 8 -2.5 24t-0.5 36q0 33 1 68t1 52h-802v-14.5t0.5 -25t0.5 -31v-33.5q0 -29 -1 -52.5t-3 -25.5q-8 -2 -13 -2h-102q-11 0 -13 3t-2 13q1 40 1 79v79v58t-1 58q0 5 2 11q8 2 13 2q42 -1 83.5 -2t83.5 -1h275v11z'],
+				clock: ['0 0 2048 2048', '1,-1', 'M1024 0q-142 0 -272.5 36.5t-244.5 103t-207.5 160t-160 207.5t-103 245t-36.5 272t36.5 272t103 245t160 207.5t207.5 160t245 103t272 36.5t272 -36.5t245 -103t207.5 -160t160 -207.5t103 -245t36.5 -272q0 -142 -36.5 -272.5t-103 -244.5t-160 -207.5t-207.5 -160t-245 -103t-272 -36.5zM1024 1920q-123 0 -237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5t32 -237.5t90.5 -214t140.5 -181.5t181.5 -140.5t214 -90.5t237.5 -32t237.5 32t214 90.5t181.5 140.5t140.5 181.5t90.5 214t32 237.5t-32 237.5t-90.5 214t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32zM1024 1024v640h-128v-768h512v128h-384z'],
+				refreshall: ['0 0 2048 2048', '1,-1', 'M2048 1024q0 -140 -37 -272t-106 -248t-167.5 -212.5t-220.5 -163.5h275v-128h-512v512h128v-294q117 55 211.5 139.5t161 189.5t103 226.5t36.5 250.5q0 123 -32 237.5t-90.5 214t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32t-237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5q0 -150 48 -289t135 -253t208 -197.5t266 -123.5l-34 -123q-110 31 -208.5 84t-182 124t-150.5 159t-113.5 187t-71.5 208t-25 224q0 141 36.5 272t103.5 244.5t160.5 207t207 160.5t244.5 103.5t272 36.5t272 -36.5t244.5 -103.5t207 -160.5t160.5 -207t103.5 -244.5t36.5 -272zM1536 1024l-768 -443v886z'],
+				refreshnone: ['0 0 2048 2048', '1,-1', 'M2048 1024q0 -140 -37 -272t-106 -248t-167.5 -212.5t-220.5 -163.5h275v-128h-512v512h128v-294q117 55 211.5 139.5t161 189.5t103 226.5t36.5 250.5q0 123 -32 237.5t-90.5 214t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32t-237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5q0 -150 48 -289t135 -253t208 -197.5t266 -123.5l-34 -123q-110 31 -208.5 84t-182 124t-150.5 159t-113.5 187t-71.5 208t-25 224q0 141 36.5 272t103.5 244.5t160.5 207t207 160.5t244.5 103.5t272 36.5t272 -36.5t244.5 -103.5t207 -160.5t160.5 -207t103.5 -244.5t36.5 -272zM1536 1024l-768 -443v886zM896 802l384 222l-384 222v-444z'],
+				translate: ['0 0 2048 2048', '1,-1', 'M601 896l298 -896h-134l-86 256h-334l-86 -256h-134l298 896h178zM637 384l-125 374l-125 -374h250zM640 1792v-384h256v-128h-384v512h128zM257 899q-60 45 -108 102t-81 122t-50.5 137.5t-17.5 147.5q0 88 23 170t64.5 153t100 129.5t129.5 100t153 64.5t170 23t170 -23t153 -64.5t129.5 -100t100 -129.5t64.5 -153t23 -170q0 -32 -3.5 -64t-9.5 -64h-133q8 32 13 64t5 64q0 106 -40.5 199t-110 162.5t-162.5 110t-199 40.5t-199 -40.5t-162.5 -110t-110 -162.5t-40.5 -199q0 -110 45.5 -208.5t126.5 -171.5zM2030 606q2 -8 2 -13v-96q0 -4 -2 -12q-8 -2 -13 -2q-40 1 -79 2t-79 1h-321v-33q0 -52 1 -104t3 -104v-4q0 -24 -9 -48t-29 -38q-14 -10 -39.5 -15.5t-54.5 -8t-56.5 -3t-43.5 -0.5q-6 0 -19 0.5t-18 5.5q-3 3 -7 16t-6 18q-7 26 -16.5 48.5t-23.5 45.5q34 -4 68 -5.5t68 -1.5q24 0 36.5 7.5t12.5 33.5v190h-319q-40 0 -80 -1l-80 -2q-8 0 -12 3q-2 6 -2 11v96q0 3 0.5 7.5t2.5 6.5q6 2 11 2l80 -2t80 -1h319q-2 26 -2.5 52.5t-5.5 52.5q20 -2 39.5 -3.5t39.5 -3.5q2 0 3.5 -0.5t3.5 -0.5q35 25 67 53t64 57h-308q-42 0 -83.5 -1t-83.5 -2q-8 0 -12 3q-2 6 -2 11v95q0 4 2 12q8 2 12 2q42 -1 83.5 -2t83.5 -1h373q16 0 30 4.5t25 4.5q8 0 23 -12t30 -28t26.5 -32.5t11.5 -24.5q0 -10 -6.5 -15.5t-14.5 -9.5q-14 -7 -27 -18t-25 -21q-52 -43 -104.5 -83.5t-109.5 -77.5v-11h321q40 0 79 1t79 2q7 0 13 -3zM1391 1159q0 30 -1 61t-8 60q69 0 137 -6q6 -1 12.5 -3t6.5 -10q0 -5 -3 -12t-5 -12q-2 -6 -3.5 -16t-2 -21.5t-0.5 -22v-16.5v-13h296q42 0 83.5 1t83.5 2q7 0 13 -3q3 -5 3 -10q-1 -17 -2 -35.5t-1 -35.5v-58q0 -36 1 -72.5t2 -72.5q0 -3 -0.5 -7t-2.5 -6q-8 -2 -13 -2t-25 -0.5t-41 -0.5q-19 0 -34 1t-17 3q-2 8 -2.5 24t-0.5 36q0 33 1 68t1 52h-802v-14.5t0.5 -25t0.5 -31v-33.5q0 -29 -1 -52.5t-3 -25.5q-8 -2 -13 -2h-102q-11 0 -13 3t-2 13q1 40 1 79v79v58t-1 58q0 5 2 11q8 2 13 2q42 -1 83.5 -2t83.5 -1h275v11z'],
 			};
 			addclass = addclass || '';
 			try {
 				var rtrn = '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + asset[icon][0] + '\" style=\"transform: scale(' + asset[icon][1] + ');\" class=\"icon ' + addclass + '\" ' + (value(id) != '' ? ' id=\"' + id + '\" ' : '') + (value(attributes) != '' ? ' ' + attributes : '') + '><path d=\"' + asset[icon][2] + '\"></path></svg>';
-			}
-			catch (error){
+			} catch (error) {
 				var rtrn = '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + asset.construction[0] + '\" style=\"transform: scale(' + asset.construction[1] + ');\" class=\"icon ' + addclass + '\" ' + (value(id) != '' ? ' id=\"' + id + '\" ' : '') + (value(attributes) != '' ? ' ' + attributes : '') + '><path d=\"' + asset.construction[2] + '\"></path></svg>';
 			}
 			//weird hack: svg seem not to support the title attribute. so there has to be a wrapper if attributes contain title
@@ -425,7 +428,7 @@ core.fn = {
 				var moduleSelector = '';
 				//create module-selector
 				Object.keys(core.var.modules).forEach(function (key) {
-					moduleSelector += core.fn.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.fn.setting.isset('module_' + key)?core.fn.setting.get('module_' + key):core.var.modules[key].enabledByDefault), 'onchange="core.fn.setting.set(\'module_' + key + '\', el(\'module_' + key + '\').checked)"', core.fn.lang('settingRestartNeccessary')) + '<br />';
+					moduleSelector += core.fn.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.fn.setting.isset('module_' + key) ? core.fn.setting.get('module_' + key) : core.var.modules[key].enabledByDefault), 'onchange="core.fn.setting.set(\'module_' + key + '\', el(\'module_' + key + '\').checked)"', core.fn.lang('settingRestartNeccessary')) + '<br />';
 				});
 			} else moduleSelector = core.fn.lang('errorLoadingModules');
 			return moduleSelector;
@@ -437,7 +440,7 @@ core.fn = {
 				osSelector[key] = [key, core.var.oss[key]];
 			});
 
-		return '<input type="button" onclick="core.fn.setting.clear()" value="' + core.fn.lang('settingResetApp') + '" title="' + core.fn.lang('settingRestartNeccessary') + '" /><br />' +
+			return '<input type="button" onclick="core.fn.setting.clear()" value="' + core.fn.lang('settingResetApp') + '" title="' + core.fn.lang('settingRestartNeccessary') + '" /><br />' +
 				'<br />' + core.fn.lang('settingSelectedOsCaption') + ':<br />' + core.fn.insert.select(osSelector, 'settingSelectedOs', 'settingSelectedOs', core.var.selectedOs(), 'onchange="core.fn.setting.set(\'settingSelectedOs\',this.value)"') +
 				'<br /><br />' + core.fn.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.fn.setting.get('settingFuzzyThreshold') || 5) + '" onchange="core.fn.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
 				'<br />' + core.fn.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.fn.setting.get('settingGlobalSearchTime') || 3) + '" onchange="core.fn.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
@@ -445,14 +448,22 @@ core.fn = {
 				//  as of 2-2020 chrome, edge and ie11 support somewhere (but not exactly) up to 2^11 characters minus mailto:{xxx}?subject={xxx}&body=
 				//  only firefox seemingly supports up to 2^15 characters (32768 - the afore mentioned)
 				'<br />' + core.fn.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="100" max="32400" step="300" value="' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '" onchange="core.fn.setting.set(\'settingDirectMailSize\',(this.value)); el(\'currentDirectMailSize\').innerHTML=this.value" title="' + core.fn.lang('settingRestartNeccessary') + '" />' +
-				' <span id="currentDirectMailSize">' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.maxMailSize()" value="' + core.fn.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.lang('settingMailSizeDeterminationHint') +'" />' +
+				' <span id="currentDirectMailSize">' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.maxMailSize()" value="' + core.fn.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.lang('settingMailSizeDeterminationHint') + '" />' +
 				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingMailtoMethod'), 'settingMailtoMethod', (core.fn.setting.get('settingMailtoMethod') || 0), 'onchange="core.fn.setting.switch(\'settingMailtoMethod\')"') +
 				'<br /><small>' + core.fn.lang('settingMailtoMethodHint') + '</small>';
 		},
 		setupDebug: function () { //return debugging options
+			var settingsDump = '';
+			if (core.fn.setting.localStorage()) settingsDump = JSON.stringify(localStorage, null, '\t')
+			else document.cookie.split(";").forEach(function (c) {
+				settingsDump += c + '\n';
+			});
 			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingPerformanceMonitor\')"') +
 				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.fn.setting.get('settingOutputMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingOutputMonitor\')"') +
-				'';
+				'<br />Stored Settings:<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
+				core.fn.insert.icon('feedbackrequest', 'bigger', false,
+					'title="' + core.fn.lang('homeMenuFeedbackRequest') +
+					'" onclick="core.fn.dynamicMailto(core.var.adminMail, \'' + core.fn.lang('title') + ' - Debug Settings\')"');
 		},
 		theme: function (theme) {
 			el('colortheme').href = 'core/' + theme + '.css';
@@ -546,7 +557,7 @@ core.fn = {
 			(core.var.publishedFolder ? '<br /><a href="' + core.var.publishedFolder + '" target="_blank">' +
 				core.fn.insert.icon('pdf') + core.fn.lang('openPublishedFolder') + '</a><br />' : '') +
 			'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>');
-			core.fn.stdout('output', '');
+		core.fn.stdout('output', '');
 		core.var.currentScope = null;
 		Object.keys(core.var.modules).forEach(function (key) {
 			if (el('module' + key) != 'undefined' && el('module' + key) != null) el('module' + key).checked = false;
@@ -593,7 +604,8 @@ core.history = { //stores and restores last actions. since last actions can only
 				core.var.currentScope = key.substring(0, key.indexOf('.')) != 'core' ? key.substring(0, key.indexOf('.')) : null;
 				document.title = core.fn.lang('title') + (core.var.currentScope ? ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage] : '');
 				slider.slide(core.var.currentScope);
-				if (core.var.currentScope != null && core.var.modules[core.var.currentScope].wide) el('temp').classList.add('contentWide'); else el('temp').classList.remove('contentWide');					
+				if (core.var.currentScope != null && core.var.modules[core.var.currentScope].wide) el('temp').classList.add('contentWide');
+				else el('temp').classList.remove('contentWide');
 				core.performance.start(key);
 				eval(key);
 
@@ -659,9 +671,9 @@ var slider = { //just fancy animation of content on module change
 
 function select_module() { //load module list and return the main menu
 	if (typeof (core.var.modules) !== 'undefined') {
-		var output='<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.lang('title',false)+ '</span>';
+		var output = '<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.lang('title', false) + '</span>';
 		Object.keys(core.var.modules).forEach(function (key) {
-			if (typeof core.var.modules[key] === 'object' && (core.fn.setting.isset('module_' + key)?eval(core.fn.setting.get('module_' + key)):core.var.modules[key].enabledByDefault)) {
+			if (typeof core.var.modules[key] === 'object' && (core.fn.setting.isset('module_' + key) ? eval(core.fn.setting.get('module_' + key)) : core.var.modules[key].enabledByDefault)) {
 				//create module-selector
 				opt = 'modules/' + key + '.js';
 				output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.fn.loadScript(\'' + opt + '\', \'' + key + '.fn.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
