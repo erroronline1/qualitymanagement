@@ -86,7 +86,8 @@ core.fn = {
 			if (core.fn.setting.get('settingOutputMonitor') || w === 'console') {
 				var group = w + ' from ' + core.var.currentScope;
 				console.groupCollapsed(group);
-				console.log(what);
+				if (isIE()) console.log(what.match(/.{1,1024}/g));
+				else console.log(what);
 				console.groupEnd(group);
 			}
 			if (w !== 'console') document.getElementById(w).innerHTML = what;
