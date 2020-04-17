@@ -208,6 +208,11 @@ this list serves as an overview of acknowledged external documents in use as wel
 
 this sort of database contains questionsets for internal audits regarding all relevant topics. on save an export for the assistants module will be executed.
 
+### transfer schedule
+![transfer schedule](assets/xlsm_transferschedule.png)
+
+this is not originally part of quality management, but on the other hand which part of operations is not somehow influenced by and influencing quality management itself? making use of the same codebase the transfer schedule originated from the schedule of transferring apprentices through the different departments to get an insight on everything. this might come in handy for other planning operations as well.
+
 ### customize the vba-variables within the locals modules in the vb-library folders
 ![vba variables](assets/xlsm_vba.png)
 
