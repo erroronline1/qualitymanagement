@@ -38,6 +38,16 @@ Public Function setupStocklist() As Collection
     setupStocklist.Add "3", "m.contentcolumn" 'customize query column (numbered), output only if content is set
 End Function
 
+Public Function setupTransferSchedule() As Collection
+    Set setupTransferSchedule = New Collection
+	setupTransferSchedule.Add "Legend", "matrix.maxRow"
+	setupTransferSchedule.Add "Workmatrix could not be determinated, missing keyword >Legend< in column A." & vbnewline & vbnewline & "processing aborted.", "matrix.error"	
+	setupTransferSchedule.Add "Export PDF?", "initiate.Title"
+	setupTransferSchedule.Add "Publish plan?" & vbNewLine & "CAUTION! If destination file is already opened Excel will crash.", "initiate.Confirm"
+    setupTransferSchedule.Add "PDF des Ausbildungsplanes bei den Nachweisdokumenten bereitstellen?", "export.xlsPrompt"
+    setupTransferSchedule.Add "E:\Quality Managment\thirdType\Transferschedule.pdf", "export.xlsDefaultFile"
+End Function
+
 Public Function setupTicketSystem() As Collection
     Set setupTicketSystem = New Collection
     setupTicketSystem.Add Item:="TICKETS", Key:="matrix.sheet" 'select sheet to process content

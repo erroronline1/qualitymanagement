@@ -200,3 +200,12 @@ Public Sub exportXLS(var As Variant)
         ActiveWorkbook.Close False
    End If
 End Sub
+
+Public Sub exportXLS2PDF(var As Variant)
+    'exports a excel-file without macros
+    Dim fileSaveName As Variant
+    fileSaveName = Application.GetSaveAsFilename(InitialFileName:=var("export.xlsDefaultFile"), FileFilter:="PDF (*.pdf), *.pdf", Title:=var("export.xlsPrompt"))
+    If fileSaveName <> False Then
+		ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:=fileSaveName
+	End If
+End Sub
