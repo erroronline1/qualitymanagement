@@ -125,7 +125,7 @@ documentlookup.fn = {
 
 				// check if search matches item-list and display result
 				if (found.length > 0) {
-					list = '';
+					list = '<span class="highlight">' + core.fn.lang('generalThirdTypeHint', 'documentlookup') + '</span><br /><br />';
 					core.fn.smartSearch.relevance.init();
 					found.forEach(function (value) {
 						list += core.fn.smartSearch.relevance.nextstep(value[1]);

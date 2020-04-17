@@ -44,10 +44,18 @@ documentlookup.var = {
 		},
 		errorNothingFound: {
 			en: function (query) {
-				return 'Query for document searched by <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'or fuzzy-search-setting ') + ', look for parts of query, in another document group or within record documents.  Please adhere to mimimum 3 character length.'
+				return 'Query for document searched by <span class="highlight">' + query + '</span> returned no results. Check spelling' + (core.fn.setting.get('settingFuzzySearch') ? '' : ' or fuzzy-search-setting ') + ', look for parts of query, in another document group or within <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.lang('optionThirdType','documentlookup') + '</a>. Please adhere to mimimum 3 character length.'
 			},
 			de: function (query) {
-				return 'Es konnte kein Dokument mit dem Begriff <span class="highlight">' + query + '</span> gefunden werden. Bitte eventuell Schreibweise ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'oder Fuzzy-Search-Einstellung ') + 'überprüfen, nach Wortteilen, in einer anderen Dokumengruppe oder bei den Nachweisdokumenten suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
+				return 'Es konnte kein Dokument mit dem Begriff <span class="highlight">' + query + '</span> gefunden werden. Bitte eventuell Schreibweise' + (core.fn.setting.get('settingFuzzySearch') ? '' : ' oder Fuzzy-Search-Einstellung') + ' überprüfen, nach Wortteilen, in einer anderen Dokumengruppe oder bei den <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.lang('optionThirdType','documentlookup') + 'n</a> suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
+			},
+		},
+		generalThirdTypeHint: {
+			en: function () {
+				return 'Of course the requested document could be within the <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.lang('optionThirdType','documentlookup') + '</a>.'
+			},
+			de: function () {
+				return 'Das gesuchte Dokument könnte natürlich auch bei den <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.lang('optionThirdType','documentlookup') + 'n</a> sein.'
 			},
 		},
 	},
