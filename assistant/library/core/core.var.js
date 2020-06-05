@@ -172,7 +172,7 @@ core.var = {
 			de: 'QM-Assistent'
 		},
 		greeting: {
-			en: 'Welcome to the QM-Assistant. How can i help you?',
+			en: 'Welcome to the QM-Assistant. How can I help you?',
 			de: 'Willkommen beim QM-Assistenten. Wobei kann ich unterstützen?'
 		},
 		globalSearchPlaceholder: {
@@ -232,8 +232,8 @@ core.var = {
 			de: 'Sprache'
 		},
 		settingSearchOptionFuzzy: {
-			en: 'Fuzzy-search',
-			de: 'Fuzzy-Search'
+			en: 'Fuzzy-Search',
+			de: 'Tippfehler-Toleranz'
 		},
 		settingSearchOptionFuzzyHint: {
 			en: 'Includes possible typos, but gets a bigger sample size.',
@@ -270,7 +270,7 @@ core.var = {
 		},
 		settingFuzzyThresholdCaption: {
 			en: 'Fuzzy threshold (5 is a reasonable default)',
-			de: 'Fuzzy Schwellenwert (5 ist ein guter Standard)'
+			de: 'Schwellenwert für Tippfehler (5 ist ein guter Standard)'
 		},
 		settingGlobalSearchCaption: {
 			en: 'Seconds to deliver global search results',
@@ -306,7 +306,7 @@ core.var = {
 			de: 'aktuell gespeicherte Einstellungen'
 		},
 		settingDeleteDistinctPlaceholder:{
-			en: 'delete distingt settings, csv',
+			en: 'delete distinct settings, csv',
 			de: 'Einstellungen gezielt löschen, kommagetrennt'
 		},
 		settingMailDebugDump:{
@@ -337,10 +337,10 @@ core.var = {
 		},
 		errorNothingFound: {
 			en: function (query) {
-				return 'Search for <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'or fuzzy-search-setting ') + 'or look for parts of query. Please adhere to mimimum 3 character length.'
+				return 'Search for <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'or Fuzzy-Search-setting ') + 'or look for parts of query. Please adhere to mimimum 3 character length.'
 			},
 			de: function (query) {
-				return 'Zum Begriff <span class="highlight">' + query + '</span> konnte nichts gefunden werden. Bitte eventuell Schreibweise ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'oder Fuzzy-Search-Einstellung ') + 'überprüfen oder nach Wortteilen suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
+				return 'Zum Begriff <span class="highlight">' + query + '</span> konnte nichts gefunden werden. Bitte eventuell Schreibweise ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'oder Tippfehler-Toleranz-Einstellung ') + 'überprüfen oder nach Wortteilen suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
 			},
 		},
 		errorMailSizeExport: {

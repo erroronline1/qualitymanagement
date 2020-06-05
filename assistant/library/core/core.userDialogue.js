@@ -48,7 +48,7 @@ var randomTip = {
 		},
 		{
 			en: 'Enabling fuzzy search can help you finding the desired content in case of typos. Set up the sensitivity in the advanced settings.',
-			de: 'Wenn du dich gelegentlich vertippst kann dich Fuzzy-Search unterstützen trotzdem zum Ziel zu gelangen. Die Empfindlichkeit kann bei den erweiterten Einstellungen angepasst werden.'
+			de: 'Wenn du dich gelegentlich vertippst kann dich die Tippfehler-Toleranz unterstützen trotzdem zum Ziel zu gelangen. Die Empfindlichkeit kann bei den erweiterten Einstellungen angepasst werden.'
 		},
 		{
 			en: 'Search for different keywords, results with the most matches appear at the top.',
