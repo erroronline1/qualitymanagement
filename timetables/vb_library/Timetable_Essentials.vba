@@ -211,19 +211,30 @@ Public Function calcHours(ByVal Come, ByVal Go, ByVal PauseA, ByVal PauseBOrHome
         calcHours = Round(Go - Come, 8)
         If PauseA <> 0 And PauseA < 15 Then PauseA = 15
 
-        If ThisWorkbook.Workmodel="Standard" Then
+        If ThisWorkbook.Workmodel = "Standard" Then
             If PauseBOrHomeoffice <> 0 And PauseBOrHomeoffice < 15 Then PauseBOrHomeoffice = 15
-            If calcHours - PauseA - PauseBOrHomeoffice > StepB Then
-                calcHours = calcHours - MinB
-            ElseIf calcHours - PauseA - PauseBOrHomeoffice > StepA Then
-                calcHours = calcHours - MinA
+            
+            Dim pauseSum: pauseSum = Round(PauseA / 60 / 24, 8) + Round(PauseBOrHomeoffice / 60 / 24, 8)
+            
+            If calcHours - pauseSum > StepB Then
+                If pauseSum > MinB Then
+                    calcHours = calcHours - pauseSum
+                Else
+                    calcHours = calcHours - MinB
+                End If
+            ElseIf calcHours - pauseSum > StepA Then
+                If pauseSum > MinA Then
+                    calcHours = calcHours - pauseSum
+                Else
+                    calcHours = calcHours - MinA
+                End If
             Else
-                calcHours = calcHours - PauseA / 60 / 24 - PauseBOrHomeoffice / 60 / 24
+                calcHours = calcHours - pauseSum
             End If
-        ElseIf ThisWorkbook.Workmodel="Homeoffice" Then
-            If calcHours - PauseA > StepB Then
+        ElseIf ThisWorkbook.Workmodel = "Homeoffice" Then
+            If calcHours - Round(PauseA / 60 / 24, 8) > StepB Then
                 calcHours = calcHours - MinB + PauseBOrHomeoffice / 60 / 24
-            ElseIf calcHours - PauseA > StepA Then
+            ElseIf calcHours - Round(PauseA / 60 / 24, 8) > StepA Then
                 calcHours = calcHours - MinA + PauseBOrHomeoffice / 60 / 24
             Else
                 calcHours = calcHours - PauseA / 60 / 24 + PauseBOrHomeoffice / 60 / 24
