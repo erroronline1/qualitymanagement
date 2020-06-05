@@ -35,27 +35,27 @@ documentlookup.var = {
 			de: 'eigene Liste speichern'
 		},
 		favouriteRestoreConfirm: {
-			en: 'please reload module',
-			de: 'Modul bitte neu laden...'
+			en: 'Favourites deleted / reset. Reload module to refresh...',
+			de: 'Favoriten wurden gelöscht / zurückgesetzt. Um die Anzeige zu aktualisieren bitte Modul neu starten...'
 		},
 		favouriteSaveConfirm: {
-			en: 'recent favourites saved.',
-			de: 'neue Favoritenliste gespeichert.'
+			en: 'Recent favourites were saved.',
+			de: 'Die neue Favoritenliste wurde gespeichert.'
 		},
 		errorNothingFound: {
 			en: function (query) {
-				return 'Query for document searched by <span class="highlight">' + query + '</span> returned no results. Check spelling' + (core.fn.setting.get('settingFuzzySearch') ? '' : ' or Fuzzy-Search-setting ') + ', look for parts of query, in another document group or within <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.lang('optionThirdType','documentlookup') + '</a>. Please adhere to mimimum 3 character length.'
+				return 'Query for document searched by <span class="highlight">' + query + '</span> returned no results. Check spelling' + (core.fn.setting.get('settingFuzzySearch') ? '' : ' or Fuzzy-Search-setting ') + ', look for parts of query, in another document group or within <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.lang('optionThirdType', 'documentlookup') + '</a>. Please adhere to mimimum 3 character length.'
 			},
 			de: function (query) {
-				return 'Es konnte kein Dokument mit dem Begriff <span class="highlight">' + query + '</span> gefunden werden. Bitte eventuell Schreibweise' + (core.fn.setting.get('settingFuzzySearch') ? '' : ' oder Tippfehler-Toleranz-Einstellung') + ' überprüfen, nach Wortteilen, in einer anderen Dokumengruppe oder bei den <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.lang('optionThirdType','documentlookup') + 'n</a> suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
+				return 'Es konnte kein Dokument mit dem Begriff <span class="highlight">' + query + '</span> gefunden werden. Bitte eventuell Schreibweise' + (core.fn.setting.get('settingFuzzySearch') ? '' : ' oder Tippfehler-Toleranz-Einstellung') + ' überprüfen, nach Wortteilen, in einer anderen Dokumengruppe oder bei den <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.lang('optionThirdType', 'documentlookup') + 'n</a> suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
 			},
 		},
 		generalThirdTypeHint: {
 			en: function () {
-				return 'Of course the requested document could be within the <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.lang('optionThirdType','documentlookup') + '</a>.'
+				return 'Of course the requested document could be within the <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.lang('optionThirdType', 'documentlookup') + '</a>.'
 			},
 			de: function () {
-				return 'Das gesuchte Dokument könnte natürlich auch bei den <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.lang('optionThirdType','documentlookup') + 'n</a> sein.'
+				return 'Das gesuchte Dokument könnte natürlich auch bei den <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.lang('optionThirdType', 'documentlookup') + 'n</a> sein.'
 			},
 		},
 	},
@@ -74,8 +74,8 @@ documentlookup.var = {
 		},
 	},
 	//set default document titles without whitespaces and special characters, predefined clicks for higher postion 
-	defaultFavourites:	'Protocol,10,' +
-						'AttendanceList,5,',
+	defaultFavourites: 'Protocol,10,' +
+		'AttendanceList,5,',
 	selectedModule: function () {
 		return (core.fn.setting.get('lookup_bundle') || 'documentlookup_int');
 	},
