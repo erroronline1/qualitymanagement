@@ -38,10 +38,10 @@ documentlookup.api = {
 documentlookup.fn = {
 	linkfile: function (url, track, title, favourite) {
 		var title = value(title) !== '' ? ' title="' + title + '" ' : '';
-		var displayName = ( url[1] ? url[1] : url[0].substring(url[0].lastIndexOf('/'), url[0].lastIndexOf('.')).substring(1))
-		if (value(favourite)!=='') return '<span class="singlefavouritehandler"><a href="' + url[0] + '" ' + title + ' onclick="documentlookup.fn.favouriteHandler.set(\'' + documentlookup.fn.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>' + core.fn.insert.icon('delete', false, false, 'onclick="documentlookup.fn.favouriteHandler.set(\':' + documentlookup.fn.favouriteHandler.prepare(url[0]) + '\'); return;"') + '</span>';
+		var displayName = (url[1] ? url[1] : url[0].substring(url[0].lastIndexOf('/'), url[0].lastIndexOf('.')).substring(1))
+		if (value(favourite) !== '') return '<span class="singlefavouritehandler"><a href="' + url[0] + '" ' + title + ' onclick="documentlookup.fn.favouriteHandler.set(\'' + documentlookup.fn.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>' + core.fn.insert.icon('delete', false, false, 'onclick="documentlookup.fn.favouriteHandler.set(\':' + documentlookup.fn.favouriteHandler.prepare(url[0]) + '\'); return;"') + '</span>';
 		else if (track) return '<a href="' + url[0] + '" ' + title + ' onclick="documentlookup.fn.favouriteHandler.set(\'' + documentlookup.fn.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>';
-		return '<a href="' + url[0] + '" ' + title + ' target="_blank">' + displayName + '</a>'; 
+		return '<a href="' + url[0] + '" ' + title + ' target="_blank">' + displayName + '</a>';
 	},
 	favouriteHandler: {
 		prepare: function (value) {
@@ -49,10 +49,10 @@ documentlookup.fn = {
 		},
 		set: function (value) {
 			var output = core.fn.setting.get('favouritedocs'),
-				deleteValue=false;
-			if (value.indexOf(':')==0){ //if preceded by : the value will be deleted from the favourite list
-				deleteValue=true
-				value=value.substring(1);
+				deleteValue = false;
+			if (value.indexOf(':') == 0) { //if preceded by : the value will be deleted from the favourite list
+				deleteValue = true
+				value = value.substring(1);
 			}
 			if (output) {
 				if (output.indexOf(value) > -1) {
@@ -79,10 +79,10 @@ documentlookup.fn = {
 			if (output) {
 				var tfav = tfav2 = new Array();
 				//bring selected object into scope to avoid method callbacks in loops for performance reasons
-				var interimobject=documentlookup.var.selectedObject().content;
+				var interimobject = documentlookup.var.selectedObject().content;
 				//assign link to index as favourite handler
 				Object.keys(interimobject).forEach(function (key) {
-					tfav[documentlookup.fn.favouriteHandler.prepare(interimobject[key][0])] = documentlookup.fn.linkfile([interimobject[key][0],interimobject[key][1]], true, interimobject[key][2], 1);
+					tfav[documentlookup.fn.favouriteHandler.prepare(interimobject[key][0])] = documentlookup.fn.linkfile([interimobject[key][0], interimobject[key][1]], true, interimobject[key][2], 1);
 				});
 
 				var tfav2 = output.split(',');
@@ -100,11 +100,11 @@ documentlookup.fn = {
 		},
 		reset: function (output) {
 			core.fn.setting.set('favouritedocs', output);
-			alert(core.fn.lang('favouriteRestoreConfirm', 'documentlookup'));
+			core.fn.popup(core.fn.lang('favouriteRestoreConfirm', 'documentlookup'));
 		},
 		customreset: function () {
 			core.fn.setting.set('customfavouritedocs', core.fn.setting.get('favouritedocs'));
-			alert(core.fn.lang('favouriteSaveConfirm', 'documentlookup'));
+			core.fn.popup(core.fn.lang('favouriteSaveConfirm', 'documentlookup'));
 		}
 	},
 	search: function (query) {
@@ -113,10 +113,10 @@ documentlookup.fn = {
 		var list = '';
 		if (typeof documentlookup.var.selectedObject() !== 'undefined') {
 			//bring selected object into scope to avoid method callbacks in loops for performance reasons
-			var interimobject=documentlookup.var.selectedObject().content;
+			var interimobject = documentlookup.var.selectedObject().content;
 			//list all items for overview
 			Object.keys(interimobject).forEach(function (key) {
-				list += documentlookup.fn.linkfile([interimobject[key][0],interimobject[key][1]], true) + '<br />';
+				list += documentlookup.fn.linkfile([interimobject[key][0], interimobject[key][1]], true) + '<br />';
 			});
 			core.fn.stdout('temp', list);
 
@@ -129,7 +129,7 @@ documentlookup.fn = {
 					core.fn.smartSearch.relevance.init();
 					found.forEach(function (value) {
 						list += core.fn.smartSearch.relevance.nextstep(value[1]);
-						list += documentlookup.fn.linkfile([interimobject[value[0]][0],interimobject[value[0]][1]], true, (interimobject[value[0]][2] ? core.fn.lang('searchTitle', 'documentlookup') + interimobject[value[0]][2] : false)) + '<br />';
+						list += documentlookup.fn.linkfile([interimobject[value[0]][0], interimobject[value[0]][1]], true, (interimobject[value[0]][2] ? core.fn.lang('searchTitle', 'documentlookup') + interimobject[value[0]][2] : false)) + '<br />';
 					});
 					core.fn.stdout('output', list);
 					list = '';
@@ -147,6 +147,7 @@ documentlookup.fn = {
 		Object.keys(documentlookup.var.submodules).forEach(function (key) {
 			selection[key] = [key, documentlookup.var.submodules[key][core.var.selectedLanguage]];
 		});
+
 		core.fn.stdout('input',
 			'<form id="search" action="javascript:documentlookup.fn.search();">' +
 			'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.fn.lang('searchPlaceholder', 'documentlookup') + '" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +

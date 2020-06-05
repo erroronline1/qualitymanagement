@@ -40,7 +40,7 @@ mailtools.fn = {
 			core.fn.lang('formContentCaption', 'mailtools') + ':<br /><input type="text" style="width:98%" id="subject" placeholder="' + core.fn.lang('formSubjectPlaceholder', 'mailtools') + '"><br />' +
 			'<textarea id="body" rows="10" style="width:98%;" placeholder="' + core.fn.lang('formBodyPlaceholder', 'mailtools') + '" onkeydown="core.fn.mailtoLimit(this.value)"></textarea>' +
 			core.fn.insert.mailtoLimit());
-			core.fn.stdout('output', '');
+		core.fn.stdout('output', '');
 		core.history.write(['mailtools.fn.init(\'serialmail\')']);
 	},
 	serialtest: function () {
@@ -51,10 +51,9 @@ mailtools.fn = {
 	},
 	serialmailgen: function () {
 		if (el('body').value.replace('\n', '<br />').length > core.var.directMailSize) {
-			alert(core.fn.lang('errorMailSizeExport'));
+			core.fn.popup(core.fn.lang('errorMailSizeExport'));
 			return;
 		}
-		
 		if (!el('names').value || !el('adresses').value || !el('body').value || !el('subject').value) core.fn.popup(core.fn.lang('errorNoContent', 'mailtools'));
 		else {
 			var names = el('names').value.split(/\n/g),
