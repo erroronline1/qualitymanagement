@@ -105,10 +105,6 @@ ticketorder.var = {
 			en: 'prepare order',
 			de: 'Bestellung vorbereiten'
 		},
-		missingFieldsPrompt: {
-			en: 'Please provide all necessary information!',
-			de: 'Bitte alle erforderlichen Felder ausfüllen!'
-		},
 		orderMailSubject: {
 			en: 'Order by ',
 			de: 'Bestellung von ',
@@ -122,8 +118,12 @@ ticketorder.var = {
 			de: 'Service / Garantiefall in Zusammenhang mit Ticket ',
 		},
 		ticketTranslate:{
-			en: 'This ticket was generated on\n',
-			de: 'Dieses Ticket wurde generiert am\n',
+			en: 'This ticket was most probably generated on\n',
+			de: 'Dieses Ticket wurde wahrscheinlich generiert am\n',
+		},
+		ticketTranslateError:{
+			en: 'This ticket can not be reverse translated.',
+			de: 'Dieses Ticket kann nicht zurückübersetzt werden.',
 		},
 		deleteCart:{
 			en: 'delete shopping cart',
