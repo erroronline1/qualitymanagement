@@ -377,6 +377,7 @@ core.fn = {
 				refreshall: ['0 0 2048 2048', '1,-1', 'M2048 1024q0 -140 -37 -272t-106 -248t-167.5 -212.5t-220.5 -163.5h275v-128h-512v512h128v-294q117 55 211.5 139.5t161 189.5t103 226.5t36.5 250.5q0 123 -32 237.5t-90.5 214t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32t-237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5q0 -150 48 -289t135 -253t208 -197.5t266 -123.5l-34 -123q-110 31 -208.5 84t-182 124t-150.5 159t-113.5 187t-71.5 208t-25 224q0 141 36.5 272t103.5 244.5t160.5 207t207 160.5t244.5 103.5t272 36.5t272 -36.5t244.5 -103.5t207 -160.5t160.5 -207t103.5 -244.5t36.5 -272zM1536 1024l-768 -443v886z'],
 				refreshnone: ['0 0 2048 2048', '1,-1', 'M2048 1024q0 -140 -37 -272t-106 -248t-167.5 -212.5t-220.5 -163.5h275v-128h-512v512h128v-294q117 55 211.5 139.5t161 189.5t103 226.5t36.5 250.5q0 123 -32 237.5t-90.5 214t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32t-237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5q0 -150 48 -289t135 -253t208 -197.5t266 -123.5l-34 -123q-110 31 -208.5 84t-182 124t-150.5 159t-113.5 187t-71.5 208t-25 224q0 141 36.5 272t103.5 244.5t160.5 207t207 160.5t244.5 103.5t272 36.5t272 -36.5t244.5 -103.5t207 -160.5t160.5 -207t103.5 -244.5t36.5 -272zM1536 1024l-768 -443v886zM896 802l384 222l-384 222v-444z'],
 				translate: ['0 0 2048 2048', '1,-1', 'M601 896l298 -896h-134l-86 256h-334l-86 -256h-134l298 896h178zM637 384l-125 374l-125 -374h250zM640 1792v-384h256v-128h-384v512h128zM257 899q-60 45 -108 102t-81 122t-50.5 137.5t-17.5 147.5q0 88 23 170t64.5 153t100 129.5t129.5 100t153 64.5t170 23t170 -23t153 -64.5t129.5 -100t100 -129.5t64.5 -153t23 -170q0 -32 -3.5 -64t-9.5 -64h-133q8 32 13 64t5 64q0 106 -40.5 199t-110 162.5t-162.5 110t-199 40.5t-199 -40.5t-162.5 -110t-110 -162.5t-40.5 -199q0 -110 45.5 -208.5t126.5 -171.5zM2030 606q2 -8 2 -13v-96q0 -4 -2 -12q-8 -2 -13 -2q-40 1 -79 2t-79 1h-321v-33q0 -52 1 -104t3 -104v-4q0 -24 -9 -48t-29 -38q-14 -10 -39.5 -15.5t-54.5 -8t-56.5 -3t-43.5 -0.5q-6 0 -19 0.5t-18 5.5q-3 3 -7 16t-6 18q-7 26 -16.5 48.5t-23.5 45.5q34 -4 68 -5.5t68 -1.5q24 0 36.5 7.5t12.5 33.5v190h-319q-40 0 -80 -1l-80 -2q-8 0 -12 3q-2 6 -2 11v96q0 3 0.5 7.5t2.5 6.5q6 2 11 2l80 -2t80 -1h319q-2 26 -2.5 52.5t-5.5 52.5q20 -2 39.5 -3.5t39.5 -3.5q2 0 3.5 -0.5t3.5 -0.5q35 25 67 53t64 57h-308q-42 0 -83.5 -1t-83.5 -2q-8 0 -12 3q-2 6 -2 11v95q0 4 2 12q8 2 12 2q42 -1 83.5 -2t83.5 -1h373q16 0 30 4.5t25 4.5q8 0 23 -12t30 -28t26.5 -32.5t11.5 -24.5q0 -10 -6.5 -15.5t-14.5 -9.5q-14 -7 -27 -18t-25 -21q-52 -43 -104.5 -83.5t-109.5 -77.5v-11h321q40 0 79 1t79 2q7 0 13 -3zM1391 1159q0 30 -1 61t-8 60q69 0 137 -6q6 -1 12.5 -3t6.5 -10q0 -5 -3 -12t-5 -12q-2 -6 -3.5 -16t-2 -21.5t-0.5 -22v-16.5v-13h296q42 0 83.5 1t83.5 2q7 0 13 -3q3 -5 3 -10q-1 -17 -2 -35.5t-1 -35.5v-58q0 -36 1 -72.5t2 -72.5q0 -3 -0.5 -7t-2.5 -6q-8 -2 -13 -2t-25 -0.5t-41 -0.5q-19 0 -34 1t-17 3q-2 8 -2.5 24t-0.5 36q0 33 1 68t1 52h-802v-14.5t0.5 -25t0.5 -31v-33.5q0 -29 -1 -52.5t-3 -25.5q-8 -2 -13 -2h-102q-11 0 -13 3t-2 13q1 40 1 79v79v58t-1 58q0 5 2 11q8 2 13 2q42 -1 83.5 -2t83.5 -1h275v11z'],
+				key: ['0 0 2048 2048', '1,-1', 'M2048 475v-475h-512v256h-256v256h-256v207q-74 -39 -155 -59t-165 -20q-97 0 -187 25t-168 71t-142.5 110.5t-110.5 142.5t-71 168t-25 187t25 187t71 168t110.5 142.5t142.5 110.5t168 71t187 25t187 -25t168 -71t142.5 -110.5t110.5 -142.5t71 -168t25 -187q0 -51 -8 -101t-23 -98zM1920 421l-690 690q22 57 36 114.5t14 118.5q0 119 -45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224t45.5 -224t123.5 -183t183 -123.5t224 -45.5q97 0 190.5 33t168.5 95h89v-256h256v-256h256v-256h256v293zM512 1664q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50t-10 -50t-27.5 -40.5t-40.5 -27.5t-50 -10t-50 10t-40.5 27.5t-27.5 40.5t-10 50t10 50t27.5 40.5t40.5 27.5t50 10z'],
 			};
 			addclass = addclass || '';
 			try {
@@ -397,6 +398,7 @@ core.fn = {
 				'<article class="home" style="border-right:1px solid; line-height:3em">' +
 				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupMain());" style="cursor:pointer">' + core.fn.insert.icon('generalsetting') + core.fn.lang('settingMainCaption') + '</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupModules());" style="cursor:pointer">' + core.fn.insert.icon('moduleselector') + core.fn.lang('settingModuleselectorCaption') + '</span><br />' +
+				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupKey());" style="cursor:pointer">' + core.fn.insert.icon('key') + core.fn.lang('settingKeyCaption') + '</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupAdvanced());" style="cursor:pointer">' + core.fn.insert.icon('advancedsetting') + core.fn.lang('settingAdvancedCaption') + '</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupDebug());" style="cursor:pointer">' + core.fn.insert.icon('bug') + 'Debugging</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', updateTracker.enlist());" style="cursor:pointer">' + core.fn.insert.icon('update') + 'Updates</span><br />' +
@@ -433,6 +435,22 @@ core.fn = {
 				});
 			} else moduleSelector = core.fn.lang('errorLoadingModules');
 			return moduleSelector;
+		},
+		setupKey: function () { //returns password construction - please forgive me the ugly nested javascript creation
+			return '<form onsubmit="' +
+					'if (!el(\'setupkeyname\').value.trim() || !el(\'setupkeypassword0\').value.trim() || el(\'setupkeypassword0\').value != el(\'setupkeypassword1\').value)' +
+						'el(\'keygenresult\').innerHTML=\''+ core.fn.lang('settingKeyError') +'\';' +
+					'else el(\'keygenresult\').innerHTML=\'' +
+						'<a href=&quot;#&quot; onclick=&quot;core.fn.dynamicMailto(\\\''+ core.var.adminMail+'\\\', \\\'' + core.fn.lang('settingKeyMailHeader') + '\\\', el(\\\'setupkeyname\\\').value + \\\': \\\' + core.fn.drm.createHash(el(\\\'setupkeyname\\\').value + el(\\\'setupkeypassword0\\\').value));&quot;>'+ core.fn.lang('settingKeyResult') +'</a>' +
+					
+					'\'; return false;' +
+				'">' +
+				core.fn.lang('settingKeyName') + '<br /><input type="text" id="setupkeyname" required /><br /><br />' +
+				core.fn.lang('settingKeyPassword0') + core.var.drm.pwLength.min + ' - ' + core.var.drm.pwLength.max + '<br /><input type="password" pattern=".{' + core.var.drm.pwLength.min + ',' + core.var.drm.pwLength.max + '}" required id="setupkeypassword0" /><br /><br />' +
+				core.fn.lang('settingKeyPassword1') + '<br /><input type="password" required id="setupkeypassword1" /><br /><br />' +
+				'<br /><input type="submit" value="' + core.fn.lang('settingKeySubmit') + '" /></form><br />' +
+				'<br /><span id="keygenresult"></span>' 
+			;
 		},
 		setupAdvanced: function () { //return advanced settings
 			var osSelector = new Object();
@@ -544,7 +562,45 @@ core.fn = {
 			}
 		}
 	},
-
+	
+	drm: {
+		table: function(table){
+			return core.var.drm.data[core.var.drm.translate[table]];
+		},
+		createHash: function(str) {
+			var hash = 0, i;
+			for (i = 0; i < str.length; i++) {
+				hash  = (hash * 31) + str.charCodeAt(i) | 0;
+			}
+			return hash;
+		},
+		searchHash: function(hashTable, hash){
+			var found = false;
+			Object.keys(hashTable).forEach(function (key) {
+				if (hashTable[key] == hash) { found = key}
+			});
+			return found;
+		},
+		encryptToken:function(base36Timestamp, name, password){
+			// encrypt with unknown password length
+			// ridiculous high divisor because large numbers will be parsed with scientific exponent in ie
+			// Math.round for floating errors
+			return Math.round((this.createHash(name+password) * password.length * parseInt(base36Timestamp, 36) / Math.pow(2,22))).toString(36);
+		},
+		decryptToken:function(hashTable, base36Timestamp, token){
+			// Math.round for floating errors
+			var embeddedhash = Math.round(parseInt(token, 36) * Math.pow(2,22) / parseInt(base36Timestamp, 36)), i, possible, found;
+			// brute force password length but return name only
+			// reversed engineering might get the password length but not the actual password
+			for (i = core.var.drm.pwLength.min; i < core.var.drm.pwLength.max; i++){
+				possible = Math.round(embeddedhash / i);
+				found = this.searchHash(hashTable, possible) || false;
+				if (found) break;
+			}
+			return found;
+		}
+	},
+	
 	init: function (query) { //displays start screen
 		core.fn.stdout('input',
 			'<form id="search" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
