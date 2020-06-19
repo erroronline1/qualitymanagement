@@ -60,6 +60,18 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.fn.setting.clear()` resets the whole application
 
+`core.fn.drm.table(table)` returns a translated table according to data rights managament excel sheet
+
+`core.fn.drm.createHash(string)` returns a hash based on argument string, consider concatenation of name and password to make the hash unique regarding data rights management
+
+`core.fn.drm.searchHash()` returns true if hash is found in given hash table
+
+`core.fn.drm.encryptToken(base36Timestamp, name, password)` returns an encrypted token
+
+`core.fn.drm.decryptToken(hashTable, base36Timestamp, token)` returns true if decrypted hash is found in given hash table
+
+`core.fn.init(query)` creates home screen
+
 `core.history.write(point)` adds an array of callbacks to the history storage if the parameter differs from last entry. removes entries if new entry is added while havinge gone back
 
 `core.history.go('back'||'forth')` yields through the history and processes the stored callbacks

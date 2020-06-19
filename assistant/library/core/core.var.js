@@ -165,6 +165,19 @@ core.var = {
 	},
 	selectedOs:function (){return core.fn.setting.get('settingSelectedOs') || 'win7';},
 	
+	// permissions and data rights managament
+	drm:{
+		pwLength: {
+			min: 5,
+			max: 256
+		},
+		translate:{
+			//translate permission levels according to xlsm-permission list / library/core/core.drm.js
+			orderApproval: 'order approval',
+			timetables: 'timetables'
+		}
+	},
+	
 	//text-blocks within the core file and reusable textblocks for modules
 	lang: {
 		title: {
@@ -202,6 +215,38 @@ core.var = {
 		settingModuleselectorCaption: {
 			en: 'Displayed modules',
 			de: 'angezeigte Module'
+		},
+		settingKeyCaption: {
+			en: 'Passwort construction',
+			de: 'Kennwortanlage'
+		},
+		settingKeyName: {
+			en: 'Name',
+			de: 'Name'
+		},
+		settingKeyPassword0: {
+			en: 'Password, number of characters ',
+			de: 'Kennwort, Zeichenanzahl '
+		},
+		settingKeyPassword1: {
+			en: 'Enter password again',
+			de: 'Kennwort erneut eingeben'
+		},
+		settingKeySubmit: {
+			en: 'encrypt',
+			de: 'verschlüsseln'
+		},
+		settingKeyError: {
+			en: 'The entered values were invalid or the passwords did not match!',
+			de: 'Es wurden unzureichende Angaben gemacht oder die Kennwörter stimmten nicht überein!'
+		},
+		settingKeyResult: {
+			en: 'Send your encrypted key to administration for implementation. Your password is not visible.',
+			de: 'Sende deinen Schlüssel an die Administration um ihn zu implementieren. Dein Kennwort ist nicht sichtbar.'
+		},
+		settingKeyMailHeader: {
+			en: 'Request to implement key to the data rights management',
+			de: 'Bitte um Eintrag des Schlüssels in die Rechteverwaltung'
 		},
 		settingMainCaption: {
 			en: 'Common settings',

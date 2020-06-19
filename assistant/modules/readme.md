@@ -27,7 +27,9 @@ globalSearch api: returns number of matches regarding search terms.
 excel might not be the best solution to keep track of your stock list. in my case my companies current solution still is worse. so this is quite an advance.
 
 ## orders
-this form supports all employees to create decent orders and send the resulting table to central purchasing by mail. if inventory control / central purchase makes use of administration/ticketorder.xlsm to serve data about the current order status the module.data-file will be sucessfully imported making it searchable from within the module as well as from the home global search
+this form supports all employees to create decent orders and send the resulting table to central purchasing by mail. if inventory control / central purchase makes use of administration/ticketorder.xlsm to serve data about the current order status the module.data-file will be sucessfully imported making it searchable from within the module as well as from the home global search.
+
+since ordering things can be expensive for the company, orders can be registered by everyone but have to be verified by persons with respective permissions as managed in the core-drm methods. the same module serves to decrypt the generated verification code for central purchase.
 
 dependencies are: the datalist of inventory regarding the shopping cart, optional datalist of current order status
 

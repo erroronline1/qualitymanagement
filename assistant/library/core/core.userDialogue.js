@@ -98,6 +98,10 @@ var randomTip = {
 			en:'Some functions need operating system specific settings. The used operating system can be set in the advanced settings.',
 			de:'Manche Funktionen benötigen betriebssystem-spezifische Einstellungen. Das genutzte Betriebsystem kann bei den erweiterten Einstellungen gewählt werden.'
 		},
+		{
+			en:'In case you are entitled to a password for some parts of the assistant you can cipher it from the settings menu and let yourself be registered in the data rights management list by mail.',
+			de:'Wenn du die Berechtigung für ein Zugangskennwort für manche Bereiche des Assistenten hast kannst du dieses bei den Einstellungen chiffrieren und per eMail in die Berechtigungsliste eintragen lassen.'
+		},
 		//	module specific tips
 		{
 			en: 'Remember pointing our errors to the inventory control via email.',
@@ -152,5 +156,6 @@ var updateTracker = {
 		['Major', '16.06.2019: Welcome to the assistant. As the responsible person you can delete this message and later add your own announcements or update hints.'],
 		['Major', '16.08.2019: Welcome to the assistant. This is the next version. Search less, find more...'],
 		['Major', '06.09.2019: Welcome to the assistant. This is the next version with clear and tidy separation between algorithms and customized data.'],
+		['Major', '19.06.2020: Welcome to the assistant. As from today it is possible to handle permissions to modules or functions.'],
 	],
 };

@@ -187,3 +187,19 @@ Public Function setupInternalDocuments() As Collection
     setupInternalDocuments.Add "Publish a copy of the list without code?", "export.xlsPrompt"
     setupInternalDocuments.Add "E:\Quality Management\published\list of documents.xlsx", "export.xlsDefaultFile"
 End Function
+
+Public Function setupDRM() As Collection
+    Set setupDRM = New Collection
+    setupDRM.Add Item:="DRM", key:="drm.sheet" 'select sheet to process content
+    setupDRM.Add "A", "drm.nameColumn" 'customize column, taking displayed name for bundle title
+    setupDRM.Add "B", "drm.hashColumn" 'customize column, starting point for matrix for bundle definitions
+    setupDRM.Add "2", "drm.headerRow" 'intentionally string, customize NUMBER of headerrow as starting point for exporting the code free excel file
+    setupDRM.Add Null, "drm.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
+    setupDRM.Add Null, "drm.maxRows" 'customize last row, ending point for matrix, null value considers all rows output columns
+    'export variables
+    setupDRM.Add "Export permissions to the assistant?", "initiate.Title"
+    setupDRM.Add "Export password tables?", "initiate.Confirm"
+    setupDRM.Add "E:\Quality Management\assistant\library\core\core.drm.js", "export.defaultFile"
+    setupDRM.Add "Export permissions to the assistant?", "export.prompt"
+    setupDRM.Add "Aborting export as there was no location selected!", "export.ErrorMsg"
+End Function

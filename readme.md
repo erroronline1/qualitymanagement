@@ -208,6 +208,11 @@ this list serves as an overview of acknowledged external documents in use as wel
 
 this sort of database contains questionsets for internal audits regarding all relevant topics. on save an export for the assistants module will be executed.
 
+### data rights management
+![data rights management](assets/xlsm_datarightsmanagement.png)
+
+this is a easy to handle list to set optional permissions for modules of the assistant as required. the password hash can be obtained by the assistant directly. no clear passwords are stored - in the image for illustration purposes though.
+
 ### transfer schedule
 ![transfer schedule](assets/xlsm_transferschedule.png)
 
@@ -278,6 +283,8 @@ the provided modules are filled with dummies. the general multi-language support
 
 ### thoughts and considerations
 i tried to implement a preview on search forms using datalists. while it is not a big problem to update these dynamically i ran into two major issues: the cross-browser behaviour is very different and quirky. and using this in combination with fuzzy search and 6k+ items in stock-list slows everything horribly down. it would have been nice to have but ended up in some hours wasted.
+
+by 6/20 it is possible to handle special permissions due to the data rights management. this is meant to be as secure as a read-only front-end security system can be. it is absolutely not uncrackable but hopefully a fair amount of obfuscation and obstacles. know your techies in case of abuse.
 
 the assistant is designed to hopefully transition seamlessly into windows 10 fluent design that is still to come company wide as time of writing. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be. i am not a fanboy in the first place, although i like microsofts os design. i just try to make it look as native as possible to not disturb the co-workers. it is hard enough to convince them to utilize quality management as well as this tool.
 
