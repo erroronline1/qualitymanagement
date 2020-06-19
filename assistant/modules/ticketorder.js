@@ -125,7 +125,8 @@ ticketorder.fn = {
 	},
 	mkform: function () {
 		ticketorder.var.orderrows = -1;
-		ticketorder.var.newTicket = ticketorder.fn.translate.newTicket();
+		if (!core.fn.setting.get('ticketorderAwaitingOrders')) core.fn.setting.set('ticketorderCurrentTicket', ticketorder.fn.translate.newTicket());
+		ticketorder.var.newTicket = core.fn.setting.get('ticketorderCurrentTicket');
 		var form = core.fn.lang('newOrder', 'ticketorder'),
 			ordererDeptList = ticketorder.var.orderDept.map(function (x) {
 				return [x, x]
@@ -135,18 +136,19 @@ ticketorder.fn = {
 			});
 		ordererDeptList.unshift(['', core.fn.lang('ordererDept', 'ticketorder')]);
 		ordererCostUnitList.unshift(['', core.fn.lang('ordererCostUnit', 'ticketorder')]);
-		if (core.fn.setting.get('moduleExchangeTicketorder')) form += '<input type="button" id="deleteCart" style="float:right" value="' + core.fn.lang('deleteCart', 'ticketorder') + '" onclick="core.fn.setting.unset(\'moduleExchangeTicketorder\');" />';
+		if (core.fn.setting.get('moduleExchangeTicketorder')) form += '<input type="button" id="deleteCart" style="float:right" value="' + core.fn.lang('deleteCart', 'ticketorder') + '" onclick="core.fn.setting.unset(\'moduleExchangeTicketorder\'); this.value=\'' + core.fn.lang('deleteCartDeleted', 'ticketorder') + '\'; this.disabled=true;" />';
+		if (core.fn.setting.get('ticketorderAwaitingOrders')) form += '<input type="button" id="deletecurrentOrder" style="float:right" value="' + core.fn.lang('deleteCurrentOrder', 'ticketorder') + '" onclick="ticketorder.fn.currentorder.clear(); this.value=\'' + core.fn.lang('deleteCurrentOrderDeleted', 'ticketorder') + '\'; this.disabled=true;" />';
 		form += '<form action="javascript:ticketorder.fn.exportform()">';
 		form += '<br /><input type="text" id="orderer" required placeholder="' + core.fn.lang('orderer', 'ticketorder') + '" title="' + core.fn.lang('orderer', 'ticketorder') + '" /> ';
 		form += core.fn.insert.select(ordererDeptList, 'ordererDept', 'ordererDept', core.fn.setting.get('ticketorderDept'), 'required title="' + core.fn.lang('ordererDept', 'ticketorder') + '"');
 		form += core.fn.insert.select(ordererCostUnitList, 'ordererCostUnit', 'ordererCostUnit', core.fn.setting.get('ticketorderCostUnit'), 'required title="' + core.fn.lang('ordererCostUnit', 'ticketorder') + '"');
 		form += ' <input type="text" id="ordererContact" required placeholder="' + core.fn.lang('ordererContact', 'ticketorder') + '" title="' + core.fn.lang('ordererContact', 'ticketorder') + '" value="' + (core.fn.setting.get('ticketorderContact') || '') + '" /> ';
 		form += '<br style="clear:both" />';
-		form += core.fn.insert.radio(core.fn.lang('notcommissioned', 'ticketorder'), 'commissioned', 'notcommissioned', true, 'onclick="el(\'orderRcptName\').required=el(\'orderRcptDob\').required=el(\'orderRcptFlag\').required=el(\'orderReferralTicket\').required=false"', '') + '<br />';
-		form += core.fn.insert.radio(core.fn.lang('commissioned', 'ticketorder'), 'commissioned', 'commissioned', false, 'onclick="el(\'orderRcptName\').required=el(\'orderRcptDob\').required=el(\'orderRcptFlag\').required=true; el(\'orderReferralTicket\').required=false"', '') + '<br />';
-		form += core.fn.insert.radio(core.fn.lang('retour', 'ticketorder'), 'commissioned', 'retour', false, 'onclick="el(\'orderRcptName\').required=el(\'orderRcptDob\').required=el(\'orderRcptFlag\').required=false; el(\'orderReferralTicket\').required=true"', '') + '<br />';
-		form += core.fn.insert.radio(core.fn.lang('service', 'ticketorder'), 'commissioned', 'service', false, 'onclick="el(\'orderRcptName\').required=el(\'orderRcptDob\').required=el(\'orderRcptFlag\').required=false; el(\'orderReferralTicket\').required=true"', '');
-		form += '<br /><input type="text" id="orderRcptName" placeholder="' + core.fn.lang('orderRcptName', 'ticketorder') + '" title="' + core.fn.lang('orderRcptName', 'ticketorder') + '" />' +
+		form += core.fn.insert.radio(core.fn.lang('notcommissioned', 'ticketorder'), 'commissioned', 'notcommissioned', true, 'onclick="el(\'orderRcptName\').required=el(\'orderRcptDob\').required = el(\'orderRcptFlag\').required = el(\'orderReferralTicket\').required = false"', '') + '<br />';
+		form += core.fn.insert.radio(core.fn.lang('commissioned', 'ticketorder'), 'commissioned', 'commissioned', false, 'onclick="el(\'orderRcptName\').required=el(\'orderRcptDob\').required = el(\'orderRcptFlag\').required = true; el(\'orderReferralTicket\').required = false"', '') + '<br />';
+		form += core.fn.insert.radio(core.fn.lang('retour', 'ticketorder'), 'commissioned', 'retour', false, 'onclick="el(\'orderRcptName\').required=el(\'orderRcptDob\').required = el(\'orderRcptFlag\').required = false; el(\'orderReferralTicket\').required = true"', '') + '<br />';
+		form += core.fn.insert.radio(core.fn.lang('service', 'ticketorder'), 'commissioned', 'service', false, 'onclick="el(\'orderRcptName\').required=el(\'orderRcptDob\').required = el(\'orderRcptFlag\').required = false; el(\'orderReferralTicket\').required = true"', '');
+		form += '<br /><input type="text" id="orderRcptName" placeholder="' + core.fn.lang('orderRcptName', 'ticketorder') + '" title="' + core.fn.lang('orderRcptName', 'ticketorder') + '" onchange="el(\'orderRcptDob\').required = el(\'orderRcptFlag\').required = Boolean(el(\'orderRcptName\').value.length);" />' +
 			'<input type="date" id="orderRcptDob" placeholder="' + core.fn.lang('orderRcptDob', 'ticketorder') + '" title="' + core.fn.lang('orderRcptDob', 'ticketorder') + '" />' +
 			'<input type="text" id="orderRcptFlag" placeholder="' + core.fn.lang('orderRcptFlag', 'ticketorder') + '" title="' + core.fn.lang('orderRcptFlag', 'ticketorder') + '" />';
 		form += '<br style="clear:both" /><input type="text" id="orderReferralTicket" placeholder="' + core.fn.lang('orderReferralTicket', 'ticketorder') + '" title="' + core.fn.lang('orderReferralTicket', 'ticketorder') + '" /> ';
@@ -159,8 +161,9 @@ ticketorder.fn = {
 		form += '<input type="button" value="' + core.fn.lang('orderAdd', 'ticketorder') + '" onclick="ticketorder.fn.addrow()" />' +
 			'<br /><br /><textarea id="orderNote" rows="5" style="width:90%" placeholder="' + core.fn.lang('orderNote', 'ticketorder') + '"></textarea>' +
 			'<br /><br /><input type="submit" id="submitOrder" disabled value="' + core.fn.lang('orderSubmit', 'ticketorder') + '" />' +
-			'<br /><br /><a id="mailto" href="javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\')">' + core.fn.insert.icon('email') + core.fn.lang('openMailApp', 'ticketorder') + '</a><br /><br />';
-		return form;
+			'<input type="button" id="confirmOrder" style="float:right" value="' + core.fn.lang('orderConfirm', 'ticketorder') + '" onclick=\'ticketorder.fn.drm.confirmform()\' />' +
+			'<br /><br /><a id="mailto" href="javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\'' + (core.fn.setting.get('ticketorderAwaitingOrders') ? ', \'' + core.fn.lang('orderMailSubject', 'ticketorder') + ordererDeptList[core.fn.setting.get('ticketorderDept')][0] + '\'' : '') +')">' + core.fn.insert.icon('email') + core.fn.lang('openMailApp', 'ticketorder') + '</a><br /><br />';
+			return form;
 	},
 	addrow: function () {
 		var table = el('ordertable'),
@@ -196,20 +199,18 @@ ticketorder.fn = {
 		var output = '',
 			wildcard = false,
 			curval, mailsubject;
-		if (el('commissioned').checked || el('notcommissioned').checked) {
-			mailsubject = core.fn.lang('orderMailSubject', 'ticketorder') + el('ordererDept').value + ' | ' + el('orderer').value + ' | ' +
-				' ' + ticketorder.var.orderFields[core.var.selectedLanguage][0][0] + ' ' + ticketorder.var.newTicket;
-		} else if (el('retour').checked) {
-			mailsubject = core.fn.lang('retoureMailSubject', 'ticketorder') + el('orderReferralTicket').value + ' | ' + el('ordererDept').value + ' | ' + el('orderer').value;
-		} else if (el('service').checked) {
-			mailsubject = core.fn.lang('serviceMailSubject', 'ticketorder') + el('orderReferralTicket').value + ' | ' + el('ordererDept').value + ' | ' + el('orderer').value;
-		}
+		mailsubject = core.fn.lang('orderMailSubject', 'ticketorder') + el('ordererDept').value + ' | ' + el('orderer').value;
 
 		output = mailsubject + '<br /><br />';
-		['orderRcptName', 'orderRcptDob', 'orderRcptFlag', 'orderer', 'ordererDept', 'ordererCostUnit', 'ordererContact', 'orderNeededBy'].forEach(function (field) {
+
+		if (el('notcommissioned').checked) output += '<i>' + core.fn.lang('notcommissioned', 'ticketorder') + '</i><br /><br />';
+		if (el('commissioned').checked) output += '<i>' + core.fn.lang('commissioned', 'ticketorder') + '</i><br /><br />';
+		if (el('retour').checked) output += '<i>' + core.fn.lang('retour', 'ticketorder') + '</i><br /><br />';
+		if (el('service').checked) output += '<i>' + core.fn.lang('service', 'ticketorder') + '</i><br /><br />';
+		
+		['orderRcptName', 'orderRcptDob', 'orderRcptFlag', 'orderer', 'ordererDept', 'ordererCostUnit', 'ordererContact', 'orderReferralTicket', 'orderNeededBy'].forEach(function (field) {
 			if (el(field).value) output += core.fn.lang(field, 'ticketorder') + ': ' + el(field).value + '<br />';
 		});
-
 
 		output += '<br /><table border=1 cellpadding=5 cellspacing=0><tr>';
 		ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field) {
@@ -237,13 +238,76 @@ ticketorder.fn = {
 		core.fn.setting.set('ticketorderContact', el('ordererContact').value);
 
 		if (el('orderNote').value) output += '<br />' + core.fn.lang('orderNote', 'ticketorder') + ':<br/>' + el('orderNote').value;
-
 		// no output here, because tables will not be exported formatted, has to be copy and paste to be passed properly
 		el('mailto').href = 'javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\',\'' + mailsubject + '\')';
-		core.fn.stdout('output', output);
-		ticketorder.var.disableOutputSelect = false;
+		ticketorder.fn.currentorder.add(output);
+		core.fn.stdout('output', ticketorder.fn.currentorder.get());
+		el('output').scrollTop = el('output').scrollHeight;
 		core.fn.setting.unset('moduleExchangeTicketorder')
 		if (el('deleteCart')) el('deleteCart').style.display = 'none';
+	},
+	currentorder:{ //this is a workaround for cookies (needed by ie) can not be larger than 4kb, so i have to split up the order list to individual orders
+		add: function(addition){
+			var ordernum = core.fn.setting.get('ticketorderAwaitingOrders') || 0;
+			core.fn.setting.set('ticketorderAwaitingOrder' + ++ordernum, encodeURIComponent(addition));
+			core.fn.setting.set('ticketorderAwaitingOrders', ordernum);
+		},
+		get: function(){
+			var ordernum = core.fn.setting.get('ticketorderAwaitingOrders'), orders='', i;
+			if (ordernum){
+				for (i = 0; i < ordernum; i++){
+					orders += decodeURIComponent(core.fn.setting.get('ticketorderAwaitingOrder' + (i + 1))) + '<br /><br />';
+				}
+			}		
+			return orders;
+		},
+		clear: function(){
+			var ordernum = core.fn.setting.get('ticketorderAwaitingOrders'), i;
+			if (ordernum){
+				for (i = 0; i < ordernum; i++){
+					core.fn.setting.unset('ticketorderAwaitingOrder' + (i + 1));
+				}
+			}		
+			core.fn.setting.unset('ticketorderAwaitingOrders');
+		}
+	},
+	drm:{
+		confirmform: function(){
+		if (!core.fn.setting.get('ticketorderAwaitingOrders')) return;
+			var form = '<form onsubmit="ticketorder.fn.drm.check(); return false;">' +core.fn.lang('settingKeyName') + '<br /><input type="text" id="orderconfirmname" autofocus /><br /><br />' +
+				core.fn.lang('settingKeyPassword0').split(',')[0] + '<br /><input type="password" id="orderconfirmpassword0" /><br /><br />' +
+				'<br /><input type="submit" value="' + core.fn.lang('drmConfirmationSubmit') + '" onclick="ticketorder.fn.drm.check()" />' +
+				'<br /><br /><span id="keyresult"></span></form>';
+			core.fn.popup(form);
+		},
+		check: function(){
+			if (el('orderconfirmname').value && el('orderconfirmpassword0').value && core.fn.drm.searchHash(core.fn.drm.table('orderApproval'), core.fn.drm.createHash(el('orderconfirmname').value + el('orderconfirmpassword0').value))){
+				var token = core.fn.drm.encryptToken(ticketorder.var.newTicket, el('orderconfirmname').value, el('orderconfirmpassword0').value) || 'unauthorized';
+				var confirmedOutput = '<i>' + 
+					core.fn.lang('orderConfirmed', 'ticketorder', [ticketorder.var.newTicket, token]) + 
+					'</i><br /><br />' + ticketorder.fn.currentorder.get();
+				core.fn.stdout('output', confirmedOutput);
+				el('output').scrollTop = 0;
+				ticketorder.var.disableOutputSelect = false;
+				core.fn.popup();
+			}
+			else {
+				el('keyresult').innerHTML = core.fn.lang('drmConfirmationError');
+			}
+		},
+		verifytoken: function(){
+			var form = core.fn.lang('captionCheckTicket', 'ticketorder') + '<br /><input type="text" id="checkTicket" autofocus /><br /><br />' +
+				core.fn.lang('captionCheckCode', 'ticketorder') + '<br /><input type="text" id="checkCode" /><br /><br />' +
+				'<br /><input type="button" value="' + core.fn.lang('buttonVerifyToken', 'ticketorder') + '" onclick="' +
+					'var decrypted=core.fn.drm.decryptToken(core.fn.drm.table(\'orderApproval\'), el(\'checkTicket\').value.trim(), el(\'checkCode\').value.trim());' +
+					'if (!decrypted)' +
+						'el(\'keycheckresult\').innerHTML=\'' + core.fn.lang('failureCheckCode', 'ticketorder') + '\';' +
+					'else el(\'keycheckresult\').innerHTML=\'' +
+						core.fn.lang('successCheckCode', 'ticketorder') + '\' + decrypted;' +
+				'" />' +
+				'<br /><br /><span id="keycheckresult"></span>';
+			core.fn.popup(form);
+		}
 	},
 	start: function (query) {
 		if (typeof ticketorder_data !== 'undefined') {
@@ -252,6 +316,7 @@ ticketorder.fn = {
 				'<span onclick="ticketorder.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
 				core.fn.insert.select(ticketorder.fn.translate.returnselect(), 'ticketorderfilter', 'ticketorderfilter', (core.fn.setting.get('ticketorderfilter') || 'nofilter'), 'onchange="core.fn.setting.set(\'ticketorderfilter\',el(\'ticketorderfilter\').options[el(\'ticketorderfilter\').selectedIndex].value); ticketorder.fn.search();"') +
 				core.fn.insert.icon('translate', 'bigger', false, 'title="' + core.fn.lang('buttonTranslate', 'ticketorder') + '" onclick="ticketorder.fn.translate.ticketDate(el(\'ticketorderquery\').value);"') +
+				core.fn.insert.icon('key', 'bigger', false, 'title="' + core.fn.lang('buttonVerifyToken', 'ticketorder') + '" onclick="ticketorder.fn.drm.verifytoken();"') +
 				'<input type="submit" id="name" value="' + core.fn.lang('formSubmit', 'ticketorder') + '" hidden="hidden" /> ' +
 				'</form>';
 		} else {
@@ -262,7 +327,7 @@ ticketorder.fn = {
 		core.fn.stdout('input', input);
 		core.fn.stdout('temp', ticketorder.fn.mkform());
 		ticketorder.api.getShoppingCart();
-		core.fn.stdout('output', '');
+		core.fn.stdout('output', this.currentorder.get());
 		if (value(query) !== '') ticketorder.fn.search(value(query));
 	},
 	init: function (query) {

@@ -33,6 +33,26 @@ ticketorder.var = {
 			en: 'date ticket',
 			de: 'Ticket datieren'
 		},
+		buttonVerifyToken:{
+			en:'verify code',
+			de:'Code prüfen',
+		},
+		captionCheckTicket:{
+			en:'ticket',
+			de:'Ticket',
+		},
+		captionCheckCode:{
+			en:'code',
+			de:'Code',
+		},
+		successCheckCode:{
+			en:'This order was confirmed by ',
+			de:'Diese Bestellung wurde freigegeben von ',
+		},
+		failureCheckCode:{
+			en:'The code is invalid! Please contact the ordering person.',
+			de:'Der Code ist ungültig! Bitte kontaktiere den Besteller.',
+		},
 		buttonTranslate:{
 			en:'date ticket',
 			de:'Ticket datieren',
@@ -102,20 +122,20 @@ ticketorder.var = {
 			de: 'Zusatzinformation',
 		},
 		orderSubmit: {
-			en: 'prepare order',
-			de: 'Bestellung vorbereiten'
+			en: 'add order',
+			de: 'Bestellung hinzufügen'
+		},
+		orderConfirm: {
+			en: 'approve order list',
+			de: 'Bestellliste freigeben'
+		},
+		orderConfirmed:{
+			en: function(args){return 'Order with ticket ' + args[0] + ' approved by code ' + args[1];},
+			de: function(args){return 'Bestellung mit dem Ticket ' + args[0] + ' freigegeben mit Code ' + args[1];}
 		},
 		orderMailSubject: {
 			en: 'Order by ',
 			de: 'Bestellung von ',
-		},
-		retoureMailSubject: {
-			en: 'Retoure related to ticket ',
-			de: 'Retoure in Zusammenhang mit Ticket ',
-		},
-		serviceMailSubject: {
-			en: 'Service / warranty case related to ticket ',
-			de: 'Service / Garantiefall in Zusammenhang mit Ticket ',
 		},
 		ticketTranslate:{
 			en: 'This ticket was most probably generated on\n',
@@ -128,6 +148,18 @@ ticketorder.var = {
 		deleteCart:{
 			en: 'delete shopping cart',
 			de: 'Warenkorb löschen',
+		},
+		deleteCartDeleted:{
+			en: 'shopping cart deleted',
+			de: 'Warenkorb gelöscht',
+		},
+		deleteCurrentOrder:{
+			en: 'delete current order list',
+			de: 'aktuelle Bestelliste löschen',
+		},
+		deleteCurrentOrderDeleted:{
+			en: 'current order list deleted',
+			de: 'aktuelle Bestelliste gelöscht',
 		},
 		orderNumberWildcard:{
 			en: 'One or more order numbers contains wildcards. Please specify model, size or type.',
