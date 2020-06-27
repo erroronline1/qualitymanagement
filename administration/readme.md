@@ -33,6 +33,9 @@ this list contains external documents in force and can contain other file lists.
 ## stocklist.xlsm
 the stocklist might contain all products and materials that have permission from the companies head. i am aware there are better solutions for stock administration but by time of writing my own companies software is worse than using excel for that. so this *is* an advance. the export function on save makes the list accessible and searchable for all employees using the assistant hence optimizing dialogue with inventory control. excel might freeze on export if the list contains 6k+ items, but it just takes some time, so no worries.
 
+## stocklist.py and stocklist.json
+customize and compile these files to have a translation tool for your erp-software-export for the assistant.
+
 ## ticketorder.xlsm
 this files purpose is purely for translation. it serves as an interface between your erp-software with item orders and the assistant. basically you can insert any data dump by the erp-software and it translates it to a javascript-object-file as a feedback loop for the tickerorder-module within the assistant. it makes sense to contain the generated ticket-ids within the order process in any field that might be dumped by the output. this definitely  has an effect on yout order process but might make communication more easy between inventory control and ordering persons.
 *be aware that the pattern recognizing regexes in the imported vb_library/administration_Locals_XX.vba rely absolutely on the generated data by your erp-software and have to be customized to your individual situation!*

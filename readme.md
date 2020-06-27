@@ -208,6 +208,15 @@ this list serves as an overview of acknowledged external documents in use as wel
 
 this sort of database contains questionsets for internal audits regarding all relevant topics. on save an export for the assistants module will be executed.
 
+### stocklist
+![excel stocklist](assets/xlsm_stocklist.png)
+
+this table can serve as a list of approved items that can be administered and exported to the assistant.
+
+![python stocklist translator](assets/py_stocklist.png)
+
+having two databases to maintain is admittedly not be the best solution. recently i found a solution to translate the dump from the erp-software to the assistant. in this scenario you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
+
 ### data rights management
 ![data rights management](assets/xlsm_datarightsmanagement.png)
 
@@ -242,7 +251,7 @@ there is a main html-file in the root folder, a core folder with the core functi
 * data files are stored in a different folder hoping that changes to the backend don't mess up data that might be accessed through different persons than the maintainer of the application. these are separated in module-variables that define the modules behaviour and module data that will be processed according to the modules task. the latter are optional.
 * users can be informed about changes using the changelog in library/core/core.userDialogue.js. add your own changes and the information will popup automatically on start.
 * since most of my colleagues don't mind messing around to learn something, there is a short-tip function whose entries can be extended in accordance to your modules.
-* settings will be stored in local storage or cookies (depending on browser support) so everything depends on the local machine in addition to user login. in case everything is stored with cookies if the browsers history is cleaned on exit all setting will be gone as well. the storage method handles local-storage support with cookies as a fallback. this means there is support for chrome having an issue with cookie storage of local sites as well as ie11 not having local storage.
+* settings will be stored in local storage or cookies (depending on browser support) so everything depends on the local machine in addition to user login. in case everything is stored with cookies if the browsers history is cleaned on exit all setting will be gone as well. the storage method handles local-storage support with cookies as a fallback. this means there is support for chrome having an issue with cookie storage of local sites as well as ie11 not having local storage for local sites. cookie storage is somewhat inconvenient small, but this is due to browser dependent handling of local sites.
 * you can monitor the performance (currently implemented for tracking asynchronous loading and processing) in the console if you enable it in the settings.
 
 *be aware that there are dependencies between the assistants datafiles, their objects and handling, and the documents vba and table-structure. it might become neccessary to change things on both sides.*
