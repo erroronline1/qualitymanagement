@@ -346,6 +346,10 @@ core.var = {
 			de: 'Funktioniert nicht unter Windows 7.'
 		},
 
+		settingDebugSpaceCaption:{
+			en: 'Available storage space: ',
+			de: 'Verfügbarer Speicherplatz: '
+		},
 		settingDebugDumpCaption:{
 			en: 'currently stored settings',
 			de: 'aktuell gespeicherte Einstellungen'
@@ -396,6 +400,11 @@ core.var = {
 				return 'Der Text überschreitet die maximal zulässige Menge von ' + core.var.directMailSize + ' Zeichen. Bitte kopiere den Inhalt aus dem Ausgabefenster des Assistenten. Die browserabhängige Größe kann bei den erweiterten Einstellungen geändert und getestet werden.'
 			},
 		},
+		errorStorageLimit: {
+			en: 'Storing was not possible. The local storage limit for this application was exceeded.',
+			de: 'Speichern nicht möglich. Der Speicherplatz für diese Anwendung ist erschöpft.'
+		},
+		
 		buttonGenCaption: {
 			en: 'generate / update',
 			de: 'generieren / aktualisieren'
