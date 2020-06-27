@@ -125,6 +125,10 @@ ticketorder.var = {
 			en: 'add order',
 			de: 'Bestellung hinzufügen'
 		},
+		orderStorageError: {
+			en: 'Please split up order or excute current order list.',
+			de: 'Bitte die Bestellung aufteilen oder zunächst aktuelle Gesamtbestellung auslösen.'
+		},
 		orderConfirm: {
 			en: 'approve order list',
 			de: 'Bestellliste freigeben'

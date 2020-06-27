@@ -136,8 +136,8 @@ ticketorder.fn = {
 			});
 		ordererDeptList.unshift(['', core.fn.lang('ordererDept', 'ticketorder')]);
 		ordererCostUnitList.unshift(['', core.fn.lang('ordererCostUnit', 'ticketorder')]);
-		if (core.fn.setting.get('moduleExchangeTicketorder')) form += '<input type="button" id="deleteCart" style="float:right" value="' + core.fn.lang('deleteCart', 'ticketorder') + '" onclick="core.fn.setting.unset(\'moduleExchangeTicketorder\'); this.value=\'' + core.fn.lang('deleteCartDeleted', 'ticketorder') + '\'; this.disabled=true;" />';
-		if (core.fn.setting.get('ticketorderAwaitingOrders')) form += '<input type="button" id="deletecurrentOrder" style="float:right" value="' + core.fn.lang('deleteCurrentOrder', 'ticketorder') + '" onclick="ticketorder.fn.currentorder.clear(); this.value=\'' + core.fn.lang('deleteCurrentOrderDeleted', 'ticketorder') + '\'; this.disabled=true;" />';
+		if (core.fn.setting.get('moduleExchangeTicketorder')) form += '<input type="button" id="deleteCart" style="float:right; margin:0 .25em" value="' + core.fn.lang('deleteCart', 'ticketorder') + '" onclick="core.fn.setting.unset(\'moduleExchangeTicketorder\'); this.value=\'' + core.fn.lang('deleteCartDeleted', 'ticketorder') + '\'; this.disabled=true;" />';
+		if (core.fn.setting.get('ticketorderAwaitingOrders')) form += '<input type="button" id="deletecurrentOrder" style="float:right; margin:0 .25em" value="' + core.fn.lang('deleteCurrentOrder', 'ticketorder') + '" onclick="ticketorder.fn.currentorder.clear(); this.value=\'' + core.fn.lang('deleteCurrentOrderDeleted', 'ticketorder') + '\'; this.disabled=true;" />';
 		form += '<form action="javascript:ticketorder.fn.exportform()">';
 		form += '<br /><input type="text" id="orderer" required placeholder="' + core.fn.lang('orderer', 'ticketorder') + '" title="' + core.fn.lang('orderer', 'ticketorder') + '" /> ';
 		form += core.fn.insert.select(ordererDeptList, 'ordererDept', 'ordererDept', core.fn.setting.get('ticketorderDept'), 'required title="' + core.fn.lang('ordererDept', 'ticketorder') + '"');
@@ -241,22 +241,23 @@ ticketorder.fn = {
 		// no output here, because tables will not be exported formatted, has to be copy and paste to be passed properly
 		el('mailto').href = 'javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\',\'' + mailsubject + '\')';
 		ticketorder.fn.currentorder.add(output);
-		core.fn.stdout('output', ticketorder.fn.currentorder.get());
-		el('output').scrollTop = el('output').scrollHeight;
-		core.fn.setting.unset('moduleExchangeTicketorder')
-		if (el('deleteCart')) el('deleteCart').style.display = 'none';
 	},
 	currentorder:{ //this is a workaround for cookies (needed by ie) can not be larger than 4kb, so i have to split up the order list to individual orders
 		add: function(addition){
 			var ordernum = core.fn.setting.get('ticketorderAwaitingOrders') || 0;
-			core.fn.setting.set('ticketorderAwaitingOrder' + ++ordernum, encodeURIComponent(addition));
-			core.fn.setting.set('ticketorderAwaitingOrders', ordernum);
+			if (core.fn.setting.set('ticketorderAwaitingOrder' + ++ordernum, core.fn.stringcompression.compress(addition), core.fn.lang('orderStorageError', 'ticketorder'))){
+				core.fn.setting.set('ticketorderAwaitingOrders', ordernum);
+				core.fn.stdout('output', ticketorder.fn.currentorder.get());
+				el('output').scrollTop = el('output').scrollHeight;
+				core.fn.setting.unset('moduleExchangeTicketorder')
+				if (el('deleteCart')) el('deleteCart').style.display = 'none';
+			}
 		},
 		get: function(){
 			var ordernum = core.fn.setting.get('ticketorderAwaitingOrders'), orders='', i;
 			if (ordernum){
 				for (i = 0; i < ordernum; i++){
-					orders += decodeURIComponent(core.fn.setting.get('ticketorderAwaitingOrder' + (i + 1))) + '<br /><br />';
+					orders += (core.fn.stringcompression.decompress(core.fn.setting.get('ticketorderAwaitingOrder' + (i + 1))) || '') + '<br /><br />';
 				}
 			}		
 			return orders;
@@ -338,7 +339,7 @@ ticketorder.fn = {
 		//delay build up until module.data is loaded
 		setTimeout(function () {
 			ticketorder.fn.start(value(query));
-		}, core.fn.setting.get('settingVarPreloadTime') || 50);
+		}, core.fn.setting.get('settingVarPreloadTime') || 150);
 
 		core.history.write(['ticketorder.fn.init(\'' + value(query) + '\')']);
 		core.performance.stop('ticketorder.fn.init(\'' + value(query) + '\')');
