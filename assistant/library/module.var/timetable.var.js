@@ -26,6 +26,10 @@ timetable.var = {
 			en: 'Favourites deleted. Reload module to refresh...',
 			de: 'Favoriten wurden gelöscht. Um die Anzeige zu aktualisieren bitte Modul neu starten...'
 		},
+		favouriteAdd: {
+			en: 'Add to favourites',
+			de: 'zu Favoriten hinzufügen'
+		},			
 		linkTitle: {
 			en: 'timetable for ',
 			de: 'Tabelle für '

@@ -34,11 +34,21 @@ timetable.api = {
 	},
 };
 timetable.fn = {
+	open: function (name, js){
+	if (typeof js === 'undefined')
+		return core.fn.lang('legalReminder', 'timetable') + 
+			timetable.fn.linkfile(name) + 
+			core.fn.insert.checkbox(core.fn.lang('favouriteAdd', 'timetable'), 'favouriteAdd', this.favouriteHandler.stored(name), false, core.fn.lang('favouriteAdd', 'timetable'));
+		else
+		return core.fn.lang('legalReminder', 'timetable').replace(/"/g, '&quot;') + 
+			timetable.fn.linkfile(name).replace(/"/g, '&quot;').replace(/\'/g, "\\\'") + 
+			core.fn.insert.checkbox(core.fn.lang('favouriteAdd', 'timetable'), 'favouriteAdd', this.favouriteHandler.stored(name), false, core.fn.lang('favouriteAdd', 'timetable')).replace(/"/g, '&quot;').replace(/\'/g, "\\\'");
+	},
 	search: function (query) {
 		query = query || el('timetablequery').value;
 		core.performance.start('timetable.fn.input(\'' + value(query) + '\')'); //possible duplicate
 		if (value(query) !== '') {
-			core.fn.popup(core.fn.lang('legalReminder', 'timetable') + timetable.fn.linkfile(query));
+			core.fn.popup(this.open(query));
 		}
 		core.performance.stop('timetable.fn.input(\'' + value(query) + '\')');
 		core.history.write(['timetable.fn.init(\'\')']);
@@ -50,7 +60,7 @@ timetable.fn = {
 		} //ucfirst
 		name = name.join(' '); //rejoin to string
 		var link = '<a href="' + timetable.var.path + name.toLowerCase() + '.xlsm" onclick="timetable.fn.favouriteHandler.set(\'' + name + '\'); return;" target="_blank">' + core.fn.lang('linkTitle', 'timetable') + name + '</a> ';
-		if (value(favourite) !== '') link = '<span class="singlefavouritehandler"><a href="javascript:core.fn.popup(\'' + core.fn.lang('legalReminder', 'timetable').replace(/"/g, '&quot;') + timetable.fn.linkfile(name).replace(/"/g, '&quot;').replace(/\'/g, "\\\'") + '\')">' + name + '</a> ' + core.fn.insert.icon('delete', false, false, 'onclick="timetable.fn.favouriteHandler.set(\':' + name + '\'); return;"') + '</span>';
+		if (value(favourite) !== '') link = '<span class="singlefavouritehandler"><a href="javascript:core.fn.popup(\'' + this.open(name, true) + '\')">' + name + '</a> ' + core.fn.insert.icon('delete', false, false, 'onclick="timetable.fn.favouriteHandler.set(\':' + name + '\'); return;"') + '</span>';
 		return link;
 	},
 	favouriteHandler: {
@@ -58,9 +68,11 @@ timetable.fn = {
 			var output = core.fn.setting.get('favouritetimetable'),
 				deleteValue = false;
 			if (value.indexOf(':') == 0) { //if preceded by : the value will be deleted from the favourite list
-				deleteValue = true
+				deleteValue = true;
 				value = value.substring(1);
 			}
+			else if (!el('favouriteAdd').checked)
+				deleteValue = true;
 			if (output) {
 				if (output.indexOf(value) > -1) {
 					var tfav = output.split(','),
@@ -77,8 +89,9 @@ timetable.fn = {
 					//reduce to flat
 					output = favourites.join(',');
 				} else output += ',' + value + ',1';
-			} else output = value + ',1';
-			core.fn.setting.set('favouritetimetable', output);
+			} else if (!deleteValue) output = value + ',1';
+			if (output) core.fn.setting.set('favouritetimetable', output);
+			else core.fn.setting.unset('favouritetimetable')
 			core.fn.stdout('favourites', timetable.fn.favouriteHandler.get());
 		},
 		get: function () {
@@ -90,11 +103,20 @@ timetable.fn = {
 					core.fn.insert.icon('delete', 'bigger', false, 'title="' + core.fn.lang('favouriteDeleteTitle', 'timetable') + '" onclick="timetable.fn.favouriteHandler.reset(\'\')"') +
 					'</span><br /><br />';
 				for (var person = 0; person < tfav2.length; person += 2) {
-					var favName = decodeURI(tfav2[person]);
+					var favName = tfav2[person];
 					output += timetable.fn.linkfile(favName, true) + '<br />';
 				}
 			}
 			return output || '';
+		},
+		stored: function(name){
+			name = name.split(' '); //split to array
+			for (var i = 0; i < name.length; i++) {
+				name[i] = name[i][0].toUpperCase() + name[i].slice(1);
+			} //ucfirst
+			name = name.join(' '); //rejoin to string
+			if (core.fn.setting.get('favouritetimetable')) return core.fn.setting.get('favouritetimetable').indexOf(name) > -1;
+			else return false;
 		},
 		reset: function (output) {
 			core.fn.setting.set('favouritetimetable', output);
