@@ -431,7 +431,7 @@ core.fn = {
 				var moduleSelector = '';
 				//create module-selector
 				Object.keys(core.var.modules).forEach(function (key) {
-					moduleSelector += core.fn.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.fn.setting.isset('module_' + key) ? core.fn.setting.get('module_' + key) : core.var.modules[key].enabledByDefault), 'onchange="core.fn.setting.set(\'module_' + key + '\', el(\'module_' + key + '\').checked)"', core.fn.lang('settingRestartNeccessary')) + '<br />';
+					moduleSelector += core.fn.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.fn.setting.isset('module_' + key) ? core.fn.setting.get('module_' + key) : core.var.modules[key].enabledByDefault), 'onchange="core.var.modules[\'' + key + '\'].enabledByDefault == el(\'module_' + key + '\').checked ? core.fn.setting.unset(\'module_' + key + '\'): core.fn.setting.set(\'module_' + key + '\', el(\'module_' + key + '\').checked)"', core.fn.lang('settingRestartNeccessary')) + '<br />';
 				});
 			} else moduleSelector = core.fn.lang('errorLoadingModules');
 			return moduleSelector;
@@ -473,12 +473,14 @@ core.fn = {
 		},
 		setupDebug: function () { //return debugging options
 			var settingsDump = '';
-			if (this.localStorage()) settingsDump = JSON.stringify(localStorage, null, '\t')
-			else document.cookie.split("; ").forEach(function (c) {
-				settingsDump += c + '\n';
+			if (this.localStorage.api()) settingsDump = JSON.stringify(localStorage, null, '\t')
+			else if (document.cookie.length) document.cookie.split("; ").forEach(function (c) {
+				var settings=c.split('=');
+				settingsDump += settings[0] + '=' + decodeURIComponent(settings[1]) + '\n';
 			});
 			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingPerformanceMonitor\')"') +
 				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.fn.setting.get('settingOutputMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingOutputMonitor\')"') +
+				'<br /><br />' + core.fn.lang('settingDebugSpaceCaption') + core.fn.setting.localStorage.remainingSpace() + ' Byte' +
 				'<br /><br />'+core.fn.lang('settingDebugDumpCaption')+':<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
 				'<br /><input type="text" placeholder="'+ core.fn.lang('settingDeleteDistinctPlaceholder') +'" id="deleteDistinctSettings" />' +
 				core.fn.insert.icon('delete', 'bigger', false,
@@ -502,42 +504,69 @@ core.fn = {
 			else core.fn.setting.unset(name);
 		},
 
-		localStorage: function () { //returns boolean whether local storage is accessible
-			try {
-				test = new Array('void', 'localStorageTest');
-				localStorage.setItem(test[0], test[1]);
-				localStorage.removeItem(test[0]);
-				return true;
-			} catch (e) {
-				return false;
+		localStorage: {
+			api: function() { //returns boolean whether local storage is accessible
+				try {
+					localStorage.setItem('void', 'localStorageTest');
+					localStorage.removeItem('void');
+					return true;
+				} catch (e) {
+					return false;
+				}
+			},
+			remainingSpace: function(){
+				if (this.api()) {
+					var max=5000000, current=0; //tested in compatible browsers to be slightly more than 5mb
+					Object.keys(localStorage).forEach(function(key){
+						current += key.length + localStorage.getItem(key).length;
+					});
+					return max - current;
+				}
+				else {
+					return 10234 - document.cookie.length; //maximum overall cookie storage size
+				}
 			}
 		},
-		set: function (name, value) {
-			if (this.localStorage()) {
-				window.localStorage.setItem(name, value);
+		set: function (name, value, errormsg) {
+			var saved=false;
+			if (this.localStorage.api()) {
+				if (this.localStorage.remainingSpace() > name.length + toString(value).length){
+					window.localStorage.setItem(name, value);
+					saved=true;
+				}
 			} else {
 				var now = new Date(),
 					time = now.getTime() + 3600 * 24 * 365 * 1000;
 				now.setTime(time);
-				document.cookie = name + '=' + value + '; expires=' + now.toUTCString() + ';';
+				
+				cookie = name + '=' + encodeURIComponent(value) + '; expires=' + now.toUTCString() + ';';
+				cookie = name + '=' + value + '; expires=' + now.toUTCString() + ';';
+				if (this.localStorage.remainingSpace() > cookie.length && cookie.length < 4092){
+					document.cookie = cookie;
+					saved=true;
+				}
 			}
+			if (!saved) core.fn.popup(core.fn.lang('errorStorageLimit')+ (typeof errormsg !=='undefined' ? '<br />' + errormsg : ''));
+			return saved;
 		},
 		get: function (name) {
-			if (this.localStorage()) {
+			var value=false;
+			if (this.localStorage.api()) {
 				if (window.localStorage.getItem(name) == null) return false;
-				else return window.localStorage.getItem(name);
+				else value = window.localStorage.getItem(name);
 			} else {
 				var x = document.cookie;
 				if (x.indexOf(name + '=') > -1) {
 					var c = x.substring(x.indexOf(name)),
 						start = c.indexOf('=') + 1,
 						end = c.indexOf(';') > -1 ? c.indexOf(';') : false;
-					return end ? c.substring(start, end) : c.substring(start);
+					value = decodeURIComponent(end ? c.substring(start, end) : c.substring(start));
 				} else return false;
 			}
+			if (value) return value;
 		},
 		isset: function (name) {
-			if (this.localStorage()) {
+			if (this.localStorage.api()) {
 				if (window.localStorage.getItem(name) == null) return false;
 				else return true;
 			} else {
@@ -546,14 +575,14 @@ core.fn = {
 			}
 		},
 		unset: function (name) {
-			if (this.localStorage()) {
+			if (this.localStorage.api()) {
 				window.localStorage.removeItem(name);
 			} else {
-				document.cookie = name + '=0; expires=Thu, 01 Jan 1970 00:00:00 UTC' + ';';
+				document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC' + ';';
 			}
 		},
 		clear: function () { //resets whole application
-			if (this.localStorage()) {
+			if (this.localStorage.api()) {
 				window.localStorage.clear();
 			} else {
 				document.cookie.split(";").forEach(function (c) {
@@ -562,7 +591,23 @@ core.fn = {
 			}
 		}
 	},
-	
+	stringcompression: {
+		// this makes sense for expectable long strings that have to be uricomponent-encoded to save up a bit storage space e.g. within cookies converting the string with base64 encoding
+		// do not use generally for short strings being bloated up (like settings etc) 
+		compress: function(str) {
+			// encodeURIComponent to get percent-encoded UTF-8, convert the percent encodings into raw bytes which can be fed into btoa.
+			return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+				function toSolidBytes(match, p1) {
+					return String.fromCharCode('0x' + p1);
+			}));
+		},
+		decompress: function(str) {
+			// from bytestream, to percent-encoding, to original string.
+			return decodeURIComponent(atob(str).split('').map(function (c) {
+				return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+			}).join(''));
+		}
+	},
 	drm: {
 		table: function(table){
 			return core.var.drm.data[core.var.drm.translate[table]];
