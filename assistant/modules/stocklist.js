@@ -116,7 +116,7 @@ stocklist.fn = {
 			'<form id="search" action="javascript:stocklist.fn.search();">' +
 			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.fn.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +
 			'<span onclick="stocklist.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
-			core.fn.insert.select(stocklist.fn.translate.returnselect(), 'stockfilter', 'stockfilter', (core.fn.setting.get('stockfilter') || 'all'), 'onchange="core.fn.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.fn.search();"') +
+			core.fn.insert.select(stocklist.fn.translate.returnselect(), 'stockfilter', 'stockfilter', (core.fn.setting.get('stockfilter') || 'all'), 'onchange="this.selectedIndex == 0 ? core.fn.setting.unset(\'stockfilter\') : core.fn.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.fn.search();"') +
 			'<input type="submit" id="submit" value="' + core.fn.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
 			core.fn.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.ecosia.org/search?q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.fn.lang('webSearchTitle', 'stocklist') + '"') +
 			'</form>');

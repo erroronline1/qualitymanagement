@@ -152,7 +152,7 @@ documentlookup.fn = {
 			'<form id="search" action="javascript:documentlookup.fn.search();">' +
 			'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.fn.lang('searchPlaceholder', 'documentlookup') + '" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +
 			'<span onclick="documentlookup.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
-			core.fn.insert.select(selection, 'lookup', 'lookup', (core.fn.setting.get('lookup_bundle') || false), 'onchange="core.fn.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.fn.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.fn.search()\');"') +
+			core.fn.insert.select(selection, 'lookup', 'lookup', (core.fn.setting.get('lookup_bundle') || false), 'onchange="this.selectedIndex == 0 ? core.fn.setting.unset(\'lookup_bundle\') : core.fn.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.fn.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.fn.search()\');"') +
 			'<input type="submit" id="submit" value="' + core.fn.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
 			'<a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" >' + core.fn.insert.icon('fileexplorer', 'bigger', false, 'title="' + core.fn.lang('optionThirdType', 'documentlookup') + '"') + '</a>' +
 			'</form>');
