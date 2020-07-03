@@ -139,14 +139,26 @@ core.fn = {
 			//
 			// data base will be searched for single words as well as a concatenated string
 
-			// assign single terms to query array splitting by whitespace, stripping all but allowed characters including preceding whitespace
 			var sanitizeRegEx = /[^a-zA-Z0-9äÄöÖüÜß\+-\s]/g,
-				fuzzyOverride = /\?|\*/g; //pseudo-wildcards activate fuzzy search, mostly resulting in more relevant results
-			var initial_query = userInput.toLowerCase().replace(sanitizeRegEx, '').split(/[\s]/g),
-				query = new Array(),
+				fuzzyOverride = /\?|\*/g, //pseudo-wildcards activate fuzzy search, mostly resulting in more relevant results
+				quoted = /(?:\")(.+?)(?:\")/g; //adding relevance to otherwise whitespace separated terms with particular order 
+			var	query = new Array(),
 				filter = new Array(),
 				found = new Array(),
-				mandatory = false;
+				mandatory = false,
+				processedUserInput=userInput;
+
+			// initiate query terms array, starting with quoted terms, sanitizing and deleting for further processing
+			var initial_query = processedUserInput.toLowerCase().match(quoted) || [];
+			for (var i = 0; i < initial_query.length; i++){
+				initial_query[i] = initial_query[i].replace(sanitizeRegEx, '').replace(/\s/g, '');
+			}
+			processedUserInput = processedUserInput.replace(quoted, '');
+			// assign remaining single terms to query array splitting by whitespace, stripping all but allowed characters including preceding whitespace
+			processedUserInput.toLowerCase().replace(sanitizeRegEx, '').split(/[\s]/g).forEach(function(term){
+				initial_query.push(term);
+			});
+
 			//sort -terms to filter, +terms to mandatory
 			//i once spliced the query array but that instantaneously influenced the foreach
 			initial_query.forEach(function (word) {
@@ -203,15 +215,15 @@ core.fn = {
 				var fuzzyRatio = 2 - ((core.fn.setting.get('settingFuzzyThreshold') || 5) * .1); //fuzzy ratio of 1.5 by default is quite reasonable determined through trial and error
 
 				Object.keys(dataBaseObject).forEach(function (key) {
-					var a = dataBaseObject[key],
+					var haystack = dataBaseObject[key],
 						filtered = false;
-					if (typeof (a) === 'object') a = a.join();
+					if (typeof (haystack) === 'object') haystack = haystack.join();
 					//filter filename in case of pdf-files else take raw string
-					a = a.replace(/\S+\/.+\/(.+)\.pdf/g, "$1");
+					haystack = haystack.replace(/\S+\/.+\/(.+)\.pdf/g, "$1");
 					//strip all remaining special chars
-					a = a.toLowerCase().replace(sanitizeRegEx, '');
+					haystack = haystack.toLowerCase().replace(sanitizeRegEx, '').replace(/\s/g, '');
 					for (var i = 0; i < filter.length; i++) {
-						if (a.indexOf(filter[i]) > -1) {
+						if (haystack.indexOf(filter[i]) > -1) {
 							filtered = true;
 							break;
 						}
@@ -219,9 +231,9 @@ core.fn = {
 
 					if (!filtered) {
 						//compare every query part between whitespaces 
-						query.forEach(function (b) {
-							var fuzzyquery = fuzzy(a, b, fuzzySearch, fuzzyRatio);
-							if (typeof (a) === 'string' && fuzzyquery && eval(additionalCondition)) {
+						query.forEach(function (needle) {
+							var fuzzyquery = fuzzy(haystack, needle, fuzzySearch, fuzzyRatio);
+							if (typeof (haystack) === 'string' && fuzzyquery && eval(additionalCondition)) {
 								var exist;
 								found.forEach(function (value, index) {
 									if (value[0] === key) exist = index;
