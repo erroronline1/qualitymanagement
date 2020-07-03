@@ -29,6 +29,8 @@ currently there are two work model types: 9to5 and part time with home office. s
 ### automation
 on start of a new month a new sheet is added automatically, so no one has to care about that. in this case there will be also a (monthly) reminder to plan paid leave if there are too many holidays left in relation to remaining days of the year.
 
+as of 7/20 manually adding a new sheet is prohibited to prevent the initialization wizard from starting because it does not find a set date on the last sheet. 
+
 on first opening of the file the user will be prompted to initialise the sheet. this will update the initial sheet to the current month and write the latest hours and holidays to the table. afterwards the user can personalize additional information within the sheet and start tracking. all surrounding information but the time and holiday entries will be copied to the next month, so there is no need to insert it regularly.
 
 *there are formulas that have to be written to the new monthly sheet by vba. remember to change these too as you change formulas in the sheets. local tinted formulas (eg "wennfehler", ugly german for "iferror") can be found within the locals-module and update on initialization and while adding new sheets. all other formulas are simply arithmetic.*
@@ -70,4 +72,6 @@ all this might not satisfy all security concerns but is considered reasonable.
 
 adjustments within the trust center might be necessary.
 
-there might be errors on opening multiple timetables at once, most notably with excel 2010. i still haven't learned why. all tests succeeded being used solo.
+there might be errors on opening multiple timetables at once, most notably with excel 2010. i still haven't learned why. all tests succeeded being used solo. field test showed errors and crashes sometimes, most probably due to faulty input, resulting in loss of a few inputs. i still have no clue what the colleagues entered to lead to this behaviour. you're most welcome to educate me on this!
+
+on opening the file for initialization from the assistant, the wizard will be hidden beneath the browser that has to be minimized first.
