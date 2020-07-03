@@ -55,8 +55,8 @@ var randomTip = {
 			de: 'Suche nach mehreren Begriffen, Ergebnisse mit den meisten Übereinstimmungen stehen ganz oben.'
 		},
 		{
-			en: 'Filter your search results by preceding a -, like &quot;find everything -but&quot;.',
-			de: 'Du kannst bei deiner Suche filtern wenn du ein - voranstellst, wie in &quot;finde alles -außer&quot;.'
+			en: 'Filter your search results by preceding a -, like &quot;find everything -but&quot;. If at least one term is preceded by a + only results with all terms will be shown.',
+			de: 'Du kannst bei deiner Suche filtern wenn du ein - voranstellst, wie in &quot;finde alles -außer&quot;. Wenn einem Begriff ein + voransteht werden nur Ergebnisse angezeigt, die alle begriffe beinhalten.'
 		},
 		{
 			en: 'Your last search- and filter-settings are stored. Sometimes that makes it faster, sometimes there seem to be too little results. Watch out for that.',

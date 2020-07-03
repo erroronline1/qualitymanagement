@@ -139,16 +139,21 @@ core.fn = {
 			//
 			// data base will be searched for single words as well as a concatenated string
 
-			// assign single terms to query array splitting by whitespace, stripping ' ( ) and - without preceding whitespace
-			var sanitizeRegEx = /[^a-zA-Z0-9äÄöÖüÜß-\s]/g;
+			// assign single terms to query array splitting by whitespace, stripping all but allowed characters including preceding whitespace
+			var sanitizeRegEx = /[^a-zA-Z0-9äÄöÖüÜß\+-\s]/g;
 			var initial_query = userInput.toLowerCase().replace(sanitizeRegEx, '').split(/[\s]/g),
 				query = new Array(),
 				filter = new Array(),
-				found = new Array();
-			//sort -terms to filter
+				found = new Array(),
+				mandatory = false;
+			//sort -terms to filter, +terms to mandatory
 			//i once spliced the query array but that instantaneously influenced the foreach
 			initial_query.forEach(function (word) {
 				if (word.substring(0, 1) == '-') filter.push(word.substring(1));
+				else if (word.substring(0, 1) == '+') {
+					mandatory = true;
+					query.push(word.substring(1));
+				}
 				else query.push(word);
 			});
 			//add concatenated query of remaining terms
@@ -227,7 +232,16 @@ core.fn = {
 					}
 				});
 			}
-			return found.sort(core.fn.sortBySecondColumn) || 0;
+			found = found.sort(core.fn.sortBySecondColumn) || 0
+			
+			// deletes all results that have not the highest ranking if mandatory-flag is set, aka if only all query terms apply
+			if (mandatory && found){
+				for (var i = found.length - 1; i > 0 ; i--){
+					if (found[i][1] < found[0][1]) found.splice(i,1);
+				}					
+			}
+			
+			return found;
 		},
 		relevance: {
 			//used to make intersections between relevance levels
