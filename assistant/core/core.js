@@ -140,7 +140,8 @@ core.fn = {
 			// data base will be searched for single words as well as a concatenated string
 
 			// assign single terms to query array splitting by whitespace, stripping all but allowed characters including preceding whitespace
-			var sanitizeRegEx = /[^a-zA-Z0-9äÄöÖüÜß\+-\s]/g;
+			var sanitizeRegEx = /[^a-zA-Z0-9äÄöÖüÜß\+-\s]/g,
+				fuzzyOverride = /\?|\*/g; //pseudo-wildcards activate fuzzy search, mostly resulting in more relevant results
 			var initial_query = userInput.toLowerCase().replace(sanitizeRegEx, '').split(/[\s]/g),
 				query = new Array(),
 				filter = new Array(),
@@ -198,7 +199,7 @@ core.fn = {
 
 			if (query.length > 0) {
 				//reminder: keep these kind of assignments out of loops for performance reasons!
-				var fuzzySearch = core.fn.setting.get('settingFuzzySearch');
+				var fuzzySearch = core.fn.setting.get('settingFuzzySearch') || Boolean(userInput.match(fuzzyOverride));
 				var fuzzyRatio = 2 - ((core.fn.setting.get('settingFuzzyThreshold') || 5) * .1); //fuzzy ratio of 1.5 by default is quite reasonable determined through trial and error
 
 				Object.keys(dataBaseObject).forEach(function (key) {
