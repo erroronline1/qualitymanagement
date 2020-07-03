@@ -14,6 +14,7 @@ Option Explicit
 Public selectedLanguage As String
 Public Workmodel As String
 Public parentPath
+Public allowAddingSheets as Boolean
 
 Private Sub Workbook_Open()
     selectedLanguage = "EN"
@@ -42,6 +43,13 @@ End Sub
 
 Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean)
     Essentials.CloseRoutine
+End Sub
+
+Private Sub Workbook_NewSheet(ByVal Sh as Object)
+    If Not allowAddingSheets Then
+        Application.DisplayAlerts = False
+        ActiveSheet.Delete
+    End If
 End Sub
 
 Public Function importModules(ByVal libraries As Object) As Boolean

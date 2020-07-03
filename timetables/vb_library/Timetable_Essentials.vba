@@ -8,6 +8,7 @@ Attribute VB_Name = "Essentials"
 Option Explicit
 Public verificationOverride As Boolean
 Public selectedLanguage As String
+Public allowAddingSheets As Boolean
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' general module handler
@@ -17,7 +18,7 @@ Public Function Modules() as Object
     Set Modules= CreateObject("Scripting.Dictionary")
     Modules.Add "Secure", ThisWorkbook.Path & "\vb_library\" & "Timetable_Secure.vba"
     Modules.Add "Locals", ThisWorkbook.Path & "\vb_library\" & "Timetable_Locals_" & ThisWorkbook.selectedLanguage & ".vba"
-    'Modules.Add "Rewrite", ThisWorkbook.Path & "\vb_library\RewriteMain.vba"
+'    Modules.Add "Rewrite", ThisWorkbook.Path & "\vb_library\RewriteMain.vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -314,6 +315,8 @@ End Function
 Public Sub addSheets()
     'avoid all user input checks while adding sheets
     verificationOverride = True
+    'override otherwise disabled adding of sheets
+    allowAddingSheets = True
     'get last sheet
     Dim ws As Object
     Set ws = Sheets(Sheets.Count)
@@ -329,7 +332,6 @@ Public Sub addSheets()
     
     'add sheets as long last sheet does not match current month
     While DateDiff("m", newSheet, "1/" & DatePart("m", Date) & "/" & DatePart("yyyy", Date)) > 0
-    
         'update cheet name because of loop
         Set ws = Sheets(Sheets.Count)
         'copy last sheet
@@ -386,6 +388,8 @@ Public Sub addSheets()
         ActiveSheet.Range("D11").Select
         'set new sheets to true to remind for holidays on save if sheets are added - normally once a month
         persistent "newSheet", "set", True
+        'prevent manually adding sheets again
+        allowAddingSheets = False
     Wend
 
     'update legacy sheets while beta testing, could be reduced to activation of last sheet for performance reason later on _
