@@ -50,7 +50,7 @@ try:
 	jsonfile.close() 
 except:
 	input('[~] settings could not be loaded, program aborted... press enter to exit program.')
-	exit()
+	sys.exit()
 
 #look for last touched source file that matches filter for source according to settings
 sourcefile=[]
@@ -62,7 +62,7 @@ if len(sourcefile):
 	sourcefile.sort( key=lambda time: time[1], reverse=True )
 else:
 	input('[~] sourcefile named like ' + setting['source'] + ' not found, program aborted... press enter to exit program.')
-	exit()
+	sys.exit()
 
 try:
 	with open( sourcefile[0][0], newline='' ) as csvfile:
