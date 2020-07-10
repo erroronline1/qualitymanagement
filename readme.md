@@ -35,6 +35,7 @@ compatible with
 	* [use case](#use-case-2)
 	* [what this tool does](#what-this-tool-does)
 	* [requirements](#requirements-1)
+* [interfaces](#interfaces)
 * [installation](#installation)
 * [but i am no programmer!](#but-i-am-no-programmer)
 * [details](#details)
@@ -129,11 +130,15 @@ this tool provides your company with an application to have an easier access to 
 ## requirements
 * one webdeveloper to customize the application for your companies needs and optionally provide you with desired additional modules
 * network access for every employee to access the assistant only from one source
-* serial print of document packages requires active-x which is only available in ie11. this option will not be shown if not accessible
+* serial print of document packages requires active-x which is only available in ie11. this option will not be shown if not accessible. edge with chromium engine is said to be [supporting an ie11 mode](https://docs.microsoft.com/en-us/lifecycle/faq/internet-explorer-microsoft-edge#what-if-my-enterprise-line-of-business-lob-application-has-a-dependency-on-a-version-of-internet-explorer-that-reached-end-of-support), but it might be somewhat cumbersome to achive this if you don't have a decent access to company settings. actually i am not able to test it. also you might have to decide either for serial print or more storage space (active-x and cookies vs none but localstorage).
 * patience with coworkers blaming 'your' assistant for every network failure, printer settings and their inability to read the literal hints and descriptions
 
 [![visit demo](https://img.shields.io/website?style=flat-square&down_message=demo%20currently%20unavailable&up_message=visit%20working%20demo&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
 
+[back to top](#bottle-light-quality-management-software)
+
+# interfaces
+some core documents contain vba-code to translate their content to a javascript object to be accessed by the assistant. there might pop up some python scripts occasionally to fulfill the same task for one or the other use case. these scripts will likely be configurable via a json-setup-file even after compiling. so there might be another dependency of a json-enabled python-dev.
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -144,6 +149,7 @@ there is no installation routine. place the files to your desired accessible net
 * the provided folder structure might not be neccessarily your first choice and serves just as a sample. you have to change at least the default paths within the vba-code and the assistant anyway.
 * even if you don't want to use the assistant, the documents semiautomated version control still might be useful for you. on the other hand the assistant is hardly possible to populate without the documents unless you write your own routines for that.
 * i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to pdfs, timetables and the assistant application should be granted for everyone.
+* provided python-scripts probably will have to be compiled (unless you have python installed - 3.6 for the moment).
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -151,6 +157,8 @@ there is no installation routine. place the files to your desired accessible net
 to customize this software to your needs it is definitely neccessary to have someone change values within the vba-code- and the javascript-configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
 i was hoping to have done enough documentation and commenting, so maybe you might as well get a grasp on changing the setting-files yourself. 
 **on the bright side everything is open source and can be maintained by any programmer/webdeveloper/webdeveloping agency that does javascript and knows how to access the visual basic editor via the office developer tab!**
+
+if you are a programmer i can recommend [notepad++ portable](https://notepad-plus-plus.org/download/) out of personal experience  in case you have restricted access to your it. also [git portable](https://sourceforge.net/projects/gitportable/).
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -240,7 +248,7 @@ timetracking with excel as an addon. not quite related to quality management in 
 [back to top](#bottle-light-quality-management-software)
 
 ## the assistant
-there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. then there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-libraray](http://vanilla.js-com). in case you have restricted access to your it i can recommend [notepad++ portabale](https://notepad-plus-plus.org/download/) out of personal experience.
+there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. then there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-library](http://vanilla.js-com).
 
 [![visit demo](https://img.shields.io/website?style=flat-square&down_message=demo%20currently%20unavailable&up_message=visit%20working%20demo&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
 
@@ -288,6 +296,8 @@ the provided modules are filled with dummies. the general multi-language support
 * audit planner ![assistant audit planner](assets/assistant_auditplanner.png)
 * help (simplyfied for me not being english native and should be customized to your own companies comprehension of interwebz and nerd-stuff-thingies) ![assistant help](assets/assistant_help.png)
 
+there are more modules used in my company but these are dependent to sensitive data thus there is no publication posible.
+
 [back to top](#bottle-light-quality-management-software)
 
 ### thoughts and considerations
@@ -295,7 +305,9 @@ i tried to implement a preview on search forms using datalists. while it is not 
 
 by 6/20 it is possible to handle special permissions due to the data rights management. this is meant to be as secure as a read-only front-end security system can be. it is absolutely not uncrackable but hopefully a fair amount of obfuscation and obstacles. know your techies in case of abuse.
 
-the assistant is designed to hopefully transition seamlessly into windows 10 fluent design that is still to come company wide as time of writing. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be. i am not a fanboy in the first place, although i like microsofts os design. i just try to make it look as native as possible to not disturb the co-workers. it is hard enough to convince them to utilize quality management as well as this tool.
+the assistant is designed to hopefully transition mostly seamlessly into windows 10 fluent design. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be. i am not a fanboy in the first place, although i like microsofts os design. i just try to make it look as native as possible to not disturb the co-workers. it is hard enough to convince them to utilize quality management as well as this tool.
+
+*funny what can evolute from a personal tool to generate standardized email answers to recurrent enquiries and some messing around with conditional formatting in excel.*
 
 ### changes and updates
 this software is purposed to be adapted to the companies needs in an flexible way. if you find something missing you can add functions quite quick and easily (within technical boundaries). i do exactly this and want to keep the open source distribution updated as well. as long as i am not aware that this software is used by a third party i will push to master and will not implement any version management or branching.
