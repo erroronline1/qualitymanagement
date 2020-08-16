@@ -37,8 +37,7 @@ Public Function setup() As Collection
     setup.Add "There was no file selected!" & vbNewLine & "Try again or cancel?" & vbNewLine & "(update manually for the latter option)", "updateList.autoUpdateErrorPrompt"
     setup.Add "B", "updateList.documentTitle"
     setup.Add "C", "updateList.documentVersion"
-    setup.Add "D", "updateList.documentPages"
-    setup.Add "E", "updateList.documentHyperlink"
+    setup.Add "D", "updateList.documentHyperlink"
     setup.Add "", "updateList.documentPDFHyperlink"
     'the variable "updateList.documentPDFHyperlink" can be customized to update the list of documents _
     in case you want this to be. since i recommend docm-files to be handled as working files _

@@ -92,7 +92,7 @@ End Sub
 
 Public Sub UpdateAndExport()
     UpdateDocumentFields
-    Archieve
+    Archive
     PDFPublish
     UpdateListOfDocuments
 End Sub
@@ -128,7 +128,7 @@ Public Sub UpdateDocumentFields()
     Next
 End Sub
 
-Public Sub Archieve()
+Public Sub Archive()
     ''''''' archive file without code, version number added to filename ''''''''
     Dim fileSaveName As Variant
     Set fileSaveName = Application.FileDialog(msoFileDialogSaveAs)
@@ -225,7 +225,6 @@ Public Sub UpdateListOfDocuments()
         xlSheet.Range(setup("updateList.documentTitle") & rCount).Value = ThisDocument.Variables("title").Value
         xlSheet.Range(setup("updateList.documentVersion") & rCount).Value = "V" + CStr(ThisDocument.Variables("version").Value) + _
             "." + CStr(ThisDocument.Variables("releasedate").Value)
-        xlSheet.Range(setup("updateList.documentPages") & rCount).Value = ThisDocument.ComputeStatistics(wdStatisticPages)
         'link to word document
         xlSheet.Hyperlinks.Add Anchor:=xlSheet.Range(setup("updateList.documentHyperlink") & rCount), _
         Address:=ThisDocument.FullName, _
