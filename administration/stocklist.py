@@ -143,7 +143,6 @@ def reset():
 	try:
 		with open('stocklist.json', 'x', newline='', encoding='utf8') as file:
 			json.dump(DEFAULTJSON, file, ensure_ascii=False, indent=4)
-		file.close()
 		fprint('[*]  setting file stocklist.json successfully written. please accommodate to your environment.\n')
 	except:
 		fprint('[~]  stocklist.json could not be written because it already existed. please contact devops.\n')
@@ -207,7 +206,6 @@ def main():
 				except:
 					fprint('[~]  an error occured for following item, some fields may contain forbidden characters:\n[' + ', '.join(row) + ']', clearanimation = True)
 					fprint('[~]  the aforementioned item has been skipped. please contact devops to update sanitation options.')
-		csvfile.close()
 	except:
 		success=False
 		fprint('[~]  source file could not be loaded or processed, translation not successful. please contact devops.', clearanimation = '[~]')
@@ -262,7 +260,6 @@ def main():
 				file.write(SETTINGS['destinationoutputstart'])
 				json.dump(output, file, ensure_ascii=False, indent=4)
 				file.write(SETTINGS['destinationoutputend'])
-			file.close()
 			fprint('[*]  destination file ' + SETTINGS['destination'] + ' successfully written', clearanimation = '[*]')
 		except:
 			success=False
