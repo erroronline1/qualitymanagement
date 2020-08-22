@@ -81,7 +81,7 @@ HELPTEXT= '''
 [help]
 
     this program serves to translate a stocklist csv to a javascript file with an object.
-	this is not ai, you'll have to analyze the inhomogeneous sources by yourself beforehand in order to set up. 
+    this is not ai, you'll have to analyze the inhomogeneous sources by yourself beforehand in order to set up. 
 
     usage: stocklist [ -h | --help ]    this message, priority handling
                      [ -r | --reset ]   creates a default setting file for editing
