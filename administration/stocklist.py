@@ -11,7 +11,7 @@ print ('''
      _           _   _ _     _
  ___| |_ ___ ___| |_| |_|___| |_
 |_ -|  _| . |  _| '_| | |_ -|  _|
-|___|_| |___|___|_,_|_|_|___|_|    build 20200822
+|___|_| |___|___|_,_|_|_|___|_|    build 20200823
 
 by error on line 1 (erroronline.one)
 
@@ -20,7 +20,7 @@ translates a stocklist export to a javascript object file ressource
 $ stocklist --help     for overview''')
 
 DEFAULTJSON={
-	"comment": "BEWARE of character encoding. this file is encoded in iso 8859-1 äöü",
+	"comment": "BEWARE of character encoding. make sure these (äöü) spechialchars are displayed properly.",
 	"source": "ARTIKELMANAGER.CSV",
 	"headersourceformat": "(.+?)[;\\s]",
 	"headerrow": 2,
@@ -68,10 +68,10 @@ DEFAULTJSON={
 		"QUANTITY": {
 			"1": "piece",
 			"2": "pair",
-			"4": "meter",
+			"4": "metre",
 			"5": "set",
-			"6": "liter",
-			"7": "square metere",
+			"6": "litre",
+			"7": "square metre",
 			"8": "bag"
 		}
 	}
@@ -105,6 +105,13 @@ HELPTEXT= '''
 
     readcolumns, static, filter, translate and any given array can be extended at will
 '''
+
+#                           _   ___             _   _
+#   ___ ___ ___ ___ ___ ___| | |  _|_ _ ___ ___| |_|_|___ ___ ___
+#  | . | -_|   | -_|  _| .'| | |  _| | |   |  _|  _| | . |   |_ -|
+#  |_  |___|_|_|___|_| |__,|_| |_| |___|_|_|___|_| |_|___|_|_|___|
+#  |___|
+#
 
 def animationbar():
 	for c in itertools.cycle( ['.   ', '..  ', '... ', '....', ' ...', '  ..', '   .'] ):
@@ -147,8 +154,16 @@ def reset():
 	except:
 		fprint('[~]  stocklist.json could not be written because it already existed. please contact devops.\n')
 
+#             _       ___             _   _
+#   _____ ___|_|___  |  _|_ _ ___ ___| |_|_|___ ___
+#  |     | .'| |   | |  _| | |   |  _|  _| | . |   |
+#  |_|_|_|__,|_|_|_| |_| |___|_|_|___|_| |_|___|_|_|
+#
+#
+
 def main():
 	global STOPANIMATION
+	success=True
 	#look for last touched source file that matches filter for source according to settings
 	sourcefile=[]
 	for entry in os.scandir( os.getcwd() ):
@@ -158,60 +173,72 @@ def main():
 	if len(sourcefile):
 		sourcefile.sort( key=lambda time: time[1], reverse=True )
 	else:
-		input('[~]  sourcefile named like ' + SETTINGS['source'] + ' not found, program aborted... press enter to exit program.')
-		sys.exit()
-
-	success=True
-	try:
-		with open( sourcefile[0][0], newline='' ) as csvfile:
-			#read source-file		
-			fprint('     reading source file ' + sourcefile[0][0])
-
-			animation = threading.Thread( target = animationbar )
-			animation.daemon = True
-			animation.start()
-			#detect dialect, with quotes or without, idk, works well but not without
-			dialect = csv.Sniffer().sniff(csvfile.read(1024))
-			#reset internal pointer
-			csvfile.seek(0)
-
-			#extract headers from first row to list
-			headers=re.findall( SETTINGS['headersourceformat'], csvfile.readlines()[SETTINGS['headerrow']-1] + '\n\r' )
-			#reset internal pointer
-			csvfile.seek(0)
-
-			#csv.DictReader does not properly handle the structure of the given file thus needing a custom solution for use of fieldnames
-			rows = csv.reader(csvfile, dialect, delimiter=';')
-			#initiate result list
-			result = []
-
-			for rowindex, row in enumerate(rows):
-				# skip everything befor headerrow
-				if rowindex < SETTINGS['headerrow'] - 1:
-					continue
-				
-				tidy = tidied_cell_content(row, headers, SETTINGS['sanitize'])
-				# for filters
-				skip = False
-				
-				for filters in SETTINGS['filter']:
-					if bool(re.search(SETTINGS['filter'][filters], tidy.c(filters), re.IGNORECASE)):
-						skip = True
-				if skip:
-					continue
-
-				try:
-					output = [tidy.c(c) for c in headers]
-					result.append(output)
-				except:
-					fprint('[~]  an error occured for following item, some fields may contain forbidden characters:\n[' + ', '.join(row) + ']', clearanimation = True)
-					fprint('[~]  the aforementioned item has been skipped. please contact devops to update sanitation options.')
-	except:
 		success=False
-		fprint('[~]  source file could not be loaded or processed, translation not successful. please contact devops.', clearanimation = '[~]')
+		fprint('[~]  sourcefile named like ' + SETTINGS['source'] + ' not found.')
 
 	if success:
-		#translate, filter, reduce
+		#             _                                     _             _
+		#   _____ ___|_|___   ___ ___ ___ ___ ___ ___ ___  |_|___ ___ _ _| |_
+		#  |     | .'| |   | | . |  _| . |  _| -_|_ -|_ -| | |   | . | | |  _|
+		#  |_|_|_|__,|_|_|_| |  _|_| |___|___|___|___|___| |_|_|_|  _|___|_|
+		#                    |_|                                 |_|
+		#
+		animation = threading.Thread( target = animationbar )
+		animation.daemon = True
+		
+		try:
+			with open( sourcefile[0][0], newline='' ) as csvfile:
+				#read source-file		
+				fprint('     reading source file ' + sourcefile[0][0])
+				animation.start()
+				#detect dialect, with quotes or without, idk, works well but not without
+				dialect = csv.Sniffer().sniff(csvfile.read(1024))
+				#reset internal pointer
+				csvfile.seek(0)
+
+				#extract headers from first row to list
+				headers=re.findall( SETTINGS['headersourceformat'], csvfile.readlines()[SETTINGS['headerrow']-1] + '\n\r' )
+				#reset internal pointer
+				csvfile.seek(0)
+
+				#csv.DictReader does not properly handle the structure of the given file thus needing a custom solution for use of fieldnames
+				rows = csv.reader(csvfile, dialect, delimiter=';')
+				#initiate result list
+				result = []
+
+				for rowindex, row in enumerate(rows):
+					# skip everything befor headerrow
+					if rowindex < SETTINGS['headerrow'] - 1:
+						continue
+					
+					tidy = tidied_cell_content(row, headers, SETTINGS['sanitize'])
+					# for filters
+					skip = False
+					
+					for filters in SETTINGS['filter']:
+						if bool(re.search(SETTINGS['filter'][filters], tidy.c(filters), re.IGNORECASE)):
+							skip = True
+					if skip:
+						continue
+
+					try:
+						output = [tidy.c(c) for c in headers]
+						result.append(output)
+					except:
+						fprint('[~]  an error occured for following item, some fields may contain forbidden characters:\n[' + ', '.join(row) + ']', clearanimation = True)
+						fprint('[~]  the aforementioned item has been skipped. please contact devops to update sanitation options.')
+		except:
+			success=False
+			fprint('[~]  source file could not be loaded or processed, translation not successful.', clearanimation = '[~]')
+
+	if success:
+		#             _                                       _     _
+		#   _____ ___|_|___   ___ ___ ___ ___ ___ ___ ___   _| |___| |_ ___
+		#  |     | .'| |   | | . |  _| -_| . | .'|  _| -_| | . | .'|  _| .'|
+		#  |_|_|_|__,|_|_|_| |  _|_| |___|  _|__,|_| |___| |___|__,|_| |__,|
+		#                    |_|         |_|
+		#
+		# 		#translate, reduce
 		fprint('     translate', clearanimation = '[*]')
 		output = []
 		for row, rowdict in enumerate(result):
@@ -254,7 +281,12 @@ def main():
 				output.append(outputline)
 					
 	if success:
-		#write js-object to destination file
+		#             _                 _ _           _     _
+		#   _____ ___|_|___   _ _ _ ___|_| |_ ___   _| |___| |_ ___
+		#  |     | .'| |   | | | | |  _| |  _| -_| | . | .'|  _| .'|
+		#  |_|_|_|__,|_|_|_| |_____|_| |_|_| |___| |___|__,|_| |__,|
+		#
+		#
 		try:
 			with open(SETTINGS['destination'], 'w', newline='', encoding='utf8') as file:
 				file.write(SETTINGS['destinationoutputstart'])
@@ -263,13 +295,21 @@ def main():
 			fprint('[*]  destination file ' + SETTINGS['destination'] + ' successfully written', clearanimation = '[*]')
 		except:
 			success=False
-			fprint('[~]  ' + SETTINGS['destination'] + ' could not be written. please contact devops.', clearanimation = '[*]')
+			fprint('[~]  ' + SETTINGS['destination'] + ' could not be written.', clearanimation = '[*]')
 
 	if success:
 		fprint('[*]  done!')
+	else:
+		fprint('[~]  some error occured. please contact devops.')
 	STOPANIMATION = True
 
-#load settings
+#   _     _ _   _     _ _
+#  |_|___|_| |_|_|___| |_|___ ___
+#  | |   | |  _| | .'| | |- _| -_|
+#  |_|_|_|_|_| |_|__,|_|_|___|___|
+#
+#
+# #load settings
 try:
 	with open('stocklist.json', 'r') as jsonfile:
 		SETTINGS= json.loads(jsonfile.read().replace('\n', ''))
