@@ -338,8 +338,8 @@ core.var = {
 			de: 'Wenn der Browser die Einstellung unterstützt öffnet sich ein eMail-Fenster das keine weitere Verwendung hat und anschließend geschlossen werden kann. Ist dies nicht der Fall muss der Wert reduziert und erneut geprüft werden. Anschließen ist ein Neustart der Oberfläche erforderlich. Es kann zu einer Überforderung des Browsers kommen der seinen Neustart erfordert. Die gestesteten Browser unterstützen den nächstkleineren Wert zu 2000, nur Firefox schafft bis zu 35500 Zeichen.',
 		},
 		settingMailtoMethod:{
-			en: 'Open email without annoying new browser tab',
-			de: 'eMails öffnen ohne störenden neuen Browsertab'
+			en: 'Open email in Chromium Edge and other browsers',
+			de: 'eMails öffnen in Chromium Edge und anderen Browsern'
 		},
 		settingMailtoMethodHint:{
 			en: 'Does not work with Windows 7.',
