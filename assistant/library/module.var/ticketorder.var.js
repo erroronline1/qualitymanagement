@@ -218,7 +218,7 @@ ticketorder.var = {
 			3: 2,
 			5: 5,
 		},
-		orderNumberWildcard: '(X)', // if this is part of the item number
+		orderNumberWildcard: '(X)', // if this (string) is part of the item number, else false
 	},
 	filter: function(){ //filters according to module.data/ticketorder.js
 		//id:[select value, select text, filter for smartsearch]

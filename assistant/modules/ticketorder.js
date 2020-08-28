@@ -223,7 +223,7 @@ ticketorder.fn = {
 				ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field) {
 					curval = value(el(field[0].replace(/\W/g, '') + i).value);
 					output += '<td>' + curval + '</td>';
-					if (curval.indexOf(ticketorder.var.apiTranslate.orderNumberWildcard) > -1) wildcard = true;
+					if (ticketorder.var.apiTranslate.orderNumberWildcard && curval.indexOf(ticketorder.var.apiTranslate.orderNumberWildcard) > -1) wildcard = true;
 				});
 				output += '</tr>';
 			}
