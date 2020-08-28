@@ -424,9 +424,9 @@ core.fn = {
 			return '<div id="popupcontent">' +
 				'<article class="home" style="border-right:1px solid; line-height:3em">' +
 				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupMain());" style="cursor:pointer">' + core.fn.insert.icon('generalsetting') + core.fn.lang('settingMainCaption') + '</span><br />' +
+				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupAdvanced());" style="cursor:pointer">' + core.fn.insert.icon('advancedsetting') + core.fn.lang('settingAdvancedCaption') + '</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupModules());" style="cursor:pointer">' + core.fn.insert.icon('moduleselector') + core.fn.lang('settingModuleselectorCaption') + '</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupKey());" style="cursor:pointer">' + core.fn.insert.icon('key') + core.fn.lang('settingKeyCaption') + '</span><br />' +
-				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupAdvanced());" style="cursor:pointer">' + core.fn.insert.icon('advancedsetting') + core.fn.lang('settingAdvancedCaption') + '</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupDebug());" style="cursor:pointer">' + core.fn.insert.icon('bug') + 'Debugging</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', updateTracker.enlist());" style="cursor:pointer">' + core.fn.insert.icon('update') + 'Updates</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', aboutNotification[core.var.selectedLanguage]+\'<hr />\'+core.fn.lang(\'settingGeneralHint\')+\'<hr />\'+randomTip.enlist());" style="cursor:pointer">' + core.fn.insert.icon('info') + 'About</span><br />' +
