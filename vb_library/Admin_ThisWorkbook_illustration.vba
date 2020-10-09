@@ -37,6 +37,14 @@ Private Sub asyncOpen()
     Essentials.OpenRoutine
 End Sub
 
+Private Sub Workbook_SheetActivate(ByVal Sh As Object)
+    Essentials.monitorRowsColumns Sh, Nothing
+End Sub
+
+Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)
+    Essentials.monitorRowsColumns Sh, Target
+End Sub
+
 Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean)
     Essentials.CloseRoutine SaveAsUI, Cancel
 End Sub

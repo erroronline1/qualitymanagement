@@ -9,6 +9,11 @@ Attribute VB_Name = "Essentials"
 Option Explicit
 Public filesavename As Variant
 Public docFolder, pdfFolder As String
+Public WritePermission As Boolean
+Public lOldRowCount As Long
+Public lOldColumnCount As Long
+Public undo As Boolean
+
 
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -19,7 +24,7 @@ Public Function Modules() as Object
     Set Modules= CreateObject("Scripting.Dictionary")
     Modules.Add "Locals", ThisWorkbook.parentPath & "vb_library\" & "Admin_Locals_" & ThisWorkbook.selectedLanguage & ".vba"
     Modules.Add "Specific", ThisWorkbook.parentPath & "vb_library\" & "Admin_" & ThisWorkbook.Name & ".vba"
-    'Modules.Add "Rewrite", "E:\Quality Management\vb_library\RewriteMain.vba"
+    Modules.Add "Rewrite", ThisWorkbook.parentPath & "vb_library\RewriteMain.vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -31,11 +36,11 @@ Public Sub openRoutine()
 End Sub
 
 Public Sub asyncOpen()
-    'Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", "E:\Quality Management\vb_library\Admin_ThisWorkbook_illustration.vba"
+    Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", ThisWorkbook.parentPath & "vb_library\Admin_ThisWorkbook_illustration.vba"
 End Sub
 
 Public Sub closeRoutine(ByVal SaveAsUI As Boolean, Cancel As Boolean)
-        Specific.closeRoutine SaveAsUI, Cancel
+    Specific.closeRoutine SaveAsUI, Cancel
 End Sub
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -209,3 +214,90 @@ Public Sub exportXLS2PDF(var As Variant)
 		ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:=fileSaveName
 	End If
 End Sub
+
+Public Sub createMail(ByVal rcpt As String, ByVal subject As String, ByVal mailtext As String)
+    Dim eMail As Object
+    Set eMail = CreateObject("Outlook.Application")
+    Dim newmail As Object
+    Set newmail = eMail.CreateItem(0)
+    
+    newmail.To = rcpt
+    newmail.subject = subject
+    newmail.HTMLBody = mailtext
+    
+    newmail.Display
+    
+    'release object references.
+    Set eMail = Nothing
+    Set newmail = Nothing
+End Sub
+
+Public Function getWritePermission() As Boolean
+    getWritePermission = False
+    Dim tempfile: tempfile = ActiveWorkbook.path & "\writepermission.temp"
+    On Error GoTo denied
+        Dim fso As Object
+        Set fso = CreateObject("Scripting.FileSystemObject")
+        Dim oFile As Object
+        Set oFile = fso.CreateTextFile(tempfile, True, True)
+        oFile.WriteLine "1"
+        oFile.Close
+        Set fso = Nothing
+        Set oFile = Nothing
+        
+        Kill tempfile
+        getWritePermission = True
+denied:
+    On Error GoTo 0
+End Function
+
+Public Sub monitorRowsColumns(ByVal Sh As Object, ByVal Target As Range)
+    ' load monitor setup, because a public variable gets emptied after finishing the open routine for some freaking reason
+    Dim setup As New Collection
+    Set setup = Specific.monitorSetup()
+    If Target Is Nothing And setup("monitor.removeRows")(0) And setup("monitor.insertRows")(0) And setup("monitor.insertRemoveColumns")(0) Then
+        ' update range to monitor insertion of rows and columns
+        ActiveSheet.UsedRange
+        lOldRowCount = ActiveSheet.UsedRange.Rows.Count
+        lOldColumnCount = ActiveSheet.UsedRange.Columns.Count
+    Else:
+        ' monitor insertion of rows and columns
+        Dim lNewRowCount As Long
+        Dim lNewColumnCount As Long
+        ActiveSheet.UsedRange
+        lNewRowCount = ActiveSheet.UsedRange.Rows.Count
+        lNewColumnCount = ActiveSheet.UsedRange.Columns.Count
+
+        If (lOldRowCount = lNewRowCount And lOldColumnCount = lNewColumnCount) Or undo Then
+        ElseIf setup("monitor.removeRows")(0) And lOldRowCount > lNewRowCount Then
+            ' warning on remove of rows to not mess up conditional formatting
+            Select Case MsgBox(setup("monitor.removeRows")(2), vbYesNo + vbDefaultButton2 + vbQuestion, setup("monitor.removeRows")(1))
+                Case vbNo
+                    undo = True
+                    Application.undo
+                    Exit Sub
+            End Select
+        ElseIf setup("monitor.insertRows")(0) And lOldRowCount < lNewRowCount And Target.Row <= lNewRowCount And Target.Cells.Count = Cells.Columns.Count Then
+            ' warning on insertion of rows to not mess up conditional formatting
+            Select Case MsgBox(setup("monitor.insertRows")(2), vbYesNo + vbDefaultButton2 + vbQuestion, setup("monitor.insertRows")(1))
+                Case vbNo
+                    undo = True
+                    Application.undo
+                    Exit Sub
+            End Select
+        ElseIf setup("monitor.insertRemoveColumns")(0) And lOldColumnCount <> lNewColumnCount Then
+            ' warning on manipulation of columns to not mess up conditional formatting and vba-parameters
+            Select Case MsgBox(setup("monitor.insertRemoveColumns")(2), vbYesNo + vbDefaultButton2 + vbQuestion, setup("monitor.insertRemoveColumns")(1))
+                Case vbNo
+                    undo = True
+                    Application.undo
+                    Exit Sub
+            End Select
+        End If
+        lOldRowCount = lNewRowCount
+        lOldColumnCount = lNewColumnCount
+        undo = False
+    End If
+End Sub
+
+

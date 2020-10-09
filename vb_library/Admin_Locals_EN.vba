@@ -11,6 +11,12 @@ Attribute VB_Name = "Locals"
 ' be sure to handle this file with iso-8859-1 charset
 ' customize this collection to your language requirements and your structure of the excel sheet
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Const monitorRemoveRowsTitle As String ="I do not recommend!"
+Private Const monitorRemoveRowsPrompt As String ="The insertion of rows affects the conditional format and should be avoided. Are you aware of what you are doing and want to proceed anyway?"
+Private Const monitorInsertRowsTitle As String ="I do not recommend!"
+Private Const monitorInsertRowsPrompt As String ="The deletion of rows affects the conditional format and should be avoided. Are you aware of what you are doing and want to proceed anyway?"
+Private Const monitorInsertRemoveColumnsTitle As String ="I do not recommend!"
+Private Const monitorInsertRemoveColumnsPrompt As String ="The deletion or insertion of columns affects the VBA-code and should be avoided. In case you proceed you will have to change on both sides.  Are you aware of what you are doing and want to proceed anyway?"
 
 Public Function setupAuditPlanner() As Collection
     Set setupAuditPlanner = New Collection
@@ -24,6 +30,13 @@ Public Function setupAuditPlanner() As Collection
     setupAuditPlanner.Add False, "export.dontSkipEmpty" 'whether to skip empty cells or not depending on structure of assistants processing algorithm
     setupAuditPlanner.Add "3", "m.contentcolumn" 'customize query column (numbered), output only if content is set
 End Function
+Public Function monitorAuditPlanner() As Collection
+    Set monitorAuditPlanner = New Collection
+    monitorAuditPlanner.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
+    monitorAuditPlanner.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
+    monitorAuditPlanner.Add Array(True, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns"
+End Function
+
 
 Public Function setupStocklist() As Collection
     Set setupStocklist = New Collection
@@ -37,6 +50,13 @@ Public Function setupStocklist() As Collection
     setupStocklist.Add True, "export.dontSkipEmpty"'whether to skip empty cells or not depending on structure of assistants processing algorithm
     setupStocklist.Add "3", "m.contentcolumn" 'customize query column (numbered), output only if content is set
 End Function
+Public Function monitorStocklist() As Collection
+    Set monitorStocklist = New Collection
+    monitorStocklist.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
+    monitorStocklist.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
+    monitorStocklist.Add Array(False, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns"
+End Function
+
 
 Public Function setupTransferSchedule() As Collection
     Set setupTransferSchedule = New Collection
@@ -47,6 +67,13 @@ Public Function setupTransferSchedule() As Collection
     setupTransferSchedule.Add "PDF des Ausbildungsplanes bei den Nachweisdokumenten bereitstellen?", "export.xlsPrompt"
     setupTransferSchedule.Add "E:\Quality Managment\thirdType\Transferschedule.pdf", "export.xlsDefaultFile"
 End Function
+Public Function monitorTransferSchedule() As Collection
+    Set monitorTransferSchedule = New Collection
+    monitorTransferSchedule.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
+    monitorTransferSchedule.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
+    monitorTransferSchedule.Add Array(False, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns"
+End Function
+
 
 Public Function setupTicketSystem() As Collection
     Set setupTicketSystem = New Collection
@@ -69,7 +96,12 @@ Public Function setupTicketSystem() As Collection
     setupTicketSystem.Add "Delivered Amount", "header.column8" 'column header for filtered column
     setupTicketSystem.Add "Backlog amount", "header.column9" 'column header for filtered column
 End Function
-
+Public Function monitorTicketSystem() As Collection
+    Set monitorTicketSystem = New Collection
+    monitorTicketSystem.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
+    monitorTicketSystem.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
+    monitorTicketSystem.Add Array(False, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns"
+End Function
 Public Function TicketSystemPattern(byVal columnNumber As String) as String
     ' these regex patterns are strongly dependent on your erp-data. structure of development platform looked like _
     [null]  [orderRecordNumber, 2020-02-05 00:00:00.0]  [vendorCode, iDontKnow]  [iDontKnow, something something item description]  [deliverDate]  [null]  [1.0]  [0.0]  [1.0]  [unitCode]  [iDontKnow]  [null]  [iDontCare] _
@@ -93,6 +125,7 @@ Public Function TicketSystemPattern(byVal columnNumber As String) as String
     End Select
 End Function
 
+
 Public Function setupExternalExport() As Collection
     Set setupExternalExport = New Collection
     setupExternalExport.Add Item:="Export lists to the assistant?", Key:="initiate.Confirm" 'query to export
@@ -100,7 +133,6 @@ Public Function setupExternalExport() As Collection
     setupExternalExport.Add "Publish a copy of the list without code?", "export.xlsPrompt"
     setupExternalExport.Add "E:\Quality Management\published\list of external documents.xlsx", "export.xlsDefaultFile"
 End Function
-
 Public Function setupExternalDocuments() As Collection
     Set setupExternalDocuments = New Collection
     setupExternalDocuments.Add Item:="DocumentList", Key:="matrix.sheet" 'select sheet to process content
@@ -116,7 +148,6 @@ Public Function setupExternalDocuments() As Collection
     setupExternalDocuments.Add "Export list of external documents to the assistant?", "export.prompt"
     setupExternalDocuments.Add "Aborting export as there was no location selected!", "export.ErrorMsg"
 End Function
-
 Public Function setupExternalContracts() As Collection
     Set setupExternalContracts = New Collection
     setupExternalContracts.Add Item:="Contracts", Key:="matrix.sheet" 'select sheet to process content
@@ -132,6 +163,13 @@ Public Function setupExternalContracts() As Collection
     setupExternalContracts.Add "Export list of external contracts to the assistant?", "export.prompt"
     setupExternalContracts.Add "Aborting export as there was no location selected!", "export.ErrorMsg"
 End Function
+Public Function monitorExternalDocuments() As Collection
+    Set monitorExternalDocuments = New Collection
+    monitorExternalDocuments.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
+    monitorExternalDocuments.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
+    monitorExternalDocuments.Add Array(True, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns"
+End Function
+
 
 Public Function setupInternalDocuments() As Collection
     Set setupInternalDocuments = New Collection
@@ -187,7 +225,14 @@ Public Function setupInternalDocuments() As Collection
     setupInternalDocuments.Add "Publish a copy of the list without code?", "export.xlsPrompt"
     setupInternalDocuments.Add "E:\Quality Management\published\list of documents.xlsx", "export.xlsDefaultFile"
 End Function
+Public Function monitorInternalDocuments() As Collection
+    Set monitorInternalDocuments = New Collection
+    monitorInternalDocuments.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
+    monitorInternalDocuments.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
+    monitorInternalDocuments.Add Array(True, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns"
+End Function
 
+    
 Public Function setupDRM() As Collection
     Set setupDRM = New Collection
     setupDRM.Add Item:="DRM", key:="drm.sheet" 'select sheet to process content
@@ -202,4 +247,10 @@ Public Function setupDRM() As Collection
     setupDRM.Add "E:\Quality Management\assistant\library\core\core.drm.js", "export.defaultFile"
     setupDRM.Add "Export permissions to the assistant?", "export.prompt"
     setupDRM.Add "Aborting export as there was no location selected!", "export.ErrorMsg"
+End Function
+Public Function monitorDRM() As Collection
+    Set monitorDRM = New Collection
+    monitorDRM.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
+    monitorDRM.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
+    monitorDRM.Add Array(True, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns" 
 End Function
