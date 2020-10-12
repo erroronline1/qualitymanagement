@@ -60,6 +60,8 @@ core.fn = {
 		}
 		return;
 	},
+	linkSelector: function (content, window){
+	},
 	mailtoLimit: function (body) {
 		var bodysize = core.fn.escapeHTML(body, true).length;
 		el('mailtoLimit').style.width = Math.min(bodysize / core.var.directMailSize, 1) * 100 + "%";
@@ -347,9 +349,10 @@ core.fn = {
 		select: function (options, name, id, selected, additionalProperty) {
 			// output has to be object with optionId:[value,label] pairs
 			var output = '<select name="' + name + '" id="' + id + '" ' + (additionalProperty ? additionalProperty : '') + '>'
-			Object.keys(options).forEach(function (key) {
-				output += '<option value="' + options[key][0] + '" ' + (selected === key ? 'selected="selected" ' : '') + '>' + options[key][1] + '</option>';
-			});
+			if (options != null)
+				Object.keys(options).forEach(function (key) {
+					output += '<option value="' + options[key][0] + '" ' + (selected === key ? 'selected="selected" ' : '') + '>' + options[key][1] + '</option>';
+				});
 			output += '</select>';
 			return output;
 		},
@@ -556,6 +559,7 @@ core.fn = {
 		},
 		set: function (name, value, errormsg) {
 			var saved=false;
+//			value=core.fn.stringcompression.deflate(value.toString());
 			if (this.localStorage.api()) {
 				if (this.localStorage.remainingSpace() > name.length + toString(value).length){
 					window.localStorage.setItem(name, value);
@@ -588,8 +592,10 @@ core.fn = {
 						start = c.indexOf('=') + 1,
 						end = c.indexOf(';') > -1 ? c.indexOf(';') : false;
 					value = decodeURIComponent(end ? c.substring(start, end) : c.substring(start));
+
 				} else return false;
 			}
+//			if (value) return core.fn.stringcompression.inflate(value);
 			if (value) return value;
 		},
 		isset: function (name) {
