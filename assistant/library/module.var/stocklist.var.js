@@ -77,6 +77,10 @@ inventoryControl: 'inventory.control@email.adr',
 		apiItemsFound: {
 			en: ' articles found',
 			de: ' Artikel gefunden'
+		},
+		orderBy: {
+			en: 'by ',
+			de: 'nach '
 		}
 	},
 	disableOutputSelect: true,

@@ -141,28 +141,32 @@ core.fn = {
 			//
 			// data base will be searched for single words as well as a concatenated string
 
-			var sanitizeRegEx = /[^a-zA-Z0-9äÄöÖüÜß\+-\s]/g,
+			var sanitizeRegEx = /[^a-zA-Z0-9äÄöÖüÜß\+\-\s]/g,
+				sanitizeRegExWOControl = /[^a-zA-Z0-9äÄöÖüÜß]/g,
 				fuzzyOverride = /\?|\*/g, //pseudo-wildcards activate fuzzy search, mostly resulting in more relevant results
-				quoted = /(?:\")(.+?)(?:\")/g; //adding relevance to otherwise whitespace separated terms with particular order 
+				quoted = /[\-\+]{0,1}\"(.+?)\"/g; //adding relevance to otherwise whitespace separated terms with particular order 
 			var	query = new Array(),
 				filter = new Array(),
 				found = new Array(),
 				mandatory = false,
-				processedUserInput=userInput;
+				processedUserInput=userInput,
+				quoted_queries=[];
+				initial_query=[];
 
-			// initiate query terms array, starting with quoted terms, sanitizing and deleting for further processing
-			var initial_query = processedUserInput.toLowerCase().match(quoted) || [];
-			for (var i = 0; i < initial_query.length; i++){
-				initial_query[i] = initial_query[i].replace(sanitizeRegEx, '').replace(/\s/g, '');
+			// initiate query terms array, starting with sanitized quoted terms
+			quoted_queries = userInput.toLowerCase().match(quoted);
+			if (quoted_queries) {
+				for (var i = 0; i < quoted_queries.length; i++){ // sanitize
+					initial_query.push(quoted_queries[i].replace(sanitizeRegEx, '').replace(/\s/g, ''));
+				}
 			}
-			processedUserInput = processedUserInput.replace(quoted, '');
 			// assign remaining single terms to query array splitting by whitespace, stripping all but allowed characters including preceding whitespace
-			processedUserInput.toLowerCase().replace(sanitizeRegEx, '').split(/[\s]/g).forEach(function(term){
-				initial_query.push(term);
+			// if term longer than 2 characters
+			processedUserInput.replace(quoted, '').toLowerCase().replace(sanitizeRegEx, '').split(/[\s]/g).forEach(function(term){
+				if (term.length > 2) initial_query.push(term);
 			});
-
 			//sort -terms to filter, +terms to mandatory
-			//i once spliced the query array but that instantaneously influenced the foreach
+			//splicing the query array directly instantaneously influences the foreach
 			initial_query.forEach(function (word) {
 				if (word.substring(0, 1) == '-') filter.push(word.substring(1));
 				else if (word.substring(0, 1) == '+') {
@@ -171,12 +175,8 @@ core.fn = {
 				}
 				else query.push(word);
 			});
-			//add concatenated query of remaining terms
-			if (query.length > 1 && query.join('').length > 2) query.push(query.join(''));
-			//delete every query part between whitespaces less than three characters
-			for (var del = query.length - 1; del >= 0; del -= 1) {
-				if (query[del].replace(/[\s]/g, '').length < 3) query.splice(del, 1);
-			}
+			//add concatenated query of terms without filtered
+			if (query.length > 1 && query.join('').length > 2) query.push(userInput.replace(filter, '').toLowerCase().replace(sanitizeRegExWOControl, ''));
 
 			function fuzzy(haystack, needle, fuzzy, ratio) {
 				if (haystack.indexOf(needle) > -1) return 2; // covers basic partial matches, avoids unnecessary nested loops
@@ -683,7 +683,7 @@ core.fn = {
 		core.fn.stdout('input',
 			'<form id="search" action="javascript:globalSearch.search(el(\'globalsearch\').value);">' +
 			'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
-			core.fn.lang('globalSearchPlaceholder') + '" class="search" ' + (value(query) != '' ? 'value="' + query + '"' : '') + ' />' +
+			core.fn.lang('globalSearchPlaceholder') + '" class="search" value="' + value(query).replace(/"/g,'&quot;') + '" />' +
 			'<span onclick="globalSearch.search(el(\'globalsearch\').value);" class="search">' + core.fn.insert.icon('search') + '</span>' +
 			'<input type="submit" id="submit" value="' + core.fn.lang('formSubmit') + '" hidden="hidden" /> ' +
 			'</form>');

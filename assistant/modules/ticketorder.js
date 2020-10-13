@@ -31,7 +31,7 @@ ticketorder.api = {
 			//	globalSearch.contribute('ticketorder', display);
 			//});
 			if (found.length) {
-				display = '<a href="javascript:core.fn.loadScript(\'modules/ticketorder.js\',\'ticketorder.fn.init(\\\'' + search + '\\\')\')">' + found.length + core.fn.lang('apiItemsFound', 'ticketorder') + '</a>';
+				display = '<a href="javascript:core.fn.loadScript(\'modules/ticketorder.js\',\'ticketorder.fn.init(\\\'' + search.replace(/"/g,'&quot;') + '\\\')\')">' + found.length + core.fn.lang('apiItemsFound', 'ticketorder') + '</a>';
 				//add value and relevance
 				globalSearch.contribute('ticketorder', [display, 1]);
 			}
@@ -202,7 +202,7 @@ ticketorder.fn = {
 		mailsubject = core.fn.lang('orderMailSubject', 'ticketorder') + el('ordererDept').value + ' | ' + el('orderer').value;
 
 		output = mailsubject + '<br /><br />';
-
+		
 		if (el('notcommissioned').checked) output += '<i>' + core.fn.lang('notcommissioned', 'ticketorder') + '</i><br /><br />';
 		if (el('commissioned').checked) output += '<i>' + core.fn.lang('commissioned', 'ticketorder') + '</i><br /><br />';
 		if (el('retour').checked) output += '<i>' + core.fn.lang('retour', 'ticketorder') + '</i><br /><br />';
@@ -313,7 +313,7 @@ ticketorder.fn = {
 	start: function (query) {
 		if (typeof ticketorder_data !== 'undefined') {
 			var input = '<form id="search" action="javascript:ticketorder.fn.search();">' +
-				'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.fn.lang('formErpInputPlaceholder', 'ticketorder') + '" id="ticketorderquery" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + '  />' +
+				'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g,'&quot;') + '" placeholder="' + core.fn.lang('formErpInputPlaceholder', 'ticketorder') + '" id="ticketorderquery" class="search" />' +
 				'<span onclick="ticketorder.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
 				core.fn.insert.select(ticketorder.fn.translate.returnselect(), 'ticketorderfilter', 'ticketorderfilter', (core.fn.setting.get('ticketorderfilter') || 'nofilter'), 'onchange="core.fn.setting.set(\'ticketorderfilter\',el(\'ticketorderfilter\').options[el(\'ticketorderfilter\').selectedIndex].value); ticketorder.fn.search();"') +
 				core.fn.insert.icon('translate', 'bigger', false, 'title="' + core.fn.lang('buttonTranslate', 'ticketorder') + '" onclick="ticketorder.fn.translate.ticketDate(el(\'ticketorderquery\').value);"') +

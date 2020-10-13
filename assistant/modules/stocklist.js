@@ -29,7 +29,7 @@ stocklist.api = {
 			//	globalSearch.contribute('stocklist', display);
 			//});
 			if (found.length) {
-				display = '<a href="javascript:core.fn.loadScript(\'modules/stocklist.js\',\'stocklist.fn.init(\\\'' + search + '\\\')\')">' + found.length + core.fn.lang('apiItemsFound', 'stocklist') + '</a>';
+				display = '<a href="javascript:core.fn.loadScript(\'modules/stocklist.js\',\'stocklist.fn.init(\\\'' + search.replace(/"/g,'&quot;') + '\\\')\')">' + found.length + core.fn.lang('apiItemsFound', 'stocklist') + '</a>';
 				//add value and relevance
 				globalSearch.contribute('stocklist', [display, 1]);
 			}
@@ -118,7 +118,7 @@ stocklist.fn = {
 						option.setAttribute('id', 'stocklistorderoption' + key);
 						if (core.fn.setting.get('stockorder')==key)
 							option.setAttribute('selected', 'selected');
-						var optiontext = document.createTextNode(stocklist_data.content[0][key]);
+						var optiontext = document.createTextNode(core.fn.lang('orderBy', 'stocklist') + stocklist_data.content[0][key]);
 						option.appendChild(optiontext);
 						el('stockorder').appendChild(option);
 					});
@@ -150,7 +150,7 @@ stocklist.fn = {
 		core.fn.loadScript(core.var.moduleDataDir + 'stocklist.js', 'stocklist.fn.search(\'' + value(query) + '\')');
 		core.fn.stdout('input',
 			'<form id="search" action="javascript:stocklist.fn.search();">' +
-			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.fn.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + ' />' +
+			'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g,'&quot;') + '" placeholder="' + core.fn.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search" />' +
 			'<span onclick="stocklist.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
 			core.fn.insert.select(stocklist.fn.translate.returnselect(), 'stockfilter', 'stockfilter', (core.fn.setting.get('stockfilter') || 'all'), 'onchange="this.selectedIndex == 0 ? core.fn.setting.unset(\'stockfilter\') : core.fn.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.fn.search();"') +
 			core.fn.insert.select(null, 'stockorder', 'stockorder', (core.fn.setting.get('stockorder') || 0), 'onchange="this.selectedIndex == 0 ? core.fn.setting.unset(\'stockorder\') : core.fn.setting.set(\'stockorder\',el(\'stockorder\').options[el(\'stockorder\').selectedIndex].value); stocklist.fn.search();"') +

@@ -127,7 +127,7 @@ timetable.fn = {
 		el('moduletimetable').checked = true; // highlight menu icon
 		core.fn.stdout('input',
 			'<form id="search" action="javascript:timetable.fn.search();">' +
-			'<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.fn.lang('formInputPlaceholder', 'timetable') + '" id="timetablequery" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + '  />' +
+			'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g,'&quot;') + '" placeholder="' + core.fn.lang('formInputPlaceholder', 'timetable') + '" id="timetablequery" class="search" />' +
 			'<span onclick="timetable.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
 			'<input type="submit" id="name" value="' + core.fn.lang('formSubmit', 'timetable') + '" hidden="hidden" /> ' +
 			'</form>');

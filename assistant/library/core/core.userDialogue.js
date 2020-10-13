@@ -59,6 +59,10 @@ var randomTip = {
 			de: 'Du kannst bei deiner Suche filtern wenn du ein - voranstellst, wie in &quot;finde alles -außer&quot;. Wenn einem Begriff ein + voransteht werden nur Ergebnisse angezeigt, die alle begriffe beinhalten.'
 		},
 		{
+			en: 'Search terms with less than three characters will be dropped as a precaution, unless you embed these in quotes. This may lead to a larger result, thus making sense with applied filters only.',
+			de: 'Suchbegriffe von weniger als drei Zeichen werden vorsichtshalber herausgefiltert, es sei denn du stellst sie in Anführungsstriche. Da kann dann aber auch zu einer größeren Ergebnismenge führen, ergibt also nur mit Filtern wirklich Sinn.'
+		},
+		{
 			en: 'Your last search- and filter-settings are stored. Sometimes that makes it faster, sometimes there seem to be too little results. Watch out for that.',
 			de: 'Deine letzten Such- und Filtereinstellungen werden automatisch gespeichert. Manchmal macht es das schneller, manchmal wird überraschend wenig angezeigt. Achte mal darauf.'
 		},
