@@ -11,12 +11,10 @@ Attribute VB_Name = "Locals"
 ' be sure to handle this file with iso-8859-1 charset
 ' customize this collection to your language requirements and your structure of the excel sheet
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Const monitorRemoveRowsTitle As String ="I do not recommend!"
-Private Const monitorRemoveRowsPrompt As String ="The insertion of rows affects the conditional format and should be avoided. Are you aware of what you are doing and want to proceed anyway?"
-Private Const monitorInsertRowsTitle As String ="I do not recommend!"
-Private Const monitorInsertRowsPrompt As String ="The deletion of rows affects the conditional format and should be avoided. Are you aware of what you are doing and want to proceed anyway?"
-Private Const monitorInsertRemoveColumnsTitle As String ="I do not recommend!"
-Private Const monitorInsertRemoveColumnsPrompt As String ="The deletion or insertion of columns affects the VBA-code and should be avoided. In case you proceed you will have to change on both sides.  Are you aware of what you are doing and want to proceed anyway?"
+Private Const monitorRowsTitle As String ="I do not recommend!"
+Private Const monitorRowsPrompt As String ="The deletion or insertion of rows affects the conditional format and should be avoided. Are you aware of what you are doing and want to proceed anyway?"
+Private Const monitorColumnsTitle As String ="I do not recommend!"
+Private Const monitorColumnsPrompt As String ="The deletion or insertion of columns affects the VBA-code and should be avoided. In case you proceed you will have to change on both sides.  Are you aware of what you are doing and want to proceed anyway?"
 
 Public Function setupAuditPlanner() As Collection
     Set setupAuditPlanner = New Collection
@@ -32,9 +30,8 @@ Public Function setupAuditPlanner() As Collection
 End Function
 Public Function monitorAuditPlanner() As Collection
     Set monitorAuditPlanner = New Collection
-    monitorAuditPlanner.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
-    monitorAuditPlanner.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
-    monitorAuditPlanner.Add Array(True, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns"
+    monitorAuditPlanner.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
+    monitorAuditPlanner.Add Array(True, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
 End Function
 
 
@@ -52,9 +49,8 @@ Public Function setupStocklist() As Collection
 End Function
 Public Function monitorStocklist() As Collection
     Set monitorStocklist = New Collection
-    monitorStocklist.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
-    monitorStocklist.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
-    monitorStocklist.Add Array(False, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns"
+    monitorStocklist.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
+    monitorStocklist.Add Array(False, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
 End Function
 
 
@@ -69,9 +65,8 @@ Public Function setupTransferSchedule() As Collection
 End Function
 Public Function monitorTransferSchedule() As Collection
     Set monitorTransferSchedule = New Collection
-    monitorTransferSchedule.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
-    monitorTransferSchedule.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
-    monitorTransferSchedule.Add Array(False, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns"
+    monitorTransferSchedule.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
+    monitorTransferSchedule.Add Array(False, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
 End Function
 
 
@@ -98,9 +93,8 @@ Public Function setupTicketSystem() As Collection
 End Function
 Public Function monitorTicketSystem() As Collection
     Set monitorTicketSystem = New Collection
-    monitorTicketSystem.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
-    monitorTicketSystem.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
-    monitorTicketSystem.Add Array(False, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns"
+    monitorTicketSystem.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
+    monitorTicketSystem.Add Array(False, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
 End Function
 Public Function TicketSystemPattern(byVal columnNumber As String) as String
     ' these regex patterns are strongly dependent on your erp-data. structure of development platform looked like _
@@ -165,9 +159,8 @@ Public Function setupExternalContracts() As Collection
 End Function
 Public Function monitorExternalDocuments() As Collection
     Set monitorExternalDocuments = New Collection
-    monitorExternalDocuments.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
-    monitorExternalDocuments.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
-    monitorExternalDocuments.Add Array(True, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns"
+    monitorExternalDocuments.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
+    monitorExternalDocuments.Add Array(True, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
 End Function
 
 
@@ -227,9 +220,8 @@ Public Function setupInternalDocuments() As Collection
 End Function
 Public Function monitorInternalDocuments() As Collection
     Set monitorInternalDocuments = New Collection
-    monitorInternalDocuments.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
-    monitorInternalDocuments.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
-    monitorInternalDocuments.Add Array(True, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns"
+    monitorInternalDocuments.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
+    monitorInternalDocuments.Add Array(True, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
 End Function
 
     
@@ -250,7 +242,6 @@ Public Function setupDRM() As Collection
 End Function
 Public Function monitorDRM() As Collection
     Set monitorDRM = New Collection
-    monitorDRM.Add Array(False, monitorRemoveRowsTitle, monitorRemoveRowsPrompt), "monitor.removeRows"
-    monitorDRM.Add Array(False, monitorInsertRowsTitle, monitorInsertRowsPrompt), "monitor.insertRows"
-    monitorDRM.Add Array(True, monitorInsertRemoveColumnsTitle, monitorInsertRemoveColumnsPrompt), "monitor.insertRemoveColumns" 
+    monitorDRM.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
+    monitorDRM.Add Array(True, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
 End Function

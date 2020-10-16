@@ -10,10 +10,7 @@ Option Explicit
 Public filesavename As Variant
 Public docFolder, pdfFolder As String
 Public WritePermission As Boolean
-Public lOldRowCount As Long
-Public lOldColumnCount As Long
-Public undo As Boolean
-
+Public monitorOverride As Boolean
 
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -24,7 +21,7 @@ Public Function Modules() as Object
     Set Modules= CreateObject("Scripting.Dictionary")
     Modules.Add "Locals", ThisWorkbook.parentPath & "vb_library\" & "Admin_Locals_" & ThisWorkbook.selectedLanguage & ".vba"
     Modules.Add "Specific", ThisWorkbook.parentPath & "vb_library\" & "Admin_" & ThisWorkbook.Name & ".vba"
-    Modules.Add "Rewrite", ThisWorkbook.parentPath & "vb_library\RewriteMain.vba"
+    'Modules.Add "Rewrite", ThisWorkbook.parentPath & "vb_library\RewriteMain.vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -36,7 +33,8 @@ Public Sub openRoutine()
 End Sub
 
 Public Sub asyncOpen()
-    Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", ThisWorkbook.parentPath & "vb_library\Admin_ThisWorkbook_illustration.vba"
+    'Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", ThisWorkbook.parentPath & "vb_library\Admin_ThisWorkbook_illustration.vba"
+    Specific.openRoutine
 End Sub
 
 Public Sub closeRoutine(ByVal SaveAsUI As Boolean, Cancel As Boolean)
@@ -255,49 +253,34 @@ Public Sub monitorRowsColumns(ByVal Sh As Object, ByVal Target As Range)
     ' load monitor setup, because a public variable gets emptied after finishing the open routine for some freaking reason
     Dim setup As New Collection
     Set setup = Specific.monitorSetup()
-    If Target Is Nothing And setup("monitor.removeRows")(0) And setup("monitor.insertRows")(0) And setup("monitor.insertRemoveColumns")(0) Then
-        ' update range to monitor insertion of rows and columns
-        ActiveSheet.UsedRange
-        lOldRowCount = ActiveSheet.UsedRange.Rows.Count
-        lOldColumnCount = ActiveSheet.UsedRange.Columns.Count
-    Else:
-        ' monitor insertion of rows and columns
-        Dim lNewRowCount As Long
-        Dim lNewColumnCount As Long
-        ActiveSheet.UsedRange
-        lNewRowCount = ActiveSheet.UsedRange.Rows.Count
-        lNewColumnCount = ActiveSheet.UsedRange.Columns.Count
+    Dim regEx As Object
+    Set regEx = CreateObject("vbscript.regexp")
+    regEx.Global = True
+    Dim patternMatch
+    Dim TargetPattern
 
-        If (lOldRowCount = lNewRowCount And lOldColumnCount = lNewColumnCount) Or undo Then
-        ElseIf setup("monitor.removeRows")(0) And lOldRowCount > lNewRowCount Then
-            ' warning on remove of rows to not mess up conditional formatting
-            Select Case MsgBox(setup("monitor.removeRows")(2), vbYesNo + vbDefaultButton2 + vbQuestion, setup("monitor.removeRows")(1))
+    If Not Target Is Nothing And (setup("monitor.rows")(0) Or setup("monitor.columns")(0)) And Not monitorOverride Then
+        'proceed if Target-range is of format $123:$123 or $A:$A only
+        regEx.pattern = "\$\d+:\$\d+"
+        If regEx.Execute(Target.Address).count And setup("monitor.rows")(0) Then
+            ' monitor deletion or insertion of rows
+            Select Case MsgBox(setup("monitor.rows")(2), vbYesNo + vbDefaultButton2 + vbQuestion, setup("monitor.rows")(1))
                 Case vbNo
-                    undo = True
-                    Application.undo
-                    Exit Sub
-            End Select
-        ElseIf setup("monitor.insertRows")(0) And lOldRowCount < lNewRowCount And Target.Row <= lNewRowCount And Target.Cells.Count = Cells.Columns.Count Then
-            ' warning on insertion of rows to not mess up conditional formatting
-            Select Case MsgBox(setup("monitor.insertRows")(2), vbYesNo + vbDefaultButton2 + vbQuestion, setup("monitor.insertRows")(1))
-                Case vbNo
-                    undo = True
-                    Application.undo
-                    Exit Sub
-            End Select
-        ElseIf setup("monitor.insertRemoveColumns")(0) And lOldColumnCount <> lNewColumnCount Then
-            ' warning on manipulation of columns to not mess up conditional formatting and vba-parameters
-            Select Case MsgBox(setup("monitor.insertRemoveColumns")(2), vbYesNo + vbDefaultButton2 + vbQuestion, setup("monitor.insertRemoveColumns")(1))
-                Case vbNo
-                    undo = True
+                    monitorOverride = True
                     Application.undo
                     Exit Sub
             End Select
         End If
-        lOldRowCount = lNewRowCount
-        lOldColumnCount = lNewColumnCount
-        undo = False
+        regEx.pattern = "(\$\D:\$\D)"
+        If regEx.Execute(Target.Address).count And setup("monitor.columns")(0) Then
+            ' monitor deletion or insertion of rows
+            Select Case MsgBox(setup("monitor.columns")(2), vbYesNo + vbDefaultButton2 + vbQuestion, setup("monitor.columns")(1))
+                Case vbNo
+                    monitorOverride = True
+                    Application.undo
+                    Exit Sub
+            End Select
+        End If
     End If
+    monitorOverride = False
 End Sub
-
-
