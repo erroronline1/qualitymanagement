@@ -13,6 +13,9 @@ Public Function monitorSetup() As Collection
     Set monitorSetup = Locals.monitorExternalDocuments()
 End Function
 
+Public Sub openRoutine()
+End Sub
+
 Public Sub closeRoutine(ByVal SaveAsUI As Boolean, Cancel As Boolean)
     Dim setup As Collection
     Set Setup = Locals.setupExternalExport()

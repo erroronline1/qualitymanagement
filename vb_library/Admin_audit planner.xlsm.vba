@@ -13,6 +13,9 @@ Public Function monitorSetup() As Collection
     Set monitorSetup = Locals.monitorAuditPlanner()
 End Function
 
+Public Sub openRoutine()
+End Sub
+
 Public Sub closeRoutine(ByVal SaveAsUI As Boolean, Cancel As Boolean)
     Essentials.basicTableToJSON Locals.setupAuditPlanner
 End Sub

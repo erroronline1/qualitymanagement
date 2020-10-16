@@ -13,6 +13,9 @@ Public Function monitorSetup() As Collection
     Set monitorSetup = Locals.monitorStocklist()
 End Function
 
+Public Sub openRoutine()
+End Sub
+
 Public Sub closeRoutine(ByVal SaveAsUI As Boolean, Cancel As Boolean)
     Essentials.basicTableToJSON Locals.setupStocklist
 End Sub

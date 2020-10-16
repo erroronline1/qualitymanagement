@@ -13,6 +13,9 @@ Public Function monitorSetup() As Collection
     Set monitorSetup = Locals.monitorInternalDocuments()
 End Function
 
+Public Sub openRoutine()
+End Sub
+
 Public Sub closeRoutine(ByVal SaveAsUI As Boolean, Cancel As Boolean)
     Dim setup As New Collection
     Set setup = Locals.setupInternalDocuments
