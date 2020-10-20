@@ -18,7 +18,9 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.fn.stdout(where, what)` serves as a wrapper for output to innerHTML, but can be used for debugging easily by setting/adding 'console' to *where*
 
-`core.fn.popup(text)` shows or updates a modal box if text is provided, hides it if function called with null value
+`core.fn.popup(text)` shows or updates a popup box if text is provided, hides it if function called with undefined value
+
+`core.fn.growlNotif(text)` shows a short notification that hides after a set time if text is provided, hides it if function called with undefined value
 
 `core.fn.toggelHeight(toggleel)` toggles the class list of given element to expand or shrink it
 
@@ -46,11 +48,15 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.fn.insert.icon(icon, addclass, id, attributes)` returns an inline svg according to the declared properties within contained asset-object. addclass, id, and attributes are optional
 
-`core.fn.setting.setup()` returns the content of the settings to display within the popup modal. all the other setting methods are for this primarily but
+`core.fn.setting.setup()` returns the content of the settings to display within the popup. all the other setting methods are for this primarily but
 
 `core.fn.setting.switch(name)` toggles a setting to true in terms of off/false by default
 
-`core.fn.setting.set(name, value)` stores data in localstorage or cookie. in the latter case for about one year
+`core.fn.setting.localStorage.api()` returns whether localstorage is available not cookies to be used
+
+`core.fn.setting.localStorage.remainingSpace()` returns the amount of remaining bytes for storing settings or whatever
+
+`core.fn.setting.set(name, value, errormsg)` stores data in localstorage or cookie. in the latter case for about one year, errormsg is optional and customizable for the usecase in case storage limit is exceeded
 
 `core.fn.setting.get(name)` returns the value of localstorage.item or cookie *name* or false
 
@@ -59,6 +65,10 @@ a shortened overview of the core-functions that can be made use of in future mod
 `core.fn.setting.unset(name)` unsets localstorage.item or cookie *name*
 
 `core.fn.setting.clear()` resets the whole application
+
+`core.fn.stringcompression.compress()` returns an uricomponent encoded base64 encoded string to save some bytes for storage of long strings
+
+`core.fn.stringcompression.decompress()` reverts the base64 encoded string
 
 `core.fn.drm.table(table)` returns a translated table according to data rights managament excel sheet
 

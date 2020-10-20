@@ -113,6 +113,14 @@ core.fn = {
 			}, 100);
 		}
 	},
+	growlNotif: function (text) { // short popups for status information
+		if (typeof text !== 'undefined') {
+			el('growlNotif').innerHTML = text;
+			el('growlNotif').classList.add('growlNotifshow');
+			window.setTimeout(core.fn.growlNotif, core.fn.setting.get('settinggrowlNotifInterval') * 1000 || 2000);
+		}
+		else el('growlNotif').classList.remove('growlNotifshow');
+	},
 	toggleHeight: function (toggleel) { //toggle height from divs having .items-class
 		var notoggle = new Array('label', 'input', 'select', 'textarea', 'a');
 		if (toggleel.classList.contains('items') && (toggleel.querySelectorAll(':hover').length == 0 || notoggle.indexOf(toggleel.querySelectorAll(':hover')[0].nodeName.toLowerCase()) < 0))
@@ -446,9 +454,9 @@ core.fn = {
 				});
 			}
 			return core.fn.lang('settingThemeCaption') + ':<br />' + core.fn.insert.select(themeSelector, 'settingTheme', 'settingTheme', (core.fn.setting.get('settingTheme') || null), 'onchange="core.fn.setting.theme(this.value)"') +
-				'<br /><br />' + core.fn.lang('settingMenusizeCaption') + ':<br />' + core.fn.insert.checkbox(core.fn.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.fn.setting.get('settingSmallmenu') || 0), 'onchange="core.fn.setting.switch(\'settingSmallmenu\')"', core.fn.lang('settingRestartNeccessary')) +
+				'<br /><br />' + core.fn.lang('settingMenusizeCaption') + ':<br />' + core.fn.insert.checkbox(core.fn.lang('settingMenusizeSelector'), 'settingSmallmenu', (core.fn.setting.get('settingSmallmenu') || 0), 'onchange="core.fn.setting.switch(\'settingSmallmenu\'); core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))"', core.fn.lang('settingRestartNeccessary')) +
 				'<br />' + core.fn.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (core.fn.setting.get('settingFontsize') || 0) + '" onchange="core.fn.setting.fontsize(this.value)" />' +
-				'<br />' + core.fn.lang('settingLanguageCaption') + ':<br />' + core.fn.insert.select(core.var.registeredLanguages, 'settingLanguage', 'settingLanguage', (core.var.selectedLanguage || null), 'title="' + core.fn.lang('settingRestartNeccessary') + '" onchange="core.fn.setting.set(\'settingLanguage\',(this.value))"') +
+				'<br />' + core.fn.lang('settingLanguageCaption') + ':<br />' + core.fn.insert.select(core.var.registeredLanguages, 'settingLanguage', 'settingLanguage', (core.var.selectedLanguage || null), 'title="' + core.fn.lang('settingRestartNeccessary') + '" onchange="core.fn.setting.set(\'settingLanguage\',(this.value)); core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))"') +
 				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingSearchOptionFuzzy'), 'settingFuzzySearch', (core.fn.setting.get('settingFuzzySearch') || 0), 'onchange="core.fn.setting.switch(\'settingFuzzySearch\')"') +
 				'<br /><small>' + core.fn.lang('settingSearchOptionFuzzyHint') + '</small>' +
 				'<br />' + core.fn.insert.checkbox(core.fn.lang('settingCopyOptionSelector'), 'settingNewWindowCopy', (core.fn.setting.get('settingNewWindowCopy') || 0), 'onchange="core.fn.setting.switch(\'settingNewWindowCopy\')"') +
@@ -461,7 +469,7 @@ core.fn = {
 				var moduleSelector = '';
 				//create module-selector
 				Object.keys(core.var.modules).forEach(function (key) {
-					moduleSelector += core.fn.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.fn.setting.isset('module_' + key) ? core.fn.setting.get('module_' + key) : core.var.modules[key].enabledByDefault), 'onchange="core.var.modules[\'' + key + '\'].enabledByDefault == el(\'module_' + key + '\').checked ? core.fn.setting.unset(\'module_' + key + '\'): core.fn.setting.set(\'module_' + key + '\', el(\'module_' + key + '\').checked)"', core.fn.lang('settingRestartNeccessary')) + '<br />';
+					moduleSelector += core.fn.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.fn.setting.isset('module_' + key) ? core.fn.setting.get('module_' + key) : core.var.modules[key].enabledByDefault), 'onchange="core.var.modules[\'' + key + '\'].enabledByDefault == el(\'module_' + key + '\').checked ? core.fn.setting.unset(\'module_' + key + '\'): core.fn.setting.set(\'module_' + key + '\', el(\'module_' + key + '\').checked); core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))"', core.fn.lang('settingRestartNeccessary')) + '<br />';
 				});
 			} else moduleSelector = core.fn.lang('errorLoadingModules');
 			return moduleSelector;
@@ -471,7 +479,7 @@ core.fn = {
 					'if (!el(\'setupkeyname\').value.trim() || !el(\'setupkeypassword0\').value.trim() || el(\'setupkeypassword0\').value != el(\'setupkeypassword1\').value)' +
 						'el(\'keygenresult\').innerHTML=\''+ core.fn.lang('settingKeyError') +'\';' +
 					'else el(\'keygenresult\').innerHTML=\'' +
-						'<a href=&quot;#&quot; onclick=&quot;core.fn.dynamicMailto(\\\''+ core.var.adminMail+'\\\', \\\'' + core.fn.lang('settingKeyMailHeader') + '\\\', el(\\\'setupkeyname\\\').value + \\\': \\\' + core.fn.drm.createHash(el(\\\'setupkeyname\\\').value + el(\\\'setupkeypassword0\\\').value));&quot;>'+ core.fn.lang('settingKeyResult') +'</a>' +
+						'<a href=&quot;#&quot; onclick=&quot;core.fn.dynamicMailto(\\\''+ core.var.eMailAddress.admin.address + '\\\', \\\'' + core.fn.lang('settingKeyMailHeader') + '\\\', el(\\\'setupkeyname\\\').value + \\\': \\\' + core.fn.drm.createHash(el(\\\'setupkeyname\\\').value + el(\\\'setupkeypassword0\\\').value));&quot;>'+ core.fn.lang('settingKeyResult') +'</a>' +
 					
 					'\'; return false;' +
 				'">' +
@@ -489,14 +497,15 @@ core.fn = {
 				osSelector[key] = [key, core.var.oss[key]];
 			});
 
-			return '<input type="button" onclick="core.fn.setting.clear()" value="' + core.fn.lang('settingResetApp') + '" title="' + core.fn.lang('settingRestartNeccessary') + '" /><br />' +
+			return '<input type="button" onclick="core.fn.setting.clear(); core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))" value="' + core.fn.lang('settingResetApp') + '" title="' + core.fn.lang('settingRestartNeccessary') + '" /><br />' +
 				'<br />' + core.fn.lang('settingSelectedOsCaption') + ':<br />' + core.fn.insert.select(osSelector, 'settingSelectedOs', 'settingSelectedOs', core.var.selectedOs(), 'onchange="core.fn.setting.set(\'settingSelectedOs\',this.value)"') +
 				'<br /><br />' + core.fn.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.fn.setting.get('settingFuzzyThreshold') || 5) + '" onchange="core.fn.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
 				'<br />' + core.fn.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.fn.setting.get('settingGlobalSearchTime') || 3) + '" onchange="core.fn.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
+				'<br />' + core.fn.lang('settinggrowlNotifIntervalCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.fn.setting.get('settinggrowlNotifInterval') || 2) + '" onchange="core.fn.setting.set(\'settinggrowlNotifInterval\',(this.value))" />' +
 				'<br />' + core.fn.lang('settingVarPreloadCaption') + ':<br /><input type="range" min="0" max="1000" step="50" value="' + (core.fn.setting.get('settingVarPreloadTime') || 50) + '" onchange="core.fn.setting.set(\'settingVarPreloadTime\',(this.value))" />' +
 				//  as of 2-2020 chrome, edge and ie11 support somewhere (but not exactly) up to 2^11 characters minus mailto:{xxx}?subject={xxx}&body=
 				//  only firefox seemingly supports up to 2^15 characters (32768 - the afore mentioned)
-				'<br />' + core.fn.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="100" max="32400" step="300" value="' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '" onchange="core.fn.setting.set(\'settingDirectMailSize\',(this.value)); el(\'currentDirectMailSize\').innerHTML=this.value" title="' + core.fn.lang('settingRestartNeccessary') + '" />' +
+				'<br />' + core.fn.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="100" max="32400" step="300" value="' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '" onchange="core.fn.setting.set(\'settingDirectMailSize\',(this.value)); el(\'currentDirectMailSize\').innerHTML=this.value; core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))" title="' + core.fn.lang('settingRestartNeccessary') + '" />' +
 				' <span id="currentDirectMailSize">' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.maxMailSize()" value="' + core.fn.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.lang('settingMailSizeDeterminationHint') + '" />' +
 				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingMailtoMethod'), 'settingMailtoMethod', (core.fn.setting.get('settingMailtoMethod') || 0), 'onchange="core.fn.setting.switch(\'settingMailtoMethod\')"') +
 				'<br /><small>' + core.fn.lang('settingMailtoMethodHint') + '</small>';
@@ -519,7 +528,7 @@ core.fn = {
 				'<br />' +
 				core.fn.insert.icon('feedbackrequest', 'bigger', false,
 					'title="' + core.fn.lang('settingMailDebugDump') +
-					'" onclick="core.fn.dynamicMailto(core.var.adminMail, \'' + core.fn.lang('title') + ' - Debug Settings\')"');
+					'" onclick="core.fn.dynamicMailto(core.var.eMailAddress.admin.address, \'' + core.fn.lang('title') + ' - Debug Settings\')"');
 		},
 		theme: function (theme) {
 			el('colortheme').href = 'core/' + theme + '.css';
@@ -688,6 +697,11 @@ core.fn = {
 			'<input type="submit" id="submit" value="' + core.fn.lang('formSubmit') + '" hidden="hidden" /> ' +
 			'</form>');
 		el('globalsearch').focus();
+		var eMailList = core.fn.lang('importantMails') + '<p>';
+		Object.keys(core.var.eMailAddress).forEach(function(key){
+			eMailList += '<a href="mailto:' + core.var.eMailAddress[key].address + '">' + core.fn.insert.icon('mail') + core.var.eMailAddress[key].display[core.var.selectedLanguage]+ '</a><br />';
+		});
+		eMailList += '</p>';
 		core.fn.stdout('temp',
 			core.fn.lang('greeting') + '<br />' +
 			(core.var.letterTemplate ? '<br /><a href="' + core.var.letterTemplate + '" target="_blank">' +
@@ -696,7 +710,9 @@ core.fn = {
 				core.fn.insert.icon('outlook') + core.fn.lang('openOutlook') + '</a><br />' : '') +
 			(core.var.publishedFolder ? '<br /><a href="' + core.var.publishedFolder + '" target="_blank">' +
 				core.fn.insert.icon('pdf') + core.fn.lang('openPublishedFolder') + '</a><br />' : '') +
-			'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>');
+			'<br /><br /><div class="items items71" onclick="core.fn.toggleHeight(this)">' + core.fn.insert.expand() + eMailList + '</div>' +
+			'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>'
+			);
 		core.fn.stdout('output', '');
 		core.var.currentScope = null;
 		Object.keys(core.var.modules).forEach(function (key) {

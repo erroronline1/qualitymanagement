@@ -149,8 +149,6 @@ core.var = {
 	//  as of 2-2020 chrome, edge and ie11 support somewhere (but not exactly) up to 2^11 characters minus mailto:{xxx}?subject={xxx}&body=
 	//  only firefox seemingly supports up to 2^15 characters (32768 - the afore mentioned)
 	directMailSize: (core.fn.setting.get('settingDirectMailSize') || 1900),
-	//	mail for error reporting or feature request as shown in settings
-	adminMail: 'your@email.adr',
 	//	corporate design considerations for font. used for copied content. has to be installed on local machine
 	corporateFontFace: 'Calibri',
 	corporateFontSize: '10pt',
@@ -158,6 +156,51 @@ core.var = {
 	outlookWebUrl: 'https://exc20/owa/auth/logon.aspx', //if you have it installed else null
 	publishedFolder: 'file:///E:/Quality Management/published',
 
+	eMailAddress:{
+		inventorycontrol:{
+			address: "inventory.control@yourcompany.tld",
+			display: {
+				en: "Inventory Control",
+				de: "Einkauf"
+			}
+		},
+		qmrepresentative:{
+			address: "qmr@yourcompany.tld",
+			display: {
+				en: "Quality Management Representative",
+				de: "QMB"
+			}
+		},
+		prrc:{
+			address: "prrc@yourcompany.tld",
+			display: {
+				en: "Person Responsible For Regulatory Compliance",
+				de: "verantwortliche Person"
+			}
+		},
+		deputyprrc:{
+			address: "deputy.prrc@yourcompany.tld",
+			display: {
+				en: "Deputy Person Responsible For Regulatory Compliance",
+				de: "stellvertretende verantwortliche Person"
+			}
+		},
+		deputyqmrepresentative:{
+			address: "deputy.qmr@yourcompany.tld",
+			display: {
+				en: "Deputy Quality Management Representative",
+				de: "stellvertretender QMB"
+			}
+		},
+		admin:{ // extend items to display on the home-screen. better not delete this item.
+			address: "admin@yourcompany.tld",
+			display: {
+				en: "QM-Assistant admin",
+				de: "QM-Assistent Administrator"
+			}
+		}
+	},
+	
 	//supported OSs
 	oss:{
 		win7: 'Windows 7',
@@ -345,6 +388,10 @@ core.var = {
 			en: 'Does not work with Windows 7.',
 			de: 'Funktioniert nicht unter Windows 7.'
 		},
+		settinggrowlNotifIntervalCaption:{
+			en: 'Seconds to show short information',
+			de: 'Sekunden für Anzeige von Kurzinformationen'
+		},
 
 		settingDebugSpaceCaption:{
 			en: 'Available storage space: ',
@@ -477,5 +524,19 @@ core.var = {
 			en: 'feedback / request',
 			de: 'Rückmeldung / Anfrage'
 		},
+		importantMails: {
+			en: 'important eMail-addresses',
+			de: 'wichtige eMail-Adressen'
+		},
+		
+		drmConfirmationSubmit: {
+			en: 'Approval',
+			de: 'Freigabe'
+		},
+		drmConfirmationError: {
+			en: 'The entered values were invalid!',
+			de: 'Es wurden unzureichende Angaben gemacht!'
+		},
+
 	},
 };
