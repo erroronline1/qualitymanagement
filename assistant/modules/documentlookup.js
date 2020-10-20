@@ -100,11 +100,11 @@ documentlookup.fn = {
 		},
 		reset: function (output) {
 			core.fn.setting.set('favouritedocs', output);
-			core.fn.popup(core.fn.lang('favouriteRestoreConfirm', 'documentlookup'));
+			core.fn.growlNotif(core.fn.lang('favouriteRestoreConfirm', 'documentlookup'));
 		},
 		customreset: function () {
 			core.fn.setting.set('customfavouritedocs', core.fn.setting.get('favouritedocs'));
-			core.fn.popup(core.fn.lang('favouriteSaveConfirm', 'documentlookup'));
+			core.fn.growlNotif(core.fn.lang('favouriteSaveConfirm', 'documentlookup'));
 		}
 	},
 	search: function (query) {

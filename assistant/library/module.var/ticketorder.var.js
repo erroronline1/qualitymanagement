@@ -154,16 +154,16 @@ ticketorder.var = {
 			de: 'Warenkorb löschen',
 		},
 		deleteCartDeleted:{
-			en: 'shopping cart deleted',
-			de: 'Warenkorb gelöscht',
+			en: 'shopping cart deleted, reload module',
+			de: 'Warenkorb gelöscht, Modul neu laden',
 		},
 		deleteCurrentOrder:{
 			en: 'delete current order list',
 			de: 'aktuelle Bestelliste löschen',
 		},
 		deleteCurrentOrderDeleted:{
-			en: 'current order list deleted',
-			de: 'aktuelle Bestelliste gelöscht',
+			en: 'current order list deleted, reload module',
+			de: 'aktuelle Bestelliste gelöscht, Modul neu laden',
 		},
 		orderNumberWildcard:{
 			en: 'One or more order numbers contains wildcards. Please specify model, size or type.',

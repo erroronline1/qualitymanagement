@@ -120,7 +120,7 @@ timetable.fn = {
 		},
 		reset: function (output) {
 			core.fn.setting.set('favouritetimetable', output);
-			core.fn.popup(core.fn.lang('favouriteResetConfirm', 'timetable'));
+			core.fn.growlNotif(core.fn.lang('favouriteResetConfirm', 'timetable'));
 		},
 	},
 	init: function (query) {

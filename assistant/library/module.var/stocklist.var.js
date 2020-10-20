@@ -10,7 +10,6 @@ stocklist.var = {
 			store: ['store', core.fn.lang('filterStock', 'stocklist'), 'stocklist_data.content[key][7]!=\'no\''],
 		};
 	},
-inventoryControl: 'inventory.control@email.adr',
 	lang: {
 		inputPlaceholder: {
 			en: 'item, 3 characters minimum',
@@ -81,6 +80,10 @@ inventoryControl: 'inventory.control@email.adr',
 		orderBy: {
 			en: 'by ',
 			de: 'nach '
+		},
+		articleAdded:{
+			en: 'Added to shopping cart',
+			de: 'Zum Warenkorb hinzugefügt'
 		}
 	},
 	disableOutputSelect: true,
