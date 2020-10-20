@@ -78,24 +78,24 @@ stocklist.fn = {
 					function mklink(str){
 						//replaces http://website and c:/folder/file with links
 						//given folders may contain whitespaces but are not embedded into text
-						return str.replace(/\w{3,}:\/+\S*|\w:\/.+/g, function(l){return '<a href="' + l + '" target="_blank">' + l + '</a>';});
+						return str.toString().replace(/\w{3,}:\/+\S*|\w:\/.+/g, function(l){return '<a href="' + l + '" target="_blank">' + l + '</a>';});
 					}
 
 					found.forEach(function (value) {
 						list += core.fn.smartSearch.relevance.nextstep(value[1]);
 						var tresult = '<div class="items items71" onclick="core.fn.toggleHeight(this)">' + core.fn.insert.expand(),
 							mailbody = '';
-						for (var h = 0; h < stocklist_data.content[0].length; h++) {
+						for (var h = 1; h < stocklist_data.content[0].length; h++) { // start from 1 because of assigned id on position 0
 							if (ordered_stocklist_data.content[value[0]][h]!='') {
-								tresult += '<p><span class="highlight">' + stocklist_data.content[0][h] + ':</span> ' + mklink(ordered_stocklist_data.content[value[0]][h]) + '</p>';
-								mailbody += stocklist_data.content[0][h] + ': ' + ordered_stocklist_data.content[value[0]][h] + "<br />";
+								tresult += '<p><span class="highlight">' + stocklist_data.content[0][h-1] + ':</span> ' + mklink(ordered_stocklist_data.content[value[0]][h]) + '</p>';
+								mailbody += stocklist_data.content[0][h-1] + ': ' + ordered_stocklist_data.content[value[0]][h] + "<br />";
 							}
 						}
 						list += tresult +
-							'<a title="' + maillanguage.helpChangeItemTitle + '" onclick="return confirm(\'' + maillanguage.helpChangeItemPopup + '\');" href="javascript:core.fn.dynamicMailto(\'' + stocklist.var.inventoryControl + '\',\'' + maillanguage.helpChangeItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpChangeItemCaption + '</a> ' +
-							'<a title="' + maillanguage.helpDeleteItemTitle + '" onclick="return confirm(\'' + maillanguage.helpDeleteItemPopup + '\');" href="javascript:core.fn.dynamicMailto(\'' + stocklist.var.inventoryControl + '\',\'' + maillanguage.helpDeleteItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpDeleteItemCaption + '</a> ' +
+							'<a title="' + maillanguage.helpChangeItemTitle + '" onclick="return confirm(\'' + maillanguage.helpChangeItemPopup + '\');" href="javascript:core.fn.dynamicMailto(\'' + core.var.eMailAddress.inventorycontrol.address + '\',\'' + maillanguage.helpChangeItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpChangeItemCaption + '</a> ' +
+							'<a title="' + maillanguage.helpDeleteItemTitle + '" onclick="return confirm(\'' + maillanguage.helpDeleteItemPopup + '\');" href="javascript:core.fn.dynamicMailto(\'' + core.var.eMailAddress.inventorycontrol.address + '\',\'' + maillanguage.helpDeleteItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpDeleteItemCaption + '</a> ' +
 							(ordered_stocklist_data.content[value[0]][0] && (typeof core.var.modules['ticketorder'] === 'object' && (core.fn.setting.isset('module_ticketorder')?eval(core.fn.setting.get('module_ticketorder')):core.var.modules['ticketorder'].enabledByDefault))
-							? '<span style="float:right">' + core.fn.insert.icon('shoppingcart', 'bigger', false, 'onclick="stocklist.api.addToCart(' + value[0] + '); this.parentElement.style.backgroundColor=\'#a3be8c\';"') + '</span>' : '')+
+							? '<span style="float:right">' + core.fn.insert.icon('shoppingcart', 'bigger', false, 'onclick="stocklist.api.addToCart(' + ordered_stocklist_data.content[value[0]][0] + '); core.fn.growlNotif(core.fn.lang(\'articleAdded\',\'stocklist\'))"') + '</span>' : '')+
 							'</div>';
 					});
 				} else list = core.fn.lang('errorNothingFound', 'stocklist', query);
@@ -128,17 +128,15 @@ stocklist.fn = {
 			}
 		},
 		prepare: function(noOrder){
-			//clone data object and reset first value to undefined otherwise header terms can be displayed as results
+			// clone data object and reset first value to undefined otherwise header terms can be displayed as results
 			var order = core.fn.setting.get('stockorder') || 0;
-			var data_without_header=JSON.parse(JSON.stringify(stocklist_data));
-			data_without_header.content[0]=new Array(data_without_header.content[0].length);
+			var data_without_header=JSON.parse(JSON.stringify(stocklist_data)); // copy object to manipulate
+			data_without_header.content[0]=new Array(data_without_header.content[0].length + 1); // "unset" header item
+			for (var id = 0; id < data_without_header.content.length; id++) data_without_header.content[id].unshift(id); // assign id to keep even if sorted for shopping cart
 			
 			function sortByOrderColumn(a, b) {
-				if (a[order] === b[order]) {
-					return 0;
-				} else {
-					return (a[order] > b[order]) ? 1 : -1;
-				}
+				if (a[order] === b[order]) return 0;
+				else return (a[order] > b[order]) ? 1 : -1;
 			}
 			if (core.fn.setting.get('stockorder') && typeof(noOrder)=='undefined') 
 				data_without_header.content = data_without_header.content.sort(sortByOrderColumn);
