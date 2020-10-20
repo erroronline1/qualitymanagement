@@ -172,6 +172,21 @@ aside {
 	overflow-x: auto;
 }
 
+#growlNotif {
+	position: absolute;
+	z-index: 20;
+	margin: 1em;
+	width: 20em;
+	right: -22em;
+	bottom: 0;
+	padding: 1em;
+	box-shadow: .1em .1em .4em .1em;
+}
+
+#growlNotif.growlNotifshow{
+	right:0em;
+}
+
 /* /////////////////////////////////////////////////////////////////////////////////
 content box-items
 //////////////////////////////////////////////////////////////////////////////////*/
@@ -244,37 +259,18 @@ content box-items
 
 .itemresize {
 	position: absolute;
-	top: 0;
+	top: .5em;
 	right: 0;
-	width: .75em;
-	height: .75em;
-	margin: .2em;
-	border: 1px solid;
-	transition: all .3s ease-in-out;
-}
-
-.itemresize::before {
-	position: absolute;
-	top: -10%;
-	right: -10%;
 	width: .65em;
 	height: .65em;
-	content: '';
-	display: block;
-	border: 1px solid;
+	margin: .2em;
 	transition: all .3s ease-in-out;
+	transform: rotate(45deg);
+	box-shadow: .1em .1em
 }
 
 .items.expand .itemresize {
-	width: .65em;
-	height: .65em;
-}
-
-.items.expand .itemresize::before {
-	width: .55em;
-	height: .55em;
-	top: 20%;
-	right: 20%;
+	box-shadow: -.1em -.1em
 }
 
 .inline {

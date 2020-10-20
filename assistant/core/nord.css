@@ -20,6 +20,7 @@ select optgroup {
 #popuptext label,
 #popuptext svg,
 #popuptext textarea,
+#growlNotif,
 ::selection {
 	color: rgb(236, 239, 244);
 	fill: rgb(236, 239, 244)
@@ -92,11 +93,6 @@ input[type='range'] {
 	border: none;
 }
 
-.itemresize,
-.itemresize::before {
-	border-color: rgba(0, 0, 0, .5);
-}
-
 .checkmark,
 #mailtoLimitBar {
 	border-color: rgb(236, 239, 244);
@@ -140,13 +136,9 @@ span.search {
 	background-color: rgba(0, 0, 0, .03);
 }
 
-.itemresize,
-.itemresize::before {
-	background-color: #4c566a;
-}
-
 #menu,
-#popuptext {
+#popuptext,
+#growlNotif {
 	background-color: rgba(46, 52, 64, .9);
 }
 
