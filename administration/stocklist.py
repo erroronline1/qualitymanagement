@@ -6,12 +6,14 @@ import threading
 import sys
 import os
 import itertools
+import xlsxwriter
+import datetime
 
 print ('''                    
      _           _   _ _     _
  ___| |_ ___ ___| |_| |_|___| |_
 |_ -|  _| . |  _| '_| | |_ -|  _|
-|___|_| |___|___|_,_|_|_|___|_|    built 20201231
+|___|_| |___|___|_,_|_|_|___|_|    built 20210216
 
 by error on line 1 (erroronline.one)
 
@@ -20,112 +22,119 @@ processes a stocklist export
 $ stocklist --help     for overview''')
 
 DEFAULTJSON={
-	"comment": "BEWARE of character encoding. make sure these (äöü) specialchars are displayed properly before editing",
+	"thisencoding": "BEWARE of character encoding. make sure these (äöü) specialchars are displayed properly before editing",
 	"module": {
 		"translate": {
-			"ON_FILTERS": "extend or reduce filters, filters can be regex, single strings or lists with strings but no booleans or integers",
+			"____filter": "extend or reduce filters, filters can be regex (case insensitive), single strings or lists with strings but no booleans or integers",
 			"filter": {
 				"ORDERSTOP": "true"
 			},
-			"ON_DESTINATION": "choose destination file and add enclosing strings to convert a json-dump into a javascript object",
+			"____destination": "choose destination file/path and add wrapping strings to convert a json-dump into a javascript object",
 			"destination": "E:\\Quality Management\\assistant\\library\\module.data\\stocklist.js",
-			"destinationoutputstart" :"//this file was automatically created by <stocklist.exe>\n\nvar stocklist_data={content:",
-			"destinationoutputend": "};",
-			"ON_UNION": "occasionally there are multiple entries in the source file with the same identifier that can be unified",
+			"wrapstart" :"//this file was automatically created by <stocklist.exe>\n\nvar stocklist_data={content:",
+			"wrapend": "};",
+			"____unionbyoutputcolumn": "occasionally there are multiple entries in the source file with the same identifier that can be unified",
 			"unionbyoutputcolumn": 1,
-			"ON_READCOLUMNS" : "fields have to be lists, even with single entries. lists will be concatenated, values can be translated by global properties",
+			"____readcolumns" : "fields have to be lists, even with single entries. lists will be concatenated, values can be processed by global translate or scoped pick, 'process' can either be omitted or set to false",
 			"readcolumns": {
 				"Item-ID": {
-					"fields": ["ID"],
-					"translate": False
+					"fields": ["ID"]
 				},
 				"Distributor": {
-					"fields": ["DISTRIBUTOR"],
-					"translate": False
+					"fields": ["DISTRIBUTOR"]
 				},
 				"Article Name": {
-					"fields": ["CAPTION"],
-					"translate": False
+					"fields": ["CAPTION"]
 				},
 				"Order Number": {
-					"fields": ["NUMBER"],
-					"translate": False
+					"fields": ["NUMBER"]
 				},
 				"Package Size": {
 					"fields": ["QUANTITY"],
-					"translate": True
+					"process": "translate"
 				},
 				"Additional Information": {
 					"fields": ["INFORMATION", "MODEL_NAME", "SIZE_NAME", "COLOR_NAME"],
-					"translate": False
 				}
 			},
-			"ON_STATIC": "this will be added to every element from the output",
+			"____static": "this will be added to every element from the output",
 			"static": {
 				"Documents": "E:/DistributorDocuments"
 			}
 		},
 		"split": {
-			"ON_FILTERS": "extend or reduce filters, filters can be regex, single strings or lists with strings but no booleans or integers",
+			"____filter": "extend or reduce filters, filters can be regex (case insensitive), single strings or lists with strings but no booleans or integers",
 			"filter": {
 				"ORDERSTOP": "true",
 				"REPOSITORY": ["0", "1", "21"]
 			},
-			"ON_PREFIX": "add something to the beginning of the output filenames",
+			"____prefix": "add something to the beginning of the output filenames",
 			"prefix": "List_",
-			"ON_SPLITBYCOLUMN": "the input file will be splitted according to the different values in this column. you better not mess around with identifiers or product names",
-			"splitbycolumn": "REPOSITORY",
-			"ON_ORDERBYOUTPUTCOLUMN": "output files will be sorted in ascending order of this column number (not index 0)",
+			"____splitbycolumns": "the input file will be splitted according to the different case insensitive matched values in these columns. you better not mess around with identifiers, product names or other diverse values",
+			"splitbycolumns": {
+				"REPOSITORY": "(.*)",
+				"STORAGE": "([\\w\\d\\s]+)(?:.*)"
+			},
+			"____orberbyoutputcolumn": "output files will be sorted in ascending order of the column number (not index 0) of the output table",
 			"orderbyoutputcolumn": 3,
-			"ON_READCOLUMNS" : "fields have to be lists, even with single entries. lists will be concatenated, values can be translated by global properties",
+			"____xlsxwidth": "number of points to width of the excelsheet to handle procentual column widths for readcolumns",
+			"xlsxwidth": 120,
+			"____readcolumnd" : "fields have to be lists, even with single entries. lists will be concatenated, values can be processed by global translate or scoped pick, 'process' can either be omitted or set to false, width can be set in percents for xlsx-output",
 			"readcolumns": {
 				"Item-ID": {
 					"fields": ["ID"],
-					"translate": False
+					"width": 5
 				},
 				"Distributor": {
 					"fields": ["DISTRIBUTOR"],
-					"translate": False
+					"width": 8
 				},
 				"Article Name": {
 					"fields": ["CAPTION"],
-					"translate": False
+					"width": 25
 				},
 				"Order Number": {
 					"fields": ["NUMBER"],
-					"translate": False
+					"width": 15
 				},
 				"Package Size": {
 					"fields": ["QUANTITY"],
-					"translate": True
+					"process": "translate",
+					"width": 5
 				},
-				"Repository": {
-					"fields": ["REPOSITORY"],
-					"translate": True
+				"Last Order": {
+					"fields": ["LAST_ORDER"],
+					"process": "pick",
+					"width": 7
 				},
 				"Additional Information": {
 					"fields": ["INFORMATION", "MODEL_NAME", "SIZE_NAME", "COLOR_NAME"],
-					"translate": False
+					"process": False,
+					"width": 10
 				}
 			},
-			"ON_STATIC": "this will be added to every element from the output",
+			"____static": "this will be added to every element from the output, formulas are allowed as well but have to be english for xslx!",
 			"static": {
-				"Quantity": ""
+				"Quantity": "",
+				"Calculation": "=INDIRECT(\"G\"&ROW())"
+			},
+			"____pick": "take only parts of value as selected by first regex (case sensitive) item, multiple results will be concatenated with second string item",
+			"pick": {
+				"LAST_ORDER": ["(\\S+)(?:\\s.*)", " "]
 			}
-			
 		}
 	},
-	"ON_SOURCE": "if filename is regex, the last touched file will be used. set up row (not index 0) of header row.",
+	"____source": "if filename is regex, the last touched file will be used. set up row (not index 0) of header row.",
 	"source": "ARTICLEMANAGER.CSV",
 	"headerrow": 2,
-	"ON_HEADERSOURCEFORMAT": "csv styles differ so one of the regexes hopefully will identify header values correctly (with or without quotes)",
+	"____headersourceformat": "csv styles differ so one of the regexes (case insensitive) hopefully will identify header values correctly (with or without quotes)",
 	"headersourceformat": ["\"(.+?)\"[;\\s]", "(.+?)[;\\s]"],
-	"ON_SANITIZE": "replace faulty characters or stupid values with nothing, extend the lists as needed",
+	"____sanitize": "replace faulty characters or stupid values with nothing, extend the lists as needed",
 	"sanitize": {
 		"chars": ["\""],
 		"values": ["null"]
 	},
-	"ON_TRANSLATE":"replace e.g. numerical values with legible translations. extend as needed",
+	"____translate": "replace e.g. numerical values with legible translations. extend as needed",
 	"translate": {
 		"QUANTITY": {
 			"1": "piece",
@@ -157,9 +166,9 @@ HELPTEXT= '''
     this is not ai, you'll have to analyze the inhomogeneous sources by yourself beforehand in order to set up. 
 
     usage: stocklist [ -h | --help ]       this message, priority handling
-                     [ -t | --translate ]  translate file to javascript-object
-                     [ -s | --split ]      split file by column value
                      [ -r | --reset ]      creates a default setting file for customization if not existent
+                     [ -s | --split ]      split file by column value
+                     [ -t | --translate ]  translate file to json- or javascript-object
 
     you can either start directly from the command prompt or will be asked during runtime.
 
@@ -251,8 +260,6 @@ def open_import_filter(module):
 		fprint('[~]  sourcefile named like ' + SETTINGS['source'] + ' not found.')
 
 	if success:
-		# split module sorts by values of given column, translate module uses just one list of results
-		sorting = SETTINGS['module']['split']['splitbycolumn'] if module == 'split' else 1
 		try:
 			with open( sourcefile[0][0], newline='' ) as csvfile:
 				#read source-file		
@@ -303,10 +310,18 @@ def open_import_filter(module):
 						output = [tidy.c(c) for c in HEADERS]
 						
 						if module == 'split':
-							if not tidy.c(sorting) in importDict:
-								importDict[tidy.c(sorting)] = [output]
+							# create sorting key by matched patterns, mandatory translated if applicable
+							sorting = ''
+							for sort in SETTINGS['module']['split']['splitbycolumns']:
+								match = re.findall(str(SETTINGS['module']['split']['splitbycolumns'][sort]), tidy.c(sort), re.IGNORECASE)
+								if len(match):
+									match = ' '.join(match).strip()
+									sorting += ' ' + (SETTINGS['translate'][sort][match] if sort in SETTINGS['translate'] else match)
+
+							if not sorting in importDict:
+								importDict[sorting] = [output]
 							else:
-								importDict[tidy.c(sorting)].append(output)
+								importDict[sorting].append(output)
 						else:
 							if not 1 in importDict:
 								importDict[1] = [output]
@@ -348,9 +363,17 @@ def translate(imported):
 		for reduce in module['readcolumns']:
 			currentfield = ''
 			for column in module['readcolumns'][reduce]['fields']:
-				if module['readcolumns'][reduce]['translate']:
+				if 'process' in module['readcolumns'][reduce] and module['readcolumns'][reduce]['process'] == 'translate':
 					# concatenate handled translation if applicable
-					currentfield += ', ' + SETTINGS['translate'][column][rowdict[HEADERS.index(column)]] if rowdict[HEADERS.index(column)] in SETTINGS['translate'][column] else ''
+					currentfield += ', ' + SETTINGS['translate'][column][rowdict[HEADERS.index(column)]] if rowdict[HEADERS.index(column)] in SETTINGS['translate'][column] else rowdict[HEADERS.index(column)]
+				elif 'process' in module['readcolumns'][reduce] and module['readcolumns'][reduce]['process'] == 'pick':
+					# concatenate handled picked parts if applicable
+					if column in module['pick']:
+						match = re.findall("^" + str(module['pick'][column][0]) + "$", rowdict[HEADERS.index(column)])
+						picked = False
+						if len(match):
+							picked = module['pick'][column][1].join(match[0])
+					currentfield += ', ' + picked if picked else rowdict[HEADERS.index(column)]
 				else:
 					# else concatenate raw values
 					currentfield += ', ' + rowdict[HEADERS.index(column)] if rowdict[HEADERS.index(column)] != '' else ''
@@ -381,9 +404,9 @@ def translate(imported):
 		#################################################
 		try:
 			with open(module['destination'], 'w', newline = '', encoding = 'utf8') as file:
-				file.write(module['destinationoutputstart'])
+				file.write(module['wrapstart'])
 				json.dump(result, file, ensure_ascii = False, indent = 4)
-				file.write(module['destinationoutputend'])
+				file.write(module['wrapend'])
 			fprint('[*]  destination file ' + module['destination'] + ' successfully written', clearanimation = '[*]')
 			success = True
 		except:
@@ -405,7 +428,7 @@ def split(imported):
 	module = SETTINGS['module']['split']
 
 	ANIMATION = False
-	if not choice('split file by ' + module['splitbycolumn'] + ' [y / n]?', ['y', 'n'])=='y':
+	if not choice('split file by ' + str(list(module['splitbycolumns'].keys())) + ' [y / n]?', ['y', 'n'])=='y':
 		return 'cancel'
 
 	########################################
@@ -415,23 +438,25 @@ def split(imported):
 	ANIMATION = True
 	result = {}
 	# iterate over sorted results
-	for splitbycolumn in imported:
-		# intiate result key, translate if applicable
-		if module['splitbycolumn'] in SETTINGS['translate'] and splitbycolumn in SETTINGS['translate'][module['splitbycolumn']]:
-			key = SETTINGS['translate'][module['splitbycolumn']][splitbycolumn]
-		else:
-			key = splitbycolumn
-
+	for split in imported:
 		# iterate over imported lists
-		for row, rowlist in enumerate(imported[splitbycolumn]):
+		for row, rowlist in enumerate(imported[split]):
 			# iterate over wanted fields
 			currentrow = []
 			for reduce in module['readcolumns']:
 				currentfield = ''
 				for column in module['readcolumns'][reduce]['fields']:
-					if module['readcolumns'][reduce]['translate']:
+					if 'process' in module['readcolumns'][reduce] and module['readcolumns'][reduce]['process'] == 'translate':
 						# concatenate handled translation if applicable
-						currentfield += ', ' + SETTINGS['translate'][column][rowlist[HEADERS.index(column)]] if rowlist[HEADERS.index(column)] in SETTINGS['translate'][column] else ''
+						currentfield += ', ' + SETTINGS['translate'][column][rowlist[HEADERS.index(column)]] if rowlist[HEADERS.index(column)] in SETTINGS['translate'][column] else rowlist[HEADERS.index(column)]
+					elif 'process' in module['readcolumns'][reduce] and module['readcolumns'][reduce]['process'] == 'pick':
+						# concatenate handled picked parts if applicable
+						if column in module['pick']:
+							match = re.findall("^" + str(module['pick'][column][0]) + "$", rowlist[HEADERS.index(column)])
+							picked = False
+							if len(match):
+								picked = module['pick'][column][1].join(match[0])
+						currentfield += ', ' + picked if picked else rowlist[HEADERS.index(column)]
 					else:
 						# else concatenate raw values
 						currentfield += ', ' + rowlist[HEADERS.index(column)] if rowlist[HEADERS.index(column)] != '' else ''
@@ -441,32 +466,82 @@ def split(imported):
 			for add in module['static']:
 				currentrow.append(module['static'][add])
 
-			if key in result:
-				result[key].append(currentrow)
+			if split in result:
+				result[split].append(currentrow)
 			else:
-				result[key] = [currentrow]
-		result[key]=sorted(result[key], key = lambda l: l[module['orderbyoutputcolumn']-1])
+				result[split] = [currentrow]
+		result[split]=sorted(result[split], key = lambda l: l[module['orderbyoutputcolumn']-1])
 		
 	if result:
-		#################################################
-		# write split csv files
-		#################################################
-		for outputfile in result:
-			try:
-				with open(module['prefix'] + outputfile + '.csv', 'w', newline='') as file:
-					out = csv.writer(file, csv.excel, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
-					# add headers + static
-					header = [reduce for reduce in module['readcolumns']]
-					header.extend([add for add in module['static']])
-					out.writerow(header)
-					for row in result[outputfile]:
-						out.writerow(row)
-				fprint('[*]  destination file ' + module['prefix'] + str(outputfile) + '.csv' + ' successfully written', clearanimation = '[*]')
-				success = True
-			except:
-				success = False
-				fprint('[~]  ' + module['prefix'] + str(outputfile) + '.csv' + ' could not be written.', clearanimation = '[*]')
+		ANIMATION = False
+		exp = choice("Export to .csv or .xlsx [c / x]?", ["c", "x"])
+		ANIMATION = True
+		if exp == 'c':
+			#################################################
+			# write split csv files
+			#################################################
+			for outputfile in result:
+				try:
+					with open(module['prefix'] + outputfile + '.csv', 'w', newline='') as file:
+						out = csv.writer(file, csv.excel, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
+						# add headers + static
+						header = [reduce for reduce in module['readcolumns']]
+						header.extend([add for add in module['static']])
+						out.writerow(header)
+						for row in result[outputfile]:
+							out.writerow(row)
+					fprint('[*]  destination file ' + module['prefix'] + str(outputfile) + '.csv' + ' successfully written', clearanimation = '[*]')
+					success = True
+				except:
+					success = False
+					fprint('[~]  ' + module['prefix'] + str(outputfile) + '.csv' + ' could not be written.', clearanimation = '[*]')
+		elif exp == 'x':
+			#################################################
+			# write split worksheets to xlsx file
+			#################################################
+			workbook = xlsxwriter.Workbook(module['prefix'].strip() + '.xlsx')
 
+			cell_format = workbook.add_format()
+			cell_format.set_top(1)
+			cell_format.set_num_format('@')
+			for sheet in result:
+				worksheet = workbook.add_worksheet()#sheet[0:31])
+				worksheet.set_landscape()
+				worksheet.set_margins(left = .25, right = .15, top = 1, bottom = .25)
+				# add sort key as header on page
+				worksheet.set_header(sheet + datetime.datetime.now().strftime(' - %B %Y'))
+
+				# set column widths
+				c = 0
+				for column in module['readcolumns']:
+					if 'width' in module['readcolumns'][column]:
+						worksheet.set_column(c, c, module['xlsxwidth'] / 100 * module['readcolumns'][column]['width'])
+					c += 1
+				
+				row=0
+				col=0
+				# add sort key as header on sheet
+				worksheet.write(row, col, sheet)
+				row += 1
+
+				# add headers + static
+				header = [reduce for reduce in module['readcolumns']]
+				header.extend([add for add in module['static']])
+				for cell in header:
+					worksheet.write(row, col, cell)
+					col +=1
+				worksheet.repeat_rows(row)
+
+				# write content
+				for rrow in result[sheet]:
+					row += 1
+					col = 0
+					for cell in rrow:
+						worksheet.write(row, col, cell, cell_format)
+						col += 1
+			workbook.close()
+			fprint('[*]  destination file ' + module['prefix'].strip() + '.xlsx' + ' successfully written', clearanimation = '[*]')
+			success = True
 	ANIMATION = False
 	return success
 
