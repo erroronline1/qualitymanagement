@@ -13,7 +13,7 @@ print ('''
      _           _   _ _     _
  ___| |_ ___ ___| |_| |_|___| |_
 |_ -|  _| . |  _| '_| | |_ -|  _|
-|___|_| |___|___|_,_|_|_|___|_|    built 20210216
+|___|_| |___|___|_,_|_|_|___|_|    built 20210222
 
 by error on line 1 (erroronline.one)
 
@@ -363,7 +363,7 @@ def translate(imported):
 		for reduce in module['readcolumns']:
 			currentfield = ''
 			for column in module['readcolumns'][reduce]['fields']:
-				if 'process' in module['readcolumns'][reduce] and module['readcolumns'][reduce]['process'] == 'translate':
+				if 'process' in module['readcolumns'][reduce] and module['readcolumns'][reduce]['process'] == 'translate' and column in SETTINGS['translate']:
 					# concatenate handled translation if applicable
 					currentfield += ', ' + SETTINGS['translate'][column][rowdict[HEADERS.index(column)]] if rowdict[HEADERS.index(column)] in SETTINGS['translate'][column] else rowdict[HEADERS.index(column)]
 				elif 'process' in module['readcolumns'][reduce] and module['readcolumns'][reduce]['process'] == 'pick':
@@ -390,7 +390,7 @@ def translate(imported):
 				if outputline[module['unionbyoutputcolumn']-1] == union[module['unionbyoutputcolumn']-1]:
 					for column, field in enumerate(union):
 						if field != outputline[column] and outputline[column] != '':
-							union[column] += ', ' + outputline[column]
+							union[column] += '; ' + outputline[column]
 					append = False
 		if append:
 			result.append(outputline)
@@ -446,7 +446,7 @@ def split(imported):
 			for reduce in module['readcolumns']:
 				currentfield = ''
 				for column in module['readcolumns'][reduce]['fields']:
-					if 'process' in module['readcolumns'][reduce] and module['readcolumns'][reduce]['process'] == 'translate':
+					if 'process' in module['readcolumns'][reduce] and module['readcolumns'][reduce]['process'] == 'translate' and column in SETTINGS['translate']:
 						# concatenate handled translation if applicable
 						currentfield += ', ' + SETTINGS['translate'][column][rowlist[HEADERS.index(column)]] if rowlist[HEADERS.index(column)] in SETTINGS['translate'][column] else rowlist[HEADERS.index(column)]
 					elif 'process' in module['readcolumns'][reduce] and module['readcolumns'][reduce]['process'] == 'pick':
@@ -501,23 +501,27 @@ def split(imported):
 			#################################################
 			workbook = xlsxwriter.Workbook(module['prefix'].strip() + '.xlsx')
 
-			cell_format = workbook.add_format()
-			cell_format.set_top(1)
-			cell_format.set_num_format('@')
+			cell_std = workbook.add_format({'top': 1, 'num_format':'@', 'valign': 'top', 'text_wrap': True})
+			# define other formats if necessary:
+			cell_other = workbook.add_format({'top': 1, 'num_format':'@', 'valign': 'top', 'text_wrap': True})
 			for sheet in result:
-				worksheet = workbook.add_worksheet()#sheet[0:31])
+				worksheet = workbook.add_worksheet() # sheet[0:31])
 				worksheet.set_landscape()
-				worksheet.set_margins(left = .25, right = .15, top = 1, bottom = .25)
+				worksheet.set_margins(left = .25, right = .15, top = .5, bottom = .25)
+				worksheet.set_default_row(32)
 				# add sort key as header on page
 				worksheet.set_header(sheet + datetime.datetime.now().strftime(' - %B %Y'))
 
-				# set column widths
-				c = 0
+				# set column widths and store column number for supported style properties
+				col = 0
+				column_format={'other':[]} # initilize possible supported column formats
 				for column in module['readcolumns']:
 					if 'width' in module['readcolumns'][column]:
-						worksheet.set_column(c, c, module['xlsxwidth'] / 100 * module['readcolumns'][column]['width'])
-					c += 1
-				
+						worksheet.set_column(col, col, module['xlsxwidth'] / 100 * module['readcolumns'][column]['width'])
+					if 'other' in module['readcolumns'][column]: # add column number to format list if applicable
+						if module['readcolumns'][column]['other']:
+							column_format['other'].append(col)
+					col += 1
 				row=0
 				col=0
 				# add sort key as header on sheet
@@ -537,6 +541,10 @@ def split(imported):
 					row += 1
 					col = 0
 					for cell in rrow:
+						if col in column_format['other']: # apply column format if applicable
+							cell_format = cell_other
+						else: 
+							cell_format = cell_std
 						worksheet.write(row, col, cell, cell_format)
 						col += 1
 			workbook.close()
