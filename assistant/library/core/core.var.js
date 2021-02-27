@@ -60,7 +60,6 @@ core.var = {
 			icon: core.fn.insert.icon('mail'),
 			display: {
 				en: "Recommendation for Correspondence",
-			enabledByDefault: true,
 				de: "Textvorschläge für Korrespondenz"
 			},
 			enabledByDefault: true,
@@ -75,10 +74,11 @@ core.var = {
 			enabledByDefault: true,
 			wide: false,
 		},
-		auditplanner:{
-			icon:core.fn.insert.icon('checklist'),
-            display: {	en:"Audit Planner",
-						de:"Auditplaner"
+		auditplanner: {
+			icon: core.fn.insert.icon('checklist'),
+			display: {
+				en: "Audit Planner",
+				de: "Auditplaner"
 			},
 			enabledByDefault: true,
 			wide: false,
@@ -156,43 +156,43 @@ core.var = {
 	outlookWebUrl: 'https://exc20/owa/auth/logon.aspx', //if you have it installed else null
 	publishedFolder: 'file:///E:/Quality Management/published',
 
-	eMailAddress:{
-		inventorycontrol:{
+	eMailAddress: {
+		inventorycontrol: {
 			address: "inventory.control@yourcompany.tld",
 			display: {
 				en: "Inventory Control",
 				de: "Einkauf"
 			}
 		},
-		qmrepresentative:{
+		qmrepresentative: {
 			address: "qmr@yourcompany.tld",
 			display: {
 				en: "Quality Management Representative",
 				de: "QMB"
 			}
 		},
-		prrc:{
+		prrc: {
 			address: "prrc@yourcompany.tld",
 			display: {
 				en: "Person Responsible For Regulatory Compliance",
 				de: "verantwortliche Person"
 			}
 		},
-		deputyprrc:{
+		deputyprrc: {
 			address: "deputy.prrc@yourcompany.tld",
 			display: {
 				en: "Deputy Person Responsible For Regulatory Compliance",
 				de: "stellvertretende verantwortliche Person"
 			}
 		},
-		deputyqmrepresentative:{
+		deputyqmrepresentative: {
 			address: "deputy.qmr@yourcompany.tld",
 			display: {
 				en: "Deputy Quality Management Representative",
 				de: "stellvertretender QMB"
 			}
 		},
-		admin:{ // extend items to display on the home-screen. better not delete this item.
+		admin: { // extend items to display on the home-screen. better not delete this item.
 			address: "admin@yourcompany.tld",
 			display: {
 				en: "QM-Assistant admin",
@@ -200,27 +200,30 @@ core.var = {
 			}
 		}
 	},
-	
+
 	//supported OSs
-	oss:{
-		win7: 'Windows 7',
-		win10: 'Windows 10'
+	oss: {
+		win10k: 'Windows 10 Adobe Reader DC',
+		win10: 'Windows 10 Adobe Reader XI',
+		win7: 'Windows 7'
 	},
-	selectedOs:function (){return core.fn.setting.get('settingSelectedOs') || 'win7';},
-	
+	selectedOs: function () {
+		return core.fn.setting.get('settingSelectedOs') || 'win10k';
+	},
+
 	// permissions and data rights managament
-	drm:{
+	drm: {
 		pwLength: {
 			min: 5,
 			max: 256
 		},
-		translate:{
+		translate: {
 			//translate permission levels according to xlsm-permission list / library/core/core.drm.js
 			orderApproval: 'order approval',
 			timetables: 'timetables'
 		}
 	},
-	
+
 	//text-blocks within the core file and reusable textblocks for modules
 	lang: {
 		title: {
@@ -368,44 +371,40 @@ core.var = {
 			en: 'Delay between loading modules data and functions in milliseconds (Edge)',
 			de: 'Millisekunden Ladeverzögerung zwischen Moduldaten und -funktionen (Edge)'
 		},
-		settingMailSizeDeterminationCaption:{
+		settingMailSizeDeterminationCaption: {
 			en: 'Browser dependent maximum size for direct email',
 			de: 'Maximale Browserabhängige Größe für Direkt-eMails',
 		},
-		settingMailSizeDeterminationCheck:{
+		settingMailSizeDeterminationCheck: {
 			en: 'Verify size setting',
 			de: 'Größeneinstellung auf Funktion prüfen',
 		},
-		settingMailSizeDeterminationHint:{
+		settingMailSizeDeterminationHint: {
 			en: 'If your browser supports the setting a mail will open without further use that can be closed afterwards. If not reduce the setting value and try again. Finally a restart of application is necessary. A possible overflow might make a restart of the browser necessary. Tested browsers support the closest smaller value to 2000, only Firefox is capable of almost up to 32500 characters.',
 			de: 'Wenn der Browser die Einstellung unterstützt öffnet sich ein eMail-Fenster das keine weitere Verwendung hat und anschließend geschlossen werden kann. Ist dies nicht der Fall muss der Wert reduziert und erneut geprüft werden. Anschließen ist ein Neustart der Oberfläche erforderlich. Es kann zu einer Überforderung des Browsers kommen der seinen Neustart erfordert. Die gestesteten Browser unterstützen den nächstkleineren Wert zu 2000, nur Firefox schafft bis zu 35500 Zeichen.',
 		},
-		settingMailtoMethod:{
-			en: 'Open email in Chromium Edge and other browsers',
-			de: 'eMails öffnen in Chromium Edge und anderen Browsern'
+		settingMailtoMethod: {
+			en: 'Open email using Windows 7',
+			de: 'eMails öffnen in Windows 7'
 		},
-		settingMailtoMethodHint:{
-			en: 'Does not work with Windows 7.',
-			de: 'Funktioniert nicht unter Windows 7.'
-		},
-		settinggrowlNotifIntervalCaption:{
+		settinggrowlNotifIntervalCaption: {
 			en: 'Seconds to show short information',
 			de: 'Sekunden für Anzeige von Kurzinformationen'
 		},
 
-		settingDebugSpaceCaption:{
+		settingDebugSpaceCaption: {
 			en: 'Available storage space: ',
 			de: 'Verfügbarer Speicherplatz: '
 		},
-		settingDebugDumpCaption:{
+		settingDebugDumpCaption: {
 			en: 'currently stored settings',
 			de: 'aktuell gespeicherte Einstellungen'
 		},
-		settingDeleteDistinctPlaceholder:{
+		settingDeleteDistinctPlaceholder: {
 			en: 'delete distinct settings, csv',
 			de: 'Einstellungen gezielt löschen, kommagetrennt'
 		},
-		settingMailDebugDump:{
+		settingMailDebugDump: {
 			en: 'open mail to send settings',
 			de: 'eMail öffnen um Einstellungen zu versenden'
 		},
@@ -451,7 +450,7 @@ core.var = {
 			en: 'Storing was not possible. The local storage limit for this application was exceeded.',
 			de: 'Speichern nicht möglich. Der Speicherplatz für diese Anwendung ist erschöpft.'
 		},
-		
+
 		buttonGenCaption: {
 			en: 'generate / update',
 			de: 'generieren / aktualisieren'
@@ -528,7 +527,7 @@ core.var = {
 			en: 'important eMail-addresses',
 			de: 'wichtige eMail-Adressen'
 		},
-		
+
 		drmConfirmationSubmit: {
 			en: 'Approval',
 			de: 'Freigabe'

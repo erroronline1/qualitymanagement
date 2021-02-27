@@ -48,7 +48,7 @@ core.fn = {
 		if (core.fn.escapeHTML(body, true).length > core.var.directMailSize) body = core.fn.lang('errorMailSizeExport');
 		var mail, content = 'mailto:' + value(address) + '?' + (value(subject).length ? 'subject=' + core.fn.escapeHTML(value(subject), true) : '') + (value(subject).length && body.length ? '&' : '') + (body.length ? 'body=' + core.fn.escapeHTML(body, true) : '');
 
-		if (core.fn.setting.get('settingMailtoMethod')) { //this might switch in future
+		if (!core.fn.setting.get('settingMailtoMethod')) { //i told you this might switch in future
 			//this elegant way works with windows 10
 			mail = document.createElement('a');
 			mail.href = content;
@@ -507,8 +507,7 @@ core.fn = {
 				//  only firefox seemingly supports up to 2^15 characters (32768 - the afore mentioned)
 				'<br />' + core.fn.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="100" max="32400" step="300" value="' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '" onchange="core.fn.setting.set(\'settingDirectMailSize\',(this.value)); el(\'currentDirectMailSize\').innerHTML=this.value; core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))" title="' + core.fn.lang('settingRestartNeccessary') + '" />' +
 				' <span id="currentDirectMailSize">' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.maxMailSize()" value="' + core.fn.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.lang('settingMailSizeDeterminationHint') + '" />' +
-				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingMailtoMethod'), 'settingMailtoMethod', (core.fn.setting.get('settingMailtoMethod') || 0), 'onchange="core.fn.setting.switch(\'settingMailtoMethod\')"') +
-				'<br /><small>' + core.fn.lang('settingMailtoMethodHint') + '</small>';
+				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingMailtoMethod'), 'settingMailtoMethod', (core.fn.setting.get('settingMailtoMethod') || 0), 'onchange="core.fn.setting.switch(\'settingMailtoMethod\')"');
 		},
 		setupDebug: function () { //return debugging options
 			var settingsDump = '';
