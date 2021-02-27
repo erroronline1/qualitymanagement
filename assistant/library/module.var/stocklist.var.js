@@ -1,7 +1,7 @@
 if (typeof stocklist === 'undefined') var stocklist = {};
 
 stocklist.var = {
-	filter: function(){ //filters according to stocklist.xls
+	filter: function () { //filters according to stocklist.xls
 		//id:[select value, select text, filter for smartsearch]
 		return {
 			all: ['all', core.fn.lang('filterAll', 'stocklist'), 'true'],
@@ -17,11 +17,13 @@ stocklist.var = {
 		},
 		useCaseDescription: {
 			en: function () {
-				return (stocklist.fn.search() ? 'There are currently ' + stocklist.fn.search() + ' items listed. ' : '') +
+				return (stocklist.fn.search() ? 'There are currently ' + stocklist.fn.search() + ' items listed' +
+						(stocklist_data.modified != undefined ? ' (as of ' + stocklist_data.modified + ')' : '') + '. ' : '') +
 					'These are the products that have permission to be ordered and used in production. Search for default items by &quot;manufacturer&quot and mess around with search terms.';
 			},
 			de: function () {
-				return (stocklist.fn.search() ? 'Aktuell hat die Artikelliste ' + stocklist.fn.search() + ' Einträge. ' : '') +
+				return (stocklist.fn.search() ? 'Aktuell hat die Artikelliste ' + stocklist.fn.search() + ' Einträge' +
+						(stocklist_data.modified != undefined ? ' (Stand ' + stocklist_data.modified + ')' : '') + '. ' : '') +
 					'An dieser Stelle könne alle zugelassenen Artikel eingesehen werden. Suche nach Standardeinträgen von &quot;Manufacturer&quot; und spiel mit Suchbegriffen.';
 			}
 		},
@@ -81,7 +83,7 @@ stocklist.var = {
 			en: 'by ',
 			de: 'nach '
 		},
-		articleAdded:{
+		articleAdded: {
 			en: 'Added to shopping cart',
 			de: 'Zum Warenkorb hinzugefügt'
 		}

@@ -13,7 +13,7 @@ print ('''
      _           _   _ _     _
  ___| |_ ___ ___| |_| |_|___| |_
 |_ -|  _| . |  _| '_| | |_ -|  _|
-|___|_| |___|___|_,_|_|_|___|_|    built 20210222
+|___|_| |___|___|_,_|_|_|___|_|    built 20210227
 
 by error on line 1 (erroronline.one)
 
@@ -29,9 +29,9 @@ DEFAULTJSON={
 			"filter": {
 				"ORDERSTOP": "true"
 			},
-			"____destination": "choose destination file/path and add wrapping strings to convert a json-dump into a javascript object",
+			"____destination": "choose destination file/path and add wrapping strings to convert a json-dump into a javascript object. modified DATE-string will be replaced with generation date.",
 			"destination": "E:\\Quality Management\\assistant\\library\\module.data\\stocklist.js",
-			"wrapstart" :"//this file was automatically created by <stocklist.exe>\n\nvar stocklist_data={content:",
+			"wrapstart" :"//this file was automatically created by <stocklist.exe>\n\nvar stocklist_data={modified: \"DATE\", content:",
 			"wrapend": "};",
 			"____unionbyoutputcolumn": "occasionally there are multiple entries in the source file with the same identifier that can be unified",
 			"unionbyoutputcolumn": 1,
@@ -404,7 +404,7 @@ def translate(imported):
 		#################################################
 		try:
 			with open(module['destination'], 'w', newline = '', encoding = 'utf8') as file:
-				file.write(module['wrapstart'])
+				file.write(module['wrapstart'].replace('DATE', datetime.datetime.now().strftime('%Y-%m-%d')))
 				json.dump(result, file, ensure_ascii = False, indent = 4)
 				file.write(module['wrapend'])
 			fprint('[*]  destination file ' + module['destination'] + ' successfully written', clearanimation = '[*]')
