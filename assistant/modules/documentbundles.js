@@ -43,39 +43,26 @@ documentbundles.fn = {
 		else return '<a href="' + url + '" target="_blank">' + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.')).substring(1) + '</a><br />';
 	},
 	serialPrint: function (files) {
-		/*
-			files=files.substring(1).replace(/\//g,'\\').split(',');
-			var batch=core.fn.coreRootDir+'modules/packages.cmd';
+		files = files.substring(1).replace(/\//g, '\\').split(',');
+		if (!!document.documentMode) {
 			try {
 				var shell = new ActiveXObject("WScript.Shell");
-				//shell.run('cmd /h & pause'); // do not delete if cmd is restricted on your system. this keeps a window open in case of need to mess around ;)
-				var command= 'cmd /c start CALL "'+batch.replace(/\//g,'\\')+'" "'+files.join('" "')+'"';// & pause';
-				shell.run(command);
+				var command = 'cmd /c';
+				files.forEach(function (el) {
+					command += ' start "" ' + documentbundles.var.serialPrintShellCommand[core.var.selectedOs()] + ' "' + el + '" &';
+				});
+				shell.run(command.slice(0, -2) + ' & exit');
+			} catch (e) {
+				core.fn.popup(core.fn.lang('errorNoActiveX', 'documentbundles'));
 			}
-			catch (e) {
-				core.fn.popup('Bitte Oberfläche neu laden und ActiveX zulassen...');
-			}
-		
-			//	modules/packages.cmd could contain
-		
-			//	for %%I in (%*) DO (
-			//	start "" "C:\Program Files\Adobe\Reader 11.0\Reader\AcroRd32.exe" /n /s /h /t %%I
-			//	)
-			//	EXIT
-		
-			// this working way was abandoned to avoid a dependecy of another file in favour of a better customability
-			// within one file in case of changing paths, other applications or operating systems
-			*/
-		files = files.substring(1).replace(/\//g, '\\').split(',');
-		try {
-			var shell = new ActiveXObject("WScript.Shell");
-			var command = 'cmd /c';
-			files.forEach(function (el) {
-				command += ' start "" ' + documentbundles.var.serialPrintShellCommand[core.var.selectedOs()] + ' "' + el + '" &';
-			});
-			shell.run(command.slice(0, -2) + ' & exit');
-		} catch (e) {
-			core.fn.popup(core.fn.lang('errorNoActiveX', 'documentbundles'));
+		} else { // ok, i added this here, but due to cors-issues this won't print - even with relative paths; currently opening all files instead; popup-blocking might have to be set
+			var index = 0,
+				print = setInterval(function () {
+					if (index < files.length) {
+						this['print' + index] = window.open('file:///' + files[index], 'print' + index);
+						index++;
+					} else clearInterval(print);
+				}, 100);
 		}
 	},
 	gen: function (treatment) {
@@ -103,7 +90,7 @@ documentbundles.fn = {
 					}
 				});
 			}
-			if (!!document.documentMode) primary += '<hr /><a href="javascript:documentbundles.fn.serialPrint(\'' + serialPDFlist + '\')">' + core.fn.lang('serialPrintLink', 'documentbundles', serialPrintExceptions.substring(2)) + '</a>';
+			primary += '<hr /><a href="javascript:documentbundles.fn.serialPrint(\'' + serialPDFlist + '\')">' + core.fn.lang('serialPrintLink', 'documentbundles', serialPrintExceptions.substring(2)) + '</a>';
 			primary += '<br /><br />' + core.fn.lang('additionalInfo', 'documentbundles');
 			Object.keys(pack.secondary).forEach(function (index) {
 				secondary += documentbundles.fn.linkfile(pack.secondary[index]);
