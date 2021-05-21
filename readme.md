@@ -388,6 +388,7 @@ this sheet is also used for session persistent values that can not otherwise be 
 
 ### maintainability
 i had to learn this one the hard way. on developing and testing i had to change the codebase several times in about 30 beta testers sheets without dumping their values. eventually i learned about importing modules. if you provide a subfolder with the main module codes these will be imported/updated on every opening of the sheet. if this is not possible the modules remain in their last imported version. you can hide the subfolder vb_library, make it read_only by account management or provide it temporarily after changes.
+the code within This.Worksheet can be overwritten by enabling the *Rewrite*-module from the *Essentials*-module. this works well, but causes issues for tables that have to be initialized. please enable this only to update existing timetables on the fly and disable afterwards to not affect the daily flow.
 
 if you change the layout of the tables make sure to adjust the cell addresses (A1 nad R1C1 notations both apply) within the essentials-module:
 
