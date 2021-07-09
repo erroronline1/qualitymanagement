@@ -7,6 +7,7 @@ Attribute VB_Name = "Specific"
 '   / | \
 
 Option Explicit
+Public openedFromWordFlag As Boolean
 
 Public Function monitorSetup() As Collection
     ' this has to be a function, because a public variable gets emptied after finishing the open routine for some freaking reason
@@ -21,26 +22,35 @@ Public Sub closeRoutine(ByVal SaveAsUI As Boolean, Cancel As Boolean)
     Set setup = Locals.setupInternalDocuments
     updateContent setup
     
-    Select Case MsgBox(setup("initiate.Confirm"), vbYesNo + vbDefaultButton2 + vbQuestion, setup("initiate.Title"))
-    Case vbYes
-        exportXLS setup
-        'harmonize elements for intermodule compatibility
-        setup.add setup("documentlist.sheet"), "matrix.sheet"
-        setup.add setup("documentlist.linkColumn"), "matrix.linkColumn"
-        setup.add setup("documentlist.headerRow"), "matrix.headerRow"
-        setup.add setup("documentlist.searchTermColumn"), "matrix.searchTermColumn"
-        setup.add "", "matrix.displayAlternativeColumn"
-        setup.add setup("export.listdefaultFile"), "export.defaultFile"
-        setup.add setup("export.listPrompt"), "export.prompt"
-        Essentials.doclistExport setup, True, True
-        bundleExport setup
-    'Case vbNo
-    End Select
+    If Not openedFromWordFlag Then
+        Select Case MsgBox(setup("initiate.Confirm"), vbYesNo + vbDefaultButton2 + vbQuestion, setup("initiate.Title"))
+        Case vbYes
+            exportXLS setup
+            ' harmonize elements for intermodule compatibility
+            setup.Add setup("documentlist.sheet"), "matrix.sheet"
+            setup.Add setup("documentlist.linkColumn"), "matrix.linkColumn"
+            setup.Add setup("documentlist.headerRow"), "matrix.headerRow"
+            setup.Add setup("documentlist.documentFormat"), "matrix.documentFormat"
+            setup.Add setup("documentlist.searchTermColumn"), "matrix.searchTermColumn"
+            setup.Add "", "matrix.displayAlternativeColumn"
+            setup.Add setup("export.listdefaultFile"), "export.defaultFile"
+            setup.Add setup("export.listPrompt"), "export.prompt"
+            
+            Essentials.doclistExport setup, True, True
+            bundleExport setup
+        'Case vbNo
+        End Select
+    End If
+End Sub
+
+Public Sub openedFromWord(ByVal flag As Boolean)
+    ' if opened by word document this sub is called, public var set and exports disabled
+    openedFromWordFlag = flag
 End Sub
 
 Public Sub updateContent(var As Collection)
     ''''' update and process document list and norm dependencies '''''
-    
+
     'to make the result more comprehensible add =IF(A3<>"";IF(B3="";TRUE;FALSE);FALSE) _
     for conditional format in the column beside the checklist (e.g. range =$B$3:$B$400)
     
@@ -79,7 +89,6 @@ Public Sub updateContent(var As Collection)
 
     'insert result to the right of checklist column
     Range(rng.Offset(0, 1), rng.Offset(0, 1)).Value = insert
-
     ''''' update document list range name for dropdown in document bundles '''''
 
     'setup range object of checklist (column)
@@ -91,10 +100,9 @@ Public Sub updateContent(var As Collection)
     With ThisWorkbook.Names(var("documentlist.rangeName"))
         .RefersTo = rng
     End With
-
 End Sub
 
-Public Sub bundleExport(var As Variant)
+Public Sub bundleExport(var As Collection)
     'exports a javascript-file with object containing file links _
     taking doc-files and changing docm-extension to pdf _
     using export-variables
@@ -115,9 +123,12 @@ Public Sub bundleExport(var As Variant)
             Dim file As Variant
             Dim path As String
             Dim intermediate As String
-            Dim bundlemaxcolumns as Variant: bundlemaxcolumns=Essentials.LastRowOrColumn(ThisWorkbook, "cols", var("bundles.sheet"), var("bundles.headerRow"), var("bundles.displayColumn"), var("bundles.maxColumns"))
+            Dim bundlemaxcolumns As Variant: bundlemaxcolumns = Essentials.LastRowOrColumn(ThisWorkbook, "cols", var("bundles.sheet"), var("bundles.headerRow"), var("bundles.displayColumn"), var("bundles.maxColumns"))
+            Dim mformat As Variant
+            If Essentials.collectionKeyExists(var, "documentlist.documentFormat") Then mformat = ThisWorkbook.Worksheets(var("documentlist.sheet")).Range(var("documentlist.documentFormat") & var("documentlist.headerRow") + 1 & ":" & var("documentlist.documentFormat") & matrixallrows)
+            Dim documentFormat: documentFormat = ""
             
-            Dim finally As String: finally = "//this file was automatically created by <" & ThisWorkbook.Name &">" & vbNewLine & vbNewLine & _
+            Dim finally As String: finally = "//this file was automatically created by <" & ThisWorkbook.Name & ">" & vbNewLine & vbNewLine & _
                 "var EXCEPTIONS={" & vbNewLine
             
             'assign exceptions
@@ -148,13 +159,15 @@ Public Sub bundleExport(var As Variant)
                     files = Split(data(bundle, 1), ";")
                     For Each file In files
                         path = ""
+                        documentFormat = ""
                         'loop through document list, compare document titles and add corresponding file link to intermediate result
-                        For lrow = LBound(mlink, 1) To UBound(mlink, 1)
-                            If Trim(mlink(lrow, 1)) = Trim(file) Then
-                                path = Essentials.Path2Link(mlink(lrow, UBound(mlink, 2)), True, True)
+                            For lrow = LBound(mlink, 1) To UBound(mlink, 1)
+                                If Not IsEmpty(mformat) Then documentFormat = CStr(mformat(lrow, 1))
+                                If Trim(mlink(lrow, 1)) = Trim(file) Then
+                                path = Essentials.Path2Link(mlink(lrow, UBound(mlink, 2)), True, documentFormat)
                             End If
                         Next lrow
-                        If path = "" Then path = Essentials.Path2Link(Trim(file), True, True)
+                        If path = "" Then path = Essentials.Path2Link(Trim(file), True, documentFormat)
                         intermediate = intermediate & Chr(34) & path & Chr(34) & "," & vbNewLine
                     Next file
                     finally = finally & intermediate & "]," & vbNewLine
@@ -194,13 +207,15 @@ Public Sub bundleExport(var As Variant)
                     files = Split(data(bundle, 1), ";")
                     For Each file In files
                         path = ""
+                        documentFormat = ""
                         'loop through document list, compare document titles and add corresponding file link to intermediate result
                         For lrow = LBound(mlink, 1) To UBound(mlink, 1)
+                            If Not IsEmpty(mformat) Then documentFormat = CStr(mformat(lrow, 1))
                             If Trim(mlink(lrow, 1)) = Trim(file) Then
-                                path = Essentials.Path2Link(mlink(lrow, UBound(mlink, 2)), True, True)
+                                path = Essentials.Path2Link(mlink(lrow, UBound(mlink, 2)), True, documentFormat)
                             End If
                         Next lrow
-                        If path = "" Then path = Essentials.Path2Link(Trim(file), True, True)
+                        If path = "" Then path = Essentials.Path2Link(Trim(file), True, documentFormat)
                         intermediate = intermediate & Chr(34) & path & Chr(34) & "," & vbNewLine
                     Next file
                     'add intermediate result to result array. at the moment this groups to two groups based on the last character group of _
@@ -282,7 +297,7 @@ Public Function Assign(var As Variant) As Variant
     Assign = result
 End Function
 
-Public Sub exportXLS(var As Variant)
+Public Sub exportXLS(ByVal var As Collection)
     'exports an excel-file without code _
     file paths are changed to pdf and document bundles will have links to the files _
     this public file will work as a plan b to access documents in charge and document bundles in case the assistant is broken
@@ -295,26 +310,32 @@ Public Sub exportXLS(var As Variant)
         pdfFolder = InputBox(var("export.ReplaceToPrompt"), var("export.ReplaceToTitle"), var("export.ReplaceToDefaultPath"))
         End If
         If Not (pdfFolder = vbNullString And docFolder = vbNullString) Then
-            ThisWorkbook.Sheets(Array(var("documentlist.sheet"), var("normcheck.sheet"), var("bundles.sheet"))).Copy
-            Dim WB As Workbook
-            Set WB = ActiveWorkbook
+            Dim WB As Excel.Workbook
+            Set WB = Workbooks.Add
+            ThisWorkbook.Sheets(Array(var("documentlist.sheet"), var("normcheck.sheet"), var("bundles.sheet"))).Copy before:=WB.Worksheets(1)
+
             Dim rng As Range
             With WB.Worksheets(var("documentlist.sheet"))
                 Set rng = .Range(.Cells(var("documentlist.headerRow") + 1, var("documentlist.linkColumn")), .Cells(.Rows.Count, var("documentlist.linkColumn")).End(xlUp))
             End With
-           
+            Dim mformat As Variant
+            Dim matrixallrows As Integer: matrixallrows = ThisWorkbook.Worksheets(var("documentlist.sheet")).Range(var("documentlist.linkColumn") & Rows.Count).End(xlUp).Row
+            If Essentials.collectionKeyExists(var, "documentlist.documentFormat") Then mformat = ThisWorkbook.Worksheets(var("documentlist.sheet")).Range(var("documentlist.documentFormat") & var("documentlist.headerRow") + 1 & ":" & var("documentlist.documentFormat") & matrixallrows)
+            Dim documentFormat: documentFormat = ""
+          
             'replace file links in overview with pdf-path
             Dim mexp As Variant: mexp = rng
             Dim insert() As Variant: ReDim insert(UBound(mexp, 1), 0)
             Dim mrow As Long
             For mrow = LBound(mexp, 1) To UBound(mexp, 1)
                 If mexp(mrow, 1) <> "" Then
-                        insert(mrow, 0) = Essentials.Path2Link(mexp(mrow, 1), True, True)
+                        If Not IsEmpty(mformat) Then documentFormat = CStr(mformat(mrow, 1))
+                        insert(mrow, 0) = Essentials.Path2Link(mexp(mrow, 1), True, documentFormat)
 
                         WB.Worksheets(var("documentlist.sheet")).Hyperlinks.Add _
                             Anchor:=WB.Worksheets(var("documentlist.sheet")).Range(var("documentlist.linkColumn") & var("documentlist.headerRow") + mrow), _
-                            Address:=Essentials.Path2Link(mexp(mrow, 1), True, True), _
-                            TextToDisplay:=Essentials.Path2Link(mexp(mrow, 1), True, True)
+                            Address:=Essentials.Path2Link(mexp(mrow, 1), True, documentFormat), _
+                            TextToDisplay:=Essentials.Path2Link(mexp(mrow, 1), True, documentFormat)
                 End If
             Next mrow
             'insert result to the right of checklist column
@@ -322,7 +343,7 @@ Public Sub exportXLS(var As Variant)
 
             'insert links to documentbundles
             Dim matrixcols As Integer: matrixcols = Essentials.LastRowOrColumn(WB, "cols", var("bundles.sheet"), var("bundles.headerRow"), var("bundles.startColumn"), var("bundles.maxColumns"))
-            Dim matrixallrows As Integer: matrixallrows = Essentials.LastRowOrColumn(WB, "rows", var("bundles.sheet"), var("bundles.headerRow"), var("bundles.displayColumn"), var("bundles.maxRows"))
+            matrixallrows = Essentials.LastRowOrColumn(WB, "rows", var("bundles.sheet"), var("bundles.headerRow"), var("bundles.displayColumn"), var("bundles.maxRows"))
             Dim compareallrows As Integer: compareallrows = Essentials.LastRowOrColumn(WB, "rows", var("documentlist.sheet"), var("documentlist.headerRow"), var("documentlist.displayColumn"), var("documentlist.maxRows"))
             'load ranges into one-dimensional array variable variant _
             to avoid uneccessary interaction between excel-shets and vba for performance reasons
@@ -350,7 +371,7 @@ Public Sub exportXLS(var As Variant)
                     End If
                 Next mcol
             Next mrow
-            WB.SaveAs Filename:=fileSaveName, FileFormat:=xlOpenXMLWorkbook, _
+            WB.SaveAs Filename:=fileSaveName, fileFormat:=xlOpenXMLWorkbook, _
                 Password:="", WriteResPassword:="", ReadOnlyRecommended:=False, _
                 CreateBackup:=False
             ActiveWorkbook.Close False

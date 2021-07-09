@@ -19,5 +19,5 @@ Sub rewriteMain(ByRef Workument, ByVal Module, ByVal Source)
 		.VBComponents(Module).CodeModule.AddFromFile Source
 	End With
 	'delete module
-    Workument.VBProject.VBComponents.Remove Workument.VBProject.VBComponents("Rewrite")
+    'Workument.VBProject.VBComponents.Remove Workument.VBProject.VBComponents("Rewrite")
 End Sub

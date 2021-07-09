@@ -169,8 +169,9 @@ Public Function setupInternalDocuments() As Collection
     setupInternalDocuments.Add Item:="DocumentList", key:="documentlist.sheet" 'select sheet to process content
     setupInternalDocuments.Add "B", "documentlist.displayColumn" 'customize column, taking displayed document name from for norm checking
     setupInternalDocuments.Add "D", "documentlist.linkColumn" 'customize link column, processing file links for export
-    setupInternalDocuments.Add "E", "documentlist.searchTermColumn" 'customize column for additional search terms for the assistant, processing file links for export
-    setupInternalDocuments.Add "F", "documentlist.startColumn" 'customize column, starting point for matrix for norm checking
+    setupInternalDocuments.Add "E", "documentlist.documentFormat" 'customize column for published file types for the assistant, processing file links for export
+    setupInternalDocuments.Add "F", "documentlist.searchTermColumn" 'customize column for additional search terms for the assistant, processing file links for export
+    setupInternalDocuments.Add "G", "documentlist.startColumn" 'customize column, starting point for matrix for norm checking
     setupInternalDocuments.Add 2, "documentlist.headerRow" 'customize header row, starting point for matrix
     setupInternalDocuments.Add Null, "documentlist.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
     setupInternalDocuments.Add Null, "documentlist.maxRows" 'customize last row, ending point for matrix, null value considers all rows output columns
@@ -198,8 +199,7 @@ Public Function setupInternalDocuments() As Collection
     setupInternalDocuments.Add "Provide content to external view?", "initiate.Title"
     setupInternalDocuments.Add "Save copy without code," & vbNewLine & _
             "export list of documents to the assistant," & vbNewLine & _
-            "export document bundles to the assistant?" & vbNewLine & vbNewLine & _
-            "It is not recommended to execute this step in context of document registration!", "initiate.Confirm"
+            "export document bundles to the assistant?", "initiate.Confirm"
     'document list
     setupInternalDocuments.Add "E:\Quality Management\assistant\library\module.data\documentlookup_int.js", "export.listdefaultFile"
     setupInternalDocuments.Add "Export list to the assistant?", "export.listPrompt"
@@ -243,5 +243,5 @@ End Function
 Public Function monitorDRM() As Collection
     Set monitorDRM = New Collection
     monitorDRM.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
-    monitorDRM.Add Array(True, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
+    monitorDRM.Add Array(True, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns" 
 End Function

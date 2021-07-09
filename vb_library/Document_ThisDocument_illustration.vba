@@ -2,17 +2,14 @@
 '    / \    part of
 '   |...|
 '   |...|   bottle light quality management software
-'   |___|	by error on line 1 (erroronline.one) available on https://github.com/erroronline1/qualitymanagement
+'   |___|   by error on line 1 (erroronline.one) available on https://github.com/erroronline1/qualitymanagement
 '   / | \
 
 Option Explicit
 Public selectedLanguage As String
 Public parentPath
-Public WithEvents App As Word.Application
 
 Private Sub Document_Open()
-    Set App = Word.Application
-    
     selectedLanguage = "EN"
     
     'get parent path to vb_libraries to be imported
@@ -36,10 +33,9 @@ Private Sub asyncOpen()
     Essentials.openRoutine
 End Sub
 
-Private Sub App_DocumentBeforeSave(ByVal Doc As Document, SaveAsUI As Boolean, Cancel As Boolean)
-    Essentials.closeRoutine Doc, SaveAsUI, Cancel
+Private Sub Document_Close()
+    Essentials.closeRoutine
 End Sub
-
 
 Public Function importModules(ByVal libraries As Object) As Boolean
     Dim lib As Variant, modloop As Variant

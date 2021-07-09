@@ -2,9 +2,15 @@ if (typeof documentbundles === 'undefined') var documentbundles = {};
 
 documentbundles.var = {
 	serialPrintShellCommand: { //making use of core.var.selectedOs()
-		win7: '"' + 'C:/Program Files/Adobe/Reader 11.0/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t',
-		win10: '"' + 'C:/Program Files (x86)/Adobe/Reader 11.0/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t',
-		win10k: '"' + 'C:/Program Files (x86)/Adobe/Acrobat Reader DC/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t'
+		win7: {
+			pdf:'"' + 'C:/Program Files/Adobe/Reader 11.0/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t',
+			docm:''},
+		win10: {
+			pdf:'"' + 'C:/Program Files (x86)/Adobe/Reader 11.0/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t',
+			docm:'"' + 'C:/Program Files (x86)/Microsoft Office/root/Office16/WINWORD.EXE'.replace(/\//g, '\\') + '" /q /n /mFilePrintDefault /mFileExit'},
+		win10k: {
+			pdf:'"' + 'C:/Program Files (x86)/Adobe/Acrobat Reader DC/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t',
+			docm:'"' + 'C:/Program Files (x86)/Microsoft Office/root/Office16/WINWORD.EXE'.replace(/\//g, '\\') + '" /q /n /mFilePrintDefault /mFileExit'}
 	},
 	lang: {
 		useCaseDescription: {

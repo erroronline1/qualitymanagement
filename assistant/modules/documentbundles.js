@@ -49,7 +49,8 @@ documentbundles.fn = {
 				var shell = new ActiveXObject("WScript.Shell");
 				var command = 'cmd /c';
 				files.forEach(function (el) {
-					command += ' start "" ' + documentbundles.var.serialPrintShellCommand[core.var.selectedOs()] + ' "' + el + '" &';
+					var extension = el.split('.').pop()
+					command += ' start "" ' + documentbundles.var.serialPrintShellCommand[core.var.selectedOs()][extension.toLowerCase()] + ' "' + el + '" &';
 				});
 				shell.run(command.slice(0, -2) + ' & exit');
 			} catch (e) {

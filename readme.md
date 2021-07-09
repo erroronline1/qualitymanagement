@@ -10,15 +10,13 @@
 ```
 
 [![last-commit](https://img.shields.io/github/last-commit/erroronline1/qualitymanagement.svg?style=flat-square)](https://github.com/erroronline1/qualitymanagement/commits/master)
-![repo-size](https://img.shields.io/github/repo-size/erroronline1/qualitymanagement.svg?style=flat-square)
-![code-size](https://img.shields.io/github/languages/code-size/erroronline1/qualitymanagement.svg?style=flat-square)
 ![license](https://img.shields.io/github/license/erroronline1/qualitymanagement.svg?style=flat-square)
 [![demo](https://img.shields.io/website?style=flat-square&down_message=demo%20unavailable&up_message=demo%20available&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
 
 compatible with
 
-![word](https://img.shields.io/badge/office%20word-2010,%202013,%202019-blue?style=flat-square&logo=microsoft-word)
-![excel](https://img.shields.io/badge/office%20excel-2010,%202013,%202019-brightgreen?style=flat-square&logo=microsoft-excel)
+![word](https://img.shields.io/badge/office%20word-2016,%202019-blue?style=flat-square&logo=microsoft-word)
+![excel](https://img.shields.io/badge/office%20excel-2016,%202019-brightgreen?style=flat-square&logo=microsoft-excel)
 ![ie11](https://img.shields.io/badge/internet%20explorer-11-blue?style=flat-square&logo=internet-explorer)
 ![browsers](https://img.shields.io/badge/real%20browsers-firefox,%20chrome,%20edge-orange?style=flat-square)
 
@@ -126,7 +124,7 @@ and yes, whether or not i should use ascii to do a logo, i most certainly can.
 
 # the core documents
 ## use case
-the office documents come with built-in vba-code to handle document version control, ressource overview and export-handling. employees use mainly unchangeable pdf-files to fill out during workflow. each document registers and manages itself (kind of).
+the office documents come with built-in vba-code to handle document version control, ressource overview and export-handling. employees use mainly unchangeable pdf-files or docm-files to fill out during workflow. each document registers and manages itself (kind of).
 
 ## what the documents do
 style the blueprints according to your desired corporate design whatever you like and however word allows you to. just make sure you don't delete the in-built fields.
@@ -142,7 +140,7 @@ in general this system
 
 ## requirements
 * one somewhat experienced office user to customize the document-blueprints and vba-codes
-* microsoft office 2010+ (tested with office 2010, 2013 and 2019 professional, word and excel)
+* microsoft office (developed and tested with office 2016 and 2019 professional, word and excel, lower versions probably work as well)
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -180,7 +178,7 @@ there is no installation routine. place the files to your desired accessible net
 ![sample folder structure](assets/folderstructure.png)
 * the provided folder structure might not be neccessarily your first choice and serves just as a sample. you have to change at least the default paths within the vba-code and the assistant anyway.
 * even if you don't want to use the assistant, the documents semiautomated version control still might be useful for you. on the other hand the assistant is hardly possible to populate without the documents unless you write your own routines for that.
-* i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to pdfs, timetables and the assistant application should be granted for everyone.
+* i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to published pdfs or docms, timetables and the assistant application should be granted for everyone.
 * provided python-scripts probably will have to be compiled (unless you have python installed - [3.6 for the moment](https://www.python.org/downloads/release/python-3612/)). i recommend [pyinstaller](http://www.pyinstaller.org/) for this usecase - at least for windows environments.
 
 [back to top](#bottle-light-quality-management-software)
@@ -203,7 +201,7 @@ the vba-code can be customized quite easily for i tried to have all important pa
 * you can change rows and columns within the local-setup of tables in case you want to provide different information on save of office-files
 * you will be guided through version control and can choose whether to auto-update version and release date or set these manually
 * archiving files with latest version number
-* exporting files to unchangeable pdf (you might want to overhaul them to editable forms, but that requires additional software)
+* exporting files to unchangeable pdf (you might want to overhaul them to editable forms, but that requires additional software) or as protected interactive dynamic docms
 * updating the list of current documents in force
 * central code modules makes changes to desired behaviour more easily
 
@@ -222,18 +220,26 @@ it's widely agreed upon that excel does not serve as a sufficient database. on t
 the main template contains the basic functions for importing modules for version control and registration. you basically just have to set up the language code according to available local modules and the level of parental folders depending on the relative vb_library location. this is one level up by default.
 outsourced modules will be imported/updated if available.
 
-there are three important and processed fields within the document:
+there are three important and processed fields/document variables within the document:
 * title, which is updated on load of the file
 * version and
 * release date
 
-the field for page numbering is of no importance to the functions and can be deleted or moved.
-according to the modules currently you are asked on saving if you want to update the version number and release date. you can set these automatically to the next version and the current date or set it manually. in either cases you will be processed through archiving, publishing and registering the document in the list of documents in force. if you have to do changes, don't want to change the version but want to export it (e.g. when editing with set release date) you will have to set the variables manually to the current state. if you cancel the initial request the file will be saved without version control.
-you can archive the document without code to avoid any accidential changes. the file name will be followed by the version number.
-you can publish the document as an uneditable pdf file (but you could implement editable field with third party application).
-afterwards on selecting the list of documents in force, the file will either add itself to the list or update its version, release date and number of pages.
+on opening the draft file a macrobutton will be inserted at the end. on doubleclick the versioning and publishing routines will start. the button will disappear on exporting and quitting the file.
+you can set the version number and release date automatically to the next version and the current date or set it manually. in either cases you will be processed through archiving, publishing and registering the document in the list of documents in force. if you have to do changes, don't want to change the version but want to export it (e.g. when editing with set release date) you will have to set the variables manually to the current state. if you cancel the initial request the file will be saved without version control.
+archiving the documents happens without code to avoid any accidential changes. the file name will be followed by the version number.
+you can publish the document as an uneditable pdf file (but you could implement editable field with third party application), or choose to publish it as a protected docm with dynamic formields and optional checkbox-dependent content.
+afterwards on selecting the list of documents in force, the file will either add itself to the list or update its version and release date.
 
-*auto-save makes the popup of version control a bit annoying from time to time. at least i was able to reduce the request to the active document only.*
+![dynamic docm files](assets/dynamic_docm.gif)
+
+you can create interactive dynamic word-documents, that show content upon checking a box. this might be useful for manuals that show only relevant content.
+to achieve this you’ll need a checkbox with an individual tag (e.g. “Tag”), found within the developer tools, and two bookmarks called “textTag” and “notextTag”. notextTag can contain a caption like “not applicable”.
+a useful shortcut is ctrl + shift + f5 to set a bookmark for a marked paragraph.
+* the contents are always shown in the draft document
+* all possible contents are shown on pdf-export, but not the notext-ones. in this way is is always possible to mark the relevant paragraphs manually
+* just the notext-ones are visible by default on published DOCM-documents. this saves paper, is more comprehensible but is mandatory to be prepared on the computer
+text inputs are possible as well and expand the content dynamically. you can use richtext-inputs as well. on export the published file will be protected against changes, just leaving you with the form-inputs.
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -250,7 +256,8 @@ you can assign the documents to bundles in the third sheet where you have specia
 
 ![checkpoints](assets/xlsm_checkpoints.png)
 on save the list of checkpoints will update (for the dropdown option in assigning in sheet one) and all documents assigned will be written beside the checkpoints in sheet two. checkpoints on sheet one will be considered based on the header row. the list of documents for bundle assignment updates itself (insertion and deletion) and the bundles will be written like in the first sheets.
-you will be prompted for exports. first step is to export the list without code for your colleagues without the risk of them messing something up. you will have to input paths to be replaced and the equivalent insertions. you can set default paths for export and replacements within the code to speed these things up. docm-links will be replaced with pdf-links and the document bundle matrix will be updated with links as well. *the resulting file might work as your backup plan in case the assistant is broken. or you do not want to use it ( not recommended ;) )* 
+if you work direct within the list you will be prompted for exports, but not during registration of documents.
+first step is to export the list without code for your colleagues without the risk of them messing something up. you will have to input paths to be replaced and the equivalent insertions. you can set default paths for export and replacements within the code to speed these things up. docm-links will be replaced with pdf-links and the document bundle matrix will be updated with links as well. *the resulting file might work as your backup plan in case the assistant is broken. or you do not want to use it ( not recommended ;) )* 
 afterwards you can export the list of documents as well as the document bundles to the assistant. if you skip the first prompts the replace/insertion path will be asked for later. as long as the file is open the inputs will be remembered.
 
 [back to top](#bottle-light-quality-management-software)
@@ -274,9 +281,13 @@ the audit planner can be filled with a question set for internal audits. by expo
 [back to top](#bottle-light-quality-management-software)
 
 ## stocklist
+*deprecated but still available excel solution*
+
 ![excel stocklist](assets/xlsm_stocklist.png)
 
 the stocklist might contain all products and materials that have permission from the companies head. i am aware there are better solutions for stock administration but by time of writing my own companies software is worse than using excel for that. so this *is* an advance. the export function on save makes the list accessible and searchable for all employees using the assistant hence optimizing dialogue with inventory control. excel might freeze on export if the list contains 6k+ items, but it just takes some time, so no worries.
+
+*newer approach with python filtering csv*
 
 ![python stocklist translator](assets/py_stocklist.png)
 
@@ -324,11 +335,15 @@ if you have to change code for the main module / ThisDocument-class, there is a 
 
 ### document_-modules
 these are the modules for word-documents like the [draft documents in force](documents/), containing versions control, publishing and registering.
-Events like Document_Open() and App_DocumentBeforeSave() in the ThisDocument-code-module point to public functions within the essential-module thus executing always the latest imported routines.
+events like Document_Open() and App_DocumentBeforeSave() in the ThisDocument-code-module point to public functions within the essential-module thus executing always the latest imported routines.
+while being opened from the list of documents in force (programmatically by another office application) the window is not visible while the macros start. this results in errors using document variables.
+there's a conditional query if the application is visible and warns about non available functions if true.
 
 ### admin_-modules
 these modules are in use of the [administrative excel sheets](administration/) for maintaining and exporting diverse lists like document-lists, stocklist, etc. reusable functions can be found in the essentials-module, special behaviours are in the explicit module (based on the filename).
 Events like Workbook_Open() and Workbook_BeforeSave() in the ThisWorkbook-code-module point to public functions within the essential-module thus executing always the latest imported routines.
+
+while being opened during a registration process (programmatically by another office application) office seems to have trouble adressing workbook-objects properly (or my poor skills). previously this could mess up the export of the list of documents, but is now prevented by remote calling a sub to set a respective flag.
 
 ### timetable_-modules
 these modules work like the document_-modules and serve the same for every accessing [timetable-file](timetables/). in this sample structure these can be found within the timetable-folder, but this is up to you. just make sure to point to the right directory from the ThisWorbook-code-module.
@@ -388,7 +403,7 @@ this sheet is also used for session persistent values that can not otherwise be 
 
 ### maintainability
 i had to learn this one the hard way. on developing and testing i had to change the codebase several times in about 30 beta testers sheets without dumping their values. eventually i learned about importing modules. if you provide a subfolder with the main module codes these will be imported/updated on every opening of the sheet. if this is not possible the modules remain in their last imported version. you can hide the subfolder vb_library, make it read_only by account management or provide it temporarily after changes.
-the code within This.Worksheet can be overwritten by enabling the *Rewrite*-module from the *Essentials*-module. this works well, but causes issues for tables that have to be initialized. please enable this only to update existing timetables on the fly and disable afterwards to not affect the daily flow.
+the code within This.Worksheet can be oberwritten by enabling the *Rewrite*-module from the *Essentials*-module. this works well, but causes issues for tables that have to be initialized. please enable this only to update existing timetables on the fly and disable afterwards to not affect the daily flow.
 
 if you change the layout of the tables make sure to adjust the cell addresses (A1 nad R1C1 notations both apply) within the essentials-module:
 
@@ -414,7 +429,7 @@ passwords are stored in plain text. whether you like that or not, it makes it a 
 
 all this might not satisfy all security concerns but is considered reasonable.
 
-adjustments within the trust center might be necessary.
+adjustments within the trust center might be necessary by trusting access to the VBA project object model.
 
 there might be errors on opening multiple timetables at once, most notably with excel 2010. i still haven't learned why. all tests succeeded being used solo. field test showed errors and crashes sometimes, most probably due to faulty input, resulting in loss of a few inputs. i still have no clue what the colleagues entered to lead to this behaviour. you're most welcome to educate me on this!
 
@@ -500,6 +515,9 @@ globalSearch api: returns number of matches regarding search terms.
 this form supports all employees to create decent orders and send the resulting table to central purchasing by mail. if inventory control / central purchase makes use of administration/ticketorder.xlsm to serve data about the current order status the module.data-file will be sucessfully imported making it searchable from within the module as well as from the home global search.
 
 since ordering things can be expensive for the company, orders can be registered by everyone but have to be verified by persons with respective permissions as managed in the core-drm methods. the same module serves to decrypt the generated verification code for central purchase.
+
+in theory orders can be piled up and verified en bloc. in practice this is one of the biggest issues using ie11 due to restricted storage space on cookies (10 kb) as opposed to decent browsers with 5 mb localstorage. if your shitty company policy deletes everything on leaving the browser this also is obviously disturbing the workflow.
+to be honest this system is yet to be implemented properly. once i reach an agreement with central purchasing the data structure might be overhauled to be more efficient. currently the whole order with table styling is stored instead of structured data that would save some space.
 
 dependencies are: the datalist of inventory regarding the shopping cart, optional datalist of current order status
 

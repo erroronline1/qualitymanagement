@@ -168,9 +168,9 @@ Public Function setupInternalDocuments() As Collection
     setupInternalDocuments.Add Item:="DocumentList", key:="documentlist.sheet" 'select sheet to process content
     setupInternalDocuments.Add "B", "documentlist.displayColumn" 'customize column, taking displayed document name from for norm checking
     setupInternalDocuments.Add "D", "documentlist.linkColumn" 'customize link column, processing file links for export
-    setupInternalDocuments.Add "E", "documentlist.searchTermColumn" 'customize column for additional search terms for the assistant, processing file links for export
-    setupInternalDocuments.Add "F", "documentlist.startColumn" 'customize column, starting point for matrix for norm checking
-    setupInternalDocuments.Add 2, "documentlist.headerRow" 'customize header row, starting point for matrix
+    setupInternalDocuments.Add "E", "documentlist.documentFormat" 'customize column for published file types for the assistant, processing file links for export
+    setupInternalDocuments.Add "F", "documentlist.searchTermColumn" 'customize column for additional search terms for the assistant, processing file links for export
+    setupInternalDocuments.Add "G", "documentlist.startColumn" 'customize column, starting point for matrix for norm checking
     setupInternalDocuments.Add Null, "documentlist.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
     setupInternalDocuments.Add Null, "documentlist.maxRows" 'customize last row, ending point for matrix, null value considers all rows output columns
     setupInternalDocuments.Add "documents", "documentlist.rangeName" 'range name for selection in bundle assignment
@@ -197,8 +197,7 @@ Public Function setupInternalDocuments() As Collection
     setupInternalDocuments.Add "Inhalte veröffentlichen?", "initiate.Title"
     setupInternalDocuments.Add "Kopie der Liste ohne Code bereitstellen," & vbNewLine & _
             "Liste der Dokumente för den Assistenten bereitstellen," & vbNewLine & _
-            "Dokumentenpakete für den Assistenten bereitstellen??" & vbNewLine & vbNewLine & _
-            "Es wird nicht empfohlen die Bereitstellung im Rahmen der Dokumentenregistrierung durchzuführen!", "initiate.Confirm"
+            "Dokumentenpakete für den Assistenten bereitstellen?", "initiate.Confirm"
     'document list
     setupInternalDocuments.Add "E:\Quality Management\assistant\library\module.data\documentlookup_int.js", "export.listdefaultFile"
     setupInternalDocuments.Add "Liste interner Dokumente für den Assistenten bereitstellen?", "export.listPrompt"

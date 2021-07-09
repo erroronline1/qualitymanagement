@@ -7,7 +7,7 @@ Attribute VB_Name = "Essentials"
 '   / | \
 
 Option Explicit
-Public filesavename As Variant
+Public fileSaveName As Variant
 Public docFolder, pdfFolder As String
 Public WritePermission As Boolean
 Public monitorOverride As Boolean
@@ -17,8 +17,8 @@ Public monitorOverride As Boolean
 ' general module handler
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Public Function Modules() as Object
-    Set Modules= CreateObject("Scripting.Dictionary")
+Public Function Modules() As Object
+    Set Modules = CreateObject("Scripting.Dictionary")
     Modules.Add "Locals", ThisWorkbook.parentPath & "vb_library\" & "Admin_Locals_" & ThisWorkbook.selectedLanguage & ".vba"
     Modules.Add "Specific", ThisWorkbook.parentPath & "vb_library\" & "Admin_" & ThisWorkbook.Name & ".vba"
     'Modules.Add "Rewrite", ThisWorkbook.parentPath & "vb_library\RewriteMain.vba"
@@ -78,19 +78,26 @@ Public Function LastRowOrColumn(ByVal WB As Workbook, ByVal rowcol As String, By
     End If
 End Function
 
-Public Function convertColumn (ByVal destinationFormat As String, ByVal inputColumn As Variant ) As Variant
+Public Function convertColumn(ByVal destinationFormat As String, ByVal inputColumn As Variant) As Variant
     If destinationFormat = "2letter" Then
         convertColumn = Split(Cells(1, inputColumn).Address(True, False), "$")(0)
     ElseIf destinationFormat = "2number" Then
-        convertColumn = Range(inputColumn & 1).Column
+        convertColumn = Range(inputColumn & 1).column
     End If
 End Function
 
-Public Function Path2Link(ByVal path As Variant, ByVal replacePath As Boolean, ByVal doc2pdf As Boolean) As String
+Public Function Path2Link(ByVal path As Variant, ByVal replacePath As Boolean, ByVal fileFormat As String) As String
     'can replace path segments, extension and makes path html-comprehensible, which works for excel links as well
     If replacePath Then path = Replace(path, docFolder, pdfFolder)
-    If doc2pdf Then path = Replace(path, ".docm", ".pdf")
+    If fileFormat <> "" Then path = Replace(path, ".docm", "." & LCase(fileFormat))
     Path2Link = Replace(path, "\", "/")
+End Function
+
+Function collectionKeyExists(ByRef col As Collection, key As String) As Boolean
+    Dim v As Variant
+    On Error Resume Next
+    v = IsObject(col.Item(key))
+    collectionKeyExists = Not IsEmpty(v)
 End Function
 
 Public Sub basicTableToJSON(var As Collection)
@@ -142,7 +149,7 @@ Public Sub basicTableToJSON(var As Collection)
     End If
 End Sub
 
-Public Sub doclistExport(var As Collection, ByVal replacePath as Boolean, ByVal doc2pdf as Boolean)
+Public Sub doclistExport(var As Collection, ByVal replacePath As Boolean, ByVal alterFileExtention As Boolean)
     'dependent on a collection with values for _
     matrix - sheet with cells available for being checked _
     m.output - column with rows for being checked and entries to be returned as results _
@@ -156,14 +163,18 @@ Public Sub doclistExport(var As Collection, ByVal replacePath as Boolean, ByVal 
   
     Dim mexp As Variant: mexp = ThisWorkbook.Worksheets(var("matrix.sheet")).Range(var("matrix.linkColumn") & var("matrix.headerRow") + 1 & ":" & var("matrix.linkColumn") & matrixallrows)
     Dim malt As Variant
-    Dim maltvalue as String
+    Dim maltvalue As String
     If var("matrix.displayAlternativeColumn") <> "" Then malt = ThisWorkbook.Worksheets(var("matrix.sheet")).Range(var("matrix.displayAlternativeColumn") & var("matrix.headerRow") + 1 & ":" & var("matrix.displayAlternativeColumn") & matrixallrows)
     Dim msearch As Variant: msearch = ThisWorkbook.Worksheets(var("matrix.sheet")).Range(var("matrix.searchTermColumn") & var("matrix.headerRow") + 1 & ":" & var("matrix.searchTermColumn") & matrixallrows)
+    Dim mformat As Variant
+    If collectionKeyExists(var, "matrix.documentFormat") Then mformat = ThisWorkbook.Worksheets(var("matrix.sheet")).Range(var("matrix.documentFormat") & var("matrix.headerRow") + 1 & ":" & var("matrix.documentFormat") & matrixallrows)
+    Dim documentFormat
     
     'export js-file with object containing file links _
     taking doc-files and changing docm-extension to pdf _
     using export-variables
     Dim fileSaveName As Variant
+    Dim fileFormat As String
     fileSaveName = Application.GetSaveAsFilename(InitialFileName:=var("export.defaultFile"), FileFilter:="JavaScript Files (*.js), *.js", Title:=var("export.prompt"))
     If fileSaveName <> False Then
         If replacePath And (pdfFolder = "" Or docFolder = "") Then
@@ -178,7 +189,12 @@ Public Sub doclistExport(var As Collection, ByVal replacePath as Boolean, ByVal 
             For mrow = LBound(mexp, 1) To UBound(mexp, 1)
                 If mexp(mrow, 1) <> "" Then
                     If var("matrix.displayAlternativeColumn") <> "" Then maltvalue = SanitizeString(malt(mrow, 1))
-                    content = content & "[" & Chr(34) & Path2Link(mexp(mrow, 1), replacePath, doc2pdf) & Chr(34) & "," & Chr(34) & maltvalue & Chr(34) & "," & Chr(34) & SanitizeString(msearch(mrow, 1)) & Chr(34) & "]," & vbNewLine
+                    If alterFileExtention Then
+                        documentFormat = CStr(mformat(mrow, 1))
+                    Else
+                        documentFormat = ""
+                    End If
+                    content = content & "[" & Chr(34) & Path2Link(mexp(mrow, 1), replacePath, documentFormat) & Chr(34) & "," & Chr(34) & maltvalue & Chr(34) & "," & Chr(34) & SanitizeString(msearch(mrow, 1)) & Chr(34) & "]," & vbNewLine
                 End If
             Next mrow
             content = content + "]};"
@@ -197,7 +213,7 @@ Public Sub exportXLS(var As Variant)
         ThisWorkbook.Sheets().Copy
         Dim WB As Workbook
         Set WB = ActiveWorkbook
-        WB.SaveAs Filename:=fileSaveName, FileFormat:=xlOpenXMLWorkbook, _
+        WB.SaveAs Filename:=fileSaveName, fileFormat:=xlOpenXMLWorkbook, _
             Password:="", WriteResPassword:="", ReadOnlyRecommended:=False, _
             CreateBackup:=False
         ActiveWorkbook.Close False
@@ -209,8 +225,8 @@ Public Sub exportXLS2PDF(var As Variant)
     Dim fileSaveName As Variant
     fileSaveName = Application.GetSaveAsFilename(InitialFileName:=var("export.xlsDefaultFile"), FileFilter:="PDF (*.pdf), *.pdf", Title:=var("export.xlsPrompt"))
     If fileSaveName <> False Then
-		ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:=fileSaveName
-	End If
+                ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:=fileSaveName
+        End If
 End Sub
 
 Public Sub createMail(ByVal rcpt As String, ByVal subject As String, ByVal mailtext As String)
@@ -249,7 +265,7 @@ denied:
     On Error GoTo 0
 End Function
 
-Public Sub monitorRowsColumns(ByVal Sh As Object, ByVal Target As Range)
+Public Sub monitorRowsColumns(ByVal Sh As Object, ByVal target As Range)
     ' load monitor setup, because a public variable gets emptied after finishing the open routine for some freaking reason
     Dim setup As New Collection
     Set setup = Specific.monitorSetup()
@@ -259,10 +275,10 @@ Public Sub monitorRowsColumns(ByVal Sh As Object, ByVal Target As Range)
     Dim patternMatch
     Dim TargetPattern
 
-    If Not Target Is Nothing And (setup("monitor.rows")(0) Or setup("monitor.columns")(0)) And Not monitorOverride Then
+    If Not target Is Nothing And (setup("monitor.rows")(0) Or setup("monitor.columns")(0)) And Not monitorOverride Then
         'proceed if Target-range is of format $123:$123 or $A:$A only
         regEx.pattern = "\$\d+:\$\d+"
-        If regEx.Execute(Target.Address).count And setup("monitor.rows")(0) Then
+        If regEx.Execute(target.Address).Count And setup("monitor.rows")(0) Then
             ' monitor deletion or insertion of rows
             Select Case MsgBox(setup("monitor.rows")(2), vbYesNo + vbDefaultButton2 + vbQuestion, setup("monitor.rows")(1))
                 Case vbNo
@@ -272,7 +288,7 @@ Public Sub monitorRowsColumns(ByVal Sh As Object, ByVal Target As Range)
             End Select
         End If
         regEx.pattern = "(\$\D:\$\D)"
-        If regEx.Execute(Target.Address).count And setup("monitor.columns")(0) Then
+        If regEx.Execute(target.Address).Count And setup("monitor.columns")(0) Then
             ' monitor deletion or insertion of rows
             Select Case MsgBox(setup("monitor.columns")(2), vbYesNo + vbDefaultButton2 + vbQuestion, setup("monitor.columns")(1))
                 Case vbNo

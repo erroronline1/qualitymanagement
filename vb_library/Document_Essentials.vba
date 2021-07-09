@@ -3,22 +3,23 @@ Attribute VB_Name = "Essentials"
 '    / \    part of
 '   |...|
 '   |...|   bottle light quality management software
-'   |___|	by error on line 1 (erroronline.one) available on https://github.com/erroronline1/qualitymanagement
+'   |___|   by error on line 1 (erroronline.one) available on https://github.com/erroronline1/qualitymanagement
 '   / | \
 
 Option Explicit
-Public ActiveVersioning As Boolean
 Public PDFFile As String
+Public DOCMFile As String
 Public setup As Collection
+Public newDOC As Document
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' general module handler
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Public Function Modules() as Object
-    Set Modules= CreateObject("Scripting.Dictionary")
+Public Function Modules() As Object
+    Set Modules = CreateObject("Scripting.Dictionary")
     Modules.Add "Locals", ThisDocument.parentPath & "vb_library\" & "Document_Locals_" & ThisDocument.selectedLanguage & ".vba"
-    'Modules.Add "Rewrite", ThisDocument.parentPath & "vb_library\" & "RewriteMain.vba"
+    Modules.Add "Rewrite", ThisDocument.parentPath & "vb_library\" & "RewriteMain.vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -30,31 +31,69 @@ Public Sub openRoutine()
 End Sub
 
 Public Sub asyncOpen()
-    'Rewrite.rewriteMain ThisDocument, "ThisDocument", "E:\Quality Management\vb_library\Document_ThisDocument_illustration.vba"
+    Rewrite.rewriteMain ThisDocument, "ThisDocument", ThisDocument.parentPath & "vb_library\Document_ThisDocument_illustration.vba"
 
     Set setup = Locals.setup
-
-    ActiveVersioning = True
-    On Error Resume Next
-    UpdateDocumentFields
+    If Word.Application.Visible Then
+        ' save as docvar for persistence, because calling userform results in a state loss. _
+        see sub publish() below for slightly more information
+        ActiveDocument.Variables("parentPath").Value = ThisDocument.parentPath
+    
+        On Error Resume Next
+        UpdateDocumentFields
+        publishButton "add"
+    Else
+        MsgBox setup("startup.execution")
+    End If
 End Sub
 
-Public Sub closeRoutine(ByVal Doc As Document, SaveAsUI As Boolean, Cancel As Boolean)
-    'run procedures only if this window is active/in focus, not while autosaving other files in background _
-    Application.MacroContainer.Name = Doc makes sure to run only this files code. without this the _
-    version control routines will be called from every opened document with the same code
-    If Doc.ActiveWindow.Active And Application.MacroContainer.Name = Doc Then
-      
-        If Not Cancel And ActiveVersioning Then
-            Select Case MsgBox(setup("initiate.confirm") & setup("initiate.confirmYes") & setup("initiate.confirmNo") & setup("initiate.confirmCancel") _
-                , vbYesNoCancel + vbDefaultButton2 + vbQuestion, setup("initiate.Title"))
-            Case vbYes
-                AutoVersioning
-            Case vbNo
-                ManualVersioning
-            End Select
-        End If
-    End If
+Public Sub closeRoutine()
+    publishButton "remove"
+End Sub
+
+Public Sub publishButton(action As String)
+    '''''
+    Select Case action
+    Case "add"
+        ' set cursor to the documents last position
+        Selection.EndKey Unit:=wdStory
+        ' create a link to macro
+        Dim publish: Set publish = ActiveDocument.Fields.Add(Range:=Selection.Range, Type:=wdFieldEmpty, Text:= _
+            "MACROBUTTON  Essentials.publish " & setup("startup.macrobutton") _
+            , PreserveFormatting:=False)
+    Case "remove"
+        ' remove fields containing macrobuttons
+        Dim f
+        For Each f In ActiveDocument.Fields
+            If InStr(f.Code.Text, "MACROBUTTON") Then f.Delete
+        Next
+    End Select
+End Sub
+
+Public Sub publish()
+    ' after creation and destruction of custom user input public values get lost
+    Set setup = Locals.setup
+    ThisDocument.parentPath = ActiveDocument.Variables("parentPath").Value
+    
+    publishButton "remove" ' not useful in published documents...
+    Dim formatquery As New Collection
+    formatquery.Add Item:=setup("initiate.title"), Key:="caption"
+    formatquery.Add setup("initiate.confirm"), "label"
+    formatquery.Add setup("initiate.options"), "options"
+    formatquery.Add setup("initiate.cancel"), "cancel"
+    formatquery.Add setup("initiate.labelHeight"), "height"
+    
+    Select Case customUserInput(formatquery)
+        Case setup("initiate.options")(0)
+            AutoVersioning
+        Case setup("initiate.options")(1)
+            ManualVersioning
+    End Select
+    ' show all bookmarks
+    hideBookmarks "text", False
+    hideBookmarks "notext", False
+
+    publishButton "add" ' readd after everything
 End Sub
 
 Public Sub AutoVersioning()
@@ -66,25 +105,25 @@ Public Sub AutoVersioning()
     End If
     
     ThisDocument.Variables("version").Value = version + 1
-    ThisDocument.Variables("releasedate").Value = Format(Date, "yyyymmdd")
+    ThisDocument.Variables("releasedate").Value = format(Date, "yyyymmdd")
     
     UpdateAndExport
 End Sub
 
 Public Sub ManualVersioning()
-    'ask for updating version and release date
+    ' ask for updating version and release date
     Dim version As String
     Dim releasedate As String
     version = InputBox(setup("manualVersioning.versionPrompt") & ": " & ThisDocument.Variables("version").Value, _
         setup("manualVersioning.versionTitle"), ThisDocument.Variables("version").Value + 1)
-    releasedate = InputBox(setup("manualVersioning.releasedatePrompt") & ": " & ThisDocument.Variables("releasedate").Value, setup("manualVersioning.releasedateTitle"), Format(Date, "yyyymmdd"))
+    releasedate = InputBox(setup("manualVersioning.releasedatePrompt") & ": " & ThisDocument.Variables("releasedate").Value, setup("manualVersioning.releasedateTitle"), format(Date, "yyyymmdd"))
     If Not version = vbNullString Then
         ThisDocument.Variables("version").Value = version
     End If
     If Not releasedate = vbNullString Then
         ThisDocument.Variables("releasedate").Value = releasedate
     End If
-    'guide through releasing new document version if user applied values only
+    ' guide through releasing new document version if user applied values only
     If Not (version = vbNullString And releasedate = vbNullString) Then
         UpdateAndExport
     End If
@@ -92,25 +131,38 @@ End Sub
 
 Public Sub UpdateAndExport()
     UpdateDocumentFields
+    
+    Dim formatquery As New Collection
+    formatquery.Add Item:=setup("format.caption"), Key:="caption"
+    formatquery.Add setup("format.label"), "label"
+    formatquery.Add setup("format.options"), "options"
+    formatquery.Add setup("format.cancel"), "cancel"
+    formatquery.Add setup("format.labelHeight"), "height"
+    
+    Select Case customUserInput(formatquery)
+        Case setup("format.options")(0)
+            PDFPublish
+        Case setup("format.options")(1)
+            DOCMPublish
+    End Select
     Archive
-    PDFPublish
     UpdateListOfDocuments
 End Sub
 
 Public Sub UpdateDocumentFields()
     ThisDocument.Variables("title").Value = CreateObject("Scripting.FileSystemObject").GetBaseName(ThisDocument.Name)
-    'update of fields even in header, footer and textboxes
+    ' update of fields even in header, footer and textboxes
     Dim rngStory As Word.Range
     Dim lngJunk As Long
     Dim oShp As Shape
     lngJunk = ThisDocument.Sections(1).Headers(1).Range.StoryType
     For Each rngStory In ThisDocument.StoryRanges
-    'Iterate through all linked stories/fields
+    ' Iterate through all linked stories/fields
         Do
             On Error Resume Next
             rngStory.Fields.Update
             Select Case rngStory.StoryType
-            Case 6, 7, 8, 9, 10, 11
+            Case 6, 7, 8, 9, 10, 11 ' headers and footers
                 If rngStory.ShapeRange.Count > 0 Then
                     For Each oShp In rngStory.ShapeRange
                         If oShp.TextFrame.HasText Then
@@ -119,46 +171,70 @@ Public Sub UpdateDocumentFields()
                     Next
                 End If
             Case Else
-                'Do Nothing
+                ' do nothing
             End Select
             On Error GoTo 0
-            'Get next linked story (if any)
+            ' get next linked story (if any)
             Set rngStory = rngStory.NextStoryRange
         Loop Until rngStory Is Nothing
     Next
 End Sub
 
+Public Sub hideBookmarks(prefix as string, flag as boolean)
+    Dim cc As ContentControl
+    For Each cc In ThisDocument.ContentControls
+        'checkboxes have no type attribute to check against, therefore the need of _
+        error handling on Checked-property that is checkbox-only in this usecase
+        On Error Resume Next
+        If ThisDocument.Bookmarks.Exists(prefix & cc.Tag) Then
+                ThisDocument.Bookmarks(prefix & cc.Tag).Range.Font.Hidden = flag
+        End If
+    Next
+End Sub
+
 Public Sub Archive()
-    ''''''' archive file without code, version number added to filename ''''''''
+    ''''''' archive file without code, version number added to filename '''''''
     Dim fileSaveName As Variant
     Set fileSaveName = Application.FileDialog(msoFileDialogSaveAs)
     fileSaveName.InitialFileName = Replace(ThisDocument.FullName, ThisDocument.Variables("title"), ThisDocument.Variables("title") + "[" + ThisDocument.Variables("version") + "]")
     fileSaveName.title = setup("archive.confirmPrompt")
     If fileSaveName.Show = -1 Then
-        'Save changes to original document
-        ActiveVersioning = False 'disable versioning on autosave and in exported file
+        ' save changes to original document
         ThisDocument.Save
-        'the next line copies the active document
-        Application.Documents.Add ThisDocument.FullName
-        'the next line saves the copy to your location and name
+        ' show all bookmarks, just in case, to have all content visible
+        hideBookmarks "text", False
+        hideBookmarks "notext", False
+        ' the next line copies the active document
+        Set newDOC = Documents.Add(ThisDocument.FullName, True, wdNewBlankDocument, False)
         On Error Resume Next
-        ActiveDocument.Convert 'works in word2013 but possibly not word2010, hence error handling
-        ActiveDocument.SaveAs2 filename:=fileSaveName.SelectedItems(1), FileFormat:=wdFormatXMLDocument
-        'next line closes the copy leaving you with the original document
-        ActiveDocument.Close
+        newDOC.Convert ' works in word2013 but possibly not word2010, hence error handling
+        
+        ' unlink fields and finalize content to avoid updates within the archived documents
+        Dim oFld As field
+        For Each oFld In newDOC.Fields
+            oFld.Unlink
+        Next
+        
+        ' the next line saves the copy to your location and name
+        newDOC.SaveAs2 filename:=fileSaveName.SelectedItems(1), fileformat:=wdFormatXMLDocument
+        ' next line closes the copy leaving you with the original document
+        newDOC.Close
         MsgBox (fileSaveName.SelectedItems(1) & vbNewLine & setup("archive.successPrompt"))
-        ActiveVersioning = True 'enable versioning on autosave and in exported file again
     End If
 End Sub
 
 Public Sub PDFPublish()
-    ''''''' publish as pdf ''''''''
+    ''''''' publish as pdf '''''''
     With Application.FileDialog(msoFileDialogSaveAs)
         .InitialFileName = ThisDocument.path & "\" & CStr(ThisDocument.Variables("title").Value) & ".pdf"
         .AllowMultiSelect = False
-        .Title = setup("publish.confirmPrompt")
+        .title = setup("publish.pdfconfirmPrompt")
         If .Show = -1 Then
+            ' show all available options for pdf
+            hideBookmarks "text", False
+            hideBookmarks "notext", True
             PDFFile = .SelectedItems(1)
+            ' msoFileDialogSaveAs does not support filetypes, hence forcing extension
             PDFFile = Replace(PDFFile, ".docm", ".pdf")
             PDFFile = Replace(PDFFile, ".docx", ".pdf")
             PDFFile = Replace(PDFFile, ".doc", ".pdf")
@@ -172,15 +248,88 @@ Public Sub PDFPublish()
     End With
 End Sub
 
+Public Sub DOCMPublish()
+    ''''''' publish as interactive docm, protected content, usable form fields '''''''
+    Dim fileSaveName As Variant
+    Set fileSaveName = Application.FileDialog(msoFileDialogSaveAs)
+    fileSaveName.InitialFileName = ThisDocument.path & "\" & CStr(ThisDocument.Variables("title").Value) & ".docm"
+    fileSaveName.title = setup("publish.docmconfirmPrompt")
+    If fileSaveName.Show = -1 Then
+        ' msoFileDialogSaveAs does not support filetypes, hence forcing extension
+        DOCMFile = fileSaveName.SelectedItems(1)
+        DOCMFile = Replace(DOCMFile, ".doc", ".docm")
+        DOCMFile = Replace(DOCMFile, ".docmx", ".docm")
+        
+        ' published docm-files must not be saved into the same folder, because they would overwrite the draft!!
+        If DOCMFile = ThisDocument.path & "\" & CStr(ThisDocument.Variables("title").Value) & ".docm" Then
+            If MsgBox(setup("publish.docmdestinationError"), vbRetryCancel + vbExclamation, setup("publish.docmdestinationErrorTitle")) = vbRetry Then
+                DOCMPublish
+            Else
+                Exit Sub
+            End If
+        Else
+        
+            ' save changes to original document
+            ThisDocument.Save
+            ' unset all available options by default
+            hideBookmarks "text", True
+            hideBookmarks "notext", False
+
+            ' the next line copies the active document, not displaying it most probably does not _
+            initiate execution of macros and avoids issues on replacing them on runtime, at least it seems
+            Set newDOC = Documents.Add("", True, wdNewBlankDocument, False)
+            
+            ThisDocument.Content.Copy
+            dim rng
+            Set rng = newDoc.Content
+            rng.Collapse Direction:=wdCollapseEnd
+            rng.Paste
+            'clear clipboard, otherwise an annoying msg popy up everytime because huge content is left there from copying
+            Dim clscb As New DataObject 'object to use the clipboard
+            clscb.SetText text:=Empty
+            clscb.PutInClipboard 'put void into clipboard
+
+            On Error Resume Next
+            newDOC.Convert ' works in word2013 but possibly not word2010, hence error handling
+            
+            ' unlink fields and finalize content to avoid updates within the archived documents
+            Dim oFld As field
+            For Each oFld In newDOC.Fields
+                oFld.Unlink
+            Next
+            
+            ' rewrite macros and unload modules
+            On Error Resume Next
+            Dim Element As Object
+            For Each Element In newDOC.VBProject.VBComponents
+                newDOC.VBProject.VBComponents.Remove Element
+            Next
+            Rewrite.rewriteMain newDoc, "ThisDocument", ThisDocument.parentPath & "vb_library\Document_Public_DOCM.vba"
+            ' protect content
+            newDOC.Protect wdAllowOnlyFormFields, Password:="LoremIpsum"
+            
+            ' the next line saves the copy to your location and name
+            newDOC.SaveAs2 filename:=DOCMFile, fileformat:=wdFormatXMLDocumentMacroEnabled
+                    
+            ' next line closes the copy leaving you with the original document
+            newDOC.Close
+            
+            MsgBox (setup("publish.successPrompt") & " " & vbNewLine & DOCMFile)
+        End If
+    Else
+        DOCMFile = ""
+    End If
+End Sub
+
 Public Sub UpdateListOfDocuments()
-    ''''''' update list of documents in force ''''''''
+    ''''''' update list of documents in force '''''''
     Dim objFile As Variant
     Dim file As String
     Dim xlApp As Object, xlWB As Object, xlSheet As Object
     Dim i As Long, rCount As Long, bXStarted As Boolean
     Dim strPath As String
     
-    'Open file dialog for selecting data export file (path)
+    ' open file dialog for selecting data export file (path)
     With Application.FileDialog(msoFileDialogFilePicker)
         .InitialFileName = ThisDocument.path & "\" 'Environ("USERPROFILE") & "\"
         .AllowMultiSelect = False
@@ -195,7 +344,7 @@ Public Sub UpdateListOfDocuments()
         If MsgBox(setup("updateList.autoUpdateErrorPrompt"), _
         vbRetryCancel + vbExclamation, setup("updateList.autoUpdateErrorTitle")) = vbRetry Then UpdateAndExport
     Else
-        'open file and define workbook and -sheet
+        ' open file and define workbook and -sheet
         On Error Resume Next
         Set xlApp = GetObject(, "Excel.Application")
         If Err <> 0 Then
@@ -206,13 +355,20 @@ Public Sub UpdateListOfDocuments()
         End If
         On Error GoTo 0
         Set xlWB = xlApp.Workbooks.Open(strPath)
+        
+        ' set flag within excel file to control from where it was opened _
+        sub has to be present in file. their handler processes the value, _
+        e.g preventing certain executions that would mess something up
+        xlApp.Run "Specific.openedFromWord", True
+        
+        
         Set xlSheet = xlWB.Sheets(1)
         
-        'Find the last empty line of the worksheet and define range
+        ' find the last empty line of the worksheet and define range
         rCount = xlSheet.Range(setup("updateList.documentTitle") & xlSheet.Rows.Count).End(-4162).Row
         rCount = rCount + 1
         
-        'change rCount from range to row-number of existing identifier to update if existent
+        ' change rCount from range to row-number of existing identifier to update if existent
         For i = 1 To rCount
             If xlSheet.Range(setup("updateList.documentTitle") & i).Value = ThisDocument.Variables("title").Value Then
                 rCount = i
@@ -220,29 +376,131 @@ Public Sub UpdateListOfDocuments()
             End If
         Next
         
-        'update or insert values for title ans version in dependent columns
+        ' update or insert values for title and version in dependent columns
         ThisDocument.Repaginate 'occasionally update site numbers
         xlSheet.Range(setup("updateList.documentTitle") & rCount).Value = ThisDocument.Variables("title").Value
         xlSheet.Range(setup("updateList.documentVersion") & rCount).Value = "V" + CStr(ThisDocument.Variables("version").Value) + _
             "." + CStr(ThisDocument.Variables("releasedate").Value)
-        'link to word document
+        ' link to word document
         xlSheet.Hyperlinks.Add Anchor:=xlSheet.Range(setup("updateList.documentHyperlink") & rCount), _
-        Address:=ThisDocument.FullName, _
-        TextToDisplay:=ThisDocument.FullName
-        'link to published pdf document in case a column is specified above
-        If setup("updateList.documentPDFHyperlink") <> "" And PDFFile <> "" Then
-            xlSheet.Hyperlinks.Add Anchor:=xlSheet.Range(setup("updateList.documentPDFHyperlink") & rCount), _
-            Address:=PDFFile, _
-            TextToDisplay:=PDFFile
-        End If
+            Address:=ThisDocument.FullName, _
+            TextToDisplay:=ThisDocument.FullName
+        ' format of published file
+        Dim fileformat
+        If PDFFile <> "" Then fileformat = "PDF"
+        If DOCMFile <> "" Then fileformat = "DOCM"
+        xlSheet.Range(setup("updateList.documentFormat") & rCount).Value = CStr(fileformat)
         
+        ' link to published pdf document in case a column is specified above. unlike the other values this is not mandatory
+        If setup("updateList.documentPDFHyperlink") <> "" And (PDFFile <> "" Or DOCMFile <> "") Then
+            xlSheet.Hyperlinks.Add Anchor:=xlSheet.Range(setup("updateList.documentPDFHyperlink") & rCount), _
+            Address:=PDFFile & DOCMFile, _
+            TextToDisplay:=PDFFile & DOCMFile
+        End If
+
         xlWB.Close
         If bXStarted Then
             xlApp.Quit
         End If
-            
     End If
     Set xlApp = Nothing
     Set xlWB = Nothing
     Set xlSheet = Nothing
 End Sub
+
+Public Function customUserInput(ByRef promptVar As Collection) As String
+    ' creates a temporary userform to return a selected option by button _
+    expects a collection with _
+    window-caption, label and cancel-button-caption as string _
+    options as an array of string. _
+    false height calculates the form height by number of options, integer overrides for longer label content. _
+    returns the selected options value or false on cancel _
+ _
+    7.2021: for some reason, i was unable to find about after several hours of research, _
+    this leads to a state loss, yeeting any public variable and Word-Application-instance into the void _
+    therefore the behaviour of triggering versioning and publishing had to be refactored from _
+    Application.DocumentBeforeSave event to adding a form field triggering the macros
+    
+    ' hide vbe window to prevent screen flashing
+'    Application.VBE.MainWindow.Visible = False
+    
+    Dim TempForm: Set TempForm = ThisDocument.VBProject.VBComponents.Add(3)
+    ' add options
+    Dim buttons As Object
+    Set buttons = CreateObject("Scripting.Dictionary")
+    Dim buttonsAction As New Collection
+    Dim button
+    For button = 0 To UBound(promptVar("options"))
+        Set buttons(button) = TempForm.Designer.Controls.Add("forms.CommandButton.1")
+        buttonsAction.Add "ActiveDocument.Variables(" & Chr(34) & "userInput" & Chr(34) & ").Value = " & Chr(34) & CStr(promptVar("options")(button)) & Chr(34) & ": Me.Hide"
+        
+        With buttons(button)
+            .Caption = CStr(promptVar("options")(button))
+            .Height = 18
+            .Width = 57
+            .Left = 240
+            .Top = 8 + 22 * button
+        End With
+    Next
+    
+    ' add cancel button
+    Set buttons(UBound(promptVar("options")) + 1) = TempForm.Designer.Controls.Add("forms.CommandButton.1")
+    buttonsAction.Add "ActiveDocument.Variables(" & Chr(34) & "userInput" & Chr(34) & ").Value = False: Me.Hide"
+    With buttons(UBound(promptVar("options")) + 1)
+        .Caption = promptVar("cancel")
+        .Height = 18
+        .Width = 57
+        .Left = 240
+        .Top = 8 + 22 * (UBound(promptVar("options")) + 1)
+    End With
+    
+    ' determine form height or override with given height for larger label
+    Dim formHeight
+    If promptVar("height") Then
+        formHeight = promptVar("height")
+    Else
+        formHeight = 16 + 22 * (buttons.Count + 2)
+    End If
+    
+    ' add label
+    Dim NewLabel: Set NewLabel = TempForm.Designer.Controls.Add("forms.label.1")
+    With NewLabel
+        .Caption = promptVar("label")
+        .Width = 204
+        .Height = formHeight - 48
+        .Left = 8
+        .Top = 8
+    End With
+    
+    ' add event-handler subs for the buttons & userform
+    Dim X As Integer
+    Dim btn
+    With TempForm.CodeModule
+        X = .CountOfLines
+        .insertlines X + 1, "Private Sub UserForm_Initialize()"
+        .insertlines X + 2, "'Application.EnableCancelKey = xlErrorHandler"
+        .insertlines X + 3, "End Sub"
+        For btn = 0 To buttons.Count - 1
+            .insertlines X + 3 * btn + 1, "Sub CommandButton" & btn + 1 & "_Click()"
+            .insertlines X + 3 * btn + 2, buttonsAction(btn + 1)
+            .insertlines X + 3 * btn + 3, "End Sub"
+        Next
+    End With
+    
+    ' adjust the form
+    With TempForm
+        .Properties("Caption") = promptVar("caption")
+        .Properties("Width") = 315
+        .Properties("Height") = formHeight
+        .Properties("StartUpPosition") = 2 'screen center
+    End With
+    
+    ' show the form
+    VBA.UserForms.Add(TempForm.Name).Show
+    
+    ' pass the variable back
+    customUserInput = ActiveDocument.Variables("userInput").Value
+    
+    ' delete the form
+    ThisDocument.VBProject.VBComponents.Remove VBComponent:=TempForm
+End Function
