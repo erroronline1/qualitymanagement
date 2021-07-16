@@ -229,7 +229,7 @@ on opening the draft file a macrobutton will be inserted at the end. on doublecl
 you can set the version number and release date automatically to the next version and the current date or set it manually. in either cases you will be processed through archiving, publishing and registering the document in the list of documents in force. if you have to do changes, don't want to change the version but want to export it (e.g. when editing with set release date) you will have to set the variables manually to the current state. if you cancel the initial request the file will be saved without version control.
 archiving the documents happens without code to avoid any accidential changes. the file name will be followed by the version number.
 you can publish the document as an uneditable pdf file (but you could implement editable field with third party application), or choose to publish it as a protected docm with dynamic formields and optional checkbox-dependent content.
-afterwards on selecting the list of documents in force, the file will either add itself to the list or update its version and release date.
+afterwards on selecting the list of documents in force, the file will either add itself to the list or update its version and release date. it will add a mark as new version as well.
 
 ![dynamic docm files](assets/dynamic_docm.gif)
 
@@ -238,7 +238,8 @@ to achieve this you’ll need a checkbox with an individual tag (e.g. “Tag”)
 a useful shortcut is ctrl + shift + f5 to set a bookmark for a marked paragraph.
 * the contents are always shown in the draft document
 * all possible contents are shown on pdf-export, but not the notext-ones. in this way is is always possible to mark the relevant paragraphs manually
-* just the notext-ones are visible by default on published DOCM-documents. this saves paper, is more comprehensible but is mandatory to be prepared on the computer
+* just the notext-ones are visible by default on published DOCM-documents. this saves paper, is more comprehensible but is mandatory to be prepared on the computer.
+
 text inputs are possible as well and expand the content dynamically. you can use richtext-inputs as well. on export the published file will be protected against changes, just leaving you with the form-inputs.
 
 [back to top](#bottle-light-quality-management-software)
@@ -257,7 +258,7 @@ you can assign the documents to bundles in the third sheet where you have specia
 ![checkpoints](assets/xlsm_checkpoints.png)
 on save the list of checkpoints will update (for the dropdown option in assigning in sheet one) and all documents assigned will be written beside the checkpoints in sheet two. checkpoints on sheet one will be considered based on the header row. the list of documents for bundle assignment updates itself (insertion and deletion) and the bundles will be written like in the first sheets.
 if you work direct within the list you will be prompted for exports, but not during registration of documents.
-first step is to export the list without code for your colleagues without the risk of them messing something up. you will have to input paths to be replaced and the equivalent insertions. you can set default paths for export and replacements within the code to speed these things up. docm-links will be replaced with pdf-links and the document bundle matrix will be updated with links as well. *the resulting file might work as your backup plan in case the assistant is broken. or you do not want to use it ( not recommended ;) )* 
+first step is to export the list without code for your colleagues without the risk of them messing something up. on new versions an email will pop up to notify about the recently changed documents and the respective mark left deleted. you will have to input paths to be replaced and the equivalent insertions. you can set default paths for export and replacements within the code to speed these things up. docm-links will be replaced with pdf-links and the document bundle matrix will be updated with links as well. *the resulting file might work as your backup plan in case the assistant is broken. or you do not want to use it ( not recommended ;) )* 
 afterwards you can export the list of documents as well as the document bundles to the assistant. if you skip the first prompts the replace/insertion path will be asked for later. as long as the file is open the inputs will be remembered.
 
 [back to top](#bottle-light-quality-management-software)

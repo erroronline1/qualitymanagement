@@ -378,6 +378,7 @@ Public Sub UpdateListOfDocuments()
         
         ' update or insert values for title and version in dependent columns
         ThisDocument.Repaginate 'occasionally update site numbers
+        xlSheet.Range(setup("updateList.documentNovel") & rCount).Value = "*"
         xlSheet.Range(setup("updateList.documentTitle") & rCount).Value = ThisDocument.Variables("title").Value
         xlSheet.Range(setup("updateList.documentVersion") & rCount).Value = "V" + CStr(ThisDocument.Variables("version").Value) + _
             "." + CStr(ThisDocument.Variables("releasedate").Value)

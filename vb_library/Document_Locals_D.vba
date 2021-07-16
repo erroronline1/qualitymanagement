@@ -51,6 +51,7 @@ Public Function setup() As Collection
     setup.Add "Excel-Liste der gültigen Dokumente zur Aktualisierung des Versionsstandes wählen", "updateList.autoUpdatePrompt"
     setup.Add "Automatische Aktualisierung nicht möglich!", "updateList.autoUpdateErrorTitle"
     setup.Add "Die Liste der gültigen Dokumente wurde nicht ausgewählt!" & vbNewLine & "Nochmal versuchen oder abbrechen?" & vbNewLine & "(im zweiten Fall bitte manuell aktualisieren)", "updateList.autoUpdateErrorPrompt"
+    setup.Add "A", "updateList.documentNovel"
     setup.Add "B", "updateList.documentTitle"
     setup.Add "C", "updateList.documentVersion"
     setup.Add "D", "updateList.documentHyperlink"

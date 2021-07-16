@@ -51,6 +51,7 @@ Public Function setup() As Collection
     setup.Add "Select Excel-list of documents in force to update version", "updateList.autoUpdatePrompt"
     setup.Add "Auto-update not possible!", "updateList.autoUpdateErrorTitle"
     setup.Add "There was no file selected!" & vbNewLine & "Try again or cancel?" & vbNewLine & "(update manually for the latter option)", "updateList.autoUpdateErrorPrompt"
+    setup.Add "A", "updateList.documentNovel"
     setup.Add "B", "updateList.documentTitle"
     setup.Add "C", "updateList.documentVersion"
     setup.Add "D", "updateList.documentHyperlink"

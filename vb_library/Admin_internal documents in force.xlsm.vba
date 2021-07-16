@@ -310,23 +310,37 @@ Public Sub exportXLS(ByVal var As Collection)
         pdfFolder = InputBox(var("export.ReplaceToPrompt"), var("export.ReplaceToTitle"), var("export.ReplaceToDefaultPath"))
         End If
         If Not (pdfFolder = vbNullString And docFolder = vbNullString) Then
+            Dim matrixallrows As Integer: matrixallrows = ThisWorkbook.Worksheets(var("documentlist.sheet")).Range(var("documentlist.linkColumn") & Rows.Count).End(xlUp).Row
+            Dim mrow As Long
+          
+            ' read novel documents and create notification email
+            Dim list As String
+            For mrow = var("documentlist.headerRow") To var("documentlist.headerRow") + matrixallrows
+                If ThisWorkbook.Sheets(var("documentlist.sheet")).Range(var("documentlist.novelColumn") & mrow).value <> "" Then
+                    list = list & ThisWorkbook.Sheets(var("documentlist.sheet")).Range(var("documentlist.displayColumn") & mrow).value & _
+                        " " & ThisWorkbook.Sheets(var("documentlist.sheet")).Range(var("documentlist.versionColumn") & mrow).value & _
+                        "<br>"
+                    ThisWorkbook.Sheets(var("documentlist.sheet")).Range(var("documentlist.novelColumn") & mrow).value = ""
+                End If
+            Next mrow
+            if list <> "" Then Essentials.createMail "", var("export.notificationSubject"), Replace(var("export.notificationBody"), "{list}", list)
+            
+            ' export file
             Dim WB As Excel.Workbook
             Set WB = Workbooks.Add
-            ThisWorkbook.Sheets(Array(var("documentlist.sheet"), var("normcheck.sheet"), var("bundles.sheet"))).Copy before:=WB.Worksheets(1)
-
             Dim rng As Range
             With WB.Worksheets(var("documentlist.sheet"))
                 Set rng = .Range(.Cells(var("documentlist.headerRow") + 1, var("documentlist.linkColumn")), .Cells(.Rows.Count, var("documentlist.linkColumn")).End(xlUp))
             End With
             Dim mformat As Variant
-            Dim matrixallrows As Integer: matrixallrows = ThisWorkbook.Worksheets(var("documentlist.sheet")).Range(var("documentlist.linkColumn") & Rows.Count).End(xlUp).Row
             If Essentials.collectionKeyExists(var, "documentlist.documentFormat") Then mformat = ThisWorkbook.Worksheets(var("documentlist.sheet")).Range(var("documentlist.documentFormat") & var("documentlist.headerRow") + 1 & ":" & var("documentlist.documentFormat") & matrixallrows)
             Dim documentFormat: documentFormat = ""
-          
+
+            ThisWorkbook.Sheets(Array(var("documentlist.sheet"), var("normcheck.sheet"), var("bundles.sheet"))).Copy before:=WB.Worksheets(1)
+
             'replace file links in overview with pdf-path
             Dim mexp As Variant: mexp = rng
             Dim insert() As Variant: ReDim insert(UBound(mexp, 1), 0)
-            Dim mrow As Long
             For mrow = LBound(mexp, 1) To UBound(mexp, 1)
                 If mexp(mrow, 1) <> "" Then
                         If Not IsEmpty(mformat) Then documentFormat = CStr(mformat(mrow, 1))

@@ -167,7 +167,9 @@ End Function
 Public Function setupInternalDocuments() As Collection
     Set setupInternalDocuments = New Collection
     setupInternalDocuments.Add Item:="DocumentList", key:="documentlist.sheet" 'select sheet to process content
+    setupInternalDocuments.Add "A", "documentlist.novelColumn" 'customize column, mark novel versions prior to publishing public list
     setupInternalDocuments.Add "B", "documentlist.displayColumn" 'customize column, taking displayed document name from for norm checking
+    setupInternalDocuments.Add "C", "documentlist.versionColumn" 'customize column, taking displayed document version for email notification
     setupInternalDocuments.Add "D", "documentlist.linkColumn" 'customize link column, processing file links for export
     setupInternalDocuments.Add "E", "documentlist.documentFormat" 'customize column for published file types for the assistant, processing file links for export
     setupInternalDocuments.Add "F", "documentlist.searchTermColumn" 'customize column for additional search terms for the assistant, processing file links for export
@@ -217,6 +219,8 @@ Public Function setupInternalDocuments() As Collection
     'export without code
     setupInternalDocuments.Add "Publish a copy of the list without code?", "export.xlsPrompt"
     setupInternalDocuments.Add "E:\Quality Management\published\list of documents.xlsx", "export.xlsDefaultFile"
+    setupInternalDocuments.Add "New document versions", "export.notificationSubject"
+    setupInternalDocuments.Add "Hello everyone,<br><br>following documents have a new version as of today:<br><br>{list}<br>Please cease to use old versions and destroy printouts!", "export.notificationBody"
 End Function
 Public Function monitorInternalDocuments() As Collection
     Set monitorInternalDocuments = New Collection
