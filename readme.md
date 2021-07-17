@@ -151,6 +151,10 @@ it coincidentally but fortunately matches most of the [requirements for document
 * one somewhat experienced office user to customize the document-blueprints and vba-codes
 * microsoft office (developed and tested with office 2013 and 2019 professional, word and excel, lower versions probably work as well, at some point company dropped office 2010 so i can not test it any longer)
 
+<video controls preload="auto" width="720" height="360">
+<source src="assets/registration.mp4" type="video/mp4">
+</video>
+
 [details on the documents](#details-on-the-documents)
 
 [back to top](#bottle-light-quality-management-software)
@@ -175,6 +179,10 @@ this tool provides your company with an application to have an easier access to 
 * patience with coworkers blaming 'your' assistant for every network failure, printer settings and their inability to read the literal hints and descriptions
 
 [![visit demo](https://img.shields.io/website?style=flat-square&down_message=demo%20currently%20unavailable&up_message=visit%20working%20demo&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
+
+<video controls preload="auto" width="720" height="360">
+<source src="assets/assistant.mp4" type="video/mp4">
+</video>
 
 [details on the assistant](#details-on-the-assistant)
 
