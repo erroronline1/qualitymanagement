@@ -15,13 +15,14 @@
 
 compatible with
 
-![word](https://img.shields.io/badge/office%20word-2016,%202019-blue?style=flat-square&logo=microsoft-word)
-![excel](https://img.shields.io/badge/office%20excel-2016,%202019-brightgreen?style=flat-square&logo=microsoft-excel)
+![word](https://img.shields.io/badge/office%20word-2013,%202019-blue?style=flat-square&logo=microsoft-word)
+![excel](https://img.shields.io/badge/office%20excel-2013,%202019-brightgreen?style=flat-square&logo=microsoft-excel)
 ![ie11](https://img.shields.io/badge/internet%20explorer-11-blue?style=flat-square&logo=internet-explorer)
 ![browsers](https://img.shields.io/badge/real%20browsers-firefox,%20chrome,%20edge-orange?style=flat-square)
 
 ## table of contents
 
+### general
 * [use case](#use-case)
 * [about bottle light qms](#about-bottle-light-qms)
 * [key features](#key-features)
@@ -36,6 +37,8 @@ compatible with
 * [interfaces](#interfaces)
 * [installation](#installation)
 * [but i am no programmer!](#but-i-am-no-programmer)
+
+### documents
 * [details on the documents](#details-on-the-documents)
 	* [template_file.docm](#template_filedocm)
 	* [internal documents in force.xlsm](#internal-documents-in-forcexlsm)
@@ -51,6 +54,8 @@ compatible with
 		* [timetable_-modules](#timetable_-modules)
 	* [thoughts and considerations](#thoughts-and-considerations)
 	* [timetables](#timetables)
+
+### assistant
 * [details on the assistant](#details-on-the-assistant)
 	* [the access to your qm-system](#the-access-to-your-qm-system)
 	* [provided modules within open-source distribution](#provided-modules-within-open-source-distribution)
@@ -74,6 +79,8 @@ compatible with
 	* [api](#api)
 	* [core overview](#core-overview)
 	* [merely a matter of form](#merely-a-matter-of-form)
+
+
 * [thoughts and considerations](#thoughts-and-considerations-1)
 	* [changes and updates](#changes-and-updates)
 * [disclaimer](#disclaimer)
@@ -96,7 +103,7 @@ this system has been in use in context to [iso 13485:2015](https://www.iso.org/s
 # about bottle light qms
 if your company does not have the ressources to test out different expensive qm-software-solutions until you find one to suit your needs and you somehow make use of the simple tools you have access to, bottle light qms might be a good start for you.
 by using quite basic ressources like microsoft office word and excel and standard browsers it also is able to bypass weird system restrictions. editing (if necessary) can be done via any given text editor.
-still this system support you with version control, archiving and publishing quality related documents and ressources.
+still this system support you with version control, archiving and publishing quality management related documents and ressources.
 
 ```
       m
@@ -138,9 +145,13 @@ in general this system
 * supports free word design choices (as supposed to the aforementioned softwares styling limitations due to use of .rtf-templates)
 * has a built in interface for general availability of information - data export to the assistant
 
+it coincidentally but fortunately matches most of the [requirements for document control software noted here](https://13485store.com/resources/iso-13485-document-control-software/), except some recommended automations that still make sense being done manually for my companies usecase. 
+
 ## requirements
 * one somewhat experienced office user to customize the document-blueprints and vba-codes
-* microsoft office (developed and tested with office 2016 and 2019 professional, word and excel, lower versions probably work as well)
+* microsoft office (developed and tested with office 2013 and 2019 professional, word and excel, lower versions probably work as well, at some point company dropped office 2010 so i can not test it any longer)
+
+[details on the documents](#details-on-the-documents)
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -152,7 +163,7 @@ this tool serves as an assistive layer to access your companies documents in for
 this tool provides your company with an application to have an easier access to your quality management system. if you provide your employees with access via this assistant it might be way more easy to have them use only the latest documentation version. it does access files that could be reached by file-explorer as well, but avoiding the latter way prevents the employees to make copies that may become obsolete, at least to some degree.
 
 * global access to qm-related ressources for every employee
-* easy lookup methods for finding documents, materials and orders regardless of storage path or restricted erp-access, in case alternative search term are provided it is even more easy to find these
+* easy lookup methods for finding documents, materials and orders regardless of storage path or restricted erp-access, in case alternative search terms are provided it is even more easy to find these
 * easy content updates directly from the provided vba-interfaces
 * compatible to ms ie11 because it was built for it, tested successfully with firefox, chrome and edge as well
 * easily extendable with modules for various custom data automation
@@ -165,6 +176,8 @@ this tool provides your company with an application to have an easier access to 
 
 [![visit demo](https://img.shields.io/website?style=flat-square&down_message=demo%20currently%20unavailable&up_message=visit%20working%20demo&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
 
+[details on the assistant](#details-on-the-assistant)
+
 [back to top](#bottle-light-quality-management-software)
 
 # interfaces
@@ -173,7 +186,7 @@ some core documents contain vba-code to translate their content to a javascript 
 [back to top](#bottle-light-quality-management-software)
 
 # installation
-there is no installation routine. place the files to your desired accessible network-folders and customize them by hand. create or recreate your documents with the provided template_file.docm and let the workflow guide you through the registration.
+there is no installation routine. place the files to your desired accessible network-folders and customize them by hand. create or recreate your documents with the provided template_file.docm and let the workflow guide you through the registration. adjustments within the office trust center might be necessary by trusting access to the VBA project object model.
 
 ![sample folder structure](assets/folderstructure.png)
 * the provided folder structure might not be neccessarily your first choice and serves just as a sample. you have to change at least the default paths within the vba-code and the assistant anyway.
@@ -188,7 +201,7 @@ to customize this software to your needs it is definitely neccessary to have som
 i was hoping to have done enough documentation and commenting, so maybe you might as well get a grasp on changing the setting-files yourself. 
 **on the bright side everything is open source and can be maintained by any programmer/webdeveloper/webdeveloping agency that does javascript and knows how to access the visual basic editor via the office developer tab!**
 
-if you are a programmer i can recommend [notepad++ portable](https://notepad-plus-plus.org/download/) out of personal experience  in case you have restricted access to your it. also [git portable](https://sourceforge.net/projects/gitportable/).
+if you are a programmer i can recommend [notepad++ portable](https://notepad-plus-plus.org/download/) out of personal experience in case you have restricted access to your it. also [git portable](https://sourceforge.net/projects/gitportable/).
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -209,8 +222,6 @@ on save of excel-lists
 * there will be an automated check if you have your documents fitting to all queried aspects
 * you will be asked if you want to export/update the files list for the assistant application
 
-*be aware that word 2019 has a different format output of doc- and pdf-files. this may lead to differing page-numbers registered to the list of documents in force and actual page-numbers in the accessible pdf-files.*
-
 ### why excel though?
 it's widely agreed upon that excel does not serve as a sufficient database. on the other hand most people are experienced with excel to the degree where they do not have angst starting the application. it is available on most business setups and definetly more easy to handle and customize than ms access. if your datasets of documents in charge exceed excels capabilities your qm-system got out of hand anyway. if your stocklist exceeds excels capabilities you certainly did not bothering reading to this point anyway because of using a more sufficient software for this. or it got out of hand as well. in this case you probably should tidy up. huge data loads can be handled by the provided stocklist-script but require a decent csv-dump by your erp-software.
 
@@ -228,8 +239,8 @@ there are three important and processed fields/document variables within the doc
 on opening the draft file a macrobutton will be inserted at the end. on doubleclick the versioning and publishing routines will start. the button will disappear on exporting and quitting the file.
 you can set the version number and release date automatically to the next version and the current date or set it manually. in either cases you will be processed through archiving, publishing and registering the document in the list of documents in force. if you have to do changes, don't want to change the version but want to export it (e.g. when editing with set release date) you will have to set the variables manually to the current state. if you cancel the initial request the file will be saved without version control.
 archiving the documents happens without code to avoid any accidential changes. the file name will be followed by the version number.
-you can publish the document as an uneditable pdf file (but you could implement editable field with third party application), or choose to publish it as a protected docm with dynamic formields and optional checkbox-dependent content.
-afterwards on selecting the list of documents in force, the file will either add itself to the list or update its version and release date. it will add a mark as new version as well.
+you can publish the document as an uneditable pdf file (but you could implement editable field with third party application), or choose to publish it as a protected docm with dynamic formfields and optional checkbox-dependent content.
+afterwards on selecting the list of documents in force, the file will either add itself to the list or update its version and release date. it will add a mark as new version as well, that later will be handled by the list of documents for release notifications.
 
 ![dynamic docm files](assets/dynamic_docm.gif)
 
@@ -242,13 +253,15 @@ a useful shortcut is ctrl + shift + f5 to set a bookmark for a marked paragraph.
 
 text inputs are possible as well and expand the content dynamically. you can use richtext-inputs as well. on export the published file will be protected against changes, just leaving you with the form-inputs.
 
+published docm-files import a macro-module handling the checkbox-hiding-text-topic at the moment but could be extended in the future or by yourself according to your needs.
+
 [back to top](#bottle-light-quality-management-software)
 
 ## internal documents in force.xlsm
-tl;dr: docm-files as working draft will register and update their version in this table. assign checkpoints to have a regulatory context. this list serves as the interface for the documents module for the assistant too. export will be executed on save. the list of norm-chapters should contain all relevant considerable chapters. on save documents will be assigned back to the list to clarify if every chapter is met. assign documents to regulary common used bundles. this also serves as the interface for the assistants bundles module. export will be executed on save.
+tl;dr: docm-files as working draft will register and update their version in this table. assign checkpoints to have a regulatory context. this list serves as the interface for the documents module for the assistant too. export will be executed on save. the list of norm-chapters should contain all relevant considerable chapters. on save documents will be assigned back to the list to clarify if every chapter is met. assign documents to regulary common used bundles. this also serves as the interface for the assistants bundles module.
 
 ![documents in force](assets/xlsm_documentsinforce.png)
-this file contains all documents in force, a link to the documents and the possiblity to assign their special task in fullfilling regulatory requirements. the docm-documents will register themselves in sheet one on their individual save. you can assign alternate search terms and checkpoints to the document. sheet two contains these checkpoints and all the assigned documents. in this way you can see directly if you match all checkpoints.
+this file contains all documents in force, a link to the documents and the possiblity to assign their special task in fullfilling regulatory requirements. the docm-documents will register themselves in the first sheet on their individual save. you can assign alternate search terms and checkpoints to the document. the second sheet contains these checkpoints and all the assigned documents. in this way you can see directly if you match all checkpoints.
 
 *as the docm-files register and update themselves, there is no checkout for documents that expire or go out of use. you will have to delete these lines manually*
 
@@ -256,9 +269,9 @@ this file contains all documents in force, a link to the documents and the possi
 you can assign the documents to bundles in the third sheet where you have special use cases to use some of the documents everytime. this works similar to the assignment matrix for checkpoints. you can choose from your own documents or insert different paths to external files.
 
 ![checkpoints](assets/xlsm_checkpoints.png)
-on save the list of checkpoints will update (for the dropdown option in assigning in sheet one) and all documents assigned will be written beside the checkpoints in sheet two. checkpoints on sheet one will be considered based on the header row. the list of documents for bundle assignment updates itself (insertion and deletion) and the bundles will be written like in the first sheets.
+on save the list of checkpoints will update (for the dropdown option in assigning in sheet one) and all documents assigned will be written aside the checkpoints in sheet two. checkpoints on sheet one will be considered based on the header row. the list of documents for bundle assignment updates itself (insertion and deletion) and the bundles will be written like in the first sheet.
 if you work direct within the list you will be prompted for exports, but not during registration of documents.
-first step is to export the list without code for your colleagues without the risk of them messing something up. on new versions an email will pop up to notify about the recently changed documents and the respective mark left deleted. you will have to input paths to be replaced and the equivalent insertions. you can set default paths for export and replacements within the code to speed these things up. docm-links will be replaced with pdf-links and the document bundle matrix will be updated with links as well. *the resulting file might work as your backup plan in case the assistant is broken. or you do not want to use it ( not recommended ;) )* 
+first step is to export the list without code for your colleagues without the risk of them messing something up. on new versions an email will pop up to notify about the recently changed documents and the respective mark left deleted. you will have to input paths to be replaced and the equivalent insertions. you can set default paths for export and replacements within the code of the locals-module to speed these things up. docm-links will be replaced with pdf-links if applicable according to the format column and the document bundle matrix will be updated with links as well. *the resulting file might work as your backup plan in case the assistant is broken. or you do not want to use it ( not recommended ;) )* 
 afterwards you can export the list of documents as well as the document bundles to the assistant. if you skip the first prompts the replace/insertion path will be asked for later. as long as the file is open the inputs will be remembered.
 
 [back to top](#bottle-light-quality-management-software)
@@ -299,7 +312,7 @@ also this script has a function to split the data by given column values. this m
 [back to top](#bottle-light-quality-management-software)
 
 ## ticketorder.xlsm
-this files purpose is purely for translation. it serves as an interface between your erp-software with item orders and the assistant. basically you can insert any data dump by the erp-software and it translates it to a javascript-object-file as a feedback loop for the tickerorder-module within the assistant. it makes sense to contain the generated ticket-ids within the order process in any field that might be dumped by the output. this definitely has an effect on yout order process but might make communication more easy between inventory control and ordering persons.
+this files purpose is purely for translation. it serves as an interface between your erp-software with item orders and the assistant. basically you can insert any data dump by the erp-software and it translates it to a javascript-object-file as a feedback loop for the ticketorder-module within the assistant. it makes sense to contain the generated ticket-ids within the order process in any field that might be dumped by the output. this definitely has an effect on yout order process but might make communication more easy between inventory control and ordering persons.
 *be aware that the pattern recognizing regexes in the imported vb_library/administration_Locals_XX.vba rely absolutely on the generated data by your erp-software and have to be customized to your individual situation!*
 
 [back to top](#bottle-light-quality-management-software)
@@ -307,7 +320,7 @@ this files purpose is purely for translation. it serves as an interface between 
 ## data rights management.xlsm
 ![data rights management](assets/xlsm_datarightsmanagement.png)
 
-this is a easy to handle list to set optional permissions for modules of the assistant as required. the password hash can be obtained by the assistant directly. no clear passwords are stored - in the image for illustration purposes though.
+this is a easy to handle list to set optional permissions for modules of the assistant as required. the password hash can be obtained by the assistant directly. no clear passwords are stored - in the image/sample file for illustration purposes though.
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -316,7 +329,7 @@ this is a easy to handle list to set optional permissions for modules of the ass
 
 like the [timetables](#timetables) this is not originally part of quality management, but on the other hand which part of operations is not somehow influenced by and influencing quality management itself? making use of the same codebase the transfer schedule originated from the schedule of transferring apprentices through the different departments to get an insight on everything. this might come in handy for other planning operations as well. note that this document is not within the registration process and exporting the table as a pdf-file will only contain a release date, not a version number.
 
-customize the department definitions and abbreviations, everything separated by a non-word-chracter will be recognized to update to your set background-colour. plan the schedule, connect cells and you end up with a decent overwiew. on saving the background color of the entries as well as the separation lines for entries and months will update and you will be prompted to optional export the file.
+customize the department definitions and abbreviations, everything separated by a non-word-chracter will be recognized to update to your set background-colour. plan the schedule, connect cells and you end up with a decent overview. on saving the background color of the entries as well as the separation lines for entries and months will update and you will be prompted to optional export the file.
 change the year as needed, the first month-column contains the initial month value to start from within a formula. adding more sheets is possible, only the active sheet will be processed. position of the term "Legend" (customizable within the Locals module) and placing of the department definitions in column A is crucial.
 
 [back to top](#bottle-light-quality-management-software)
@@ -329,22 +342,22 @@ the files are prepared to work on their own if no import file is found. after im
 
 supplying the source folder has the benefit of changes affecting all working draft documents automatic. be careful as well as glad changes have to be only done in one location mostly. yay!
 
-hopefully settings have to be done within the locals-modules only. here you can customize columns and rows in case you slightly edit the tables structure but not the behaviour, customize some values and language chunks. if you copy any locals-module you can set up additional languages that will be accessed as soon as the language is set within the office files directly. just make sure to keep  Attribute VB_Name = "Locals" 
+hopefully settings have to be done within the locals-modules only. here you can customize columns and rows in case you slightly edit the tables structure but not the behaviour, customize some values and language chunks. if you copy any locals-module you can set up additional languages that will be accessed as soon as the language is set within the office files directly. just make sure to keep the `Attribute VB_Name = "Locals"`. 
 
-while serving for illustratory purposes in the first place all ..._illustration.vba-files have a secondary functional purpose as well.
-if you have to change code for the main module / ThisDocument-class, there is a module prepared that will import the source code from the Document_ThisDocument_illustration.vba to overwrite, that you can implement (preferably temporary) from within the essentials-module. use case: changing paths, language or adding custom subs or funtions.
+while initially serving for illustratory purposes, all *_illustration.vba-files now have a secondary functional purpose as well.
+if you have to change code for the main module / ThisDocument-class, you can import the source code from the Document_ThisDocument_illustration.vba to overwrite, by implementing (preferably temporary) it within the essentials-module. use case: changing paths, language or adding custom subs or funtions.
 
 ### document_-modules
 these are the modules for word-documents like the [draft documents in force](documents/), containing versions control, publishing and registering.
-events like Document_Open() and App_DocumentBeforeSave() in the ThisDocument-code-module point to public functions within the essential-module thus executing always the latest imported routines.
+events like Document_Open() in the ThisDocument-code-module point to public functions within the essential-module thus executing always the latest imported routines.
 while being opened from the list of documents in force (programmatically by another office application) the window is not visible while the macros start. this results in errors using document variables.
 there's a conditional query if the application is visible and warns about non available functions if true.
 
 ### admin_-modules
-these modules are in use of the [administrative excel sheets](administration/) for maintaining and exporting diverse lists like document-lists, stocklist, etc. reusable functions can be found in the essentials-module, special behaviours are in the explicit module (based on the filename).
+these modules are in use of the [administrative excel sheets](administration/) for maintaining and exporting diverse lists like document-lists, stocklist, etc. reusable functions can be found in the essentials-module, special behaviours are in the specific module (based on the filename).
 Events like Workbook_Open() and Workbook_BeforeSave() in the ThisWorkbook-code-module point to public functions within the essential-module thus executing always the latest imported routines.
 
-while being opened during a registration process (programmatically by another office application) office seems to have trouble adressing workbook-objects properly (or my poor skills). previously this could mess up the export of the list of documents, but is now prevented by remote calling a sub to set a respective flag.
+while being opened during a registration process (programmatically by another office application) office seems to have trouble adressing workbook-objects properly (or because of my poor skills). previously this could mess up the export of the list of documents, but is now prevented by remote calling a sub to set a respective flag.
 
 ### timetable_-modules
 these modules work like the document_-modules and serve the same for every accessing [timetable-file](timetables/). in this sample structure these can be found within the timetable-folder, but this is up to you. just make sure to point to the right directory from the ThisWorbook-code-module.
@@ -353,7 +366,7 @@ Events like Workbook_Open() and Workbook_BeforeSave() in the ThisWorkbook-code-m
 [back to top](#bottle-light-quality-management-software)
 
 ## thoughts and considerations
-on export of docm-files to pdf the file dialogue does not show pdf files. you will be asked to provide a file name with default docm-extension that will be changed automatically. this is due to the fact that vba `Application.FileDialog(msoFileDialogSaveAs)` does not support `.Filter`. existant files will not be displayed and just be overwritten.
+on export of docm-files the file dialogue does not show pdf- or docm-options. you will be asked to provide a file name with default docx-extension that will be changed automatically. this is due to the fact that vba `Application.FileDialog(msoFileDialogSaveAs)` does not support `.Filter`. *existant files will not be displayed and just be overwritten.*
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -399,14 +412,14 @@ the sheets are protected by default, only relevant cells can be changed by the u
 
 ### don't tell anyone
 the security is inversely proportional to the tech savvyness of the users. there is a very hidden sheet containing the masterpassword to unlock and relock sheets while initializing or creating the monthly sheet.
-here the user passwords are stored as well, complemented by timestamp of creation and user account. in case of integrity concerns these information might give a start for investigating. if you consider enhancing security protect the vba code with a password as well, but ponder on tech savvyness of employees vs. long term accessability even after you leave the company with the passwords...
+here the user passwords are stored as well, complemented by timestamp of creation and user account. in case of integrity concerns these information might give a start for investigating. if you consider enhancing security protect the vba code with a password as well, but ponder on tech savvyness of employees vs. long term accessibility even after you leave the company with the passwords...
 this sheet is also used for session persistent values that can not otherwise be handled due to vbas behaviour.
 
 ### maintainability
 i had to learn this one the hard way. on developing and testing i had to change the codebase several times in about 30 beta testers sheets without dumping their values. eventually i learned about importing modules. if you provide a subfolder with the main module codes these will be imported/updated on every opening of the sheet. if this is not possible the modules remain in their last imported version. you can hide the subfolder vb_library, make it read_only by account management or provide it temporarily after changes.
-the code within This.Worksheet can be oberwritten by enabling the *Rewrite*-module from the *Essentials*-module. this works well, but causes issues for tables that have to be initialized. please enable this only to update existing timetables on the fly and disable afterwards to not affect the daily flow.
+the code within ThisWorksheet can be oberwritten by enabling the *Rewrite*-module from the *Essentials*-module. this works well, but causes issues for tables that have to be initialized. please enable this only to update existing timetables on the fly and disable afterwards to not affect the daily flow.
 
-if you change the layout of the tables make sure to adjust the cell addresses (A1 nad R1C1 notations both apply) within the essentials-module:
+if you change the layout of the tables make sure to adjust the cell addresses (A1 and R1C1 notations both apply) within the essentials-module:
 
 settings:
 * addresses of settings in Essential.persistent
@@ -440,7 +453,7 @@ on opening the file for initialization from the assistant, the wizard will be hi
 
 # details on the assistant
 ## summary
-there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. then there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-library](http://vanilla.js-com).
+there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. further on there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-library](http://vanilla.js-com).
 
 [![visit demo](https://img.shields.io/website?style=flat-square&down_message=demo%20currently%20unavailable&up_message=visit%20working%20demo&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
 
@@ -451,7 +464,7 @@ there is a main html-file in the root folder, a core folder with the core functi
 * data files are stored in a different folder hoping that changes to the backend don't mess up data that might be accessed through different persons than the maintainer of the application. these are separated in module-variables that define the modules behaviour and module data that will be processed according to the modules task. the latter are optional.
 * users can be informed about changes using the changelog in library/core/core.userDialogue.js. add your own changes and the information will popup automatically on start.
 * since most of my colleagues don't mind messing around to learn something, there is a short-tip function whose entries can be extended in accordance to your modules.
-* settings will be stored in local storage or cookies (depending on browser support) so everything depends on the local machine in addition to user login. in case everything is stored with cookies if the browsers history is cleaned on exit all setting will be gone as well. the storage method handles local-storage support with cookies as a fallback. this means there is support for chrome having an issue with cookie storage of local sites as well as ie11 not having local storage for local sites. cookie storage is somewhat inconvenient small, but this is due to browser dependent handling of local sites. unfortunately edge as well can be set to delete everything on exit using a company policy that can may be not be customizable by the user.
+* settings will be stored in local storage or cookies (depending on browser support) so everything depends on the local machine in addition to user login. in case everything is stored with cookies, if the browsers history is cleaned on exit all setting will be gone as well. the storage method handles local-storage support with cookies as a fallback. this means there is support for chrome having an issue with cookie storage of local sites as well as ie11 not having local storage for local sites. cookie storage is somewhat inconvenient small, but this is due to browser dependent handling of local sites. unfortunately edge as well can be set to delete everything on exit using a company policy that can may be not be customizable by the user.
 * you can monitor the performance (currently implemented for tracking asynchronous loading and processing) in the console if you enable it in the settings.
 
 *be aware that there are dependencies between the assistants datafiles, their objects and handling, and the documents vba and table-structure. it might become neccessary to change things on both sides.*
@@ -480,9 +493,9 @@ the provided modules are filled with dummies. the general multi-language support
 ![assistant document lookup](assets/assistant_documentlookup.png)
 
 you can search for documents by name, switch between your own and foreign or other documents. there is a third category of documents of proof that might not neccessarily have to be in version control. these are not searchable but still reachable from the application.
-every klick on a document will be counted. from the second call of this module on the last used documents will be displayed. frequent called documents will appear on the top of the list. you can define default documents, users will be able to define their own default list, delete and recall lists. if you define default lists within the module set up the documents filename only without non-word characters.
+every click on a document will be counted. from the second call of this module on the last used documents will be displayed. frequent called documents will appear on the top of the list. you can define default documents, users will be able to define their own default list, delete and recall lists. if you define default lists within the module, set up the documents filename only without non-word characters.
 
-dependencies are: datalists for internal and external an other documents. these are generated by the excel-file of documents in force.
+dependencies are: datalists for internal and external an other documents. these are generated by the [excel-files of documents in force](#internal-documents-in-forcexlsm).
 
 globalSearch api: returns documents from all categories/datalists that fit search terms.
 
@@ -491,9 +504,9 @@ globalSearch api: returns documents from all categories/datalists that fit searc
 ### predefined document bundles
 ![assistant document bundles](assets/assistant_documentbundles.png)
 
-if you have reaccuring sets of documents it might come in handy if you define packages that can be selected, displayed and (using ie11) printed on the fly.
+if you have recurring sets of documents it might come in handy if you define packages that can be selected, displayed and (using ie11) printed on the fly.
 
-dependencies are: datalist for packages. this can be generated by the excel file of documents in force. if you mess around with exceptions there might be changes within the macro neccessary as well.
+dependencies are: datalist for packages. this can be generated by the [excel-file of documents in force](#internal-documents-in-forcexlsm). if you mess around with exceptions there might be changes within the macro neccessary as well.
 
 globalSearch api: returns packages that fit search terms.
 
@@ -504,7 +517,7 @@ globalSearch api: returns packages that fit search terms.
 
 if you want your employees to have a look at approved products and materials for your company and let them keep in touch with the inventory control this module makes it quite easy to look up all products.
 
-dependencies are: the datalist of inventory and an excel file containing the original data exporting everything OR the stocklist-script. the displayed data is sorted according to the excel-lists column organisation or depends on the order of the erp-dump. if something is changed here the filter-method might have to be adjusted. employees have the opportunity to support inventory control via email and keep them updated.
+dependencies are: the datalist of inventory and an excel file containing the original data exporting everything OR the stocklist-script [more about that here](#stocklist). the displayed data is sorted according to the excel-lists column organisation or depends on the order of the erp-dump. if something is changed here the filter-method might have to be adjusted. employees have the opportunity to support inventory control via email and keep them updated.
 
 globalSearch api: returns number of matches regarding search terms.
 
@@ -520,7 +533,7 @@ since ordering things can be expensive for the company, orders can be registered
 in theory orders can be piled up and verified en bloc. in practice this is one of the biggest issues using ie11 due to restricted storage space on cookies (10 kb) as opposed to decent browsers with 5 mb localstorage. if your shitty company policy deletes everything on leaving the browser this also is obviously disturbing the workflow.
 to be honest this system is yet to be implemented properly. once i reach an agreement with central purchasing the data structure might be overhauled to be more efficient. currently the whole order with table styling is stored instead of structured data that would save some space.
 
-dependencies are: the datalist of inventory regarding the shopping cart, optional datalist of current order status
+dependencies are: the datalist of inventory regarding the shopping cart, optional [datalist of current order status](#ticketorderxlsm)
 
 globalSearch api: returns number of matches regarding search terms id datalist is available.
 
@@ -542,7 +555,7 @@ globalSearch api: returns a link to the module if first search term can be found
 ### default texts for correspondence
 ![assistant correspondence](assets/assistant_correspondence.png)
 
-define default text blocks that you can use for standard letters so your company speaks consistent and no one has to think about wording for hours. you can define your default letter template to be accessible directly from this module to copy the texts on the fly.
+define default text blocks to use for standard letters so your company speaks consistent and no one has to think about wording for hours. you can define your default letter template to be accessible directly from this module to copy the texts on the fly.
 
 dependencies are: datalists for texts
 
@@ -572,7 +585,7 @@ globalSearch api: returns submodules where titles match the search terms.
 
 this module prepares given data from the depending xls-sheet as a question setup for the internal audit. topics can be selected as a whole, manually or random. select the maximum number of questions per topic. this module might reduce the preparation time for the quality manager as well as giving all employees an impression how to think in terms of processes and norm-vocabulary.
 
-dependencies: datalist for question sets. these are generated by the excel-file for audit planning.
+dependencies: datalist for question sets. these are generated by the [excel-file for audit planning](#audit-plannerxlsm).
 
 globalSearch api: returns false because the contents are considered useless for a daily workflow and would mess the overall search results up unnecessary.
 
@@ -658,7 +671,7 @@ modulename.var= { //module variables
 
 thus algorithms and values are separated and changes on one don´t necessarily affect the other. or copying new content between my companies and this open source version don't overwrite something (that happend way to often). since both parts of module are loaded asynchronously the initialization of the modules object in both files might be reasonable.
 
-please inspect the sample files for further information. while distributing this piece of software there happen to be some differencies between the open source version and the actual software used in my company. the main differencies can be found in the {modulename}.var-properties. maybe you find this suitable for you as well so changes to to sourcecode are way more easy to implement.
+please inspect the sample files for further information. while distributing this piece of software there happen to be some differencies between the open source version and the actual software used in my company. the main differencies can be found in the {modulename}.var-properties. maybe you find this suitable for you as well so changes to your sourcecode are way more easy to implement.
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -805,7 +818,7 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.fn.setting.clear()` resets the whole application
 
-`core.fn.stringcompression.compress()` returns an uricomponent encoded base64 encoded string to save some bytes for storage of long strings
+`core.fn.stringcompression.compress()` returns an uricomponent encoded base64 encoded string to save some bytes for storage of long strings (but long string only, making short strings even longer)
 
 `core.fn.stringcompression.decompress()` reverts the base64 encoded string
 
