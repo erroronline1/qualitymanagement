@@ -41,7 +41,7 @@ Public Function setup() As Collection
     setup.Add "Cancel", "format.cancel"
     setup.Add False, "format.labelHeight"
     'prompt to publish document ad pdf-file
-    setup.Add "Publish document as PDF-file? (Extension will be set automatically)", "publish.confirmPrompt"
+    setup.Add "Publish document as PDF-file? (Extension will be set automatically)", "publish.pdfconfirmPrompt"
     ' prompt to publish document as docm-file
     setup.Add "Publish document as interactive DOCM? (Extension will be set automatically)", "publish.docmconfirmPrompt"
     setup.Add "Select another location!", "publish.docmdestinationErrorTitle"
