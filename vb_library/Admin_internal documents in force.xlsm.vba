@@ -329,14 +329,14 @@ Public Sub exportXLS(ByVal var As Collection)
             Dim WB As Excel.Workbook
             Set WB = Workbooks.Add
             Dim rng As Range
-            With WB.Worksheets(var("documentlist.sheet"))
-                Set rng = .Range(.Cells(var("documentlist.headerRow") + 1, var("documentlist.linkColumn")), .Cells(.Rows.Count, var("documentlist.linkColumn")).End(xlUp))
-            End With
             Dim mformat As Variant
             If Essentials.collectionKeyExists(var, "documentlist.documentFormat") Then mformat = ThisWorkbook.Worksheets(var("documentlist.sheet")).Range(var("documentlist.documentFormat") & var("documentlist.headerRow") + 1 & ":" & var("documentlist.documentFormat") & matrixallrows)
             Dim documentFormat: documentFormat = ""
 
             ThisWorkbook.Sheets(Array(var("documentlist.sheet"), var("normcheck.sheet"), var("bundles.sheet"))).Copy before:=WB.Worksheets(1)
+            With WB.Worksheets(var("documentlist.sheet"))
+                Set rng = .Range(.Cells(var("documentlist.headerRow") + 1, var("documentlist.linkColumn")), .Cells(.Rows.Count, var("documentlist.linkColumn")).End(xlUp))
+            End With
 
             'replace file links in overview with pdf-path
             Dim mexp As Variant: mexp = rng
