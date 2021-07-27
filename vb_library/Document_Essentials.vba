@@ -293,9 +293,40 @@ Public Sub DOCMPublish()
             newDOC.Convert ' works in word2013 but possibly not word2010, hence error handling
             
             ' unlink fields and finalize content to avoid updates within the archived documents
+            ' within body
             Dim oFld As field
             For Each oFld In newDOC.Fields
                 oFld.Unlink
+            Next
+            ' within header, footer
+            Dim rngStory As Word.Range
+            Dim rngNext As Word.Range
+            Dim lngJunk As Long
+            Dim oShp As Shape
+            lngJunk = ThisDocument.Sections(1).Headers(1).Range.StoryType
+            For Each rngStory In ThisDocument.StoryRanges
+            ' Iterate through all linked stories/fields
+                Do
+                    On Error Resume Next
+                    rngStory.Fields.Update
+                    Select Case rngStory.StoryType
+                    Case 6, 7, 8, 9, 10, 11 ' headers and footers
+                        rngStory.Fields.Unlink
+                        ' occasionally linked headers
+                        Set rngNext = rngStory.NextStoryRange
+                        Do Until rngNext Is Nothing
+                            ' Unlink fields in this header
+                            rngNext.Fields.Unlink
+                            ' Link to next story (if any)
+                            Set rngNext = rngNext.NextStoryRange
+                        Loop
+                    Case Else
+                        ' do nothing
+                    End Select
+                    On Error GoTo 0
+                    ' get next linked story (if any)
+                    Set rngStory = rngStory.NextStoryRange
+                Loop Until rngStory Is Nothing
             Next
             
             ' rewrite macros and unload modules
@@ -390,7 +421,7 @@ Public Sub UpdateListOfDocuments()
         Dim fileformat
         If PDFFile <> "" Then fileformat = "PDF"
         If DOCMFile <> "" Then fileformat = "DOCM"
-        xlSheet.Range(setup("updateList.documentFormat") & rCount).Value = CStr(fileformat)
+        If fileformat Then xlSheet.Range(setup("updateList.documentFormat") & rCount).Value = CStr(fileformat)
         
         ' link to published pdf document in case a column is specified above. unlike the other values this is not mandatory
         If setup("updateList.documentPDFHyperlink") <> "" And (PDFFile <> "" Or DOCMFile <> "") Then
