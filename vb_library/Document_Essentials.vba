@@ -161,18 +161,13 @@ Public Sub UpdateDocumentFields()
         Do
             On Error Resume Next
             rngStory.Fields.Update
-            Select Case rngStory.StoryType
-            Case 6, 7, 8, 9, 10, 11 ' headers and footers
-                If rngStory.ShapeRange.Count > 0 Then
-                    For Each oShp In rngStory.ShapeRange
-                        If oShp.TextFrame.HasText Then
-                            oShp.TextFrame.TextRange.Fields.Update
-                        End If
-                    Next
-                End If
-            Case Else
-                ' do nothing
-            End Select
+            If rngStory.ShapeRange.Count > 0 Then
+                For Each oShp In rngStory.ShapeRange
+                    If oShp.TextFrame.HasText Then
+                        oShp.TextFrame.TextRange.Fields.Update
+                    End If
+                Next
+            End If
             On Error GoTo 0
             ' get next linked story (if any)
             Set rngStory = rngStory.NextStoryRange
@@ -309,20 +304,15 @@ Public Sub DOCMPublish()
                 Do
                     On Error Resume Next
                     rngStory.Fields.Update
-                    Select Case rngStory.StoryType
-                    Case 6, 7, 8, 9, 10, 11 ' headers and footers
-                        rngStory.Fields.Unlink
-                        ' occasionally linked headers
-                        Set rngNext = rngStory.NextStoryRange
-                        Do Until rngNext Is Nothing
-                            ' Unlink fields in this header
-                            rngNext.Fields.Unlink
-                            ' Link to next story (if any)
-                            Set rngNext = rngNext.NextStoryRange
-                        Loop
-                    Case Else
-                        ' do nothing
-                    End Select
+                    rngStory.Fields.Unlink
+                    ' occasionally linked headers
+                    Set rngNext = rngStory.NextStoryRange
+                    Do Until rngNext Is Nothing
+                        ' Unlink fields in this header
+                        rngNext.Fields.Unlink
+                        ' Link to next story (if any)
+                        Set rngNext = rngNext.NextStoryRange
+                    Loop
                     On Error GoTo 0
                     ' get next linked story (if any)
                     Set rngStory = rngStory.NextStoryRange
@@ -336,6 +326,13 @@ Public Sub DOCMPublish()
                 newDOC.VBProject.VBComponents.Remove Element
             Next
             Rewrite.rewriteMain newDoc, "ThisDocument", ThisDocument.parentPath & "vb_library\Document_Public_DOCM.vba"
+
+            ' docvar-field in textboxes seem to be unaffected by the unlinking procedure above _
+            and i am not able to figure out why. so ffs the most relevant variables will be passed as well
+            newDoc.Variables("version").Value = ThisDocument.Variables("version").Value
+            newDoc.Variables("releasedate").Value = ThisDocument.Variables("releasedate").Value
+            newDoc.Variables("title").Value = ThisDocument.Variables("title").Value
+
             ' protect content
             newDOC.Protect wdAllowOnlyFormFields, Password:="LoremIpsum"
             
