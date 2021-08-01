@@ -54,6 +54,7 @@ compatible with
 		* [timetable_-modules](#timetable_-modules)
 	* [thoughts and considerations](#thoughts-and-considerations)
 	* [timetables](#timetables)
+	* [filter.py](#filterpy)
 
 ### assistant
 * [details on the assistant](#details-on-the-assistant)
@@ -349,7 +350,7 @@ supplying the source folder has the benefit of changes affecting all working dra
 hopefully settings have to be done within the locals-modules only. here you can customize columns and rows in case you slightly edit the tables structure but not the behaviour, customize some values and language chunks. if you copy any locals-module you can set up additional languages that will be accessed as soon as the language is set within the office files directly. just make sure to keep the `Attribute VB_Name = "Locals"`. 
 
 while initially serving for illustratory purposes, all *_illustration.vba-files now have a secondary functional purpose as well.
-if you have to change code for the main module / ThisDocument-class, you can import the source code from the Document_ThisDocument_illustration.vba to overwrite, by implementing (preferably temporary) it within the essentials-module. use case: changing paths, language or adding custom subs or funtions.
+if you have to change code for the main module / ThisDocument-class, you can import the source code from the Document_ThisDocument_illustration.vba to overwrite, by implementing (preferably temporary) it within the essentials-module. use case: changing paths, language or adding custom subs or functions.
 
 ### document_-modules
 these are the modules for word-documents like the [draft documents in force](documents/), containing versions control, publishing and registering.
@@ -452,6 +453,14 @@ adjustments within the trust center might be necessary by trusting access to the
 there might be errors on opening multiple timetables at once, most notably with excel 2010. i still haven't learned why. all tests succeeded being used solo. field test showed errors and crashes sometimes, most probably due to faulty input, resulting in loss of a few inputs. i still have no clue what the colleagues entered to lead to this behaviour. you're most welcome to educate me on this!
 
 on opening the file for initialization from the assistant, the wizard will be hidden beneath the browser that has to be minimized first.
+
+[back to top](#bottle-light-quality-management-software)
+
+## filter.py
+
+![python csv-filter](assets/py_filter.png)
+
+there might be a reccuring need to filter huge data-sets. some erp-software can create csv-dumps of data that can be used for statistics or post market surveillance. it can be way easier to filter these dumps and create a serial letter from the output, than adjust the erps database for an example. with the python filter you can describe filter-patterns with regex for different usecases. you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
 
 [back to top](#bottle-light-quality-management-software)
 
