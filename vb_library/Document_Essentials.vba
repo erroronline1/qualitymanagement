@@ -38,6 +38,8 @@ Public Sub asyncOpen()
         ' save as docvar for persistence, because calling userform results in a state loss. _
         see sub publish() below for slightly more information
         ActiveDocument.Variables("parentPath").Value = ThisDocument.parentPath
+        PDFFile = ""
+        DOCMFile = ""
     
         On Error Resume Next
         UpdateDocumentFields
@@ -415,10 +417,10 @@ Public Sub UpdateListOfDocuments()
             Address:=ThisDocument.FullName, _
             TextToDisplay:=ThisDocument.FullName
         ' format of published file
-        Dim fileformat
+        Dim fileformat: fileformat = ""
         If PDFFile <> "" Then fileformat = "PDF"
         If DOCMFile <> "" Then fileformat = "DOCM"
-        If fileformat Then xlSheet.Range(setup("updateList.documentFormat") & rCount).Value = CStr(fileformat)
+        If fileformat <> "" Then xlSheet.Range(setup("updateList.documentFormat") & rCount).Value = CStr(fileformat)
         
         ' link to published pdf document in case a column is specified above. unlike the other values this is not mandatory
         If setup("updateList.documentPDFHyperlink") <> "" And (PDFFile <> "" Or DOCMFile <> "") Then
@@ -426,7 +428,6 @@ Public Sub UpdateListOfDocuments()
             Address:=PDFFile & DOCMFile, _
             TextToDisplay:=PDFFile & DOCMFile
         End If
-
         xlWB.Close
         If bXStarted Then
             xlApp.Quit
