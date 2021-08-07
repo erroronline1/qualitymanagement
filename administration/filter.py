@@ -151,7 +151,7 @@ helptext='''
         "keep": boolean if matches are kept or omitted
         "patterns":
             "all": all expressions have to be matched, object/dict with column-name-key, and pattern as value
-			"any": at least one expression has to be matched, it's either "all" or "any"
+            "any": at least one expression has to be matched, it's either "all" or "any"
     "concentrate": list/array of object/dicts
         "comment": description, will be displayed
         "keep": boolean if matches are kept or omitted
@@ -502,12 +502,11 @@ if __name__ == '__main__':
 			warning={}
 			for row in RESULT.list:
 				for evaluation in ini['evaluate']:
-					if RESULT.list[row][evaluation]:
-						if re.match(ini['evaluate'][evaluation], RESULT.list[row][evaluation]):
-							if evaluation in warning:
-								warning[evaluation] += 1
-							else:
-								warning[evaluation] = 1
+					if RESULT.list[row][evaluation] and re.match(ini['evaluate'][evaluation], RESULT.list[row][evaluation]):
+						if evaluation in warning:
+							warning[evaluation] += 1
+						else:
+							warning[evaluation] = 1
 			for key, value in warning.items():
 				fprint('\n[!] WARNING: ' + str(value) + ' values of ' + key + ' may be faulty, please revise in the output file ' + ini['destination'])
 		fprint('[*] done! do not forget to archive ' + ini['destination'])
