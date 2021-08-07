@@ -21,7 +21,7 @@ Public Function Modules() As Object
     Set Modules = CreateObject("Scripting.Dictionary")
     Modules.Add "Locals", ThisWorkbook.parentPath & "vb_library\" & "Admin_Locals_" & ThisWorkbook.selectedLanguage & ".vba"
     Modules.Add "Specific", ThisWorkbook.parentPath & "vb_library\" & "Admin_" & ThisWorkbook.Name & ".vba"
-    'Modules.Add "Rewrite", ThisWorkbook.parentPath & "vb_library\RewriteMain.vba"
+    Modules.Add "Rewrite", ThisWorkbook.parentPath & "vb_library\RewriteMain.vba"
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

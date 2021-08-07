@@ -3,7 +3,7 @@ Attribute VB_Name = "Locals"
 '    / \    part of
 '   |...|
 '   |...|   bottle light quality management software
-'   |___|	by error on line 1 (erroronline.one) available on https://github.com/erroronline1/qualitymanagement
+'   |___|   by error on line 1 (erroronline.one) available on https://github.com/erroronline1/qualitymanagement
 '   / | \
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -56,14 +56,15 @@ End Function
 
 Public Function setupTransferSchedule() As Collection
     Set setupTransferSchedule = New Collection
-	setupTransferSchedule.Add "Legende", "matrix.maxRow"
-	setupTransferSchedule.Add "Verarbeitungsmatrix konnte nicht ermittelt werden, es fehlt das Stichwort >Legende< in Spalte A." & vbnewline & vbnewline & "Vorgang abgebrochen.", "matrix.error"	
-	setupTransferSchedule.Add "PDF exportieren?", "initiate.Title"
-	setupTransferSchedule.Add "Soll der Plan als PDF exportiert werden?" & vbNewLine & "ACHTUNG! Sollte die Datei bereits geöffnet sein wird Excel abstürzen.", "initiate.Confirm"
+    setupTransferSchedule.Add "Legende", "matrix.maxRow"
+    setupTransferSchedule.Add "Verarbeitungsmatrix konnte nicht ermittelt werden, es fehlt das Stichwort >Legende< in Spalte A." & vbnewline & vbnewline & "Vorgang abgebrochen.", "matrix.error"	
+    setupTransferSchedule.Add "PDF exportieren?", "initiate.Title"
+    setupTransferSchedule.Add "Soll der Plan als PDF exportiert werden?" & vbNewLine & "ACHTUNG! Sollte die Datei bereits geöffnet sein wird Excel abstürzen.", "initiate.Confirm"
     setupTransferSchedule.Add "PDF des Ausbildungsplanes bei den Nachweisdokumenten bereitstellen?", "export.xlsPrompt"
     setupTransferSchedule.Add "E:\Quality Managment\thirdType\Transferschedule.pdf", "export.xlsDefaultFile"
 End Function
-Public Function monitorTransferSchedule = New Collection
+Public Function monitorTransferSchedule() As Collection
+    Set monitorTransferSchedule = New Collection
     monitorTransferSchedule.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
     monitorTransferSchedule.Add Array(False, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
 End Function
@@ -246,4 +247,98 @@ Public Function monitorDRM() As Collection
     Set monitorDRM = New Collection
     monitorDRM.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
     monitorDRM.Add Array(True, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns" 
+End Function
+
+
+Public Function setupVendorList() As Collection
+    Set setupVendorList = New Collection
+    ' export values
+    setupVendorList.Add "Export des Lieferantenverzeichnisses?", "export.confirmTitle" 'title for query to export
+    setupVendorList.Add "Kopie des Lieferantenverzeichnisses bei den Nachweisdokumenten bereitstellen?", "export.confirm" 'query to export
+    setupVendorList.Add "Excel-Datei ohne Code veröffentlichen?", "export.xlsPrompt"
+    setupVendorList.Add "E:\Quality Management\published\vendor list.xlsx", "export.xlsDefaultFile"
+    'runtime values
+    setupVendorList.Add "Ein Doppelklick auf die manuell anzufordernden Dokumente im Lieferantenverzeichnis oder die Unterlagen bei den Materialien im Hautkontakt erstellt automatisch " & _
+            "eine eMail mit der passenden Anfrage an den Lieferanten. " & vbNewLine & _
+            "Das Datum der Anfrage wird bei Versandbestätigung automatisch eingetragen" & vbNewLine & vbNewLine & _
+            "Eine Änderung des Zelleninhalts in dieser Spalte des Lieferantenverzeichnisses ist nur über das Eingabefeld oben möglich. " & vbNewLine & _
+            "Bei der Pflege des Verzeichnisses sollte in der Spalte mit den manuell anzufordernden Dokumenten " & _
+            "auf aussagekräftige und sprachlich passende Titel geachtet werden." & vbNewLine & _
+            "Eine Anpassung der eMail ist aber jederzeit möglich." & vbNewLine & vbNewLine & _
+            "Eine Änderung der Spalten muss unter Umständen auch in der VBA-Programmierung für den eMail-Versand sowie die bedingte Formatierung berücksichtigt werden! Um Zurückhaltung wird gebeten." _
+            , "runtime.prompt" 'hint on startup
+    setupVendorList.Add "Wurde die eMail abgeschickt?", "runtime.mailSent" 'confirmation query on sending email manually demanding documents
+    setupVendorList.Add "dd.mm.yyyy", "runtime.dateFormat" 'date format to populate last-demand-field with
+    setupVendorList.Add "Es besteht keine Schreibberechtigung. Änderungen würden nicht gespeichert werden. Wende Dich an deine zuständigen MitarbeiterInnen.", "runtime.writeError" 'warning on missing write permissions
+    setupVendorList.Add "Es fehlt eine eMail-Adresse. Bitte eine eMail-Adresse (und Kundennummer) im Lieferantenverzeichnis eintragen.", "runtime.missingRcptError" 'warning if email-adress is missing
+    setupVendorList.Add "Dieser Lieferant befindet sich nicht (mehr) im zugelassenen Lieferantenverzeichnis!", "runtime.illegalVendorError" 'warning if vendor is not found in the vendor-sheet, e.g. gone out of business or sorted out 
+    ' vendor tracing value
+    setupVendorList.Add "VendorList", "vendor.sheetName" 'select sheet to process content
+    setupVendorList.Add "3", "vendor.rowOffset" 'customize row, where contents start 
+    setupVendorList.Add "A", "vendor.vendorColumn" 'customize column for vendor names
+    setupVendorList.Add "F", "vendor.documentColumn" 'customize column for documents to demand manually
+    setupVendorList.Add "G", "vendor.dateColumn" 'customize column to populate with latest request
+    setupVendorList.Add "H", "vendor.downloadColumn" 'customize column with automated document types
+    setupVendorList.Add "I", "vendor.customerColumn" 'customize column with your customer id for respective vendors
+    setupVendorList.Add "J", "vendor.rcptColumn" 'customize column with email-adress of respective vendors
+    setupVendorList.Add "Dokumentenanfrage für {documents}", "vendor.mailSubject" 'subject for request-mail, {documents} will be replaced according to vendor.documentColumn
+    setupVendorList.Add "Sehr geehrte Damen und Herren,<br /><br />" & _
+            "um eine Konformität der von uns gelieferten orthopädischen Hilfsmittel jederzeit bescheinigen zu können, " & _
+            "müssen wir die erforderlichen Zertifikate und Dokumente im Rahmen unseres Qualitätsmanagementsystems vorhalten. " & _
+            "{download} die wir bereits in der Vergangenheit von Ihnen erhalten haben. Wir benötigen von Ihnen die aktuellen Dokumente betreffend<br /><br /><i>{documents}</i><br /><br />" & _
+            "für eines oder mehrere Ihrer Produkte, die wir von Ihnen beziehen, bzw. bezüglich Ihres Unternehmens. " & _
+            "{customer}Wir freuen uns über eine zeitnahe Zusendung der Dokumente, per eMail an " & _
+            "<a href=""mailto:mail@company.tld"">mailto:mail@company.tld</a>, oder per Post oder Fax an die unten stehende Adresse oder Faxnummer. " & _
+            "Sollten Sie in der Zwischenzeit die Dokumente frei zugänglich auf Ihre Internetseite zur Verfügung stellen, teilen Sie uns bitte den Speicherort mit. " & _
+            "<br /><br />Mit freundlichen Grüßen<br /><br />" & _
+            "Ihre Firma<br />" & _
+            "Straße<br />" & _
+            "Ort<br />" & _
+            "Telefon<br />" & _
+            "Fax" & _
+            "<br /><br /><small>Dies ist eine automatisiert erstellte eMail.</small>" _
+            , "vendor.mailBody" 'body for request-mail, {documents}, {download} and {customer} will be conditionally replaced with following chunks
+    setupVendorList.Add "Einige Ihrer Unterlagen konnten wir bereits von Ihrer Internetseite beziehen. Leider fehlen uns aber noch einige Dokumente, ", "vendor.ifDownload" 'if some documents can be downloaded
+    setupVendorList.Add "Dazu bitten wir Sie um Zusendung der erforderlichen aktuellen Unterlagen, ", "vendor.ifNotDownload" 'if no documents can be downloaded
+    setupVendorList.Add "Unsere Kundennummer bei Ihnen lautet: {customer}<br />", "vendor.ifCustomer" 'if customer id for respective vendor is given
+    setupVendorList.Add "Es scheint alles schon da zu sein?!", "vendor.noDemand" 'if documents id empty or populated with a dash
+    ' material tracing values
+    setupVendorList.Add "MaterialTracing", "material.sheetName" 'select sheet to process content
+    setupVendorList.Add "6", "material.rowoffset" 'customize row, where contents start 
+    setupVendorList.Add "A", "material.materialColumn" 'customize column for material names and order ids
+    setupVendorList.Add "B", "material.vendorColumn" 'customize column for vendor names
+    setupVendorList.Add "D", "material.documentColumn" 'customize column for documents to demand manually
+    setupVendorList.Add "E", "material.dateColumn" 'customize column to populate with latest request
+    setupVendorList.Add "{documents} für {material}", "material.mailSubject" '{documents} and {material} will be replaced according to material.documentColumn and .materialColumn
+    setupVendorList.Add "Sehr geehrte Damen und Herren,<br /><br />" & _
+            "um eine Konformität der von uns gelieferten orthopädischen Hilfsmittel jederzeit bescheinigen zu können, " & _
+            "müssen wir die erforderlichen Zertifikate und Dokumente im Rahmen unseres Qualitätsmanagementsystems vorhalten. " & _
+            "{evidence}Wir bevorzugen einen oder meherere folgender Nachweise:<br /><ul>" & _
+            "<li>Biokompatibilitätsnachweise nach ISO 10993,</li>" & _
+            "<li>Konformitätserklärungen nach ISO 13485,</li>" & _
+            "<li>Berichte über die Prüfung der Zytotoxizität und Karzerogenität von akkreditierten Prüflaboren</li>" & _
+            "</ul>" & _
+            "{customer}Sofern Sie die Erklärungen / Berichte nicht selbst ausgeben akzeptieren wir auch die Erklärungen / Berichte Ihrer Lieferanten " & _
+            "mit einer Erklärung von Ihnen dass es sich bei Ihrem Handelsnamen um das entsprechende Produkt handelt. " & _
+            "Beachten Sie bitte, dass sich jeder Ihrer Kunden über eine Aktualität der Unterlagen von nicht älter als 5 Jahren freut. " & _
+            "Wir freuen uns über eine zeitnahe Zusendung der Dokumente, per eMail an " & _
+            "<a href=""mailto:mail@company.tld"">mailto:mail@company.tld</a>, oder per Post oder Fax an die unten stehende Adresse oder Faxnummer. " & _
+            "Sollten Sie in der Zwischenzeit die Dokumente frei zugänglich auf Ihre Internetseite zur Verfügung stellen, teilen Sie uns bitte den Speicherort mit. " & _
+            "<br /><br />Mit freundlichen Grüßen<br /><br />" & _
+            "Ihre Firma<br />" & _
+            "Straße<br />" & _
+            "Ort<br />" & _
+            "Telefon<br />" & _
+            "Fax" & _
+            "<br /><br /><small>Dies ist eine automatisiert erstellte eMail. Wir bitten um Verständnis falls Sie mehrere Anfragen für unterschiedliche Materialien erhalten.</small>" _
+            , "material.mailBody" 'body for request-mail, {evidence} and {customer} will be condidionally replaced with following/preceding chunks
+    setupVendorList.Add "Materialunbedenklichkeitsnachweise", "material.defaultEvidence" 'default if no document types are given yet
+    setupVendorList.Add "In der Vergangenheit haben wir von Ihnen die <br /><br /><i>{documents} für {material}</i><br /><br /> erhalten und bitten nun um die Zusendung aktueller Unterlagen. ", "material.ifDocuments" 'if document types are given, {documents} and {material will be replaced}
+    setupVendorList.Add "Wir bitten Sie um die Zusendung aktueller <br /><br /><i>Materialunbedenklichkeitsnachweise für {material}</i>.<br /><br />", "material.ifNotDocuments" 'if no document types are given yet, {material} will be replaced
+    setupVendorList.Add "Es fehlt der Lieferant!", "material.missingVendorError" 'warning if material misses vendor assignment
+End Function
+Public Function monitorVendorList() As Collection
+    Set monitorVendorList = New Collection
+    monitorVendorList.Add Array(True, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
+    monitorVendorList.Add Array(True, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
 End Function

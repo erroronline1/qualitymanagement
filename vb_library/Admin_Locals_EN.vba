@@ -56,11 +56,11 @@ End Function
 
 Public Function setupTransferSchedule() As Collection
     Set setupTransferSchedule = New Collection
-	setupTransferSchedule.Add "Legend", "matrix.maxRow"
-	setupTransferSchedule.Add "Workmatrix could not be determinated, missing keyword >Legend< in column A." & vbnewline & vbnewline & "processing aborted.", "matrix.error"	
-	setupTransferSchedule.Add "Export PDF?", "initiate.Title"
-	setupTransferSchedule.Add "Publish plan?" & vbNewLine & "CAUTION! If destination file is already opened Excel will crash.", "initiate.Confirm"
-    setupTransferSchedule.Add "PDF des Ausbildungsplanes bei den Nachweisdokumenten bereitstellen?", "export.xlsPrompt"
+    setupTransferSchedule.Add "Legend", "matrix.maxRow"
+    setupTransferSchedule.Add "Workmatrix could not be determinated, missing keyword >Legend< in column A." & vbnewline & vbnewline & "processing aborted.", "matrix.error"	
+    setupTransferSchedule.Add "Export PDF?", "initiate.Title"
+    setupTransferSchedule.Add "Publish plan?" & vbNewLine & "CAUTION! If destination file is already opened Excel will crash.", "initiate.Confirm"
+    setupTransferSchedule.Add "Publish PDF of transfer schedule?", "export.xlsPrompt"
     setupTransferSchedule.Add "E:\Quality Managment\thirdType\Transferschedule.pdf", "export.xlsDefaultFile"
 End Function
 Public Function monitorTransferSchedule() As Collection
@@ -248,4 +248,96 @@ Public Function monitorDRM() As Collection
     Set monitorDRM = New Collection
     monitorDRM.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
     monitorDRM.Add Array(True, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns" 
+End Function
+
+
+Public Function setupVendorList() As Collection
+    Set setupVendorList = New Collection
+    ' export values
+    setupVendorList.Add "Export of vendor list?", "export.confirmTitle" 'title for query to export
+    setupVendorList.Add "Publish a copy of the vendor list?", "export.confirm" 'query to export
+    setupVendorList.Add "Publish a copy of the list without code?", "export.xlsPrompt"
+    setupVendorList.Add "E:\Quality Management\published\vendor list.xlsx", "export.xlsDefaultFile"
+    'runtime values
+    setupVendorList.Add "A double click on the documents to demand automatically creates an email with a fitting request to the vendor. " & vbNewLine & _
+            "The date of the request will be inserted on sent-confirmation." & vbNewLine & vbNewLine & _
+            "Changing the cells values in this column is possible through the edit bar only. " & vbNewLine & _
+            "On maintaining the list values on requested documents should be meaningful and appropriate." & vbNewLine & _
+            "Editing still is possible at any time." & vbNewLine & vbNewLine & _
+            "Changing columns and / or rows might make changes on the macro and the conditional formatting a necessity. Be careful about that!" _
+            , "runtime.prompt" 'hint on startup
+    setupVendorList.Add "Has the email been sent?", "runtime.mailSent" 'confirmation query on sending email manually demanding documents
+    setupVendorList.Add "dd.mm.yyyy", "runtime.dateFormat" 'date format to populate last-demand-field with
+    setupVendorList.Add "You lack write permissions. Changes will not be saved. Plase contact your responsible personnel", "runtime.writeError" 'warning on missing write permissions
+    setupVendorList.Add "Missing email-adress. Please enter email-adress (and customer id) in the vendor list.", "runtime.missingRcptError" 'warning if email-adress is missing
+    setupVendorList.Add "This vendor is not (anymore) in the vendor list!", "runtime.illegalVendorError" 'warning if vendor is not found in the vendor-sheet, e.g. gone out of business or sorted out 
+    ' vendor tracing value
+    setupVendorList.Add "VendorList", "vendor.sheetName" 'select sheet to process content
+    setupVendorList.Add "3", "vendor.rowOffset" 'customize row, where contents start 
+    setupVendorList.Add "A", "vendor.vendorColumn" 'customize column for vendor names
+    setupVendorList.Add "F", "vendor.documentColumn" 'customize column for documents to demand manually
+    setupVendorList.Add "G", "vendor.dateColumn" 'customize column to populate with latest request
+    setupVendorList.Add "H", "vendor.downloadColumn" 'customize column with automated document types
+    setupVendorList.Add "I", "vendor.customerColumn" 'customize column with your customer id for respective vendors
+    setupVendorList.Add "J", "vendor.rcptColumn" 'customize column with email-adress of respective vendors
+    setupVendorList.Add "Document request for {documents}", "vendor.mailSubject" 'subject for request-mail, {documents} will be replaced according to vendor.documentColumn
+    setupVendorList.Add "Dear Madam or Sir,<br /><br />" & _
+            "to be able to declare a conformity regarding ISO 13485 on our medical devices, " & _
+            "we must be able to show the necessary certificates and documents in the course of our quality management system. " & _
+            "{download} that we already got from you in the past. We need documents regarding<br /><br /><i>{documents}</i><br /><br />" & _
+            "for one or some products we obtained from you, or your company in general. " & _
+            "{customer}We are happy to receive the documents in a timely manner by email to " & _
+            "<a href=""mailto:mail@company.tld"">mailto:mail@company.tld</a>, by postal service or fax to the following adress or fax-number. " & _
+            "If in the meantime the documents are available on your website kindly inform us about the location. " & _
+            "<br /><br />With kind regards<br /><br />" & _
+            "Company<br />" & _
+            "Street<br />" & _
+            "City<br />" & _
+            "Phone<br />" & _
+            "Fax" & _
+            "<br /><br /><small>This is an automatic produced letter.</small>" _
+            , "vendor.mailBody" 'body for request-mail, {documents}, {download} and {customer} will be conditionally replaced with following chunks
+    setupVendorList.Add "We were already able to obtain some of your documents from your website. Unfortunately, some document are still missing, ", "vendor.ifDownload" 'if some documents can be downloaded
+    setupVendorList.Add "We kindly ask you to provide us with the necessary documents, ", "vendor.ifNotDownload" 'if no documents can be downloaded
+    setupVendorList.Add "Our customer id is: {customer}<br />", "vendor.ifCustomer" 'if customer id for respective vendor is given
+    setupVendorList.Add "Everything seems to be there already?!", "vendor.noDemand" 'if documents id empty or populated with a dash
+    ' material tracing values
+    setupVendorList.Add "MaterialTracing", "material.sheetName" 'select sheet to process content
+    setupVendorList.Add "6", "material.rowoffset" 'customize row, where contents start 
+    setupVendorList.Add "A", "material.materialColumn" 'customize column for material names and order ids
+    setupVendorList.Add "B", "material.vendorColumn" 'customize column for vendor names
+    setupVendorList.Add "D", "material.documentColumn" 'customize column for documents to demand manually
+    setupVendorList.Add "E", "material.dateColumn" 'customize column to populate with latest request
+    setupVendorList.Add "{documents} for {material}", "material.mailSubject" '{documents} and {material} will be replaced according to material.documentColumn and .materialColumn
+    setupVendorList.Add "Dear Madam or Sir,<br /><br />" & _
+            "to be able to declare a conformity regarding ISO 13485 on our medical devices, " & _
+            "we must be able to show the necessary certificates and documents in the course of our quality management system. " & _
+            "{evidence}We prefer one of the following evidence documents:<br /><ul>" & _
+            "<li>Proof of biocompatibility according to ISO 10993,</li>" & _
+            "<li>Declaration of Conformity according to ISO 13485,</li>" & _
+            "<li>Proof of negative cytotoxiticity and cancerogeniticity by accredited laboratories</li>" & _
+            "</ul>" & _
+            "{customer}In case you do not provide the documents of proof yourself we accept documents provided by your distributor " & _
+            "with a declaration by you that your trade name correspondents to the respective product. " & _
+            "Please consider any of your customers appreciates a topicality of your documents being not older than 5 years. " & _
+            "We are happy to receive the documents in a timely manner by email to " & _
+            "<a href=""mailto:mail@company.tld"">mailto:mail@company.tld</a>, by postal service or fax to the following adress or fax-number. " & _
+            "If in the meantime the documents are available on your website kindly inform us about the location. " & _
+            "<br /><br />With kind regards<br /><br />" & _
+            "Company<br />" & _
+            "Street<br />" & _
+            "City<br />" & _
+            "Phone<br />" & _
+            "Fax" & _
+            "<br /><br /><small>This is an automatic produced letter. We apologize for the inconvenience in case you receive multiple requests for different products.</small>" _
+            , "material.mailBody" 'body for request-mail, {evidence} and {customer} will be condidionally replaced with following/preceding chunks
+    setupVendorList.Add "Proof of material safety", "material.defaultEvidence" 'default if no document types are given yet
+    setupVendorList.Add "In the past we received <br /><br /><i>{documents} for {material}</i><br /><br /> and kindly ask you for sending current documents. ", "material.ifDocuments" 'if document types are given, {documents} and {material will be replaced}
+    setupVendorList.Add "We kindly asko you the send current <i>proof of material safety for {material}</i>.<br /><br />", "material.ifNotDocuments" 'if no document types are given yet, {material} will be replaced
+    setupVendorList.Add "Missing vendor!", "material.missingVendorError" 'warning if material misses vendor assignment
+End Function
+Public Function monitorVendorList() As Collection
+    Set monitorVendorList = New Collection
+    monitorVendorList.Add Array(True, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
+    monitorVendorList.Add Array(True, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
 End Function

@@ -12,12 +12,10 @@ and you can update the main code just by opening and saving all necessary files.
 no meddling with the developer console necessary :)
 
 Sub rewriteMain(ByRef Workument, ByVal Module, ByVal Source)
-	'delete code from ThisDocument/ThisWorkbook
-	Workument.VBProject.VBComponents.Item(1).CodeModule.DeleteLines 1, Workument.VBProject.VBComponents.Item(1).CodeModule.CountOfLines
-	'rewrite from file
-	With Workument.VBProject
-		.VBComponents(Module).CodeModule.AddFromFile Source
-	End With
-	'delete module
+    'delete code from ThisDocument/ThisWorkbook
+    Workument.VBProject.VBComponents(Module).CodeModule.DeleteLines 1, Workument.VBProject.VBComponents(Module).CodeModule.CountOfLines
+    'rewrite from file
+    Workument.VBProject.VBComponents(Module).CodeModule.AddFromFile Source
+    'delete this module
     'Workument.VBProject.VBComponents.Remove Workument.VBProject.VBComponents("Rewrite")
 End Sub
