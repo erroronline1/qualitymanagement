@@ -57,7 +57,6 @@ compatible with
 	* [ticketorder.xlsm](#ticketorderxlsm)
 	* [data rights management.xlsm](#data-rights-managementxlsm)
 	* [transfer schedule.xlsm](#transfer-schedulexlsm)
-	* [thoughts and considerations](#thoughts-and-considerations)
 	* [timetables](#timetables)
 	* [filter.py](#filterpy)
 	* [leech.py](#leechpy)
