@@ -17,6 +17,7 @@ compatible with
 
 ![word](https://img.shields.io/badge/office%20word-2013,%202019-blue?style=flat-square&logo=microsoft-word)
 ![excel](https://img.shields.io/badge/office%20excel-2013,%202019-brightgreen?style=flat-square&logo=microsoft-excel)
+![outlook](https://img.shields.io/badge/office%20outlook-2019-blue?style=flat-square&logo=microsoft-outlook)
 ![ie11](https://img.shields.io/badge/internet%20explorer-11-blue?style=flat-square&logo=internet-explorer)
 ![browsers](https://img.shields.io/badge/real%20browsers-firefox,%20chrome,%20edge-orange?style=flat-square)
 
@@ -26,35 +27,47 @@ compatible with
 * [use case](#use-case)
 * [about bottle light qms](#about-bottle-light-qms)
 * [key features](#key-features)
-* [the core documents](#the-core-documents)
+* [document management](#document-management-1)
 	* [use case](#use-case-1)
 	* [what the documents do](#what-the-documents-do)
 	* [requirements](#requirements)
-* [the assistant](#the-assistant)
+* [tools](#tools)
 	* [use case](#use-case-2)
-	* [what this tool does](#what-this-tool-does)
+	* [what the tools do](#what-the-tools-do)
 	* [requirements](#requirements-1)
+* [the assistant](#the-assistant)
+	* [use case](#use-case-3)
+	* [what this tool does](#what-this-tool-does)
+	* [requirements](#requirements-2)
 * [interfaces](#interfaces)
 * [installation](#installation)
 * [but i am no programmer!](#but-i-am-no-programmer)
 
-### documents
-* [details on the documents](#details-on-the-documents)
+### document management
+* [details on the document management](#details-on-the-document-management)
 	* [template_file.docm](#template_filedocm)
 	* [internal documents in force.xlsm](#internal-documents-in-forcexlsm)
 	* [external documents in force.xlsm](#external-documents-in-forcexlsm)
+
+### tools
+* [details on the tools](#details-on-the-tools)
+	* [vendorlist.xlsm](#vendorlistxlsm)
 	* [audit planner.xlsm](#audit-plannerxlsm)
 	* [stocklist](#stocklist)
 	* [ticketorder.xlsm](#ticketorderxlsm)
 	* [data rights management.xlsm](#data-rights-managementxlsm)
 	* [transfer schedule.xlsm](#transfer-schedulexlsm)
-	* [vba](#vba)
-		* [document_-modules](#document_-modules)
-		* [admin_-modules](#admin_-modules)
-		* [timetable_-modules](#timetable_-modules)
 	* [thoughts and considerations](#thoughts-and-considerations)
 	* [timetables](#timetables)
 	* [filter.py](#filterpy)
+	* [leech.py](#leechpy)
+
+### vba
+* [vb_libraries](#vb_libraries)
+	* [document_-modules](#document_-modules)
+	* [admin_-modules](#admin_-modules)
+	* [timetable_-modules](#timetable_-modules)
+* [thoughts and considerations](#thoughts-and-considerations)
 
 ### assistant
 * [details on the assistant](#details-on-the-assistant)
@@ -130,7 +143,7 @@ and yes, whether or not i should use ascii to do a logo, i most certainly can.
 
 [back to top](#bottle-light-quality-management-software)
 
-# the core documents
+# document management
 ## use case
 the office documents come with built-in vba-code to handle document version control, ressource overview and export-handling. employees use mainly unchangeable pdf-files or docm-files to fill out during workflow. each document registers and manages itself (kind of).
 
@@ -150,20 +163,36 @@ it coincidentally but fortunately matches most of the [requirements for document
 
 ## requirements
 * one somewhat experienced office user to customize the document-blueprints and vba-codes
-* microsoft office (developed and tested with office 2013 and 2019 professional, word and excel, lower versions probably work as well, at some point company dropped office 2010 so i can not test it any longer)
+* microsoft office (developed and tested with office 2013 and 2019 professional, word, excel and outlook, lower versions probably work as well, at some point company dropped office 2010 so i can not test it any longer)
 
 ![sample registration](assets/registration.gif)
 
-[details on the documents](#details-on-the-documents)
+[details on the document management](#details-on-the-document-management)
+
+[back to top](#bottle-light-quality-management-software)
+
+# tools
+## use case
+this bundle provides you with reasonable tools to support your quality management system. the framework enables some useful applications to keep track of regulatory requirements more easy. occasionally there are some hacks to support your shitty erp-software. some provided office-files act as interfaces between your tracing and the digital assistant.
+
+## what the tools do
+keep track of declarations of conformity, certificates and other documents from your vendors, make preparing of internal audits an bit easier, keep track of your stock items, plan transfer schedules, use digital time tracking for your employees and handle huge datasets from csv-dumps and populate and update the digital assistant.
+
+## requirements
+* one somewhat experienced office user to customize the document-blueprints and vba-codes
+* microsoft office (developed and tested with office 2013 and 2019 professional, word, excel and outlook, lower versions probably work as well, at some point company dropped office 2010 so i can not test it any longer)
+* at best a python-developer for provided scripts, capable of json and regex
+
+[details on the tools](#details-on-the-tools)
 
 [back to top](#bottle-light-quality-management-software)
 
 # the assistant
 ## use case
-this tool serves as an assistive layer to access your companies documents in form of a web-app with read-only-properties.
+the digital assistent serves as an assistive layer to access your companies documents in form of a web-app with read-only-properties.
 
 ## what this tool does
-this tool provides your company with an application to have an easier access to your quality management system. if you provide your employees with access via this assistant it might be way more easy to have them use only the latest documentation version. it does access files that could be reached by file-explorer as well, but avoiding the latter way prevents the employees to make copies that may become obsolete, at least to some degree.
+the digital assistant provides your company with an application to have an easier access to your quality management system. if you provide your employees with access via this assistant it might be way more easy to have them use only the latest documentation version. it does access files that could be reached by file-explorer as well, but avoiding the latter way prevents the employees to make copies that may become obsolete, at least to some degree.
 
 * global access to qm-related ressources for every employee
 * easy lookup methods for finding documents, materials and orders regardless of storage path or restricted erp-access, in case alternative search terms are provided it is even more easy to find these
@@ -186,7 +215,7 @@ this tool provides your company with an application to have an easier access to 
 [back to top](#bottle-light-quality-management-software)
 
 # interfaces
-some core documents contain vba-code to translate their content to a javascript object to be accessed by the assistant. there might pop up some python scripts occasionally to fulfill the same task for one or the other use case. these scripts will likely be configurable via a json-setup-file even after compiling. so there might be another dependency of a json-enabled python-dev.
+some core documents contain vba-code to translate their content to a javascript object to be accessed by the assistant. there might pop up some python scripts occasionally to fulfill the same task for one or the other use case. these scripts will likely be configurable via a json-setup-file even after compiling. so there might be another dependency of a json- and regex-enabled python-developer.
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -210,7 +239,7 @@ if you are a programmer i can recommend [notepad++ portable](https://notepad-plu
 
 [back to top](#bottle-light-quality-management-software)
 
-# details on the documents
+# details on the document management
 ## summary
 the vba-code can be customized quite easily for i tried to have all important parts split to functions and modules to be able to enable/disable these on demand as well as using variables to customize easily. in the best case all you have to do is to change the variables within the locals-modules. office-documents contain basically just functions to import outsourced modules and event handler. set up language and location of modules and you are almost ready to go. 
 
@@ -290,6 +319,19 @@ this list contains external documents in force and can contain other file lists.
 
 [back to top](#bottle-light-quality-management-software)
 
+
+# details on the tools
+## summary
+much of the code that is used by the document management happens to be useful for other purposes as well. therefore it is implemented into other excel-files that support your quality management system, planning product and personnel ressources. especially the scripts hopefully make data filtering and selection a bit easier.
+
+## vendorlist.xlsm
+![vendor list](assets/xlsm_vendorlist.png)
+
+the vendor list helps you keeping track of certificate runtimes and helps you keep in touch with your vendors with a doubleclick by preparing standardized emails while demanding the latest documents. also you can link to documents of proof regarding the fulfillment of regulatory requirements. expiration-dates and unfavourable empty fields are marked with conditional formatting.
+you're free to insert anything you want. just the material tracing allows the assignment of listed vendors and approved documents as selected with an automatic updated name-space for vendors and approved document list as stated above the list of materials.
+
+[back to top](#bottle-light-quality-management-software)
+
 ## audit planner.xlsm
 ![audit planner](assets/xlsm_auditplanner.png)
 
@@ -339,42 +381,6 @@ change the year as needed, the first month-column contains the initial month val
 
 [back to top](#bottle-light-quality-management-software)
 
-## vba
-![vba variables](assets/xlsm_vba.png)
-
-the tables and documents will retrieve their vba code from here as they intrinsically contain not much more than import functions and basic settings of language and relative path to the vba_library folder as of january 2020 (major refactoring!).
-the files are prepared to work on their own if no import file is found. after import modules are installed and only overwritten if the remote files are found next time opening.
-
-supplying the source folder has the benefit of changes affecting all working draft documents automatic. be careful as well as glad changes have to be only done in one location mostly. yay!
-
-hopefully settings have to be done within the locals-modules only. here you can customize columns and rows in case you slightly edit the tables structure but not the behaviour, customize some values and language chunks. if you copy any locals-module you can set up additional languages that will be accessed as soon as the language is set within the office files directly. just make sure to keep the `Attribute VB_Name = "Locals"`. 
-
-while initially serving for illustratory purposes, all *_illustration.vba-files now have a secondary functional purpose as well.
-if you have to change code for the main module / ThisDocument-class, you can import the source code from the Document_ThisDocument_illustration.vba to overwrite, by implementing (preferably temporary) it within the essentials-module. use case: changing paths, language or adding custom subs or functions.
-
-### document_-modules
-these are the modules for word-documents like the [draft documents in force](documents/), containing versions control, publishing and registering.
-events like Document_Open() in the ThisDocument-code-module point to public functions within the essential-module thus executing always the latest imported routines.
-while being opened from the list of documents in force (programmatically by another office application) the window is not visible while the macros start. this results in errors using document variables.
-there's a conditional query if the application is visible and warns about non available functions if true.
-
-### admin_-modules
-these modules are in use of the [administrative excel sheets](administration/) for maintaining and exporting diverse lists like document-lists, stocklist, etc. reusable functions can be found in the essentials-module, special behaviours are in the specific module (based on the filename).
-Events like Workbook_Open() and Workbook_BeforeSave() in the ThisWorkbook-code-module point to public functions within the essential-module thus executing always the latest imported routines.
-
-while being opened during a registration process (programmatically by another office application) office seems to have trouble adressing workbook-objects properly (or because of my poor skills). previously this could mess up the export of the list of documents, but is now prevented by remote calling a sub to set a respective flag.
-
-### timetable_-modules
-these modules work like the document_-modules and serve the same for every accessing [timetable-file](timetables/). in this sample structure these can be found within the timetable-folder, but this is up to you. just make sure to point to the right directory from the ThisWorbook-code-module.
-Events like Workbook_Open() and Workbook_BeforeSave() in the ThisWorkbook-code-module point to public functions within the essential-module thus executing always the latest imported routines.
-
-[back to top](#bottle-light-quality-management-software)
-
-## thoughts and considerations
-on export of docm-files the file dialogue does not show pdf- or docm-options. you will be asked to provide a file name with default docx-extension that will be changed automatically. this is due to the fact that vba `Application.FileDialog(msoFileDialogSaveAs)` does not support `.Filter`. *existant files will not be displayed and just be overwritten.*
-
-[back to top](#bottle-light-quality-management-software)
-
 ## timetables
 ![timetables](assets/xlsm_timetable.png)
 
@@ -421,7 +427,6 @@ here the user passwords are stored as well, complemented by timestamp of creatio
 this sheet is also used for session persistent values that can not otherwise be handled due to vbas behaviour.
 
 ### maintainability
-i had to learn this one the hard way. on developing and testing i had to change the codebase several times in about 30 beta testers sheets without dumping their values. eventually i learned about importing modules. if you provide a subfolder with the main module codes these will be imported/updated on every opening of the sheet. if this is not possible the modules remain in their last imported version. you can hide the subfolder vb_library, make it read_only by account management or provide it temporarily after changes.
 the code within ThisWorksheet can be oberwritten by enabling the *Rewrite*-module from the *Essentials*-module. this works well, but causes issues for tables that have to be initialized. please enable this only to update existing timetables on the fly and disable afterwards to not affect the daily flow.
 
 if you change the layout of the tables make sure to adjust the cell addresses (A1 and R1C1 notations both apply) within the essentials-module:
@@ -464,6 +469,49 @@ there might be a reccuring need to filter huge data-sets. some erp-software can 
 
 [back to top](#bottle-light-quality-management-software)
 
+## leech.py
+![python leech](assets/py_leech.png)
+
+keeping documents of proof up to date, maintain the latest certificates, manuals and technical informations from your vendors can be a difficult task even if you use the vendor-lists inbuild email-function. some vendors just point to their website instead of sending you desired material in the first place. leech.py serves to automatically download files according to linked ressources on websites. it is best used from the command line to have access to further options. this is not ai, you'll have to analyze the inhomogeneous sources by yourself beforehand in order to set up. see help for setup syntax. with the python filter you can describe filter-patterns with regex to find downloadable ressources within the sourcecode of the provided websites. files will be stored in a folder named the vendor-set with the download date. i recommend to handle this file in a different location to not mess up the folder structure. progress will be logged into a separate file to research failures.
+you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
+
+[back to top](#bottle-light-quality-management-software)
+
+# vb_libraries
+![vba variables](assets/xlsm_vba.png)
+
+the tables and documents will retrieve their vba code from these folders as they intrinsically contain not much more than import functions and basic settings of language and relative path to the vb_library folders.
+the files are prepared to work on their own if no import file is found. after import modules are installed and only overwritten if the remote files are found next time opening.
+
+supplying the source folder has the benefit of changes affecting all working draft documents automatic. be careful as well as glad changes have to be only done in one location mostly. yay!
+
+hopefully settings have to be done within the locals-modules only. here you can customize columns and rows in case you slightly edit the tables structure but not the behaviour, customize some values and language chunks. if you copy any locals-module you can set up additional languages that will be accessed as soon as the language is set within the office files directly. just make sure to keep the `Attribute VB_Name = "Locals"`. 
+
+while initially serving for illustratory purposes, all *_illustration.vba-files have a secondary functional purpose as well.
+if you have to change code for the main module / ThisDocument-class, you can import the source code from the Document_ThisDocument_illustration.vba to overwrite, by implementing (preferably temporary) it within the essentials-module. use case: changing paths, language or adding custom subs or functions.
+
+### document_-modules
+these are the modules for word-documents like the [draft documents in force](documents/), containing versions control, publishing and registering.
+events like Document_Open() in the ThisDocument-code-module point to public functions within the essential-module thus executing always the latest imported routines.
+while being opened from the list of documents in force (programmatically by another office application) the window is not visible while the macros start. this results in errors using document variables.
+there's a conditional query if the application is visible and warns about non available functions if true.
+
+### admin_-modules
+these modules are in use of the [administrative excel sheets](administration/) for maintaining and exporting diverse lists like document-lists, stocklist, etc. reusable functions can be found in the essentials-module, special behaviours are in the specific module (based on the filename).
+Events like Workbook_Open() and Workbook_BeforeSave() in the ThisWorkbook-code-module point to public functions within the essential-module thus executing always the latest imported routines.
+
+while being opened during a registration process (programmatically by another office application) office seems to have trouble adressing workbook-objects properly (or because of my poor skills). previously this could mess up the export of the list of documents, but is now prevented by remote calling a sub to set a respective flag.
+
+### timetable_-modules
+these modules work like the document_-modules and serve the same for every accessing [timetable-file](timetables/). in this sample structure these can be found within the timetable-folder, but this is up to you. just make sure to point to the right directory from the ThisWorbook-code-module.
+Events like Workbook_Open() and Workbook_BeforeSave() in the ThisWorkbook-code-module point to public functions within the essential-module thus executing always the latest imported routines.
+
+[back to top](#bottle-light-quality-management-software)
+
+## thoughts and considerations
+on export of docm-files the file dialogue does not show pdf- or docm-options. you will be asked to provide a file name with default docx-extension that will be changed automatically. this is due to the fact that vba `Application.FileDialog(msoFileDialogSaveAs)` does not support `.Filter`. *existant files will not be displayed and just be overwritten.*
+
+[back to top](#bottle-light-quality-management-software)
 # details on the assistant
 ## summary
 there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. further on there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-library](http://vanilla.js-com).
