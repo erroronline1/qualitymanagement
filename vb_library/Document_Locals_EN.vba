@@ -16,12 +16,18 @@ Public Function setup() As Collection
     Set setup = New Collection
     setup.Add Item:="Versioning and publishing are not available. The document has to be opened directly - not from the list of documents in force - for macros to take effect.", Key:="startup.execution"
     setup.Add ">>Doubleclick to set version and publish document<<", "startup.macrobutton"
-    ' prompt to start version assignment
-    setup.Add Item:="Update version and release date?", Key:="initiate.Title"
+    setup.Add "Set record document title", "initiate.recordTitleSet" ' in case of current version number being false
+    ' prompt to start version or release date assignment, values for userform
+    setup.Add "Update release date?", "initiate.recordTitle"
     setup.Add "The document '" & ThisDocument.Variables("title").Value & "' will be saved." & vbNewLine & vbNewLine & _
-        "[Automatic] to update to version V" & ThisDocument.Variables("version").Value + 1 & "." & Format(Date, "yyyymmdd") & " automatically" & vbNewLine & vbNewLine & _
+        "[Automatic] to update release date to today (" & Format(Date, "yyyymmdd") & ") automatically" & vbNewLine & vbNewLine & _
+        "[Manually] to set release date manually" & vbNewLine & vbNewLine & _
+        "Archiving and publishing the current version can be done in either case." & vbNewLine & vbNewLine & "[Cancel] to keep current date", "initiate.recordConfirm"
+    setup.Add "Update version and release date?", "initiate.versionedTitle"
+    setup.Add "The document '" & ThisDocument.Variables("title").Value & "' will be saved." & vbNewLine & vbNewLine & _
+        "[Automatic] to update to version V{version}." & Format(Date, "yyyymmdd") & " automatically" & vbNewLine & vbNewLine & _
         "[Manually] to set version manually" & vbNewLine & vbNewLine & _
-        "Archiving and publishing the current version and updating the list of documents in force can be done in either case." & vbNewLine & vbNewLine & "[Cancel] to keep current version", "initiate.confirm"
+        "Archiving and publishing the current version and updating the list of documents in force can be done in either case." & vbNewLine & vbNewLine & "[Cancel] to keep current version", "initiate.versionedConfirm"
     setup.Add Array("Automatic", "Manually"), "initiate.options"
     setup.Add "Cancel", "initiate.cancel"
     setup.Add 200, "initiate.labelHeight" ' false for auto height for userform based on options, integer to set according to content

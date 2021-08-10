@@ -9,6 +9,7 @@ Attribute VB_Name = "Essentials"
 Option Explicit
 Public PDFFile As String
 Public DOCMFile As String
+Public currentDocumentVersion as Variant
 Public setup As Collection
 Public newDOC As Document
 
@@ -25,22 +26,30 @@ End Function
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' events
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+sub MAKE_THIS_DOCUMENT_A_RECORD_DOCUMENT()
+    ' run this macro to avoid version control
+    ThisDocument.Variables("version") = False
+end sub
+sub MAKE_THIS_DOCUMENT_A_VERSIONED_DOCUMENT()
+    ' run this macro to start version control
+    ThisDocument.Variables("version") = 1
+end sub
 
 Public Sub openRoutine()
     If ThisDocument.importModules(Modules()) Then asyncOpen
 End Sub
 
 Public Sub asyncOpen()
-    Rewrite.rewriteMain ThisDocument, "ThisDocument", ThisDocument.parentPath & "vb_library\Document_ThisDocument_illustration.vba"
-
+    Rewrite.rewriteMain ThisDocument, "ThisDocument", ThisDocument.parentPath & "vb_library\Document_ThisDocument.vba"
     Set setup = Locals.setup
     If Word.Application.Visible Then
         ' save as docvar for persistence, because calling userform results in a state loss. _
         see sub publish() below for slightly more information
-        ActiveDocument.Variables("parentPath").Value = ThisDocument.parentPath
+        ThisDocument.Variables("parentPath").Value = ThisDocument.parentPath
         PDFFile = ""
         DOCMFile = ""
-    
+        ' if currentDocumentVersion is false version control is deactivated and file registration is limited
+        currentDocumentVersion = ThisDocument.Variables("version").value
         On Error Resume Next
         UpdateDocumentFields
         publishButton "add"
@@ -54,7 +63,7 @@ Public Sub closeRoutine()
 End Sub
 
 Public Sub publishButton(action As String)
-    '''''
+    ''''' adds or removes a macrobutton on the end of the content '''''
     Select Case action
     Case "add"
         ' set cursor to the documents last position
@@ -76,11 +85,18 @@ Public Sub publish()
     ' after creation and destruction of custom user input public values get lost
     Set setup = Locals.setup
     ThisDocument.parentPath = ActiveDocument.Variables("parentPath").Value
-    
+    ' if currentDocumentVersion is false version control is deactivated and file registration is limited
+    currentDocumentVersion = ThisDocument.Variables("version").value
+
     publishButton "remove" ' not useful in published documents...
     Dim formatquery As New Collection
-    formatquery.Add Item:=setup("initiate.title"), Key:="caption"
-    formatquery.Add setup("initiate.confirm"), "label"
+    If currentDocumentVersion Then
+        formatquery.Add Item:=setup("initiate.versionedTitle"), Key:="caption"
+        formatquery.Add Replace(setup("initiate.versionedConfirm"), "{version}", currentDocumentVersion + 1), "label"
+    Else
+        formatquery.Add Item:=setup("initiate.recordTitle"), Key:="caption"
+        formatquery.Add setup("initiate.recordConfirm"), "label"
+    End If
     formatquery.Add setup("initiate.options"), "options"
     formatquery.Add setup("initiate.cancel"), "cancel"
     formatquery.Add setup("initiate.labelHeight"), "height"
@@ -100,13 +116,10 @@ End Sub
 
 Public Sub AutoVersioning()
     Dim version As String
-    If ThisDocument.Variables("version").Value = vbNullString Then
-        version = 0
-    Else
-        version = ThisDocument.Variables("version").Value
+    If currentDocumentVersion Then
+        currentDocumentVersion = currentDocumentVersion + 1
+        ThisDocument.Variables("version").Value = currentDocumentVersion
     End If
-    
-    ThisDocument.Variables("version").Value = version + 1
     ThisDocument.Variables("releasedate").Value = format(Date, "yyyymmdd")
     
     UpdateAndExport
@@ -116,17 +129,21 @@ Public Sub ManualVersioning()
     ' ask for updating version and release date
     Dim version As String
     Dim releasedate As String
-    version = InputBox(setup("manualVersioning.versionPrompt") & ": " & ThisDocument.Variables("version").Value, _
-        setup("manualVersioning.versionTitle"), ThisDocument.Variables("version").Value + 1)
+    If currentDocumentVersion Then
+        version = InputBox(setup("manualVersioning.versionPrompt") & ": " & currentDocumentVersion, _
+            setup("manualVersioning.versionTitle"), currentDocumentVersion + 1)
+    End If
     releasedate = InputBox(setup("manualVersioning.releasedatePrompt") & ": " & ThisDocument.Variables("releasedate").Value, setup("manualVersioning.releasedateTitle"), format(Date, "yyyymmdd"))
-    If Not version = vbNullString Then
-        ThisDocument.Variables("version").Value = version
+    If currentDocumentVersion And Not version = vbNullString And version Then
+        currentDocumentVersion = version
+        ThisDocument.Variables("version").Value = currentDocumentVersion
     End If
     If Not releasedate = vbNullString Then
         ThisDocument.Variables("releasedate").Value = releasedate
     End If
     ' guide through releasing new document version if user applied values only
-    If Not (version = vbNullString And releasedate = vbNullString) Then
+    If (currentDocumentVersion And Not (version = vbNullString And version And releasedate = vbNullString)) _
+        Or (currentDocumentVersion = False And Not releasedate = vbNullString) Then
         UpdateAndExport
     End If
 End Sub
@@ -148,18 +165,30 @@ Public Sub UpdateAndExport()
             DOCMPublish
     End Select
     Archive
-    UpdateListOfDocuments
+    If currentDocumentVersion Then
+        UpdateListOfDocuments
+    End If
 End Sub
 
 Public Sub UpdateDocumentFields()
-    ThisDocument.Variables("title").Value = CreateObject("Scripting.FileSystemObject").GetBaseName(ThisDocument.Name)
+    If currentDocumentVersion Then
+        ThisDocument.Variables("title").Value = CreateObject("Scripting.FileSystemObject").GetBaseName(ThisDocument.Name)
+    Else
+        Dim defaulttitle: defaulttitle = CreateObject("Scripting.FileSystemObject").GetBaseName(ActiveDocument.Name)
+        Dim doctitle: doctitle = InputBox(setup("initiate.recordTitleSet"), "", defaulttitle)
+        If Not doctitle = vbNullString Then
+            ActiveDocument.Variables("title").Value = doctitle
+        Else
+            ActiveDocument.Variables("title").Value = defaulttitle
+        End If
+    End If
     ' update of fields even in header, footer and textboxes
     Dim rngStory As Word.Range
     Dim lngJunk As Long
     Dim oShp As Shape
     lngJunk = ThisDocument.Sections(1).Headers(1).Range.StoryType
     For Each rngStory In ThisDocument.StoryRanges
-    ' Iterate through all linked stories/fields
+    ' iterate through all linked stories/fields
         Do
             On Error Resume Next
             rngStory.Fields.Update
@@ -180,7 +209,7 @@ End Sub
 Public Sub hideBookmarks(prefix as string, flag as boolean)
     Dim cc As ContentControl
     For Each cc In ThisDocument.ContentControls
-        'checkboxes have no type attribute to check against, therefore the need of _
+        ' checkboxes have no type attribute to check against, therefore the need of _
         error handling on Checked-property that is checkbox-only in this usecase
         On Error Resume Next
         If ThisDocument.Bookmarks.Exists(prefix & cc.Tag) Then
@@ -193,7 +222,13 @@ Public Sub Archive()
     ''''''' archive file without code, version number added to filename '''''''
     Dim fileSaveName As Variant
     Set fileSaveName = Application.FileDialog(msoFileDialogSaveAs)
-    fileSaveName.InitialFileName = Replace(ThisDocument.FullName, ThisDocument.Variables("title"), ThisDocument.Variables("title") + "[" + ThisDocument.Variables("version") + "]")
+    Dim archiveVersion
+    If currentDocumentVersion Then
+        archiveVersion = currentDocumentVersion
+    Else
+        archiveVersion = ThisDocument.Variables("releasedate").Value
+    End If
+    fileSaveName.InitialFileName = Replace(ThisDocument.FullName, ThisDocument.Variables("title"), ThisDocument.Variables("title") + "[" + archiveVersion + "]")
     fileSaveName.title = setup("archive.confirmPrompt")
     If fileSaveName.Show = -1 Then
         ' save changes to original document
@@ -204,7 +239,7 @@ Public Sub Archive()
         ' the next line copies the active document
         Set newDOC = Documents.Add(ThisDocument.FullName, True, wdNewBlankDocument, False)
         On Error Resume Next
-        newDOC.Convert ' works in word2013 but possibly not word2010, hence error handling
+        newDOC.Convert 'works in word2013 but possibly not word2010, hence error handling
         
         ' unlink fields and finalize content to avoid updates within the archived documents
         Dim oFld As field
@@ -281,7 +316,7 @@ Public Sub DOCMPublish()
             Set rng = newDoc.Content
             rng.Collapse Direction:=wdCollapseEnd
             rng.Paste
-            'clear clipboard, otherwise an annoying msg popy up everytime because huge content is left there from copying
+            ' clear clipboard, otherwise an annoying msg popy up everytime because huge content is left there from copying
             Dim clscb As New DataObject 'object to use the clipboard
             clscb.SetText text:=Empty
             clscb.PutInClipboard 'put void into clipboard
@@ -331,7 +366,7 @@ Public Sub DOCMPublish()
 
             ' docvar-field in textboxes seem to be unaffected by the unlinking procedure above _
             and i am not able to figure out why. so ffs the most relevant variables will be passed as well
-            newDoc.Variables("version").Value = ThisDocument.Variables("version").Value
+            newDoc.Variables("version").Value = currentDocumentVersion
             newDoc.Variables("releasedate").Value = ThisDocument.Variables("releasedate").Value
             newDoc.Variables("title").Value = ThisDocument.Variables("title").Value
 
@@ -391,7 +426,6 @@ Public Sub UpdateListOfDocuments()
         e.g preventing certain executions that would mess something up
         xlApp.Run "Specific.openedFromWord", True
         
-        
         Set xlSheet = xlWB.Sheets(1)
         
         ' find the last empty line of the worksheet and define range
@@ -410,7 +444,7 @@ Public Sub UpdateListOfDocuments()
         ThisDocument.Repaginate 'occasionally update site numbers
         xlSheet.Range(setup("updateList.documentNovel") & rCount).Value = "*"
         xlSheet.Range(setup("updateList.documentTitle") & rCount).Value = ThisDocument.Variables("title").Value
-        xlSheet.Range(setup("updateList.documentVersion") & rCount).Value = "V" + CStr(ThisDocument.Variables("version").Value) + _
+        xlSheet.Range(setup("updateList.currentDocumentVersion") & rCount).Value = "V" + CStr(currentDocumentVersion) + _
             "." + CStr(ThisDocument.Variables("releasedate").Value)
         ' link to word document
         xlSheet.Hyperlinks.Add Anchor:=xlSheet.Range(setup("updateList.documentHyperlink") & rCount), _
@@ -522,7 +556,7 @@ Public Function customUserInput(ByRef promptVar As Collection) As String
         .Properties("Caption") = promptVar("caption")
         .Properties("Width") = 315
         .Properties("Height") = formHeight
-        .Properties("StartUpPosition") = 2 'screen center
+        .Properties("StartUpPosition") = 2 ' screen center
     End With
     
     ' show the form

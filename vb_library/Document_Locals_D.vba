@@ -16,12 +16,18 @@ Public Function setup() As Collection
     Set setup = New Collection
     setup.Add Item:="Versionierung und Veröffentlichung stehen nicht zur Verfügung. Das Dokument muss direkt gestartet werden - nicht aus der Liste der Dokumente heraus - damit die Makros genutzt werden können.", Key:="startup.execution"
     setup.Add ">>hier Doppenklick zum versionieren und veröffentlichen<<", "startup.macrobutton"
-    ' prompt to start version assignment, values for userform
-    setup.Add "Version und Veröffentlichungsdatum aktualisieren?", "initiate.title"
+    setup.Add "Nachweisdokumententitel anpassen", "initiate.recordTitleSet" ' in case of current version number being false
+    ' prompt to start version or release date assignment, values for userform
+    setup.Add "Ausgabestand aktualisieren?", "initiate.recordTitle"
     setup.Add "Das Dokument '" & ThisDocument.Variables("title").Value & "' wird gespeichert." & vbNewLine & vbNewLine & _
-                "[Automatisch] um Versionstand automatisch auf Version V" & ThisDocument.Variables("version").Value + 1 & "." & format(Date, "yyyymmdd") & " zu aktualisieren" & vbNewLine & vbNewLine & _
+                "[Automatisch] um Ausgabestand automatisch auf heute (" & Format(Date, "yyyymmdd") & ") zu aktualisieren" & vbNewLine & vbNewLine & _
+                "[Manuell] um Ausgabestand manuell anzupassen" & vbNewLine & vbNewLine & _
+                "In beiden Fällen kann anschließend die aktuelle Version archiviert und veröffentlicht werden." & vbNewLine & vbNewLine & "[Abbrechen] um Ausgabestand nicht zu ändern", "initiate.recordConfirm"
+    setup.Add "Version und Veröffentlichungsdatum aktualisieren?", "initiate.versionedTitle"
+    setup.Add "Das Dokument '" & ThisDocument.Variables("title").Value & "' wird gespeichert." & vbNewLine & vbNewLine & _
+                "[Automatisch] um Versionstand automatisch auf Version V{version}." & format(Date, "yyyymmdd") & " zu aktualisieren" & vbNewLine & vbNewLine & _
                 "[Manuell] um Versionsstand manuell anzupassen" & vbNewLine & vbNewLine & _
-                "In beiden Fällen kann anschließend die aktuelle Version archiviert und veröffentlicht, sowie die Aktualisierung der Liste der gültigen Dokumente durchgeführt werden." & vbNewLine & vbNewLine & "[Abbrechen] um Versionsstand nicht zu ändern", "initiate.confirm"
+                "In beiden Fällen kann anschließend die aktuelle Version archiviert und veröffentlicht, sowie die Aktualisierung der Liste der gültigen Dokumente durchgeführt werden." & vbNewLine & vbNewLine & "[Abbrechen] um Versionsstand nicht zu ändern", "initiate.versionedConfirm"
     setup.Add Array("Automatisch", "Manuell"), "initiate.options"
     setup.Add "Abbrechen", "initiate.cancel"
     setup.Add 200, "initiate.labelHeight" ' false for auto height for userform based on options, integer to set according to content
