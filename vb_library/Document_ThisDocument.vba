@@ -10,7 +10,7 @@ Public selectedLanguage As String
 Public parentPath
 
 Private Sub Document_Open()
-    selectedLanguage = "EN"
+    selectedLanguage = "EN" 'currently EN and D are supported
     
     'get parent path to vb_libraries to be imported
     Dim path() As String
