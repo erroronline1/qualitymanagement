@@ -31,14 +31,14 @@ compatible with
 	* [use case](#use-case-1)
 	* [what the documents do](#what-the-documents-do)
 	* [requirements](#requirements)
-* [tools](#tools)
-	* [use case](#use-case-2)
-	* [what the tools do](#what-the-tools-do)
-	* [requirements](#requirements-1)
 * [the assistant](#the-assistant)
 	* [use case](#use-case-3)
 	* [what this tool does](#what-this-tool-does)
 	* [requirements](#requirements-2)
+* [tools](#tools)
+	* [use case](#use-case-2)
+	* [what the tools do](#what-the-tools-do)
+	* [requirements](#requirements-1)
 * [interfaces](#interfaces)
 * [installation](#installation)
 * [but i am no programmer!](#but-i-am-no-programmer)
@@ -49,23 +49,10 @@ compatible with
 	* [internal documents in force.xlsm](#internal-documents-in-forcexlsm)
 	* [external documents in force.xlsm](#external-documents-in-forcexlsm)
 
-### tools
-* [details on the tools](#details-on-the-tools)
-	* [vendorlist.xlsm](#vendorlistxlsm)
-	* [audit planner.xlsm](#audit-plannerxlsm)
-	* [stocklist](#stocklist)
-	* [ticketorder.xlsm](#ticketorderxlsm)
-	* [data rights management.xlsm](#data-rights-managementxlsm)
-	* [transfer schedule.xlsm](#transfer-schedulexlsm)
-	* [timetables](#timetables)
-	* [filter.py](#filterpy)
-	* [leech.py](#leechpy)
-
 ### vba
 * [vb_libraries](#vb_libraries)
 	* [document_-modules](#document_-modules)
 	* [admin_-modules](#admin_-modules)
-	* [timetable_-modules](#timetable_-modules)
 * [thoughts and considerations](#thoughts-and-considerations)
 
 ### assistant
@@ -93,9 +80,20 @@ compatible with
 	* [core overview](#core-overview)
 	* [merely a matter of form](#merely-a-matter-of-form)
 
-
+### tools
+* [details on the tools](#details-on-the-tools)
+	* [vendorlist.xlsm](#vendorlistxlsm)
+	* [audit planner.xlsm](#audit-plannerxlsm)
+	* [stocklist](#stocklist)
+	* [ticketorder.xlsm](#ticketorderxlsm)
+	* [data rights management.xlsm](#data-rights-managementxlsm)
+	* [transfer schedule.xlsm](#transfer-schedulexlsm)
+	* [timetables](#timetables)
+	* [filter.py](#filterpy)
+	* [leech.py](#leechpy)
+	
 * [thoughts and considerations](#thoughts-and-considerations-1)
-	* [changes and updates](#changes-and-updates)
+* [changes and updates](#changes-and-updates)
 * [disclaimer](#disclaimer)
 * [license](#license)
 
@@ -147,11 +145,11 @@ and yes, whether or not i should use ascii to do a logo, i most certainly can.
 the office documents come with built-in vba-code to handle document version control, ressource overview and export-handling. employees use mainly unchangeable pdf-files or docm-files to fill out during workflow. each document registers and manages itself (kind of).
 
 ## what the documents do
-style the blueprints according to your desired corporate design whatever you like and however word allows you to. just make sure you don't delete the in-built fields.
-customize the variables within the vba-code.
+style the blueprints according to your desired corporate design whatever you like and however word allows you to. just make sure you don't delete the document variables.
+customize the general variables within the locals-vba-code.
 
 in general this system
-* supports your version control
+* supports your version control or release dates (versioned or record documents)
 * supports you being backed up at any time
 * makes sure you took every aspect into account regarding the norm - modify and add checkpoints to your needs
 * makes sure everyone has access to documents and functions you decide to is supposed to - in case your quality manager calls in sick there is still access to the system (as supposed to a software i saw whose document access was fully dependent on profile login and license number)
@@ -167,22 +165,6 @@ it coincidentally but fortunately matches most of the [requirements for document
 ![sample registration](assets/registration.gif)
 
 [details on the document management](#details-on-the-document-management)
-
-[back to top](#bottle-light-quality-management-software)
-
-# tools
-## use case
-this bundle provides you with reasonable tools to support your quality management system. the framework enables some useful applications to keep track of regulatory requirements more easy. occasionally there are some hacks to support your shitty erp-software. some provided office-files act as interfaces between your tracing and the digital assistant.
-
-## what the tools do
-keep track of declarations of conformity, certificates and other documents from your vendors, make preparing of internal audits an bit easier, keep track of your stock items, plan transfer schedules, use digital time tracking for your employees and handle huge datasets from csv-dumps and populate and update the digital assistant.
-
-## requirements
-* one somewhat experienced office user to customize the document-blueprints and vba-codes
-* microsoft office (developed and tested with office 2013 and 2019 professional, word, excel and outlook, lower versions probably work as well, at some point company dropped office 2010 so i can not test it any longer)
-* at best a python-developer for provided scripts, capable of json and regex
-
-[details on the tools](#details-on-the-tools)
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -210,6 +192,22 @@ the digital assistant provides your company with an application to have an easie
 ![assistant](assets/assistant.gif)
 
 [details on the assistant](#details-on-the-assistant)
+
+[back to top](#bottle-light-quality-management-software)
+
+# tools
+## use case
+this bundle provides you with reasonable tools to support your quality management system. the framework enables some useful applications to keep track of regulatory requirements more easy. occasionally there are some hacks to support your shitty erp-software. some provided office-files act as interfaces between your tracing and the digital assistant.
+
+## what the tools do
+keep track of declarations of conformity, certificates and other documents from your vendors, make preparing of internal audits an bit easier, keep track of your stock items, plan transfer schedules, use digital time tracking for your employees and handle huge datasets from csv-dumps and populate and update the digital assistant.
+
+## requirements
+* one somewhat experienced office user to customize the document-blueprints and vba-codes
+* microsoft office (developed and tested with office 2013 and 2019 professional, word, excel and outlook, lower versions probably work as well, at some point company dropped office 2010 so i can not test it any longer)
+* at best a python-developer for provided scripts, capable of json and regex
+
+[details on the tools](#details-on-the-tools)
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -246,9 +244,9 @@ the vba-code can be customized quite easily for i tried to have all important pa
 * you can provide default paths within the code - but paths will always be selectable
 * you can change rows and columns within the local-setup of tables in case you want to provide different information on save of office-files
 * you will be guided through version control and can choose whether to auto-update version and release date or set these manually
-* archiving files with latest version number
+* archiving files with latest version number or release date
 * exporting files to unchangeable pdf (you might want to overhaul them to editable forms, but that requires additional software) or as protected interactive dynamic docms
-* updating the list of current documents in force
+* updating the list of current documents in force for versioned documents
 * central code modules makes changes to desired behaviour more easily
 
 on save of excel-lists
@@ -264,7 +262,7 @@ it's widely agreed upon that excel does not serve as a sufficient database. on t
 the main template contains the basic functions for importing modules for version control and registration. you basically just have to set up the language code according to available local modules and the level of parental folders depending on the relative vb_library location. this is one level up by default.
 outsourced modules will be imported/updated if available.
 
-there are three important and processed fields/document variables within the document:
+there are three important and processed document variables within the document:
 * title, which is updated on load of the file
 * version and
 * release date
@@ -274,6 +272,13 @@ you can set the version number and release date automatically to the next versio
 archiving the documents happens without code to avoid any accidential changes. the file name will be followed by the version number.
 you can publish the document as an uneditable pdf file (but you could implement editable field with third party application), or choose to publish it as a protected docm with dynamic formfields and optional checkbox-dependent content.
 afterwards on selecting the list of documents in force, the file will either add itself to the list or update its version and release date. it will add a mark as new version as well, that later will be handled by the list of documents for release notifications.
+
+template_file_record.docm is for record documents only and lacks the documents version number. the important document variables also are
+* title, which is updated on load of the file but can be chosen extra
+* release date and
+* version - but this must be set to false!
+
+also a macrobutton is inserted. record-templates use the same codebase but differ in behaviour in case of version being false. they will not register in the list of documents in force, therefore not showing up within the document lookup in the digital assistant. as the name suggests these documents are for record only, e.g. management report, employee lists or other types that do not necessarily need a version for not being critical in regards of regulatory requirements but should still meet the corporate design.
 
 ![dynamic docm files](assets/dynamic_docm.gif)
 
@@ -318,164 +323,6 @@ this list contains external documents in force and can contain other file lists.
 
 [back to top](#bottle-light-quality-management-software)
 
-
-# details on the tools
-## summary
-much of the code that is used by the document management happens to be useful for other purposes as well. therefore it is implemented into other excel-files that support your quality management system, planning product and personnel ressources. especially the scripts hopefully make data filtering and selection a bit easier.
-
-## vendorlist.xlsm
-![vendor list](assets/xlsm_vendorlist.png)
-
-the vendor list helps you keeping track of certificate runtimes and helps you keep in touch with your vendors with a doubleclick by preparing standardized emails while demanding the latest documents. also you can link to documents of proof regarding the fulfillment of regulatory requirements. expiration-dates and unfavourable empty fields are marked with conditional formatting.
-you're free to insert anything you want. just the material tracing allows the assignment of listed vendors and approved documents as selected with an automatic updated name-space for vendors and approved document list as stated above the list of materials.
-
-[back to top](#bottle-light-quality-management-software)
-
-## audit planner.xlsm
-![audit planner](assets/xlsm_auditplanner.png)
-
-the audit planner can be filled with a question set for internal audits. by exporting the list to the assistant the question set can be used to generate or customize the annual questionnaire (to the relief of the quality manager) and becomes accessible to the employees to reduce obstructions due to regulatory vocabulary.
-
-*please be aware that there are dependencies between column numbers and entries and the assistants filter function. the excel-list will be displayed in the same way within the assistant in the first place.*
-
-[back to top](#bottle-light-quality-management-software)
-
-## stocklist
-*deprecated but still available excel solution*
-
-![excel stocklist](assets/xlsm_stocklist.png)
-
-the stocklist might contain all products and materials that have permission from the companies head. i am aware there are better solutions for stock administration but by time of writing my own companies software is worse than using excel for that. so this *is* an advance. the export function on save makes the list accessible and searchable for all employees using the assistant hence optimizing dialogue with inventory control. excel might freeze on export if the list contains 6k+ items, but it just takes some time, so no worries.
-
-*newer approach with python filtering csv*
-
-![python stocklist translator](assets/py_stocklist.png)
-
-having two databases to maintain is admittedly not be the best solution. fortunately i found a solution to translate the dump from the erp-software to the assistant. in this scenario you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
-
-also this script has a function to split the data by given column values. this might help e.g. in case of annual stocktaking. this is not related to quality management in the first place but can come in handy and since the same source has to be processed by the same rules, why the heck not?
-
-[back to top](#bottle-light-quality-management-software)
-
-## ticketorder.xlsm
-this files purpose is purely for translation. it serves as an interface between your erp-software with item orders and the assistant. basically you can insert any data dump by the erp-software and it translates it to a javascript-object-file as a feedback loop for the ticketorder-module within the assistant. it makes sense to contain the generated ticket-ids within the order process in any field that might be dumped by the output. this definitely has an effect on yout order process but might make communication more easy between inventory control and ordering persons.
-*be aware that the pattern recognizing regexes in the imported vb_library/administration_Locals_XX.vba rely absolutely on the generated data by your erp-software and have to be customized to your individual situation!*
-
-[back to top](#bottle-light-quality-management-software)
-
-## data rights management.xlsm
-![data rights management](assets/xlsm_datarightsmanagement.png)
-
-this is a easy to handle list to set optional permissions for modules of the assistant as required. the password hash can be obtained by the assistant directly. no clear passwords are stored - in the image/sample file for illustration purposes though.
-
-[back to top](#bottle-light-quality-management-software)
-
-## transfer schedule.xlsm
-![transfer schedule](assets/xlsm_transferschedule.png)
-
-like the [timetables](#timetables) this is not originally part of quality management, but on the other hand which part of operations is not somehow influenced by and influencing quality management itself? making use of the same codebase the transfer schedule originated from the schedule of transferring apprentices through the different departments to get an insight on everything. this might come in handy for other planning operations as well. note that this document is not within the registration process and exporting the table as a pdf-file will only contain a release date, not a version number.
-
-customize the department definitions and abbreviations, everything separated by a non-word-chracter will be recognized to update to your set background-colour. plan the schedule, connect cells and you end up with a decent overview. on saving the background color of the entries as well as the separation lines for entries and months will update and you will be prompted to optional export the file.
-change the year as needed, the first month-column contains the initial month value to start from within a formula. adding more sheets is possible, only the active sheet will be processed. position of the term "Legend" (customizable within the Locals module) and placing of the department definitions in column A is crucial.
-
-[back to top](#bottle-light-quality-management-software)
-
-## timetables
-![timetables](assets/xlsm_timetable.png)
-
-timetracking with excel as an addon. not quite related to quality management in the first place but can come in handy and is implemented in the general process surface of the assistant as well.
-
-**unfortunately the excel-functions and sheet-code-names are german only for me having no access to an english environment. you have to translate them to your language if necessary. take account of sheets, conditional formatting and modules. marking weekends might have to be adjusted by changing the current values of "sa" and "so" to your language environment abbreviations in formula of conditional formatting.**
-
-**be aware that this is currently in a permanent beta-status due to my lack of vba-skills and the sheets awaiting confirmation by the highly excel skilled personnel board possibly making spontaneous changes necessary. also these files (read: me) sometimes have difficulties dealing with different os- and office-versions.**
-
-### there might be better solutions
-if you have efficient electronic supported methods for time tracking of the employees or no need to track working time at all, please carry on!
-
-### i come from worse
-until the end of 2019 we kept track of work time on paper. every employee wrote down starting and ending time as well as breaks, had to calculate everthing at the end of the month and supervisors had to keep track of umpteen sheets, recalculate these and make sure all employees came for the work hours they were paid for. keeping track of their own timetables meant infinite paper copies of past sheets. and in the end it was all about trust. and possible misuse.
-
-### welcome to the 21st century
-this is where automation might be beneficial. following the idea of the [bottle light](https://github.com/erroronline1/qualitymanagement#about-bottle-light-qms) i decided for excel and did a neat excel timetable. as these are accessible through the assistant as well all sheets are accessible by all employees. this rose some concerns about the risk of manipulation by the human ressources so there was a additional security layer implemented.
-
-### calculations
-the sheets calculate the effective work hours within the month based on weekly hours, count working days and take several special cases in account to reduce these if necessary (weekends, holidays, sick leave, etc.). breaks are deducted by default according to german work laws, unless the registered breaks are longer than the required minimum. holidays are counted as well and subtracted from the annual amount. every sheet fetches the values from the previous month.
-all in all every employee can look up exactly the state of current hours and holidays, can review all previous months and doesn't have to calculate everything manually.
-
-### different models
-currently there are two work model types: 9to5 and part time with home office. some calculations and excel-formulas differ, so there is a special handling within the vba-files.
-
-* examples for 9to5: jane doe and max mustermann
-* examples for part time with homeoffice: john doe and monika musterfrau
-
-### automation
-on start of a new month a new sheet is added automatically, so no one has to care about that. in this case there will be also a (monthly) reminder to plan paid leave if there are too many holidays left in relation to remaining days of the year.
-
-as of 7/20 manually adding a new sheet is prohibited to prevent the initialization wizard from starting because it does not find a set date on the last sheet. 
-
-on first opening of the file the user will be prompted to initialise the sheet. this will update the initial sheet to the current month and write the latest hours and holidays to the table. afterwards the user can personalize additional information within the sheet and start tracking. all surrounding information but the time and holiday entries will be copied to the next month, so there is no need to insert it regularly.
-
-*there are formulas that have to be written to the new monthly sheet by vba. remember to change these too as you change formulas in the sheets. local tinted formulas (eg "wennfehler", ugly german for "iferror") can be found within the locals-module and update on initialization and while adding new sheets. all other formulas are simply arithmetic.*
-
-### security
-the sheets are protected by default, only relevant cells can be changed by the user. on the first change after opening the user will have to enter a password. if this is not set already a personal password can be chosen. if forgotten a new one can be chosen as well. there will be no prompt until the next opening of the document. this reduces the risk of manipulation by accident or other employees.
-
-### don't tell anyone
-the security is inversely proportional to the tech savvyness of the users. there is a very hidden sheet containing the masterpassword to unlock and relock sheets while initializing or creating the monthly sheet.
-here the user passwords are stored as well, complemented by timestamp of creation and user account. in case of integrity concerns these information might give a start for investigating. if you consider enhancing security protect the vba code with a password as well, but ponder on tech savvyness of employees vs. long term accessibility even after you leave the company with the passwords...
-this sheet is also used for session persistent values that can not otherwise be handled due to vbas behaviour.
-
-### maintainability
-the code within ThisWorksheet can be oberwritten by enabling the *Rewrite*-module from the *Essentials*-module. this works well, but causes issues for tables that have to be initialized. please enable this only to update existing timetables on the fly and disable afterwards to not affect the daily flow.
-
-if you change the layout of the tables make sure to adjust the cell addresses (A1 and R1C1 notations both apply) within the essentials-module:
-
-settings:
-* addresses of settings in Essential.persistent
-* columns of password storage in Secure.passwordHandler
-
-info-sheet:
-* address of absenceList for updating in Essentials.updateAbsence
-
-timetable-sheets:
-* columns of date, days and absence in Essentials.absenceHandler
-* rolumns and rows for day counting in Essentials.countDays
-* addresses of cells to be set plus formulas in Essentials.init
-* addresses of cells to be set, read plus formulas in Essentials.addSheets
-* addresses of cells to be read in Essentials.holidayReminder
-* addresses of cells to reset with local formulas and conditional formatting in Locals.updateXLSfunctions
-
-### flaws
-opening the file for the first time from the web or a network path will excel be loading it in protected mode. this causes an issue that can only be bypassed by reopening the file for excel will trust the source from then on. there will be an information about this, as this was the easiest way after several insufficent tries to handle this (leaving protected mode delays unprotecting after initializing code. there is no application.wait available coming from protected view).
-
-passwords are stored in plain text. whether you like that or not, it makes it a lot easier to track possible vulnerabilities and editing sheets.
-
-all this might not satisfy all security concerns but is considered reasonable.
-
-adjustments within the trust center might be necessary by trusting access to the VBA project object model.
-
-there might be errors on opening multiple timetables at once, most notably with excel 2010. i still haven't learned why. all tests succeeded being used solo. field test showed errors and crashes sometimes, most probably due to faulty input, resulting in loss of a few inputs. i still have no clue what the colleagues entered to lead to this behaviour. you're most welcome to educate me on this!
-
-on opening the file for initialization from the assistant, the wizard will be hidden beneath the browser that has to be minimized first.
-
-[back to top](#bottle-light-quality-management-software)
-
-## filter.py
-
-![python csv-filter](assets/py_filter.png)
-
-there might be a reccuring need to filter huge data-sets. some erp-software can create csv-dumps of data that can be used for statistics or post market surveillance. it can be way easier to filter these dumps and create a serial letter from the output, than adjust the erps database for an example. with the python filter you can describe filter-patterns with regex for different usecases. you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
-
-[back to top](#bottle-light-quality-management-software)
-
-## leech.py
-![python leech](assets/py_leech.png)
-
-keeping documents of proof up to date, maintain the latest certificates, manuals and technical informations from your vendors can be a difficult task even if you use the vendor-lists inbuild email-function. some vendors just point to their website instead of sending you desired material in the first place. leech.py serves to automatically download files according to linked ressources on websites. it is best used from the command line to have access to further options. this is not ai, you'll have to analyze the inhomogeneous sources by yourself beforehand in order to set up. see help for setup syntax. with the python filter you can describe filter-patterns with regex to find downloadable ressources within the sourcecode of the provided websites. files will be stored in a folder named the vendor-set with the download date. i recommend to handle this file in a different location to not mess up the folder structure. progress will be logged into a separate file to research failures.
-you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
-
-[back to top](#bottle-light-quality-management-software)
-
 # vb_libraries
 ![vba variables](assets/xlsm_vba.png)
 
@@ -486,11 +333,10 @@ supplying the source folder has the benefit of changes affecting all working dra
 
 hopefully settings have to be done within the locals-modules only. here you can customize columns and rows in case you slightly edit the tables structure but not the behaviour, customize some values and language chunks. if you copy any locals-module you can set up additional languages that will be accessed as soon as the language is set within the office files directly. just make sure to keep the `Attribute VB_Name = "Locals"`. 
 
-while initially serving for illustratory purposes, all *_illustration.vba-files have a secondary functional purpose as well.
-if you have to change code for the main module / ThisDocument-class, you can import the source code from the Document_ThisDocument_illustration.vba to overwrite, by implementing (preferably temporary) it within the essentials-module. use case: changing paths, language or adding custom subs or functions.
+Document_ThisDocument.vba and Admin_ThisWorkbook.vba contain the code for the main module / ThisDocument-class. you can import the source code from the Document_ThisDocument.vba or Admin_ThisWorkbook.vba to overwrite, by implementing (preferably temporary) it within the essentials-module. use case: changing paths, language or adding custom subs or functions.
 
 ### document_-modules
-these are the modules for word-documents like the [draft documents in force](documents/), containing versions control, publishing and registering.
+these are the modules for word-documents like the [draft documents in force](documents/), containing version- or release-date-control, publishing and conditional registering.
 events like Document_Open() in the ThisDocument-code-module point to public functions within the essential-module thus executing always the latest imported routines.
 while being opened from the list of documents in force (programmatically by another office application) the window is not visible while the macros start. this results in errors using document variables.
 there's a conditional query if the application is visible and warns about non available functions if true.
@@ -501,16 +347,13 @@ Events like Workbook_Open() and Workbook_BeforeSave() in the ThisWorkbook-code-m
 
 while being opened during a registration process (programmatically by another office application) office seems to have trouble adressing workbook-objects properly (or because of my poor skills). previously this could mess up the export of the list of documents, but is now prevented by remote calling a sub to set a respective flag.
 
-### timetable_-modules
-these modules work like the document_-modules and serve the same for every accessing [timetable-file](timetables/). in this sample structure these can be found within the timetable-folder, but this is up to you. just make sure to point to the right directory from the ThisWorbook-code-module.
-Events like Workbook_Open() and Workbook_BeforeSave() in the ThisWorkbook-code-module point to public functions within the essential-module thus executing always the latest imported routines.
-
 [back to top](#bottle-light-quality-management-software)
 
 ## thoughts and considerations
 on export of docm-files the file dialogue does not show pdf- or docm-options. you will be asked to provide a file name with default docx-extension that will be changed automatically. this is due to the fact that vba `Application.FileDialog(msoFileDialogSaveAs)` does not support `.Filter`. *existant files will not be displayed and just be overwritten.*
 
 [back to top](#bottle-light-quality-management-software)
+
 # details on the assistant
 ## summary
 there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. further on there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-library](http://vanilla.js-com).
@@ -552,7 +395,7 @@ the provided modules are filled with dummies. the general multi-language support
 ### document lookup
 ![assistant document lookup](assets/assistant_documentlookup.png)
 
-you can search for documents by name, switch between your own and foreign or other documents. there is a third category of documents of proof that might not neccessarily have to be in version control. these are not searchable but still reachable from the application.
+you can search for documents by name, switch between your own and foreign or other documents. there is a third category of record documents that might not neccessarily have to be in version control. these are not searchable but still reachable from the application, given the respective folder.
 every click on a document will be counted. from the second call of this module on the last used documents will be displayed. frequent called documents will appear on the top of the list. you can define default documents, users will be able to define their own default list, delete and recall lists. if you define default lists within the module, set up the documents filename only without non-word characters.
 
 dependencies are: datalists for internal and external an other documents. these are generated by the [excel-files of documents in force](#internal-documents-in-forcexlsm).
@@ -907,10 +750,92 @@ extends the core-object with the language synthesis. here you define textblocks 
 
 [back to top](#bottle-light-quality-management-software)
 
-## merely a matter of form
-i recommend not testing in production... this whole thing escalated a bit in regards of complexity. as this is a read-only application it is absolutely possible to adjust within a developement version and push to production later on. there might be some caution neccessary with overwriting the data-files but this is the reason for them to be stored within a different folder.
+# details on the tools
+## summary
+much of the code that is used by the document management happens to be useful for other purposes as well. therefore it is implemented into other excel-files that support your quality management system, planning product and personnel ressources. especially the scripts hopefully make data filtering and selection a bit easier.
 
-there are more modules used in my company but these are dependent to sensitive data thus there is no publication possible.
+## vendorlist.xlsm
+![vendor list](assets/xlsm_vendorlist.png)
+
+the vendor list helps you keeping track of certificate runtimes and helps you keep in touch with your vendors with a doubleclick by preparing standardized emails while demanding the latest documents. also you can link to documents of proof regarding the fulfillment of regulatory requirements. expiration-dates and unfavourable empty fields are marked with conditional formatting.
+you're free to insert anything you want. just the material tracing allows the assignment of listed vendors and approved documents as selected with an automatic updated name-space for vendors and approved document list as stated above the list of materials.
+
+[back to top](#bottle-light-quality-management-software)
+
+## audit planner.xlsm
+![audit planner](assets/xlsm_auditplanner.png)
+
+the audit planner can be filled with a question set for internal audits. by exporting the list to the assistant the question set can be used to generate or customize the annual questionnaire (to the relief of the quality manager) and becomes accessible to the employees to reduce obstructions due to regulatory vocabulary.
+
+*please be aware that there are dependencies between column numbers and entries and the assistants filter function. the excel-list will be displayed in the same way within the assistant in the first place.*
+
+[back to top](#bottle-light-quality-management-software)
+
+## stocklist
+*deprecated but still available excel solution*
+
+![excel stocklist](assets/xlsm_stocklist.png)
+
+the stocklist might contain all products and materials that have permission from the companies head. i am aware there are better solutions for stock administration but by time of writing my own companies software is worse than using excel for that. so this *is* an advance. the export function on save makes the list accessible and searchable for all employees using the assistant hence optimizing dialogue with inventory control. excel might freeze on export if the list contains 6k+ items, but it just takes some time, so no worries.
+
+*newer approach with python filtering csv*
+
+![python stocklist translator](assets/py_stocklist.png)
+
+having two databases to maintain is admittedly not be the best solution. fortunately i found a solution to translate the dump from the erp-software to the assistant. in this scenario you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
+
+also this script has a function to split the data by given column values. this might help e.g. in case of annual stocktaking. this is not related to quality management in the first place but can come in handy and since the same source has to be processed by the same rules, why the heck not?
+
+[back to top](#bottle-light-quality-management-software)
+
+## ticketorder.xlsm
+this files purpose is purely for translation. it serves as an interface between your erp-software with item orders and the assistant. basically you can insert any data dump by the erp-software and it translates it to a javascript-object-file as a feedback loop for the ticketorder-module within the assistant. it makes sense to contain the generated ticket-ids within the order process in any field that might be dumped by the output. this definitely has an effect on yout order process but might make communication more easy between inventory control and ordering persons.
+*be aware that the pattern recognizing regexes in the imported vb_library/administration_Locals_XX.vba rely absolutely on the generated data by your erp-software and have to be customized to your individual situation!*
+
+[back to top](#bottle-light-quality-management-software)
+
+## data rights management.xlsm
+![data rights management](assets/xlsm_datarightsmanagement.png)
+
+this is a easy to handle list to set optional permissions for modules of the assistant as required. the password hash can be obtained by the assistant directly. no clear passwords are stored - in the image/sample file for illustration purposes though.
+
+[back to top](#bottle-light-quality-management-software)
+
+## transfer schedule.xlsm
+![transfer schedule](assets/xlsm_transferschedule.png)
+
+like the [timetables](#timetables) this is not originally part of quality management, but on the other hand which part of operations is not somehow influenced by and influencing quality management itself? making use of the same codebase the transfer schedule originated from the schedule of transferring apprentices through the different departments to get an insight on everything. this might come in handy for other planning operations as well. note that this document is not within the registration process and exporting the table as a pdf-file will only contain a release date, not a version number.
+
+customize the department definitions and abbreviations, everything separated by a non-word-chracter will be recognized to update to your set background-colour. plan the schedule, connect cells and you end up with a decent overview. on saving the background color of the entries as well as the separation lines for entries and months will update and you will be prompted to optional export the file.
+change the year as needed, the first month-column contains the initial month value to start from within a formula. adding more sheets is possible, only the active sheet will be processed. position of the term "Legend" (customizable within the Locals module) and placing of the department definitions in column A is crucial.
+
+[back to top](#bottle-light-quality-management-software)
+
+## timetables
+![timetables](assets/xlsm_timetable.png)
+
+timetracking with excel as an addon. not quite related to quality management in the first place but can come in handy and is implemented in the general process surface of the assistant as well.
+
+### there might be better solutions
+if you have efficient electronic supported methods for time tracking of the employees or no need to track working time at all, please carry on!
+
+[more on the timetables code](timetables/)
+
+[back to top](#bottle-light-quality-management-software)
+
+## filter.py
+
+![python csv-filter](assets/py_filter.png)
+
+there might be a reccuring need to filter huge data-sets. some erp-software can create csv-dumps of data that can be used for statistics or post market surveillance. it can be way easier to filter these dumps and create a serial letter from the output, than adjust the erps database for an example. with the python filter you can describe filter-patterns with regex for different usecases. you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
+
+[back to top](#bottle-light-quality-management-software)
+
+## leech.py
+![python leech](assets/py_leech.png)
+
+keeping documents of proof up to date, maintain the latest certificates, manuals and technical informations from your vendors can be a difficult task even if you use the vendor-lists inbuild email-function. some vendors just point to their website instead of sending you desired material in the first place. leech.py serves to automatically download files according to linked ressources on websites. it is best used from the command line to have access to further options. this is not ai, you'll have to analyze the inhomogeneous sources by yourself beforehand in order to set up. see help for setup syntax. with the python filter you can describe filter-patterns with regex to find downloadable ressources within the sourcecode of the provided websites. files will be stored in a folder named the vendor-set with the download date. i recommend to handle this file in a different location to not mess up the folder structure. progress will be logged into a separate file to research failures.
+you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
 
 [back to top](#bottle-light-quality-management-software)
 
@@ -922,6 +847,13 @@ by 6/20 it is possible to handle special permissions due to the data rights mana
 the assistant is designed to hopefully transition mostly seamlessly into windows 10 fluent design. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be. i am not a fanboy in the first place, although i like microsofts os design. i just try to make it look as native as possible to not disturb the co-workers. it is hard enough to convince them to utilize quality management as well as this tool.
 
 *funny what can evolute from a personal tool to generate standardized email answers to recurrent enquiries and some messing around with conditional formatting in excel.*
+
+[back to top](#bottle-light-quality-management-software)
+
+## merely a matter of form
+i recommend not testing in production... this whole thing escalated a bit in regards of complexity. as this is a read-only application it is absolutely possible to adjust within a developement version and push to production later on. there might be some caution neccessary with overwriting the data-files but this is the reason for them to be stored within a different folder.
+
+there are more modules used in my company but these are dependent to sensitive data thus there is no publication possible.
 
 [back to top](#bottle-light-quality-management-software)
 
