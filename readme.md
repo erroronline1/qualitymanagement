@@ -32,20 +32,20 @@ compatible with
 	* [what the documents do](#what-the-documents-do)
 	* [requirements](#requirements)
 * [the assistant](#the-assistant)
-	* [use case](#use-case-3)
-	* [what this tool does](#what-this-tool-does)
-	* [requirements](#requirements-2)
-* [tools](#tools)
 	* [use case](#use-case-2)
-	* [what the tools do](#what-the-tools-do)
+	* [what this tool does](#what-this-tool-does)
 	* [requirements](#requirements-1)
+* [tools](#tools-1)
+	* [use case](#use-case-3)
+	* [what the tools do](#what-the-tools-do)
+	* [requirements](#requirements-2)
 * [interfaces](#interfaces)
 * [installation](#installation)
 * [but i am no programmer!](#but-i-am-no-programmer)
 
 ### document management
 * [details on the document management](#details-on-the-document-management)
-	* [template_file.docm](#template_filedocm)
+	* [template files](#template-files)
 	* [internal documents in force.xlsm](#internal-documents-in-forcexlsm)
 	* [external documents in force.xlsm](#external-documents-in-forcexlsm)
 
@@ -61,7 +61,7 @@ compatible with
 	* [provided modules within open-source distribution](#provided-modules-within-open-source-distribution)
 		* [document lookup](#document-lookup)
 		* [predefined document bundles](#predefined-document-bundles)
-		* [inventory / stock list](#inventory-/-stock-list)
+		* [inventory or stock list](#inventory-or-stock-list)
 		* [orders](#orders)
 		* [timetable](#timetable)
 		* [default texts for correspondence](#default-texts-for-correspondence)
@@ -78,7 +78,6 @@ compatible with
 	* [inter-module communication](#inter-module-communication)
 	* [api](#api)
 	* [core overview](#core-overview)
-	* [merely a matter of form](#merely-a-matter-of-form)
 
 ### tools
 * [details on the tools](#details-on-the-tools)
@@ -109,7 +108,7 @@ and you do not plan to change this within the near future.
 
 this system has been in use in context to [iso 13485:2015](https://www.iso.org/search.html?q=13485%3A2015) and was approved by the certification authority.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # about bottle light qms
 if your company does not have the ressources to test out different expensive qm-software-solutions until you find one to suit your needs and you somehow make use of the simple tools you have access to, bottle light qms might be a good start for you.
@@ -138,7 +137,7 @@ and yes, whether or not i should use ascii to do a logo, i most certainly can.
 * no external dependecies, frameworks, libraries
 * minimal system requirements
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # document management
 ## use case
@@ -166,7 +165,7 @@ it coincidentally but fortunately matches most of the [requirements for document
 
 [details on the document management](#details-on-the-document-management)
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # the assistant
 ## use case
@@ -193,7 +192,7 @@ the digital assistant provides your company with an application to have an easie
 
 [details on the assistant](#details-on-the-assistant)
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # tools
 ## use case
@@ -209,12 +208,12 @@ keep track of declarations of conformity, certificates and other documents from 
 
 [details on the tools](#details-on-the-tools)
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # interfaces
 some core documents contain vba-code to translate their content to a javascript object to be accessed by the assistant. there might pop up some python scripts occasionally to fulfill the same task for one or the other use case. these scripts will likely be configurable via a json-setup-file even after compiling. so there might be another dependency of a json- and regex-enabled python-developer.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # installation
 there is no installation routine. place the files to your desired accessible network-folders and customize them by hand. create or recreate your documents with the provided template_file.docm and let the workflow guide you through the registration. adjustments within the office trust center might be necessary by trusting access to the VBA project object model.
@@ -225,7 +224,7 @@ there is no installation routine. place the files to your desired accessible net
 * i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to published pdfs or docms, timetables and the assistant application should be granted for everyone.
 * provided python-scripts probably will have to be compiled (unless you have python installed - [3.6 for the moment](https://www.python.org/downloads/release/python-3612/)). i recommend [pyinstaller](http://www.pyinstaller.org/) for this usecase - at least for windows environments.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # bUt I aM nO pRoGrAmMeR!
 to customize this software to your needs it is definitely neccessary to have someone change values within the vba-code- and the javascript-configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
@@ -234,7 +233,7 @@ i was hoping to have done enough documentation and commenting, so maybe you migh
 
 if you are a programmer i can recommend [notepad++ portable](https://notepad-plus-plus.org/download/) out of personal experience in case you have restricted access to your it. also [git portable](https://sourceforge.net/projects/gitportable/).
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # details on the document management
 ## summary
@@ -256,10 +255,10 @@ on save of excel-lists
 ### why excel though?
 it's widely agreed upon that excel does not serve as a sufficient database. on the other hand most people are experienced with excel to the degree where they do not have angst starting the application. it is available on most business setups and definetly more easy to handle and customize than ms access. if your datasets of documents in charge exceed excels capabilities your qm-system got out of hand anyway. if your stocklist exceeds excels capabilities you certainly did not bothering reading to this point anyway because of using a more sufficient software for this. or it got out of hand as well. in this case you probably should tidy up. huge data loads can be handled by the provided stocklist-script but require a decent csv-dump by your erp-software.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
-## template_file.docm
-the main template contains the basic functions for importing modules for version control and registration. you basically just have to set up the language code according to available local modules and the level of parental folders depending on the relative vb_library location. this is one level up by default.
+## template files
+the main template_file.docm contains the basic functions for importing modules for version control and registration. you basically just have to set up the language code according to available local modules and the level of parental folders depending on the relative vb_library location. this is one level up by default.
 outsourced modules will be imported/updated if available.
 
 there are three important and processed document variables within the document:
@@ -293,7 +292,7 @@ text inputs are possible as well and expand the content dynamically. you can use
 
 published docm-files import a macro-module handling the checkbox-hiding-text-topic at the moment but could be extended in the future or by yourself according to your needs.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## internal documents in force.xlsm
 tl;dr: docm-files as working draft will register and update their version in this table. assign checkpoints to have a regulatory context. this list serves as the interface for the documents module for the assistant too. export will be executed on save. the list of norm-chapters should contain all relevant considerable chapters. on save documents will be assigned back to the list to clarify if every chapter is met. assign documents to regulary common used bundles. this also serves as the interface for the assistants bundles module.
@@ -312,7 +311,7 @@ if you work direct within the list you will be prompted for exports, but not dur
 first step is to export the list without code for your colleagues without the risk of them messing something up. on new versions an email will pop up to notify about the recently changed documents and the respective mark left deleted. you will have to input paths to be replaced and the equivalent insertions. you can set default paths for export and replacements within the code of the locals-module to speed these things up. docm-links will be replaced with pdf-links if applicable according to the format column and the document bundle matrix will be updated with links as well. *the resulting file might work as your backup plan in case the assistant is broken. or you do not want to use it ( not recommended ;) )* 
 afterwards you can export the list of documents as well as the document bundles to the assistant. if you skip the first prompts the replace/insertion path will be asked for later. as long as the file is open the inputs will be remembered.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## external documents in force.xlsm
 ![external documents in force](assets/xlsm_externaldocuments.png)
@@ -321,7 +320,7 @@ tl;dr: this list serves as an overview of acknowledged external documents in use
 
 this list contains external documents in force and can contain other file lists. beside having them registered you can export these as well to the assistant on saving. while inserting links as registration there might be relative paths. this can be tweaked within the code where you can assign replacements to tidy things up. adding another sheet of file categories is easily done by adding another collection within the code, alter the sheet name and pass the collection to the export sub. remember to register the data-export to the assistants module as well. you can define alternative search terms as well as descriptions to filenames or urls to be displayed in the assistant in case the original files and urls lack a meaningful name.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # vb_libraries
 ![vba variables](assets/xlsm_vba.png)
@@ -347,12 +346,12 @@ Events like Workbook_Open() and Workbook_BeforeSave() in the ThisWorkbook-code-m
 
 while being opened during a registration process (programmatically by another office application) office seems to have trouble adressing workbook-objects properly (or because of my poor skills). previously this could mess up the export of the list of documents, but is now prevented by remote calling a sub to set a respective flag.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## thoughts and considerations
 on export of docm-files the file dialogue does not show pdf- or docm-options. you will be asked to provide a file name with default docx-extension that will be changed automatically. this is due to the fact that vba `Application.FileDialog(msoFileDialogSaveAs)` does not support `.Filter`. *existant files will not be displayed and just be overwritten.*
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # details on the assistant
 ## summary
@@ -376,7 +375,7 @@ there is a main html-file in the root folder, a core folder with the core functi
 
 ![assistant home screen](assets/assistant_home.png)
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## comes with different themes
 ![assistant themes](assets/assistant_themes.png)
@@ -387,7 +386,7 @@ there is a main html-file in the root folder, a core folder with the core functi
 ## customize the assistants behaviour
 ![assistant settings](assets/assistant_settings.png)
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## provided modules within open-source distribution
 the provided modules are filled with dummies. the general multi-language support was added in advance of making this application open source and comprehensible. some module-data-files might lack of multi-language content. in production this feature might or might not make sense. you are free to implement this feature for your self.
@@ -402,7 +401,7 @@ dependencies are: datalists for internal and external an other documents. these 
 
 globalSearch api: returns documents from all categories/datalists that fit search terms.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ### predefined document bundles
 ![assistant document bundles](assets/assistant_documentbundles.png)
@@ -413,9 +412,9 @@ dependencies are: datalist for packages. this can be generated by the [excel-fil
 
 globalSearch api: returns packages that fit search terms.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
-### inventory / stock list
+### inventory or stock list
 ![assistant stocklist](assets/assistant_stocklist.png)
 
 if you want your employees to have a look at approved products and materials for your company and let them keep in touch with the inventory control this module makes it quite easy to look up all products.
@@ -424,7 +423,7 @@ dependencies are: the datalist of inventory and an excel file containing the ori
 
 globalSearch api: returns number of matches regarding search terms.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ### orders
 ![assistant orders](assets/assistant_ticketorder.png)
@@ -440,7 +439,7 @@ dependencies are: the datalist of inventory regarding the shopping cart, optiona
 
 globalSearch api: returns number of matches regarding search terms id datalist is available.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ### timetable
 ![assistant timetable](assets/assistant_timetable.png)
@@ -453,7 +452,7 @@ globalSearch api: returns a link to the module if first search term can be found
 
 [more on the timetracking](#timetables)
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ### default texts for correspondence
 ![assistant correspondence](assets/assistant_correspondence.png)
@@ -466,7 +465,7 @@ globalSearch api: returns texts blocks where headers match the search terms.
 
 currently i have no idea how to set this one up with an easy office interface because language synthesis is quite complex in this simple approach already. this module makes use of the `core.fn.languageSynthesis` properties within library/core/core.fn.languageSynthesis.js, adding new texts might require flexible additions to this core-function with all language support and in my company i am not sure about the ability to comprehend inserting $placeholders$ to a text. so currently adding meaning to this module will definitively need an understanding and editing of the code itself.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ### mail tools
 ![assistant mail tools](assets/assistant_mailtools.png)
@@ -481,7 +480,7 @@ no dependencies for this module
 
 globalSearch api: returns submodules where titles match the search terms.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ### audit planner
 ![assistant audit planner](assets/assistant_auditplanner.png)
@@ -492,7 +491,7 @@ dependencies: datalist for question sets. these are generated by the [excel-file
 
 globalSearch api: returns false because the contents are considered useless for a daily workflow and would mess the overall search results up unnecessary.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ### help
 ![assistant help](assets/assistant_help.png)
@@ -502,7 +501,7 @@ dependencies are: datalist of help topics. these have to be written directly int
 
 globalSearch api: returns entries that match search terms.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## module structure
 each module consists of an object with properties and methods. the initiating method should be the callback function of module loading with `core.fn.loadScript('modules/modulename.js','modulename.fn.init()')`. the overall structure of the modules data processing looks like this:
@@ -576,7 +575,7 @@ thus algorithms and values are separated and changes on one don´t necessarily a
 
 please inspect the sample files for further information. while distributing this piece of software there happen to be some differencies between the open source version and the actual software used in my company. the main differencies can be found in the {modulename}.var-properties. maybe you find this suitable for you as well so changes to your sourcecode are way more easy to implement.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## module functions
 modules must contain functions to generate the modules output. some functions are in the main or dependent scripts like language synthesis, shortened document.getElementByID() or loading remote scripts. make use of the core-object, some things are fairly prepared:
@@ -592,7 +591,7 @@ modules must contain functions to generate the modules output. some functions ar
 
 all modules are depentent on the main module, only some may have dependencies of other data-files.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## output containers
 container for output are named 'input', 'temp' and 'output' and can be accessed preferably via `core.fn.stdout('input', content)` or `el('input').innerHTML` or whatever.
@@ -603,7 +602,7 @@ register and deregister modules in ROOT/core/config.js so they are accessible an
 ## module initialization
 initialization of module will be achieved by the callback functions of the core.fn.loadScript-method. initialization should contain a default output for input (forms or explanatory text), might contain module information in temp and should clear output. even if the module-object is reinitialized on every module-call there is no way of initializing with the same function name because of some asynchronous variable handling or scope unknown to me resulting in calling the previous init-function and giving a lot of errors.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## multi-language support
 the language bricks within the modules are to be defined. i recommend the same nesting and pattern than the core language model for easier source reading. within every module the language-blocks have to be filled up according to registered languages to avoid errors of undefined objects. the bricks can be called with `core.fn.lang('brickName','modulename')` and will return the block in the selected language.
@@ -635,12 +634,12 @@ the former object structure absolutely makes sense in german. in english not rea
 
 the method handles the decision over values or functions on its own.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## smart search with fuzzy search
 i have to admit i am a bit proud of this one. this method has to be handed over the raw query string and an object containing the searchable data. it then splits the query into whitespace separated terms, divides -filters and adds a concatenated query to an array of query options. fuzzy search is optional and can be enabled from the settings. if the query bits are set up the dataset will be checked for occurences of every bit. the results is a multidimensional array that can be displayed first in order of occurrences of different terms (if there are more than one) then of the data object. + will make mathing of all search terms mandatory, ? and * will override disabled fuzzy setting, so not really serving as wildcards but giving most probably more relevant results to users that are used to working with these. quoted terms will be looked for in this particular order strictly adding relevance.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## output usage
 output text is selected on click by default. to avoid this add a property `disableOutputSelect = true;` to module.var. this is considered not to be implemented global through registered-modules for being dynamically mutable if desired within the module itself (e.g. see mailtools).
@@ -651,7 +650,7 @@ communication between modules is possible with use of localstorage or cookies. t
 ## api
 every module has to contain an api-method that returns some value (at least a `return;`). the api-module is called by the global search from the start site. lack of the api will result in errors. every registered module will be called even if the user has deselected it in the settings (so the user might get a feeling of content and meaning of modules and has a guaranteed meaningful access).
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## core overview
 a shortened overview of the core-functions that can be made use of in future modules.
@@ -748,7 +747,7 @@ a shortened overview of the core-functions that can be made use of in future mod
 ### ../library/core/core.fn.languageSynthesis.js
 extends the core-object with the language synthesis. here you define textblocks that can be switched for $keyword$ within continuous text using the function `core.fn.languageSynthesis.output(block)` called by `'string'.replace(/\$(\w+?)\$/ig,function(match,group1){return core.fn.languageSynthesis.output(group1)})`
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # details on the tools
 ## summary
@@ -760,7 +759,7 @@ much of the code that is used by the document management happens to be useful fo
 the vendor list helps you keeping track of certificate runtimes and helps you keep in touch with your vendors with a doubleclick by preparing standardized emails while demanding the latest documents. also you can link to documents of proof regarding the fulfillment of regulatory requirements. expiration-dates and unfavourable empty fields are marked with conditional formatting.
 you're free to insert anything you want. just the material tracing allows the assignment of listed vendors and approved documents as selected with an automatic updated name-space for vendors and approved document list as stated above the list of materials.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## audit planner.xlsm
 ![audit planner](assets/xlsm_auditplanner.png)
@@ -769,7 +768,7 @@ the audit planner can be filled with a question set for internal audits. by expo
 
 *please be aware that there are dependencies between column numbers and entries and the assistants filter function. the excel-list will be displayed in the same way within the assistant in the first place.*
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## stocklist
 *deprecated but still available excel solution*
@@ -786,20 +785,20 @@ having two databases to maintain is admittedly not be the best solution. fortuna
 
 also this script has a function to split the data by given column values. this might help e.g. in case of annual stocktaking. this is not related to quality management in the first place but can come in handy and since the same source has to be processed by the same rules, why the heck not?
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## ticketorder.xlsm
 this files purpose is purely for translation. it serves as an interface between your erp-software with item orders and the assistant. basically you can insert any data dump by the erp-software and it translates it to a javascript-object-file as a feedback loop for the ticketorder-module within the assistant. it makes sense to contain the generated ticket-ids within the order process in any field that might be dumped by the output. this definitely has an effect on yout order process but might make communication more easy between inventory control and ordering persons.
 *be aware that the pattern recognizing regexes in the imported vb_library/administration_Locals_XX.vba rely absolutely on the generated data by your erp-software and have to be customized to your individual situation!*
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## data rights management.xlsm
 ![data rights management](assets/xlsm_datarightsmanagement.png)
 
 this is a easy to handle list to set optional permissions for modules of the assistant as required. the password hash can be obtained by the assistant directly. no clear passwords are stored - in the image/sample file for illustration purposes though.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## transfer schedule.xlsm
 ![transfer schedule](assets/xlsm_transferschedule.png)
@@ -809,7 +808,7 @@ like the [timetables](#timetables) this is not originally part of quality manage
 customize the department definitions and abbreviations, everything separated by a non-word-chracter will be recognized to update to your set background-colour. plan the schedule, connect cells and you end up with a decent overview. on saving the background color of the entries as well as the separation lines for entries and months will update and you will be prompted to optional export the file.
 change the year as needed, the first month-column contains the initial month value to start from within a formula. adding more sheets is possible, only the active sheet will be processed. position of the term "Legend" (customizable within the Locals module) and placing of the department definitions in column A is crucial.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## timetables
 ![timetables](assets/xlsm_timetable.png)
@@ -821,7 +820,7 @@ if you have efficient electronic supported methods for time tracking of the empl
 
 [more on the timetables code](timetables/)
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## filter.py
 
@@ -829,7 +828,7 @@ if you have efficient electronic supported methods for time tracking of the empl
 
 there might be a reccuring need to filter huge data-sets. some erp-software can create csv-dumps of data that can be used for statistics or post market surveillance. it can be way easier to filter these dumps and create a serial letter from the output, than adjust the erps database for an example. with the python filter you can describe filter-patterns with regex for different usecases. you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## leech.py
 ![python leech](assets/py_leech.png)
@@ -837,7 +836,7 @@ there might be a reccuring need to filter huge data-sets. some erp-software can 
 keeping documents of proof up to date, maintain the latest certificates, manuals and technical informations from your vendors can be a difficult task even if you use the vendor-lists inbuild email-function. some vendors just point to their website instead of sending you desired material in the first place. leech.py serves to automatically download files according to linked ressources on websites. it is best used from the command line to have access to further options. this is not ai, you'll have to analyze the inhomogeneous sources by yourself beforehand in order to set up. see help for setup syntax. with the python filter you can describe filter-patterns with regex to find downloadable ressources within the sourcecode of the provided websites. files will be stored in a folder named the vendor-set with the download date. i recommend to handle this file in a different location to not mess up the folder structure. progress will be logged into a separate file to research failures.
 you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # thoughts and considerations
 i tried to implement a preview on search forms using datalists. while it is not a big problem to update these dynamically i ran into two major issues: the cross-browser behaviour is very different and quirky. and using this in combination with fuzzy search and 6k+ items in stock-list slows everything horribly down. it would have been nice to have but ended up in some hours wasted.
@@ -848,21 +847,14 @@ the assistant is designed to hopefully transition mostly seamlessly into windows
 
 *funny what can evolute from a personal tool to generate standardized email answers to recurrent enquiries and some messing around with conditional formatting in excel.*
 
-[back to top](#bottle-light-quality-management-software)
-
-## merely a matter of form
-i recommend not testing in production... this whole thing escalated a bit in regards of complexity. as this is a read-only application it is absolutely possible to adjust within a developement version and push to production later on. there might be some caution neccessary with overwriting the data-files but this is the reason for them to be stored within a different folder.
-
-there are more modules used in my company but these are dependent to sensitive data thus there is no publication possible.
-
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 ## changes and updates
 this software is purposed to be adapted to the companies needs in an flexible way. if you find something missing you can add functions quite quick and easily (within technical boundaries). i do exactly this and want to keep the open source distribution updated as well. as long as i am not aware that this software is used by a third party i will push to master and will not implement any version management or branching.
 
 i maintain this open template as well as the official version in my company. while making changes to the program i repeatedly have to consider the individual parts. therefore all custom files are to be found within the library folder. these are seldom a subject of structural changes. most parts are quite dynamic and feed off the data files. customization might not be neccessary. if you do not customize anything within the main files any update from the latest commits should work flawless.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # disclaimer
 use at your own responsibility. as this system is or has been in real use with me being responsible, i did my best to make everything flawless. i also tried to make the documentation and comments as meaningful as i could. als always there might be parts that once seemed to be self-explanatory so a little bit of advanced javascript and vba skills might come in handy.
@@ -872,7 +864,7 @@ but as the current deputy quality manager i strongly recommend to reconsider whi
 
 i was not able to find information if there are special requirements for a quality management software. regarding iso 13485 there are no restrictions what to use. you will have to take your own responsibility for any kind of software - even an amateurs work. you will just have to rate the risk, how to handle that and set up the process of validation of software application for this. as this software supports your paper-based documentation it is up to your own document content, process definitions and reliable form completion by your employees to make sure your qm/documentation meets all regulatory requirements.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
 
 # license
 bottle light quality management software
@@ -888,4 +880,4 @@ You should have received a copy of the GNU General Public License along with thi
 
 i am happy to get feedback on code- and documentation-quality since this is my first official open source project.
 
-[back to top](#bottle-light-quality-management-software)
+[back to top](#table-of-contents)
