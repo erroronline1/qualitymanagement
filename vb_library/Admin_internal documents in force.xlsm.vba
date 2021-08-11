@@ -237,7 +237,7 @@ Public Sub bundleExport(var As Collection)
             Next res
             finally = finally & "};" & vbNewLine
             
-            Essentials.WriteFile fileSaveName, finally
+            Essentials.WriteFile fileSaveName, finally, False
         Else
             MsgBox var("export.ErrorMsg")
         End If

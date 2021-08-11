@@ -50,7 +50,10 @@ Public Function SanitizeString(ByVal output As String) As String
     SanitizeString = Replace(output, "\", "/")
 End Function
 
-Public Sub WriteFile(ByVal path As Variant, content As String)
+Public Function WriteFile(ByVal path As Variant, content As String, delete as Boolean) As Boolean
+    WriteFile = False
+    On Error GoTo denied
+
     Dim fso As Object
     Set fso = CreateObject("Scripting.FileSystemObject")
     Dim oFile As Object
@@ -59,7 +62,13 @@ Public Sub WriteFile(ByVal path As Variant, content As String)
     oFile.Close
     Set fso = Nothing
     Set oFile = Nothing
-End Sub
+    If delete Then
+        Kill path
+    EndIf
+    WriteFile = True
+denied:
+    On Error GoTo 0
+End Function
 
 Public Function LastRowOrColumn(ByVal WB As Workbook, ByVal rowcol As String, ByVal sheet As Variant, ByVal startrow As Variant, ByVal column As Variant, ByVal max As Variant) As Integer
     'returns integer of last row or colums for a given sheet with starting cell and maybe predefined maximum
@@ -145,7 +154,7 @@ Public Sub basicTableToJSON(var As Collection)
             End If
         Next mrow
         finally = finally & "]};"
-        WriteFile fileSaveName, finally
+        WriteFile fileSaveName, finally, False
     End If
 End Sub
 
@@ -198,7 +207,7 @@ Public Sub doclistExport(var As Collection, ByVal replacePath As Boolean, ByVal 
                 End If
             Next mrow
             content = content + "]};"
-            WriteFile fileSaveName, content
+            WriteFile fileSaveName, content, False
         Else
             MsgBox var("export.ErrorMsg")
         End If
@@ -245,25 +254,6 @@ Public Sub createMail(ByVal rcpt As String, ByVal subject As String, ByVal mailt
     Set eMail = Nothing
     Set newmail = Nothing
 End Sub
-
-Public Function getWritePermission() As Boolean
-    getWritePermission = False
-    Dim tempfile: tempfile = ActiveWorkbook.path & "\writepermission.temp"
-    On Error GoTo denied
-        Dim fso As Object
-        Set fso = CreateObject("Scripting.FileSystemObject")
-        Dim oFile As Object
-        Set oFile = fso.CreateTextFile(tempfile, True, True)
-        oFile.WriteLine "1"
-        oFile.Close
-        Set fso = Nothing
-        Set oFile = Nothing
-        
-        Kill tempfile
-        getWritePermission = True
-denied:
-    On Error GoTo 0
-End Function
 
 Public Sub monitorRowsColumns(ByVal Sh As Object, ByVal target As Range)
     ' load monitor setup, because a public variable gets emptied after finishing the open routine for some freaking reason

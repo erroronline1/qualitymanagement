@@ -83,7 +83,7 @@ Public Sub closeRoutine(ByVal SaveAsUI As Boolean, Cancel As Boolean)
             End If
         Next mrow
         finally = finally & "]};"
-        Essentials.WriteFile fileSaveName, finally      
+        Essentials.WriteFile fileSaveName, finally, False   
 
         'clear table and set focus to make insertion easier next time
         ThisWorkbook.Worksheets(setup("matrix.sheet")).Range("A1:" & Essentials.convertColumn("2letter", matrixcols) & matrixallrows).Delete

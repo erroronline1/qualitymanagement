@@ -15,7 +15,7 @@ Public Function monitorSetup() As Collection
 End Function
 
 Public Sub openRoutine()
-    Essentials.WritePermission = Essentials.getWritePermission
+    Essentials.WritePermission = Essentials.WriteFile(ActiveWorkbook.path & "\writepermission.temp", "1", True)
     
     If Essentials.WritePermission Then
         Dim setup As New Collection
