@@ -115,7 +115,6 @@ Public Sub publish()
 End Sub
 
 Public Sub AutoVersioning()
-    Dim version As String
     If currentDocumentVersion Then
         currentDocumentVersion = currentDocumentVersion + 1
         ThisDocument.Variables("version").Value = currentDocumentVersion
@@ -127,22 +126,22 @@ End Sub
 
 Public Sub ManualVersioning()
     ' ask for updating version and release date
-    Dim version As String
+    Dim futureVersion As String
     Dim releasedate As String
     If currentDocumentVersion Then
         version = InputBox(setup("manualVersioning.versionPrompt") & ": " & currentDocumentVersion, _
             setup("manualVersioning.versionTitle"), currentDocumentVersion + 1)
     End If
     releasedate = InputBox(setup("manualVersioning.releasedatePrompt") & ": " & ThisDocument.Variables("releasedate").Value, setup("manualVersioning.releasedateTitle"), format(Date, "yyyymmdd"))
-    If currentDocumentVersion And Not version = vbNullString And version Then
-        currentDocumentVersion = version
+    If currentDocumentVersion And Not futureVersion = vbNullString And futureVersion Then
+        currentDocumentVersion = futureVersion
         ThisDocument.Variables("version").Value = currentDocumentVersion
     End If
     If Not releasedate = vbNullString Then
         ThisDocument.Variables("releasedate").Value = releasedate
     End If
     ' guide through releasing new document version if user applied values only
-    If (currentDocumentVersion And Not (version = vbNullString And version And releasedate = vbNullString)) _
+    If (currentDocumentVersion And Not (futureVersion = vbNullString And futureVersion And releasedate = vbNullString)) _
         Or (currentDocumentVersion = False And Not releasedate = vbNullString) Then
         UpdateAndExport
     End If
@@ -444,7 +443,7 @@ Public Sub UpdateListOfDocuments()
         ThisDocument.Repaginate 'occasionally update site numbers
         xlSheet.Range(setup("updateList.documentNovel") & rCount).Value = "*"
         xlSheet.Range(setup("updateList.documentTitle") & rCount).Value = ThisDocument.Variables("title").Value
-        xlSheet.Range(setup("updateList.currentDocumentVersion") & rCount).Value = "V" + CStr(currentDocumentVersion) + _
+        xlSheet.Range(setup("updateList.documentVersion") & rCount).Value = "V" + CStr(currentDocumentVersion) + _
             "." + CStr(ThisDocument.Variables("releasedate").Value)
         ' link to word document
         xlSheet.Hyperlinks.Add Anchor:=xlSheet.Range(setup("updateList.documentHyperlink") & rCount), _
