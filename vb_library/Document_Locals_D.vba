@@ -25,7 +25,7 @@ Public Function setup() As Collection
                 "In beiden Fällen kann anschließend die aktuelle Version archiviert und veröffentlicht werden." & vbNewLine & vbNewLine & "[Abbrechen] um Ausgabestand nicht zu ändern", "initiate.recordConfirm"
     setup.Add "Version und Veröffentlichungsdatum aktualisieren?", "initiate.versionedTitle"
     setup.Add "Das Dokument '" & ThisDocument.Variables("title").Value & "' wird gespeichert." & vbNewLine & vbNewLine & _
-                "[Automatisch] um Versionstand automatisch auf Version V{version}." & format(Date, "yyyymmdd") & " zu aktualisieren" & vbNewLine & vbNewLine & _
+                "[Automatisch] um Versionstand automatisch auf Version V{version}." & format(Date, "yyyymmdd") & " zu aktualisieren (V0 ist nicht zulässig)" & vbNewLine & vbNewLine & _
                 "[Manuell] um Versionsstand manuell anzupassen" & vbNewLine & vbNewLine & _
                 "In beiden Fällen kann anschließend die aktuelle Version archiviert und veröffentlicht, sowie die Aktualisierung der Liste der gültigen Dokumente durchgeführt werden." & vbNewLine & vbNewLine & "[Abbrechen] um Versionsstand nicht zu ändern", "initiate.versionedConfirm"
     setup.Add Array("Automatisch", "Manuell"), "initiate.options"
@@ -33,7 +33,7 @@ Public Function setup() As Collection
     setup.Add 200, "initiate.labelHeight" ' false for auto height for userform based on options, integer to set according to content
     ' prompt to set version manually
     setup.Add "Version", "manualVersioning.versionTitle"
-    setup.Add "Neuen Versionsstand angeben oder Abbrechen um Version beizubehalten", "manualVersioning.versionPrompt"
+    setup.Add "Neuen Versionsstand angeben oder Abbrechen um Version beizubehalten (0 ist nicht zulässig)", "manualVersioning.versionPrompt"
     setup.Add "Veröffentlichungsdatum", "manualVersioning.releasedateTitle"
     setup.Add "Neues Einführungsdatum angeben oder Abbrechen um Datum beizubehalten", "manualVersioning.releasedatePrompt"
     ' prompt to archive current version without code

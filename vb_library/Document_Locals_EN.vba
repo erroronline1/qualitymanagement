@@ -25,7 +25,7 @@ Public Function setup() As Collection
         "Archiving and publishing the current version can be done in either case." & vbNewLine & vbNewLine & "[Cancel] to keep current date", "initiate.recordConfirm"
     setup.Add "Update version and release date?", "initiate.versionedTitle"
     setup.Add "The document '" & ThisDocument.Variables("title").Value & "' will be saved." & vbNewLine & vbNewLine & _
-        "[Automatic] to update to version V{version}." & Format(Date, "yyyymmdd") & " automatically" & vbNewLine & vbNewLine & _
+        "[Automatic] to update to version V{version}." & Format(Date, "yyyymmdd") & " automatically (V0 is forbidden)" & vbNewLine & vbNewLine & _
         "[Manually] to set version manually" & vbNewLine & vbNewLine & _
         "Archiving and publishing the current version and updating the list of documents in force can be done in either case." & vbNewLine & vbNewLine & "[Cancel] to keep current version", "initiate.versionedConfirm"
     setup.Add Array("Automatic", "Manually"), "initiate.options"
@@ -33,7 +33,7 @@ Public Function setup() As Collection
     setup.Add 200, "initiate.labelHeight" ' false for auto height for userform based on options, integer to set according to content
     ' prompt to set version manually
     setup.Add "Version", "manualVersioning.versionTitle"
-    setup.Add "Enter new version or cancel to keep current", "manualVersioning.versionPrompt"
+    setup.Add "Enter new version or cancel to keep current (0 is forbidden)", "manualVersioning.versionPrompt"
     setup.Add "Release date", "manualVersioning.releasedateTitle"
     setup.Add "Enter new release date or cancel to keep current", "manualVersioning.releasedatePrompt"
     ' prompt to archive current version without code
