@@ -128,15 +128,14 @@ var aboutNotification = {
 	de: '<pre style="float:left; font-family:monospace; margin:0 1em 1em 0; line-height:1.2em;">     m\n    / \\\n   |...|\n   |...|\n   |___|\n   / | \\</pre>Diese Anwendung ist Bestandteil der &quot;bottle light quality management software&quot;. Sie dient als universelle Schnittstelle und kann modular erweitert werden.<br /><br />Das Gesamtsystem aus Anwendung und anhängigen Dokumenten ist unter der GNU GENERAL PUBLIC LICENSE Version 3 verwendbar. Quelltexte und Templates sind erhältlich unter <a href="https://github.com/erroronline1/qualitymanagement/" target="_blank">https://github.com/erroronline1/qualitymanagement/</a><br />&copy; 2020, <a href="http://erroronline.one" target="_blank">error on line 1</a>'
 };
 
-// in case of major updates something might happen to malfunction. this module keeps track of changes and informs every user about new
-// features.
+// in case of major updates something might happen to malfunction. this module keeps track of changes and informs every user about new features.
 
 var updateTracker = {
 	enlist: function () {
 		//	listing all update hints in reverse order
 		var tracker = '';
 		for (var i = this.list.length - 1; i > -1; i--) {
-			tracker += '<span class="highlight">' + this.list[i][0] + ':</span> ' + this.list[i][1] + '<br /><hr /><br />';
+			if (this.list[i][0].length)	tracker += '<span class="highlight">' + this.list[i][0] + ':</span> ' + this.list[i][1] + '<br /><hr /><br />';
 		}
 		return'Update Tracker:<br /><br />' + tracker;
 	},
@@ -147,7 +146,7 @@ var updateTracker = {
 	},
 	alert: function () {
 		//	display latest update hint on startup as long as it is not disabled
-		if (core.fn.setting.get('settingNotificationHide' + this.latestMajorUpdate()) === false) {
+		if (core.fn.setting.get('settingNotificationHide' + this.latestMajorUpdate()) === false && this.list[this.list.length][0].length) {
 			text = this.list[this.latestMajorUpdate()][1] + '<br /><br />' +
 				core.fn.insert.checkbox(core.fn.lang('settingNotificationSelector'), 'settingNotificationHide' + updateTracker.latestMajorUpdate(), (core.fn.setting.get('settingNotificationHide' + this.latestMajorUpdate())), 'onchange="core.fn.setting.switch(\'settingNotificationHide' + this.latestMajorUpdate() + '\')"', core.fn.lang('settingRestartNeccessary')) +
 				'<br /><small>' + core.fn.lang('settingNotificationHint') + '</small>';
@@ -161,5 +160,6 @@ var updateTracker = {
 		['Major', '16.08.2019: Welcome to the assistant. This is the next version. Search less, find more...'],
 		['Major', '06.09.2019: Welcome to the assistant. This is the next version with clear and tidy separation between algorithms and customized data.'],
 		['Major', '19.06.2020: Welcome to the assistant. As from today it is possible to handle permissions to modules or functions.'],
+		//['',''], // adding an empty set disables the popup of the latestMajorUpdate(). get a bit annoying after a while without updates
 	],
 };
