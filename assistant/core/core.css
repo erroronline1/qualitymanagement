@@ -105,6 +105,7 @@ aside {
 	height: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
+	user-select: none;
 }
 
 /* browser switch for ie
@@ -272,6 +273,7 @@ content box-items
 .items.expand .itemresize {
 	box-shadow: -.1em -.1em
 }
+
 
 .inline {
 	display: inline-block;
