@@ -722,9 +722,9 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.fn.setting.clear()` resets the whole application
 
-`core.fn.stringcompression.compress()` returns an uricomponent encoded base64 encoded string to save some bytes for storage of long strings (but long string only, making short strings even longer)
+`core.fn.stringcompression.compress()` returns an lzh-compressed string to save some bytes for storage of long strings
 
-`core.fn.stringcompression.decompress()` reverts the base64 encoded string
+`core.fn.stringcompression.decompress()` reverts the compressed string
 
 `core.fn.drm.table(table)` returns a translated table according to data rights managament excel sheet
 

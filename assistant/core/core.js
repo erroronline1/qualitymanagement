@@ -697,20 +697,75 @@ core.fn = {
 		});
 	},
 	stringcompression: {
-		// this makes sense for expectable long strings that have to be uricomponent-encoded to save up a bit storage space e.g. within cookies converting the string with base64 encoding
+		// this makes sense for expectable long strings that have to be uricomponent-encoded to save up a bit storage space e.g. within cookies
 		// do not use generally for short strings being bloated up (like settings etc) 
-		compress: function (str) {
-			// encodeURIComponent to get percent-encoded UTF-8, convert the percent encodings into raw bytes which can be fed into btoa.
-			return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-				function toSolidBytes(match, p1) {
-					return String.fromCharCode('0x' + p1);
-				}));
+		//LZW Compression/Decompression for Strings
+		//modified from https://gist.github.com/fliptopbox/6990878#file-string-compress-js-L1
+		compress: function (uncompressed) {
+			// Build the dictionary.
+			var dictionary = {},
+				c,
+				wc,
+				w = '',
+				output = '',
+				dictSize = 256;
+			for (var i = 0; i < 256; i++) {
+				dictionary[String.fromCharCode(i)] = i;
+			}
+			for (var i = 0; i < uncompressed.length; i++) {
+				c = uncompressed.charAt(i);
+				wc = w + c;
+				if (dictionary.hasOwnProperty(wc)) {
+					w = wc;
+				} else {
+					output += String.fromCharCode(dictionary[w]);
+					// add wc to the dictionary.
+					dictionary[wc] = dictSize++;
+					w = String(c);
+				}
+			}
+			// add last code for w.
+			if (w !== "") {
+				output += String.fromCharCode(dictionary[w]);
+			}
+			return output;
 		},
-		decompress: function (str) {
-			// from bytestream, to percent-encoding, to original string.
-			return decodeURIComponent(atob(str).split('').map(function (c) {
-				return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-			}).join(''));
+		decompress: function (compressed) {
+			// Build the dictionary.
+			var i, tmp = [],
+				dictionary = [],
+				w,
+				result,
+				k,
+				entry = '',
+				dictSize = 256;
+			for (var i = 0; i < 256; i++) {
+				dictionary[i] = String.fromCharCode(i);
+			}
+			// convert string into Array.
+			for (i = 0; i < compressed.length; i += 1) {
+				tmp.push(compressed[i].charCodeAt(0));
+			}
+			compressed = tmp;
+			w = String.fromCharCode(compressed[0]);
+			result = w;
+			for (var i = 1; i < compressed.length; i++) {
+				k = compressed[i];
+				if (dictionary[k]) {
+					entry = dictionary[k];
+				} else {
+					if (k === dictSize) {
+						entry = w + w.charAt(0);
+					} else {
+						return null;
+					}
+				}
+				result += entry;
+				// Add w+entry[0] to the dictionary.
+				dictionary[dictSize++] = w + entry.charAt(0);
+				w = entry;
+			}
+			return result;
 		}
 	},
 	toggleHeight: function (toggleel) { //toggle height from divs having .items-class
