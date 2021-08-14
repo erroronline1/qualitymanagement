@@ -11,6 +11,19 @@ function value(v) { //handles even unset parameters when in doubt
 	else return v;
 }
 
+function focusWithin(activate){
+	//would be neat if ie supported this selector...
+	if (activate){
+		el('temp').addEventListener('click',function(){el('temp').classList.add('contentWide');})
+		el('output').addEventListener('click',function(){el('temp').classList.remove('contentWide');})
+	}
+	else {
+		el('temp').removeEventListener('click',function(){el('temp').classList.add('contentWide');})
+		el('output').removeEventListener('click',function(){el('temp').classList.remove('contentWide');})
+		el('temp').classList.remove('contentWide')
+	}
+}
+
 var svgClassList = { //classList.add and *.remove not supported for svg in ie, this works as a polyfill
 	add: function (element, classname) {
 		if (element.classList) element.classList.add(classname);
@@ -126,7 +139,7 @@ core.fn = {
 		});
 		document.title = core.fn.lang('title')
 		if (typeof query !== 'undefined') globalSearch.search(query);
-		el('temp').classList.remove('contentWide')
+		focusWithin(false);
 		core.history.write(['core.fn.init(\'' + value(query) + '\')']);
 	},
 	insert: { //handle repetitive design patterns
@@ -266,8 +279,8 @@ core.fn = {
 				if (callback.indexOf('init') > -1 && scriptname in core.var.modules) {
 					core.var.currentScope = scriptname;
 					document.title = core.fn.lang('title') + ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage];
-					if (core.var.modules[core.var.currentScope].wide) el('temp').classList.add('contentWide');
-					else el('temp').classList.remove('contentWide');
+					if (core.var.modules[core.var.currentScope].wide) focusWithin(true);
+					else focusWithin(false);
 				}
 			}
 			//append node(s)
@@ -742,8 +755,8 @@ core.history = { //stores and restores last actions. since last actions can only
 				core.var.currentScope = key.substring(0, key.indexOf('.')) != 'core' ? key.substring(0, key.indexOf('.')) : null;
 				document.title = core.fn.lang('title') + (core.var.currentScope ? ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage] : '');
 				slider.slide(core.var.currentScope);
-				if (core.var.currentScope != null && core.var.modules[core.var.currentScope].wide) el('temp').classList.add('contentWide');
-				else el('temp').classList.remove('contentWide');
+				if (core.var.currentScope != null && core.var.modules[core.var.currentScope].wide) focusWithin(true);
+				else focusWithin(false);
 				core.performance.start(key);
 				eval(key);
 
