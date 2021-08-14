@@ -2,14 +2,14 @@
 // this was my attempt to present knowledge about the functions bit by bit, randomly, at startup.
 // it absolutely makes sense to extent the information for any given module as this extends the faq
 
-const style = ['background: #4c566a', 'padding: 10px 0px', 'line-height: 35px',].join(';');
-const main= [style, 'color: #eceff4'].join(';');
-const heart=[style,	'color: #bf616a'].join(';');
-const link=[style,	'color: #a3be8c'].join(';');
+const style = ['background: #4c566a', 'padding: 10px 0px', 'line-height: 35px', ].join(';');
+const main = [style, 'color: #eceff4'].join(';');
+const heart = [style, 'color: #bf616a'].join(';');
+const link = [style, 'color: #a3be8c'].join(';');
 if (!isIE()) console.log('%c      coded with %c♥️ %cby error on line 1 - %c http://erroronline.one      ', main, heart, main, link);
 else console.log('coded with ♥️ by error on line 1 - http://erroronline.one');
-var developerAlert='Welcome to the console output of the ' + core.fn.lang('title') + '!\n'
-					+ 'Please be aware that displaying the console results in a significant decrease of speed.\n';
+var developerAlert = 'Welcome to the console output of the ' + core.fn.lang('title') + '!\n' +
+	'Please be aware that displaying the console results in a significant decrease of speed.\n';
 console.warn(developerAlert);
 
 var randomTip = {
@@ -20,10 +20,10 @@ var randomTip = {
 			'<br />' + this.list[Math.floor(Math.random() * (this.list.length - 1) + 1)][core.var.selectedLanguage] +
 			'';
 	},
-	enlist: function(){
-		var rtrn='';
-		Object.keys(this.list).forEach(function(key){
-			rtrn += randomTip.list[key][core.var.selectedLanguage]+'<br /><br />';
+	enlist: function () {
+		var rtrn = '';
+		Object.keys(this.list).forEach(function (key) {
+			rtrn += randomTip.list[key][core.var.selectedLanguage] + '<br /><br />';
 		});
 		return rtrn;
 	},
@@ -91,20 +91,20 @@ var randomTip = {
 			de: 'Standardmäßig sind mehrere Sprachen implementiert. Sowohl die Oberfläche als auch Textblöcke können mehrsprachig dargestellt werden.'
 		},
 		{
-			en:'Some browsers are slower than others (looking at you Edge - pre Chromium!). If the global search or modules do not load properly add a little delay in the advanced settings.',
-			de:'Manche Browser sind langsamer als andere (fühle dich angesprochen Edge - vor Chromium!). Wenn die globale Suche oder die Module nicht richtig laden gib ihnen bei den erweiterten Einstellungen etwas mehr Zeit.'
+			en: 'Some browsers are slower than others (looking at you Edge - pre Chromium!). If the global search or modules do not load properly add a little delay in the advanced settings.',
+			de: 'Manche Browser sind langsamer als andere (fühle dich angesprochen Edge - vor Chromium!). Wenn die globale Suche oder die Module nicht richtig laden gib ihnen bei den erweiterten Einstellungen etwas mehr Zeit.'
 		},
 		{
-			en:'Generated text may be pasted to the email occasionally. It depends on the browser. The texts length can be customized to the browsers abilities in the advanced settings.',
-			de:'Generierter Text wird unter Umständen direkt in die eMail eingefügt. Das hängt vom Browser ab. Die Länge des Textes kann bei den erweiterten Einstellungen an den Browser angepasst werden. '
+			en: 'Generated text may be pasted to the email occasionally. It depends on the browser. The texts length can be customized to the browsers abilities in the advanced settings.',
+			de: 'Generierter Text wird unter Umständen direkt in die eMail eingefügt. Das hängt vom Browser ab. Die Länge des Textes kann bei den erweiterten Einstellungen an den Browser angepasst werden. '
 		},
 		{
-			en:'Some functions need operating system specific settings. The used operating system can be set in the advanced settings.',
-			de:'Manche Funktionen benötigen betriebssystem-spezifische Einstellungen. Das genutzte Betriebsystem kann bei den erweiterten Einstellungen gewählt werden.'
+			en: 'Some functions need operating system specific settings. The used operating system can be set in the advanced settings.',
+			de: 'Manche Funktionen benötigen betriebssystem-spezifische Einstellungen. Das genutzte Betriebsystem kann bei den erweiterten Einstellungen gewählt werden.'
 		},
 		{
-			en:'In case you are entitled to a password for some parts of the assistant you can cipher it from the settings menu and let yourself be registered in the data rights management list by mail.',
-			de:'Wenn du die Berechtigung für ein Zugangskennwort für manche Bereiche des Assistenten hast kannst du dieses bei den Einstellungen chiffrieren und per eMail in die Berechtigungsliste eintragen lassen.'
+			en: 'In case you are entitled to a password for some parts of the assistant you can cipher it from the settings menu and let yourself be registered in the data rights management list by mail.',
+			de: 'Wenn du die Berechtigung für ein Zugangskennwort für manche Bereiche des Assistenten hast kannst du dieses bei den Einstellungen chiffrieren und per eMail in die Berechtigungsliste eintragen lassen.'
 		},
 		//	module specific tips
 		{
@@ -135,9 +135,9 @@ var updateTracker = {
 		//	listing all update hints in reverse order
 		var tracker = '';
 		for (var i = this.list.length - 1; i > -1; i--) {
-			if (this.list[i][0].length)	tracker += '<span class="highlight">' + this.list[i][0] + ':</span> ' + this.list[i][1] + '<br /><hr /><br />';
+			if (this.list[i][0].length) tracker += '<span class="highlight">' + this.list[i][0] + ':</span> ' + this.list[i][1] + '<br /><hr /><br />';
 		}
-		return'Update Tracker:<br /><br />' + tracker;
+		return 'Update Tracker:<br /><br />' + tracker;
 	},
 	latestMajorUpdate: function () {
 		for (var i = updateTracker.list.length - 1; i > -1; i--) {
@@ -146,7 +146,7 @@ var updateTracker = {
 	},
 	alert: function () {
 		//	display latest update hint on startup as long as it is not disabled
-		if (core.fn.setting.get('settingNotificationHide' + this.latestMajorUpdate()) === false && this.list[this.list.length][0].length) {
+		if (core.fn.setting.get('settingNotificationHide' + this.latestMajorUpdate()) === false && this.list[this.list.length - 1][0].length) {
 			text = this.list[this.latestMajorUpdate()][1] + '<br /><br />' +
 				core.fn.insert.checkbox(core.fn.lang('settingNotificationSelector'), 'settingNotificationHide' + updateTracker.latestMajorUpdate(), (core.fn.setting.get('settingNotificationHide' + this.latestMajorUpdate())), 'onchange="core.fn.setting.switch(\'settingNotificationHide' + this.latestMajorUpdate() + '\')"', core.fn.lang('settingRestartNeccessary')) +
 				'<br /><small>' + core.fn.lang('settingNotificationHint') + '</small>';
