@@ -728,9 +728,10 @@ core.fn = {
 			if (w !== "") {
 				output += String.fromCharCode(dictionary[w]);
 			}
-			return output;
+			return encodeURIComponent(output);
 		},
 		decompress: function (compressed) {
+			compressed=decodeURIComponent(compressed);
 			// Build the dictionary.
 			var i, tmp = [],
 				dictionary = [],
