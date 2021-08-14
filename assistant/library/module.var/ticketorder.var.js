@@ -9,17 +9,17 @@ ticketorder.var = {
 			en: 'ticket, order record or item description',
 			de: 'Ticket, Belegnummer oder Artikelbeschreibung'
 		},
-		filterNofilter:{
-			en:'no filter',
-			de:'ungefiltert',
+		filterNofilter: {
+			en: 'no filter',
+			de: 'ungefiltert',
 		},
-		filterClosed:{
-			en:'closed',
-			de:'abgeschlossen',
+		filterClosed: {
+			en: 'closed',
+			de: 'abgeschlossen',
 		},
-		filterOpen:{
-			en:'open',
-			de:'offen',
+		filterOpen: {
+			en: 'open',
+			de: 'offen',
 		},
 		queryMailSubject: {
 			en: 'Inquiry regarding order record ',
@@ -33,31 +33,31 @@ ticketorder.var = {
 			en: 'date ticket',
 			de: 'Ticket datieren'
 		},
-		buttonVerifyToken:{
-			en:'verify code',
-			de:'Code prüfen',
+		buttonVerifyToken: {
+			en: 'verify code',
+			de: 'Code prüfen',
 		},
-		captionCheckTicket:{
-			en:'ticket',
-			de:'Ticket',
+		captionCheckTicket: {
+			en: 'ticket',
+			de: 'Ticket',
 		},
-		captionCheckCode:{
-			en:'code',
-			de:'Code',
+		captionCheckCode: {
+			en: 'code',
+			de: 'Code',
 		},
-		successCheckCode:{
-			en:'This order was confirmed by ',
-			de:'Diese Bestellung wurde freigegeben von ',
+		successCheckCode: {
+			en: 'This order was confirmed by ',
+			de: 'Diese Bestellung wurde freigegeben von ',
 		},
-		failureCheckCode:{
-			en:'The code is invalid! Please contact the ordering person.',
-			de:'Der Code ist ungültig! Bitte kontaktiere den Besteller.',
+		failureCheckCode: {
+			en: 'The code is invalid! Please contact the ordering person.',
+			de: 'Der Code ist ungültig! Bitte kontaktiere den Besteller.',
 		},
-		buttonTranslate:{
-			en:'date ticket',
-			de:'Ticket datieren',
+		buttonTranslate: {
+			en: 'date ticket',
+			de: 'Ticket datieren',
 		},
-		newOrder:{
+		newOrder: {
 			en: 'New Order',
 			de: 'Neue Bestellung'
 		},
@@ -133,39 +133,43 @@ ticketorder.var = {
 			en: 'approve order list',
 			de: 'Bestellliste freigeben'
 		},
-		orderConfirmed:{
-			en: function(args){return 'Order with ticket ' + args[0] + ' approved by code ' + args[1];},
-			de: function(args){return 'Bestellung mit dem Ticket ' + args[0] + ' freigegeben mit Code ' + args[1];}
+		orderConfirmed: {
+			en: function (args) {
+				return 'Order with ticket ' + args[0] + ' approved by code ' + args[1];
+			},
+			de: function (args) {
+				return 'Bestellung mit dem Ticket ' + args[0] + ' freigegeben mit Code ' + args[1];
+			}
 		},
 		orderMailSubject: {
 			en: 'Order by ',
 			de: 'Bestellung von ',
 		},
-		ticketTranslate:{
+		ticketTranslate: {
 			en: 'This ticket was most probably generated on\n',
 			de: 'Dieses Ticket wurde wahrscheinlich generiert am\n',
 		},
-		ticketTranslateError:{
+		ticketTranslateError: {
 			en: 'This ticket can not be reverse translated.',
 			de: 'Dieses Ticket kann nicht zurückübersetzt werden.',
 		},
-		deleteCart:{
+		deleteCart: {
 			en: 'delete shopping cart',
 			de: 'Warenkorb löschen',
 		},
-		deleteCartDeleted:{
+		deleteCartDeleted: {
 			en: 'shopping cart deleted, reload module',
 			de: 'Warenkorb gelöscht, Modul neu laden',
 		},
-		deleteCurrentOrder:{
+		deleteCurrentOrder: {
 			en: 'delete current order list',
 			de: 'aktuelle Bestelliste löschen',
 		},
-		deleteCurrentOrderDeleted:{
+		deleteCurrentOrderDeleted: {
 			en: 'current order list deleted, reload module',
 			de: 'aktuelle Bestelliste gelöscht, Modul neu laden',
 		},
-		orderNumberWildcard:{
+		orderNumberWildcard: {
 			en: 'One or more order numbers contains wildcards. Please specify model, size or type.',
 			de: 'Eine oder mehrere Bestellnummern enhalten Platzhalter. Bitte Modell, Größe oder Typ konkretisieren.',
 		},
@@ -177,27 +181,27 @@ ticketorder.var = {
 	disableOutputSelect: true,
 	inventoryControl: 'inventory.control@email.adr',
 	orderFields: {
-		// [description, displayed width]
-		en:[['Ticket', '10em'],
-			['Distributor', '15em'],
-			['Order number', '15em'],
-			['Item description', '20em'],
-			['Quantity', '5em'],
-			['Unit', '5em'],
+		// [description, displayed width, disabled:true, false, 2 for conditional]
+		en: [
+			['Id', '10em', true], // stocklist item id, mandatory, hidden
+			['Distributor', '15em', 2],
+			['Order number', '15em', 2],
+			['Item description', '20em', 2],
+			['Quantity', '5em', false],
+			['Unit', '5em', 2],
 		],
-		de:[['Ticket', '10em'],
-			['Lieferant', '15em'],
-			['Artikelnummer', '15em'],
-			['Artikelbezeichnung, Ausführung', '20em'],
-			['Anzahl', '5em'],
-			['Einheit', '5em'],
+		de: [
+			['Id', '10em', true], // stocklist item id, mandatory, hidden
+			['Lieferant', '15em', 2],
+			['Artikelnummer', '15em', 2],
+			['Artikelbezeichnung, Ausführung', '20em', 2],
+			['Anzahl', '5em', false],
+			['Einheit', '5em', 2],
 		],
 	},
 	orderFieldsToCopy: {
-		en:['Distributor',
-		],
-		de:['Lieferant',
-		],
+		en: ['Distributor', ],
+		de: ['Lieferant', ],
 	},
 	orderDept: [
 		'Common',
@@ -212,7 +216,7 @@ ticketorder.var = {
 		'Workshop B',
 	],
 	apiTranslate: {
-		fieldCorrelation:{ // index of order fields in correlation to fiels in stock list
+		fieldCorrelation: { // index of order fields in correlation to fields in stock list
 			1: 1,
 			2: 3,
 			3: 2,
@@ -220,7 +224,7 @@ ticketorder.var = {
 		},
 		orderNumberWildcard: '(X)', // if this (string) is part of the item number, else false
 	},
-	filter: function(){ //filters according to module.data/ticketorder.js
+	filter: function () { //filters according to module.data/ticketorder.js
 		//id:[select value, select text, filter for smartsearch]
 		return {
 			nofilter: ['nofilter', core.fn.lang('filterNofilter', 'ticketorder'), 'true'],

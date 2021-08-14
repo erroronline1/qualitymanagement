@@ -31,7 +31,7 @@ ticketorder.api = {
 			//	globalSearch.contribute('ticketorder', display);
 			//});
 			if (found.length) {
-				display = '<a href="javascript:core.fn.loadScript(\'modules/ticketorder.js\',\'ticketorder.fn.init(\\\'' + search.replace(/"/g,'&quot;') + '\\\')\')">' + found.length + core.fn.lang('apiItemsFound', 'ticketorder') + '</a>';
+				display = '<a href="javascript:core.fn.loadScript(\'modules/ticketorder.js\',\'ticketorder.fn.init(\\\'' + search.replace(/"/g, '&quot;') + '\\\')\')">' + found.length + core.fn.lang('apiItemsFound', 'ticketorder') + '</a>';
 				//add value and relevance
 				globalSearch.contribute('ticketorder', [display, 1]);
 			}
@@ -43,12 +43,11 @@ ticketorder.api = {
 		if (cart) {
 			cart = cart.split(',');
 			cart.pop();
-			var ticket = ticketorder.var.newTicket;
 			cart.forEach(function (index) {
-				var lineindex = ticketorder.fn.addrow();
+				var lineindex = ticketorder.fn.addrow(true);
 				ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, fieldindex) {
 					var value;
-					if (fieldindex < 1) value = ticket;
+					if (fieldindex < 1) value = index;
 					else if (fieldindex in ticketorder.var.apiTranslate.fieldCorrelation) value = stocklist_data.content[index][ticketorder.var.apiTranslate.fieldCorrelation[fieldindex]];
 					else value = '';
 					el(field[0].replace(/\W/g, '') + lineindex).value = value;
@@ -79,7 +78,7 @@ ticketorder.fn = {
 	},
 	search: function (query) {
 		query = query || el('ticketorderquery').value;
-		var filter = el('ticketorderfilter').selectedIndex || core.fn.setting.get('ticketorderfilter')
+		//		var filter = el('ticketorderfilter').selectedIndex || core.fn.setting.get('ticketorderfilter')
 		core.performance.start('ticketorder.fn.input(\'' + value(query) + '\')'); //possible duplicate
 		var list = '';
 		if (typeof ticketorder_data !== 'undefined') {
@@ -138,7 +137,7 @@ ticketorder.fn = {
 		ordererCostUnitList.unshift(['', core.fn.lang('ordererCostUnit', 'ticketorder')]);
 		if (core.fn.setting.get('moduleExchangeTicketorder')) form += '<input type="button" id="deleteCart" style="float:right; margin:0 .25em" value="' + core.fn.lang('deleteCart', 'ticketorder') + '" onclick="core.fn.setting.unset(\'moduleExchangeTicketorder\'); this.value=\'' + core.fn.lang('deleteCartDeleted', 'ticketorder') + '\'; this.disabled=true; core.fn.growlNotif(\'' + core.fn.lang('deleteCartDeleted', 'ticketorder') + '\');" />';
 		if (core.fn.setting.get('ticketorderAwaitingOrders')) form += '<input type="button" id="deletecurrentOrder" style="float:right; margin:0 .25em" value="' + core.fn.lang('deleteCurrentOrder', 'ticketorder') + '" onclick="ticketorder.fn.currentorder.clear(); this.value=\'' + core.fn.lang('deleteCurrentOrderDeleted', 'ticketorder') + '\'; this.disabled=true;" />';
-		form += '<form action="javascript:ticketorder.fn.exportform()">';
+		form += '<form action="javascript:ticketorder.fn.currentorder.add()">';
 		form += '<br /><input type="text" id="orderer" required placeholder="' + core.fn.lang('orderer', 'ticketorder') + '" title="' + core.fn.lang('orderer', 'ticketorder') + '" /> ';
 		form += core.fn.insert.select(ordererDeptList, 'ordererDept', 'ordererDept', core.fn.setting.get('ticketorderDept'), 'required title="' + core.fn.lang('ordererDept', 'ticketorder') + '"');
 		form += core.fn.insert.select(ordererCostUnitList, 'ordererCostUnit', 'ordererCostUnit', core.fn.setting.get('ticketorderCostUnit'), 'required title="' + core.fn.lang('ordererCostUnit', 'ticketorder') + '"');
@@ -154,28 +153,30 @@ ticketorder.fn = {
 		form += '<br style="clear:both" /><input type="text" id="orderReferralTicket" placeholder="' + core.fn.lang('orderReferralTicket', 'ticketorder') + '" title="' + core.fn.lang('orderReferralTicket', 'ticketorder') + '" /> ';
 		form += '<br style="clear:both" /><input type="date" id="orderNeededBy" placeholder="' + core.fn.lang('orderNeededBy', 'ticketorder') + '" title="' + core.fn.lang('orderNeededBy', 'ticketorder') + '" /> ';
 		form += '<br style="clear:both" /><table id="ordertable"><tr>';
-		ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field) {
-			form += '<td>' + field[0] + '</td>';
+		ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, index) {
+			form += '<td';
+			if (index < 1) form += ' style="display:none"'; // hide id
+			form += '>' + field[0] + '</td>';
 		});
 		form += '</tr></table>';
 		form += '<input type="button" value="' + core.fn.lang('orderAdd', 'ticketorder') + '" onclick="ticketorder.fn.addrow()" />' +
 			'<br /><br /><textarea id="orderNote" rows="5" style="width:90%" placeholder="' + core.fn.lang('orderNote', 'ticketorder') + '"></textarea>' +
-			'<br /><br /><input type="submit" id="submitOrder" disabled value="' + core.fn.lang('orderSubmit', 'ticketorder') + '" />' +
-			'<input type="button" id="confirmOrder" style="float:right" value="' + core.fn.lang('orderConfirm', 'ticketorder') + '" onclick=\'ticketorder.fn.drm.confirmform()\' />' +
-			'<br /><br /><a id="mailto" href="javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\'' + (core.fn.setting.get('ticketorderAwaitingOrders') ? ', \'' + core.fn.lang('orderMailSubject', 'ticketorder') + ordererDeptList[core.fn.setting.get('ticketorderDept')][0] + '\'' : '') +')">' + core.fn.insert.icon('email') + core.fn.lang('openMailApp', 'ticketorder') + '</a><br /><br />';
-			return form;
+			'<br /><br /><input type="submit" id="submitOrder" disabled value="' + core.fn.lang('orderSubmit', 'ticketorder') + '" />';
+		return form;
 	},
-	addrow: function () {
+	addrow: function (conditionalDisabled) {
 		var table = el('ordertable'),
 			tr = document.createElement('tr');
 		ticketorder.var.orderrows++;
 		ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, index) {
 			var td = tr.appendChild(document.createElement('td'));
 			td.style.cssText = 'width:' + field[1];
+			if (index < 1) td.style.cssText += ';display:none'; // hide id
 			var cellContent = '<input style="width:100%;" type="text" id="' + field[0].replace(/\W/g, '') + ticketorder.var.orderrows + '" required placeholder="' + field[0] + '" ';
-			//prefill with ticket oder copy from former row
-			if (index == 0) cellContent += 'value="' + ticketorder.var.newTicket + '" disabled'
-			else if (ticketorder.var.orderrows > 0 && ticketorder.var.orderFieldsToCopy[core.var.selectedLanguage].indexOf(field[0]) > -1 && el(field[0].replace(/\W/g, '') + (ticketorder.var.orderrows - 1))) cellContent += 'value="' + el(field[0].replace(/\W/g, '') + (ticketorder.var.orderrows - 1)).value + '"';
+			//prefill with ticket or copy from former row, disable conditional
+			var disabledPreset = ticketorder.var.orderFields[core.var.selectedLanguage][index][2];
+			if (disabledPreset === true || (disabledPreset === 2 && conditionalDisabled)) cellContent += ' disabled'
+			if (ticketorder.var.orderrows > 0 && ticketorder.var.orderFieldsToCopy[core.var.selectedLanguage].indexOf(field[0]) > -1 && el(field[0].replace(/\W/g, '') + (ticketorder.var.orderrows - 1))) cellContent += 'value="' + el(field[0].replace(/\W/g, '') + (ticketorder.var.orderrows - 1)).value + '"';
 			cellContent += ' />';
 			td.innerHTML = cellContent
 		});
@@ -194,58 +195,47 @@ ticketorder.fn = {
 			}
 		}
 	},
-	exportform: function () {
-		// caution: order/table layout dependent of excel-file !!
-		var output = '',
-			wildcard = false,
-			curval, mailsubject;
-		mailsubject = core.fn.lang('orderMailSubject', 'ticketorder') + el('ordererDept').value + ' | ' + el('orderer').value;
-
-		output = mailsubject + '<br /><br />';
-		
-		if (el('notcommissioned').checked) output += '<i>' + core.fn.lang('notcommissioned', 'ticketorder') + '</i><br /><br />';
-		if (el('commissioned').checked) output += '<i>' + core.fn.lang('commissioned', 'ticketorder') + '</i><br /><br />';
-		if (el('retour').checked) output += '<i>' + core.fn.lang('retour', 'ticketorder') + '</i><br /><br />';
-		if (el('service').checked) output += '<i>' + core.fn.lang('service', 'ticketorder') + '</i><br /><br />';
-		
-		['orderRcptName', 'orderRcptDob', 'orderRcptFlag', 'orderer', 'ordererDept', 'ordererCostUnit', 'ordererContact', 'orderReferralTicket', 'orderNeededBy'].forEach(function (field) {
-			if (el(field).value) output += core.fn.lang(field, 'ticketorder') + ': ' + el(field).value + '<br />';
-		});
-
-		output += '<br /><table border=1 cellpadding=5 cellspacing=0><tr>';
-		ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field) {
-			output += '<th>' + field[0] + '</th>';
-		});
-		output += '</tr>';
-		for (var i = 0; i < ticketorder.var.orderrows + 1; i++) {
-			if (el(ticketorder.var.orderFields[core.var.selectedLanguage][0][0].replace(/\W/g, '') + i)) {
-				output += '<tr>';
-				ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field) {
-					curval = value(el(field[0].replace(/\W/g, '') + i).value);
-					output += '<td>' + curval + '</td>';
-					if (ticketorder.var.apiTranslate.orderNumberWildcard && curval.indexOf(ticketorder.var.apiTranslate.orderNumberWildcard) > -1) wildcard = true;
-				});
-				output += '</tr>';
+	currentorder: {
+		add: function () {
+			//prepare order object, add properties according to form fields and language chunks
+			var orderobj = {}
+			orderobj.subject = core.fn.lang('orderMailSubject', 'ticketorder') + el('ordererDept').value + ' | ' + el('orderer').value;
+			orderobj.captionCheckTicket = ticketorder.var.newTicket;
+			['notcommissioned', 'commissioned', 'retour', 'service'].forEach(function (field) {
+				if (el(field).checked) orderobj.type = core.fn.lang(field, 'ticketorder');
+			});
+			['orderRcptName', 'orderRcptDob', 'orderRcptFlag', 'orderer', 'ordererDept', 'ordererCostUnit', 'ordererContact', 'orderReferralTicket', 'orderNeededBy'].forEach(function (field) {
+				if (el(field).value) orderobj[field] = el(field).value;
+			});
+			if (el('orderNote').value) orderobj.orderNote = el('orderNote').value;
+			orderobj.items = [];
+			var wildcard = false,
+				curval;
+			// iterate through order form for item descriptions
+			for (var i = 0; i < ticketorder.var.orderrows + 1; i++) {
+				var items = [];
+				if (el(ticketorder.var.orderFields[core.var.selectedLanguage][0][0].replace(/\W/g, '') + i)) {
+					for (var index = 0; index < ticketorder.var.orderFields[core.var.selectedLanguage].length; index++) {
+						var field = ticketorder.var.orderFields[core.var.selectedLanguage][index]
+						var id = value(el(ticketorder.var.orderFields[core.var.selectedLanguage][0][0].replace(/\W/g, '') + i).value);
+						curval = value(el(field[0].replace(/\W/g, '') + i).value);
+						if (!id || (id && index === 0) || (id && !field[2])) items.push(curval); // if item id exists skip disabled and conditional formfields to limit data usage
+						if (ticketorder.var.apiTranslate.orderNumberWildcard && curval.indexOf(ticketorder.var.apiTranslate.orderNumberWildcard) > -1) wildcard = true;
+					}
+				}
+				if (items.length) orderobj.items.push(items);
 			}
-		}
-		if (wildcard) {
-			core.fn.popup(core.fn.lang('orderNumberWildcard', 'ticketorder'));
-			return;
-		}
-		output += '</table>';
-		core.fn.setting.set('ticketorderDept', el('ordererDept').selectedIndex);
-		core.fn.setting.set('ticketorderCostUnit', el('ordererCostUnit').selectedIndex);
-		core.fn.setting.set('ticketorderContact', el('ordererContact').value);
-
-		if (el('orderNote').value) output += '<br />' + core.fn.lang('orderNote', 'ticketorder') + ':<br/>' + el('orderNote').value;
-		// no output here, because tables will not be exported formatted, has to be copy and paste to be passed properly
-		el('mailto').href = 'javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\',\'' + mailsubject + '\')';
-		ticketorder.fn.currentorder.add(output);
-	},
-	currentorder:{ //this is a workaround for cookies (needed by ie) can not be larger than 4kb, so i have to split up the order list to individual orders
-		add: function(addition){
+			if (wildcard) {
+				core.fn.popup(core.fn.lang('orderNumberWildcard', 'ticketorder'));
+				return;
+			}
+			core.fn.setting.set('ticketorderDept', el('ordererDept').selectedIndex);
+			core.fn.setting.set('ticketorderCostUnit', el('ordererCostUnit').selectedIndex);
+			core.fn.setting.set('ticketorderContact', el('ordererContact').value);
+			//this is a workaround for cookies (needed by ie) can not be larger than 4kb, so i have to split up the order list to individual orders
 			var ordernum = core.fn.setting.get('ticketorderAwaitingOrders') || 0;
-			if (core.fn.setting.set('ticketorderAwaitingOrder' + ++ordernum, core.fn.stringcompression.compress(addition), core.fn.lang('orderStorageError', 'ticketorder'))){
+			// storing objects in base 64 needs more space but is safer in regards of special chars
+			if (core.fn.setting.set('ticketorderAwaitingOrder' + ++ordernum, core.fn.stringcompression.compress(JSON.stringify(orderobj)), core.fn.lang('orderStorageError', 'ticketorder'))) {
 				core.fn.setting.set('ticketorderAwaitingOrders', ordernum);
 				core.fn.stdout('output', ticketorder.fn.currentorder.get());
 				el('output').scrollTop = el('output').scrollHeight;
@@ -253,59 +243,108 @@ ticketorder.fn = {
 				if (el('deleteCart')) el('deleteCart').style.display = 'none';
 			}
 		},
-		get: function(){
-			var ordernum = core.fn.setting.get('ticketorderAwaitingOrders'), orders='', i;
-			if (ordernum){
-				for (i = 0; i < ordernum; i++){
-					orders += (core.fn.stringcompression.decompress(core.fn.setting.get('ticketorderAwaitingOrder' + (i + 1))) || '') + '<br /><br />';
+		get: function () {
+			var ordernum = core.fn.setting.get('ticketorderAwaitingOrders'),
+				orders = '',
+				output = '';
+			if (ordernum) {
+				for (var o = 0; o < ordernum; o++) {
+					// storing objects in base 64 needs more space but is safer in regards of special chars
+					orders = (core.fn.stringcompression.decompress(core.fn.setting.get('ticketorderAwaitingOrder' + (o + 1))) || '');
+					if (orders.length) {
+						// caution: order/table layout dependent of excel-file !!
+						var orderobj = JSON.parse(orders);
+						output += orderobj.subject + '<br /><br />';
+						output += '<i>' + orderobj.type + '</i><br /><br />'
+						Object.keys(orderobj).forEach(function (key) {
+							if (['subject', 'type', 'items'].indexOf(key) === -1) {
+								output += core.fn.lang(key, 'ticketorder') + ": " + orderobj[key] + '<br />';
+							}
+						});
+						output += '<br /><table border=1 cellpadding=5 cellspacing=0><tr>';
+						ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, index) {
+							output += '<th';
+							if (index < 1) output += ' style="display:none"'; // hide id
+							output += '>' + field[0] + '</th>';
+						});
+						output += '</tr>';
+						for (var i = 0; i < orderobj.items.length; i++) {
+							output += '<tr>';
+							var pos = 1;
+							if (orderobj.items[i].length < ticketorder.var.orderFields[core.var.selectedLanguage].length) {
+								ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, fieldindex) {
+									var value;
+									if (fieldindex in ticketorder.var.apiTranslate.fieldCorrelation) value = stocklist_data.content[orderobj.items[i][0]][ticketorder.var.apiTranslate.fieldCorrelation[fieldindex]];
+									else if (fieldindex > 0) {
+										value = orderobj.items[i][pos];
+										pos++
+									}
+									output += '<td';
+									if (fieldindex < 1) output += ' style="display:none"'; // hide id
+									output += '>' + value + '</td>';
+								});
+							} else {
+								for (var index = 0; index < orderobj.items[i].length; index++) {
+									output += '<td';
+									if (index < 1) output += ' style="display:none"'; // hide id
+									output += '>' + orderobj.items[i][index] + '</td>';
+								}
+							}
+							output += '</tr>';
+						}
+						output += '</table><br /><br />';
+					}
 				}
-			}		
-			return orders;
+				output += '<input type="button" id="confirmOrder" value="' + core.fn.lang('orderConfirm', 'ticketorder') + '" onclick=\'ticketorder.fn.drm.confirmform()\' />' +
+					'<br /><br /><a id="mailto" href="javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\',\'' + core.fn.lang('orderMailSubject', 'ticketorder') + el('ordererDept').value + '\')">' +
+					core.fn.insert.icon('email') + core.fn.lang('openMailApp', 'ticketorder') + '</a><br /><br />'
+			}
+			return output;
 		},
-		clear: function(){
-			var ordernum = core.fn.setting.get('ticketorderAwaitingOrders'), i;
-			if (ordernum){
-				for (i = 0; i < ordernum; i++){
+		clear: function () {
+			var ordernum = core.fn.setting.get('ticketorderAwaitingOrders'),
+				i;
+			if (ordernum) {
+				for (i = 0; i < ordernum; i++) {
 					core.fn.setting.unset('ticketorderAwaitingOrder' + (i + 1));
 				}
-			}		
+			}
 			core.fn.setting.unset('ticketorderAwaitingOrders');
 			core.fn.growlNotif(core.fn.lang('deleteCurrentOrderDeleted', 'ticketorder'));
 		}
 	},
-	drm:{
-		confirmform: function(){
-		if (!core.fn.setting.get('ticketorderAwaitingOrders')) return;
-			var form = '<form onsubmit="ticketorder.fn.drm.check(); return false;">' +core.fn.lang('settingKeyName') + '<br /><input type="text" id="orderconfirmname" autofocus /><br /><br />' +
+	drm: {
+		confirmform: function () {
+			if (!core.fn.setting.get('ticketorderAwaitingOrders')) return;
+			var form = '<form onsubmit="ticketorder.fn.drm.check(); return false;">' + core.fn.lang('settingKeyName') + '<br /><input type="text" id="orderconfirmname" autofocus /><br /><br />' +
 				core.fn.lang('settingKeyPassword0').split(',')[0] + '<br /><input type="password" id="orderconfirmpassword0" /><br /><br />' +
 				'<br /><input type="submit" value="' + core.fn.lang('drmConfirmationSubmit') + '" onclick="ticketorder.fn.drm.check()" />' +
 				'<br /><br /><span id="keyresult"></span></form>';
 			core.fn.popup(form);
 		},
-		check: function(){
-			if (el('orderconfirmname').value && el('orderconfirmpassword0').value && core.fn.drm.searchHash(core.fn.drm.table('orderApproval'), core.fn.drm.createHash(el('orderconfirmname').value + el('orderconfirmpassword0').value))){
+		check: function () {
+			if (el('orderconfirmname').value && el('orderconfirmpassword0').value && core.fn.drm.searchHash(core.fn.drm.table('orderApproval'), core.fn.drm.createHash(el('orderconfirmname').value + el('orderconfirmpassword0').value))) {
 				var token = core.fn.drm.encryptToken(ticketorder.var.newTicket, el('orderconfirmname').value, el('orderconfirmpassword0').value) || 'unauthorized';
-				var confirmedOutput = '<i>' + 
-					core.fn.lang('orderConfirmed', 'ticketorder', [ticketorder.var.newTicket, token]) + 
+				var confirmedOutput = '<i>' +
+					core.fn.lang('orderConfirmed', 'ticketorder', [ticketorder.var.newTicket, token]) +
 					'</i><br /><br />' + ticketorder.fn.currentorder.get();
 				core.fn.stdout('output', confirmedOutput);
 				el('output').scrollTop = 0;
 				ticketorder.var.disableOutputSelect = false;
 				core.fn.popup();
-			}
-			else {
+			} else {
 				el('keyresult').innerHTML = core.fn.lang('drmConfirmationError');
 			}
 		},
-		verifytoken: function(){
+		verifytoken: function () {
 			var form = core.fn.lang('captionCheckTicket', 'ticketorder') + '<br /><input type="text" id="checkTicket" autofocus /><br /><br />' +
 				core.fn.lang('captionCheckCode', 'ticketorder') + '<br /><input type="text" id="checkCode" /><br /><br />' +
 				'<br /><input type="button" value="' + core.fn.lang('buttonVerifyToken', 'ticketorder') + '" onclick="' +
-					'var decrypted=core.fn.drm.decryptToken(core.fn.drm.table(\'orderApproval\'), el(\'checkTicket\').value.trim(), el(\'checkCode\').value.trim());' +
-					'if (!decrypted)' +
-						'el(\'keycheckresult\').innerHTML=\'' + core.fn.lang('failureCheckCode', 'ticketorder') + '\';' +
-					'else el(\'keycheckresult\').innerHTML=\'' +
-						core.fn.lang('successCheckCode', 'ticketorder') + '\' + decrypted;' +
+				'var decrypted=core.fn.drm.decryptToken(core.fn.drm.table(\'orderApproval\'), el(\'checkTicket\').value.trim(), el(\'checkCode\').value.trim());' +
+				'if (!decrypted)' +
+				'el(\'keycheckresult\').innerHTML=\'' + core.fn.lang('failureCheckCode', 'ticketorder') + '\';' +
+				'else el(\'keycheckresult\').innerHTML=\'' +
+				core.fn.lang('successCheckCode', 'ticketorder') + '\' + decrypted;' +
 				'" />' +
 				'<br /><br /><span id="keycheckresult"></span>';
 			core.fn.popup(form);
@@ -314,7 +353,7 @@ ticketorder.fn = {
 	start: function (query) {
 		if (typeof ticketorder_data !== 'undefined') {
 			var input = '<form id="search" action="javascript:ticketorder.fn.search();">' +
-				'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g,'&quot;') + '" placeholder="' + core.fn.lang('formErpInputPlaceholder', 'ticketorder') + '" id="ticketorderquery" class="search" />' +
+				'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g, '&quot;') + '" placeholder="' + core.fn.lang('formErpInputPlaceholder', 'ticketorder') + '" id="ticketorderquery" class="search" />' +
 				'<span onclick="ticketorder.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
 				core.fn.insert.select(ticketorder.fn.translate.returnselect(), 'ticketorderfilter', 'ticketorderfilter', (core.fn.setting.get('ticketorderfilter') || 'nofilter'), 'onchange="core.fn.setting.set(\'ticketorderfilter\',el(\'ticketorderfilter\').options[el(\'ticketorderfilter\').selectedIndex].value); ticketorder.fn.search();"') +
 				core.fn.insert.icon('translate', 'bigger', false, 'title="' + core.fn.lang('buttonTranslate', 'ticketorder') + '" onclick="ticketorder.fn.translate.ticketDate(el(\'ticketorderquery\').value);"') +
