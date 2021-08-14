@@ -162,6 +162,11 @@ ticketorder.fn = {
 		form += '<input type="button" value="' + core.fn.lang('orderAdd', 'ticketorder') + '" onclick="ticketorder.fn.addrow()" />' +
 			'<br /><br /><textarea id="orderNote" rows="5" style="width:90%" placeholder="' + core.fn.lang('orderNote', 'ticketorder') + '"></textarea>' +
 			'<br /><br /><input type="submit" id="submitOrder" disabled value="' + core.fn.lang('orderSubmit', 'ticketorder') + '" />';
+
+		form += '<hr /><input type="button" id="confirmOrder" value="' + core.fn.lang('orderConfirm', 'ticketorder') + '" onclick=\'ticketorder.fn.drm.confirmform()\' />' +
+			'<br /><br /><a id="mailto" href="javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\',\'\')">' +
+			core.fn.insert.icon('email') + core.fn.lang('openMailApp', 'ticketorder') + '</a><br /><br />';
+
 		return form;
 	},
 	addrow: function (conditionalDisabled) {
@@ -295,9 +300,6 @@ ticketorder.fn = {
 						output += '</table><br /><br />';
 					}
 				}
-				output += '<input type="button" id="confirmOrder" value="' + core.fn.lang('orderConfirm', 'ticketorder') + '" onclick=\'ticketorder.fn.drm.confirmform()\' />' +
-					'<br /><br /><a id="mailto" href="javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\',\'' + core.fn.lang('orderMailSubject', 'ticketorder') + el('ordererDept').value + '\')">' +
-					core.fn.insert.icon('email') + core.fn.lang('openMailApp', 'ticketorder') + '</a><br /><br />'
 			}
 			return output;
 		},
@@ -329,6 +331,7 @@ ticketorder.fn = {
 					core.fn.lang('orderConfirmed', 'ticketorder', [ticketorder.var.newTicket, token]) +
 					'</i><br /><br />' + ticketorder.fn.currentorder.get();
 				core.fn.stdout('output', confirmedOutput);
+				el('mailto').href = 'javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\',\'' + core.fn.lang('orderMailSubject', 'ticketorder') + el('ordererDept').value + ' | ' + el('orderer').value + '\')';
 				el('output').scrollTop = 0;
 				ticketorder.var.disableOutputSelect = false;
 				core.fn.popup();
