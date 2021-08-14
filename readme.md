@@ -295,7 +295,7 @@ published docm-files import a macro-module handling the checkbox-hiding-text-top
 [back to top](#table-of-contents)
 
 ## internal documents in force.xlsm
-tl;dr: docm-files as working draft will register and update their version in this table. assign checkpoints to have a regulatory context. this list serves as the interface for the documents module for the assistant too. export will be executed on save. the list of norm-chapters should contain all relevant considerable chapters. on save documents will be assigned back to the list to clarify if every chapter is met. assign documents to regulary common used bundles. this also serves as the interface for the assistants bundles module.
+tl;dr: docm-files as working draft will register and update their version in this table. assign checkpoints to have a regulatory context. this list serves as the interface for the [documents module for the assistant](#document-lookup) too. export will be executed on save. the list of norm-chapters should contain all relevant considerable chapters. on save documents will be assigned back to the list to clarify if every chapter is met. assign documents to regulary common used bundles. this also serves as the interface for [the assistants bundles module](#predefined-document-bundles).
 
 ![documents in force](assets/xlsm_documentsinforce.png)
 this file contains all documents in force, a link to the documents and the possiblity to assign their special task in fullfilling regulatory requirements. the docm-documents will register themselves in the first sheet on their individual save. you can assign alternate search terms and checkpoints to the document. the second sheet contains these checkpoints and all the assigned documents. in this way you can see directly if you match all checkpoints.
@@ -318,7 +318,7 @@ afterwards you can export the list of documents as well as the document bundles 
 
 tl;dr: this list serves as an overview of acknowledged external documents in use as well as the interface for the assistants document module on save.
 
-this list contains external documents in force and can contain other file lists. beside having them registered you can export these as well to the assistant on saving. while inserting links as registration there might be relative paths. this can be tweaked within the code where you can assign replacements to tidy things up. adding another sheet of file categories is easily done by adding another collection within the code, alter the sheet name and pass the collection to the export sub. remember to register the data-export to the assistants module as well. you can define alternative search terms as well as descriptions to filenames or urls to be displayed in the assistant in case the original files and urls lack a meaningful name.
+this list contains external documents in force and can contain other file lists. beside having them registered you can export these as well to [the assistant](#document-lookup) on saving. while inserting links as registration there might be relative paths. this can be tweaked within the code where you can assign replacements to tidy things up. adding another sheet of file categories is easily done by adding another collection within the code, alter the sheet name and pass the collection to the export sub. remember to register the data-export to the assistants module as well. you can define alternative search terms as well as descriptions to filenames or urls to be displayed in the assistant in case the original files and urls lack a meaningful name.
 
 [back to top](#table-of-contents)
 
@@ -433,7 +433,9 @@ this form supports all employees to create decent orders and send the resulting 
 since ordering things can be expensive for the company, orders can be registered by everyone but have to be verified by persons with respective permissions as managed in the core-drm methods. the same module serves to decrypt the generated verification code for central purchase.
 
 in theory orders can be piled up and verified en bloc. in practice this is one of the biggest issues using ie11 due to restricted storage space on cookies (10 kb) as opposed to decent browsers with 5 mb localstorage. if your shitty company policy deletes everything on leaving the browser this also is obviously disturbing the workflow.
-to be honest this system is yet to be implemented properly. once i reach an agreement with central purchasing the data structure might be overhauled to be more efficient. currently the whole order with table styling is stored instead of structured data that would save some space.
+to be honest this system is yet to be implemented properly.
+recently the stored data structure has been overhauled to minimize necessary characters. items added to cart from the stocklist need minimal storage due to referencing the id and allowed editable fields only. this led to an increased efficiency up to 400%. now you can pile up e.g. 20 orders using internet explorer instead of just 5. which is nice.
+orrders are stored in base64 which still needs more space than the plain json-object but is considered safer regarding special chars.
 
 dependencies are: the datalist of inventory regarding the shopping cart, optional [datalist of current order status](#ticketorderxlsm)
 
