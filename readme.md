@@ -722,7 +722,7 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.fn.setting.clear()` resets the whole application
 
-`core.fn.stringcompression.compress()` returns an lzh-compressed string to save some bytes for storage of long strings
+`core.fn.stringcompression.compress()` returns an lzh-compressed string to save some bytes for storage of long strings. this is currently implemented selective but could most possably be used for every storage. general use has yet to be tested.
 
 `core.fn.stringcompression.decompress()` reverts the compressed string
 
