@@ -239,7 +239,7 @@ ticketorder.fn = {
 			core.fn.setting.set('ticketorderContact', el('ordererContact').value);
 			//this is a workaround for cookies (needed by ie) can not be larger than 4kb, so i have to split up the order list to individual orders
 			var ordernum = core.fn.setting.get('ticketorderAwaitingOrders') || 0;
-			if (core.fn.setting.set('ticketorderAwaitingOrder' + ++ordernum, core.fn.stringcompression.compress(JSON.stringify(orderobj)), core.fn.lang('orderStorageError', 'ticketorder'))) {
+			if (core.fn.setting.set('ticketorderAwaitingOrder' + ++ordernum, JSON.stringify(orderobj), core.fn.lang('orderStorageError', 'ticketorder'))) {
 				core.fn.setting.set('ticketorderAwaitingOrders', ordernum);
 				core.fn.stdout('output', ticketorder.fn.currentorder.get());
 				el('output').scrollTop = el('output').scrollHeight;
@@ -253,7 +253,7 @@ ticketorder.fn = {
 				output = '';
 			if (ordernum) {
 				for (var o = 0; o < ordernum; o++) {
-					orders = (core.fn.stringcompression.decompress(core.fn.setting.get('ticketorderAwaitingOrder' + (o + 1))) || '');
+					orders = (core.fn.setting.get('ticketorderAwaitingOrder' + (o + 1)) || '');
 					if (orders.length) {
 						// caution: order/table layout dependent of excel-file !!
 						var orderobj = JSON.parse(orders);
