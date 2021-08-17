@@ -4,8 +4,8 @@
 //  module for preselecting documents within a quality
 //  mangagement system according to given tasks
 //
-//  dependencies:	{core.var.moduleVarDir}documentpackages.var.js
-//					{core.var.moduleDataDir}documentpackages.js
+//  dependencies:	{core.var.moduleVarDir}documentbundles.var.js
+//					{core.var.moduleDataDir}documentbundles.js
 //
 //////////////////////////////////////////////////////////////
 if (typeof documentbundles === 'undefined') var documentbundles = {};
@@ -71,7 +71,6 @@ documentbundles.fn = {
 			primary = '',
 			secondary = '',
 			serialPDFlist = '';
-
 		// regular documents
 		if (typeof pack !== 'undefined') {
 			Object.keys(pack.primary).forEach(function (index) {

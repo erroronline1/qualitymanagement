@@ -6,7 +6,7 @@
 //  dependencies:	{core.var.moduleVarDir}ticketorder.var.js
 //					{core.var.moduleDataDir}ticketorder.js
 //					{core.var.moduleDataDir}stocklist.js
-//					optional administrative ticketorder.xlsm
+//					ticketorder.xlsm
 //
 //////////////////////////////////////////////////////////////
 

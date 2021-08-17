@@ -5,6 +5,7 @@
 //
 //  dependencies:	{core.var.moduleVarDir}timetable.var.js
 //					{core.var.moduleDataDir}timetable.js
+//					actual timetables
 //
 //////////////////////////////////////////////////////////////
 
@@ -34,15 +35,15 @@ timetable.api = {
 	},
 };
 timetable.fn = {
-	open: function (name, js){
-	if (typeof js === 'undefined')
-		return core.fn.lang('legalReminder', 'timetable') + 
-			timetable.fn.linkfile(name) + 
-			core.fn.insert.checkbox(core.fn.lang('favouriteAdd', 'timetable'), 'favouriteAdd', this.favouriteHandler.stored(name), false, core.fn.lang('favouriteAdd', 'timetable'));
+	open: function (name, js) {
+		if (typeof js === 'undefined')
+			return core.fn.lang('legalReminder', 'timetable') +
+				timetable.fn.linkfile(name) +
+				core.fn.insert.checkbox(core.fn.lang('favouriteAdd', 'timetable'), 'favouriteAdd', this.favouriteHandler.stored(name), false, core.fn.lang('favouriteAdd', 'timetable'));
 		else
-		return core.fn.lang('legalReminder', 'timetable').replace(/"/g, '&quot;') + 
-			timetable.fn.linkfile(name).replace(/"/g, '&quot;').replace(/\'/g, "\\\'") + 
-			core.fn.insert.checkbox(core.fn.lang('favouriteAdd', 'timetable'), 'favouriteAdd', this.favouriteHandler.stored(name), false, core.fn.lang('favouriteAdd', 'timetable')).replace(/"/g, '&quot;').replace(/\'/g, "\\\'");
+			return core.fn.lang('legalReminder', 'timetable').replace(/"/g, '&quot;') +
+				timetable.fn.linkfile(name).replace(/"/g, '&quot;').replace(/\'/g, "\\\'") +
+				core.fn.insert.checkbox(core.fn.lang('favouriteAdd', 'timetable'), 'favouriteAdd', this.favouriteHandler.stored(name), false, core.fn.lang('favouriteAdd', 'timetable')).replace(/"/g, '&quot;').replace(/\'/g, "\\\'");
 	},
 	search: function (query) {
 		query = query || el('timetablequery').value;
@@ -70,8 +71,7 @@ timetable.fn = {
 			if (value.indexOf(':') == 0) { //if preceded by : the value will be deleted from the favourite list
 				deleteValue = true;
 				value = value.substring(1);
-			}
-			else if (!el('favouriteAdd').checked)
+			} else if (!el('favouriteAdd').checked)
 				deleteValue = true;
 			if (output) {
 				if (output.indexOf(value) > -1) {
@@ -109,7 +109,7 @@ timetable.fn = {
 			}
 			return output || '';
 		},
-		stored: function(name){
+		stored: function (name) {
 			name = name.split(' '); //split to array
 			for (var i = 0; i < name.length; i++) {
 				name[i] = name[i][0].toUpperCase() + name[i].slice(1);
@@ -127,7 +127,7 @@ timetable.fn = {
 		el('moduletimetable').checked = true; // highlight menu icon
 		core.fn.stdout('input',
 			'<form id="search" action="javascript:timetable.fn.search();">' +
-			'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g,'&quot;') + '" placeholder="' + core.fn.lang('formInputPlaceholder', 'timetable') + '" id="timetablequery" class="search" />' +
+			'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g, '&quot;') + '" placeholder="' + core.fn.lang('formInputPlaceholder', 'timetable') + '" id="timetablequery" class="search" />' +
 			'<span onclick="timetable.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
 			'<input type="submit" id="name" value="' + core.fn.lang('formSubmit', 'timetable') + '" hidden="hidden" /> ' +
 			'</form>');

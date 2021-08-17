@@ -48,14 +48,12 @@ correspondence.fn = {
 			Object.keys(contents).forEach(function (value) {
 				checkbox[value] = el('c' + value) ? (el('c' + value).checked ? 1 : 0) : 1;
 			});
-
 			//limit output to selected topics
 			var inputs = document.getElementsByTagName('input'),
 				wanted = new Array();
 			for (var i = 0; i < inputs.length; i++) {
 				if (inputs[i].checked) wanted[i] = inputs[i].value;
 			}
-
 			//output
 			var index = 0;
 			if (el('thirdperson').checked) index = 1;
@@ -72,8 +70,8 @@ correspondence.fn = {
 			core.fn.stdout('output', output);
 			core.fn.mailtoLimit(output);
 			//reassign variable value for mailto after actual output
-			if (output.length > core.var.directMailSize) output=core.fn.lang('errorMailSizeExport');
-			el('mailto').href = 'javascript:core.fn.dynamicMailto(\'\',\'\',\'' + output +'\')';
+			if (output.length > core.var.directMailSize) output = core.fn.lang('errorMailSizeExport');
+			el('mailto').href = 'javascript:core.fn.dynamicMailto(\'\',\'\',\'' + output + '\')';
 		} else core.fn.popup(core.fn.lang('errorSelectModules', 'correspondence'));
 		core.history.write(['correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
 	},
@@ -110,7 +108,6 @@ correspondence.fn = {
 		core.performance.stop('correspondence.fn.start(\'' + value(query) + '\')');
 		core.history.write(['correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
 	},
-
 	init: function (query) {
 		el('modulecorrespondence').checked = true; // highlight menu icon
 		correspondence.var.submodules.select[1] = core.fn.lang('inputLoadSubmoduleDefault', 'correspondence');

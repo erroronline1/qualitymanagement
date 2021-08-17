@@ -29,7 +29,7 @@ timetable.var = {
 		favouriteAdd: {
 			en: 'Add to favourites',
 			de: 'zu Favoriten hinzufügen'
-		},			
+		},
 		linkTitle: {
 			en: 'timetable for ',
 			de: 'Tabelle für '

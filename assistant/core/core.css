@@ -184,8 +184,8 @@ aside {
 	box-shadow: .1em .1em .4em .1em;
 }
 
-#growlNotif.growlNotifshow{
-	right:0em;
+#growlNotif.growlNotifshow {
+	right: 0em;
 }
 
 /* /////////////////////////////////////////////////////////////////////////////////
@@ -219,7 +219,7 @@ content box-items
 }
 
 .contentWide {
-	flex-grow:3.8;
+	flex-grow: 3.8;
 }
 
 .items {
@@ -384,15 +384,17 @@ hr {
 }
 
 #mailtoLimitBar {
-	display:block;
-	height:.5em;
-	border:1px solid;
+	display: block;
+	height: .5em;
+	border: 1px solid;
 }
 
-#mailtoLimit {height:100%;}
+#mailtoLimit {
+	height: 100%;
+}
 
 .singlefavouritehandler svg {
-	width:0;
+	width: 0;
 }
 
 .singlefavouritehandler:hover svg {

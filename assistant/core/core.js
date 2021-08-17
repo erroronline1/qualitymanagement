@@ -746,8 +746,7 @@ core.fn = {
 				output += String.fromCharCode(dictionary[w]);
 			}
 			compressed = 'compressed' + btoa(unescape(encodeURIComponent(output)));
-			uncompressed= encodeURIComponent(uncompressed);
-			var s = '';
+			uncompressed = encodeURIComponent(uncompressed);
 			return (uncompressed.length < compressed.length) ? uncompressed : compressed;
 		},
 		decompress: function (compressed) {

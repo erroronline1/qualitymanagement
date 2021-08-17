@@ -119,5 +119,4 @@ mailtools.fn = {
 		core.performance.stop('mailtools.fn.init(\'' + value(query) + '\')');
 		core.history.write(['mailtools.fn.init(\'' + value(query) + '\')']);
 	},
-
 };

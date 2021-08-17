@@ -226,45 +226,197 @@ core.var = {
 
 	//text-blocks within the core file and reusable textblocks for modules
 	lang: {
-		title: {
-			en: 'QM-Assistant',
-			de: 'QM-Assistent'
+		buttonGenCaption: {
+			en: 'generate / update',
+			de: 'generieren / aktualisieren'
 		},
-		greeting: {
-			en: 'Welcome to the QM-Assistant. How can I help you?',
-			de: 'Willkommen beim QM-Assistenten. Wobei kann ich unterstützen?'
+		buttonGenTitle: {
+			en: 'refresh output with given values',
+			de: 'aktualisiere Ausgabe gemäß der gewählten Optionen'
 		},
-		globalSearchPlaceholder: {
-			en: 'SEARCH ALL',
-			de: 'ALLES DURCHSUCHEN'
+		buttonResetCaption: {
+			en: 'reset',
+			de: 'zurücksetzen'
+		},
+		buttonResetTitle: {
+			en: 'resets all inputs to initial value',
+			de: 'Setzt alle Eingaben auf Ursprungswert zurück'
 		},
 		copycontentNewWindowCaption: {
 			en: 'Copy text, close window with left mouse button',
 			de: 'Text kopieren, linke Maustaste schließt das Fenster wieder'
 		},
-		mailtoLimitBar: {
-			en: 'indicates if the desired text size can be exported to email directly',
-			de: 'zeigt an, ob die gewünschte Textlänge direkt in die eMail exportiert werden kann'
+		drmConfirmationError: {
+			en: 'The entered values were invalid!',
+			de: 'Es wurden unzureichende Angaben gemacht!'
 		},
-		popupCloseButton: {
-			en: 'close',
-			de: 'schließen'
+		drmConfirmationSubmit: {
+			en: 'Approval',
+			de: 'Freigabe'
+		},
+		errorLoadingModules: {
+			en: 'Error loading modules...',
+			de: 'Fehler beim Laden der Module...'
+		},
+		errorMailSizeExport: {
+			en: function () {
+				return 'The text exceeded the maximum length of ' + core.var.directMailSize + ' characters. Please copy from the assistants output. The browserspecific limit can be adjusted and testes in the advanced settings.'
+			},
+			de: function () {
+				return 'Der Text überschreitet die maximal zulässige Menge von ' + core.var.directMailSize + ' Zeichen. Bitte kopiere den Inhalt aus dem Ausgabefenster des Assistenten. Die browserabhängige Größe kann bei den erweiterten Einstellungen geändert und getestet werden.'
+			},
+		},
+		errorNoContent: {
+			en: 'Well, <em>please</em> provide values...',
+			de: 'Na, die Angaben müssen schon auch gemacht werden...'
+		},
+		errorNothingFound: {
+			en: function (query) {
+				return 'Search for <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'or Fuzzy-Search-setting ') + 'or look for parts of query. Please adhere to mimimum 3 character length.'
+			},
+			de: function (query) {
+				return 'Zum Begriff <span class="highlight">' + query + '</span> konnte nichts gefunden werden. Bitte eventuell Schreibweise ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'oder Tippfehler-Toleranz-Einstellung ') + 'überprüfen oder nach Wortteilen suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
+			},
+		},
+		errorSelectModules: {
+			en: 'please choose category...',
+			de: 'Bitte Kategorie wählen...'
+		},
+		errorStorageLimit: {
+			en: 'Storing was not possible. The local storage limit for this application was exceeded.',
+			de: 'Speichern nicht möglich. Der Speicherplatz für diese Anwendung ist erschöpft.'
+		},
+		formSubmit: {
+			en: 'lookup',
+			de: 'suchen'
+		},
+		globalSearchPlaceholder: {
+			en: 'SEARCH ALL',
+			de: 'ALLES DURCHSUCHEN'
+		},
+		greeting: {
+			en: 'Welcome to the QM-Assistant. How can I help you?',
+			de: 'Willkommen beim QM-Assistenten. Wobei kann ich unterstützen?'
+		},
+		homeMenuBack: {
+			en: 'back',
+			de: 'zurück'
+		},
+		homeMenuEntry: {
+			en: 'Home',
+			de: 'Start'
+		},
+		homeMenuFeedbackRequest: {
+			en: 'feedback / request / support',
+			de: 'Rückmeldung / Anfrage / Unterstützung'
+		},
+		homeMenuForth: {
+			en: 'forward',
+			de: 'vor'
+		},
+		homeMenuRestart: {
+			en: 'restart',
+			de: 'neu starten'
+		},
+		importantMails: {
+			en: 'important eMail-addresses',
+			de: 'wichtige eMail-Adressen'
 		},
 		itemResizeTitle: {
 			en: 'expand / reduce',
 			de: 'erweitern / verkleinern'
 		},
-		settingMenuEntry: {
-			en: 'Settings',
-			de: 'Einstellungen'
+		mailtoLimitBar: {
+			en: 'indicates if the desired text size can be exported to email directly',
+			de: 'zeigt an, ob die gewünschte Textlänge direkt in die eMail exportiert werden kann'
 		},
-		settingModuleselectorCaption: {
-			en: 'Displayed modules',
-			de: 'angezeigte Module'
+		openLetterTemplate: {
+			en: 'open letter tempate',
+			de: 'Briefvorlage öffnen'
+		},
+		openLetterTemplateHint: {
+			en: function () {
+				return 'change font to ' + core.var.corporateFontFace + ', size ' + core.var.corporateFontSize;
+			},
+			de: function () {
+				return 'Schriftart ggf zu ' + core.var.corporateFontFace + ', Schriftgröße ' + core.var.corporateFontSize + ' anpassen';
+			}
+		},
+		openMailApp: {
+			en: 'open mail app',
+			de: 'eMail-Programm öffnen'
+		},
+		openOutlook: {
+			en: 'open Outlook WebApp',
+			de: 'Outlook WebApp öffnen'
+		},
+		openPublishedFolder: {
+			en: 'open published folder directly',
+			de: 'Dokumentenpfad direkt öffnen'
+		},
+		popupCloseButton: {
+			en: 'close',
+			de: 'schließen'
+		},
+		settingAdvancedCaption: {
+			en: 'Advanced settings',
+			de: 'Erweitert'
+		},
+		settingCopyOptionHint: {
+			en: 'No need to adjust font. Left mouse button closes window.',
+			de: 'Umgeht die Notwendigkeit die Schriftart anpassen zu müssen. Linke Maustaste schließt das Fenster.'
+		},
+		settingCopyOptionSelector: {
+			en: 'Open contents to be copied in new window',
+			de: 'Zu kopierende Inhalte in neuem Fenster öffnen'
+		},
+		settingDebugCompressedCaption: {
+			en: 'compressed',
+			de: 'komprimiert'
+		},
+		settingDebugDumpCaption: {
+			en: 'currently stored settings',
+			de: 'aktuell gespeicherte Einstellungen'
+		},
+		settingDebugSpaceCaption: {
+			en: 'Available storage space: ',
+			de: 'Verfügbarer Speicherplatz: '
+		},
+		settingDeleteDistinctPlaceholder: {
+			en: 'delete distinct settings, csv',
+			de: 'Einstellungen gezielt löschen, kommagetrennt'
+		},
+		settingFontsizeCaption: {
+			en: 'Font size',
+			de: 'Schriftgröße'
+		},
+		settingFuzzyThresholdCaption: {
+			en: 'Fuzzy threshold (5 is a reasonable default)',
+			de: 'Schwellenwert für Tippfehler (5 ist ein guter Standard)'
+		},
+		settingGeneralHint: {
+			en: 'Local security settings can result in loss of settings on closing browser window.',
+			de: 'Lokale Sicherheitseinstellungen können dazu führen, dass beim Schließen des Browser-Fensters die Einstellungen verloren gehen.'
+		},
+		settingGlobalSearchCaption: {
+			en: 'Seconds to deliver global search results',
+			de: 'Sekunden für die Bereitstellung von globalen Suchergebnissen'
+		},
+		settinggrowlNotifIntervalCaption: {
+			en: 'Seconds to show short information',
+			de: 'Sekunden für Anzeige von Kurzinformationen'
 		},
 		settingKeyCaption: {
 			en: 'Passwort construction',
 			de: 'Kennwortanlage'
+		},
+		settingKeyError: {
+			en: 'The entered values were invalid or the passwords did not match!',
+			de: 'Es wurden unzureichende Angaben gemacht oder die Kennwörter stimmten nicht überein!'
+		},
+		settingKeyMailHeader: {
+			en: 'Request to implement key to the data rights management',
+			de: 'Bitte um Eintrag des Schlüssels in die Rechteverwaltung'
 		},
 		settingKeyName: {
 			en: 'Name',
@@ -278,98 +430,25 @@ core.var = {
 			en: 'Enter password again',
 			de: 'Kennwort erneut eingeben'
 		},
-		settingKeySubmit: {
-			en: 'encrypt',
-			de: 'verschlüsseln'
-		},
-		settingKeyError: {
-			en: 'The entered values were invalid or the passwords did not match!',
-			de: 'Es wurden unzureichende Angaben gemacht oder die Kennwörter stimmten nicht überein!'
-		},
 		settingKeyResult: {
 			en: 'Send your encrypted key to administration for implementation. Your password is not visible.',
 			de: 'Sende deinen Schlüssel an die Administration um ihn zu implementieren. Dein Kennwort ist nicht sichtbar.'
 		},
-		settingKeyMailHeader: {
-			en: 'Request to implement key to the data rights management',
-			de: 'Bitte um Eintrag des Schlüssels in die Rechteverwaltung'
-		},
-		settingMainCaption: {
-			en: 'Common settings',
-			de: 'Allgemein'
-		},
-		settingAdvancedCaption: {
-			en: 'Advanced settings',
-			de: 'Erweitert'
-		},
-		settingThemeCaption: {
-			en: 'Color-Theme',
-			de: 'Farbschema'
-		},
-		settingMenusizeCaption: {
-			en: 'Menu size',
-			de: 'Menügröße'
-		},
-		settingMenusizeSelector: {
-			en: 'always small',
-			de: 'immer schmal'
-		},
-		settingFontsizeCaption: {
-			en: 'Font size',
-			de: 'Schriftgröße'
+		settingKeySubmit: {
+			en: 'encrypt',
+			de: 'verschlüsseln'
 		},
 		settingLanguageCaption: {
 			en: 'Language',
 			de: 'Sprache'
 		},
-		settingSearchOptionFuzzy: {
-			en: 'Fuzzy-Search',
-			de: 'Tippfehler-Toleranz'
+		settingMainCaption: {
+			en: 'Common settings',
+			de: 'Allgemein'
 		},
-		settingSearchOptionFuzzyHint: {
-			en: 'Includes possible typos, but gets a bigger sample size.',
-			de: 'Berücksichtigt auch mögliche Tippfehler, führt aber zu größeren Ergebnismengen.'
-		},
-		settingCopyOptionSelector: {
-			en: 'Open contents to be copied in new window',
-			de: 'Zu kopierende Inhalte in neuem Fenster öffnen'
-		},
-		settingCopyOptionHint: {
-			en: 'No need to adjust font. Left mouse button closes window.',
-			de: 'Umgeht die Notwendigkeit die Schriftart anpassen zu müssen. Linke Maustaste schließt das Fenster.'
-		},
-		settingNotificationSelector: {
-			en: function () {
-				return 'Hide hint #' + (updateTracker.latestMajorUpdate() + 1) + ' on startup';
-			},
-			de: function () {
-				return 'Hinweis #' + (updateTracker.latestMajorUpdate() + 1) + ' beim Start verbergen';
-			}
-		},
-		settingNotificationHint: {
-			en: 'New hints are shown on startup automatically. <a href="javascript:core.fn.popup(updateTracker.enlist());">Show all hints</a>',
-			de: 'Neue Hinweise werden immer automatisch beim Start angezeigt. <a href="javascript:core.fn.popup(updateTracker.enlist());">Alle Hinweise anzeigen</a>'
-		},
-
-		settingResetApp: {
-			en: 'Reset application',
-			de: 'Alle Einstellungen zurücksetzen'
-		},
-		settingSelectedOsCaption: {
-			en: 'used environment',
-			de: 'genutzte Betriebsumgebung'
-		},
-		settingFuzzyThresholdCaption: {
-			en: 'Fuzzy threshold (5 is a reasonable default)',
-			de: 'Schwellenwert für Tippfehler (5 ist ein guter Standard)'
-		},
-		settingGlobalSearchCaption: {
-			en: 'Seconds to deliver global search results',
-			de: 'Sekunden für die Bereitstellung von globalen Suchergebnissen'
-		},
-		settingVarPreloadCaption: {
-			en: 'Delay between loading modules data and functions in milliseconds (Edge)',
-			de: 'Millisekunden Ladeverzögerung zwischen Moduldaten und -funktionen (Edge)'
+		settingMailDebugDump: {
+			en: 'open mail to send settings',
+			de: 'eMail öffnen um Einstellungen zu versenden'
 		},
 		settingMailSizeDeterminationCaption: {
 			en: 'Browser dependent maximum size for direct email',
@@ -387,89 +466,65 @@ core.var = {
 			en: 'Open email using Windows 7',
 			de: 'eMails öffnen in Windows 7'
 		},
-		settinggrowlNotifIntervalCaption: {
-			en: 'Seconds to show short information',
-			de: 'Sekunden für Anzeige von Kurzinformationen'
+		settingMenusizeCaption: {
+			en: 'Menu size',
+			de: 'Menügröße'
 		},
-
-		settingDebugSpaceCaption: {
-			en: 'Available storage space: ',
-			de: 'Verfügbarer Speicherplatz: '
+		settingMenuEntry: {
+			en: 'Settings',
+			de: 'Einstellungen'
 		},
-		settingDebugDumpCaption: {
-			en: 'currently stored settings',
-			de: 'aktuell gespeicherte Einstellungen'
+		settingMenusizeSelector: {
+			en: 'always small',
+			de: 'immer schmal'
 		},
-		settingDeleteDistinctPlaceholder: {
-			en: 'delete distinct settings, csv',
-			de: 'Einstellungen gezielt löschen, kommagetrennt'
+		settingModuleselectorCaption: {
+			en: 'Displayed modules',
+			de: 'angezeigte Module'
 		},
-		settingMailDebugDump: {
-			en: 'open mail to send settings',
-			de: 'eMail öffnen um Einstellungen zu versenden'
+		settingNotificationHint: {
+			en: 'New hints are shown on startup automatically. <a href="javascript:core.fn.popup(updateTracker.enlist());">Show all hints</a>',
+			de: 'Neue Hinweise werden immer automatisch beim Start angezeigt. <a href="javascript:core.fn.popup(updateTracker.enlist());">Alle Hinweise anzeigen</a>'
 		},
-
-		settingGeneralHint: {
-			en: 'Local security settings can result in loss of settings on closing browser window.',
-			de: 'Lokale Sicherheitseinstellungen können dazu führen, dass beim Schließen des Browser-Fensters die Einstellungen verloren gehen.'
+		settingNotificationSelector: {
+			en: function () {
+				return 'Hide hint #' + (updateTracker.latestMajorUpdate() + 1) + ' on startup';
+			},
+			de: function () {
+				return 'Hinweis #' + (updateTracker.latestMajorUpdate() + 1) + ' beim Start verbergen';
+			}
+		},
+		settingResetApp: {
+			en: 'Reset application',
+			de: 'Alle Einstellungen zurücksetzen'
 		},
 		settingRestartNeccessary: {
 			en: 'restart of application neccessary',
 			de: 'Neustart der Oberfläche erforderlich'
 		},
-
-		errorLoadingModules: {
-			en: 'Error loading modules...',
-			de: 'Fehler beim Laden der Module...'
+		settingSearchOptionFuzzy: {
+			en: 'Fuzzy-Search',
+			de: 'Tippfehler-Toleranz'
 		},
-		errorSelectModules: {
-			en: 'please choose category...',
-			de: 'Bitte Kategorie wählen...'
+		settingSearchOptionFuzzyHint: {
+			en: 'Includes possible typos, but gets a bigger sample size.',
+			de: 'Berücksichtigt auch mögliche Tippfehler, führt aber zu größeren Ergebnismengen.'
 		},
-		errorNoContent: {
-			en: 'Well, <em>please</em> provide values...',
-			de: 'Na, die Angaben müssen schon auch gemacht werden...'
+		settingSelectedOsCaption: {
+			en: 'used environment',
+			de: 'genutzte Betriebsumgebung'
 		},
-		errorNothingFound: {
-			en: function (query) {
-				return 'Search for <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'or Fuzzy-Search-setting ') + 'or look for parts of query. Please adhere to mimimum 3 character length.'
-			},
-			de: function (query) {
-				return 'Zum Begriff <span class="highlight">' + query + '</span> konnte nichts gefunden werden. Bitte eventuell Schreibweise ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'oder Tippfehler-Toleranz-Einstellung ') + 'überprüfen oder nach Wortteilen suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
-			},
+		settingThemeCaption: {
+			en: 'Color-Theme',
+			de: 'Farbschema'
 		},
-		errorMailSizeExport: {
-			en: function () {
-				return 'The text exceeded the maximum length of ' + core.var.directMailSize + ' characters. Please copy from the assistants output. The browserspecific limit can be adjusted and testes in the advanced settings.'
-			},
-			de: function () {
-				return 'Der Text überschreitet die maximal zulässige Menge von ' + core.var.directMailSize + ' Zeichen. Bitte kopiere den Inhalt aus dem Ausgabefenster des Assistenten. Die browserabhängige Größe kann bei den erweiterten Einstellungen geändert und getestet werden.'
-			},
+		settingVarPreloadCaption: {
+			en: 'Delay between loading modules data and functions in milliseconds (Edge)',
+			de: 'Millisekunden Ladeverzögerung zwischen Moduldaten und -funktionen (Edge)'
 		},
-		errorStorageLimit: {
-			en: 'Storing was not possible. The local storage limit for this application was exceeded.',
-			de: 'Speichern nicht möglich. Der Speicherplatz für diese Anwendung ist erschöpft.'
-		},
-
-		buttonGenCaption: {
-			en: 'generate / update',
-			de: 'generieren / aktualisieren'
-		},
-		buttonGenTitle: {
-			en: 'refresh output with given values',
-			de: 'aktualisiere Ausgabe gemäß der gewählten Optionen'
-		},
-		buttonResetCaption: {
-			en: 'reset',
-			de: 'zurücksetzen'
-		},
-		buttonResetTitle: {
-			en: 'resets all inputs to initial value',
-			de: 'Setzt alle Eingaben auf Ursprungswert zurück'
-		},
-		formSubmit: {
-			en: 'lookup',
-			de: 'suchen'
+		title: {
+			en: 'QM-Assistant',
+			de: 'QM-Assistent'
 		},
 		webSearch: {
 			en: 'web search',
@@ -479,63 +534,5 @@ core.var = {
 			en: 'search the web for the term',
 			de: 'im Internet nach dem Begriff suchen'
 		},
-		openOutlook: {
-			en: 'open Outlook WebApp',
-			de: 'Outlook WebApp öffnen'
-		},
-		openMailApp: {
-			en: 'open mail app',
-			de: 'eMail-Programm öffnen'
-		},
-		openPublishedFolder: {
-			en: 'open published folder directly',
-			de: 'Dokumentenpfad direkt öffnen'
-		},
-		openLetterTemplate: {
-			en: 'open letter tempate',
-			de: 'Briefvorlage öffnen'
-		},
-		openLetterTemplateHint: {
-			en: function () {
-				return 'change font to ' + core.var.corporateFontFace + ', size ' + core.var.corporateFontSize;
-			},
-			de: function () {
-				return 'Schriftart ggf zu ' + core.var.corporateFontFace + ', Schriftgröße ' + core.var.corporateFontSize + ' anpassen';
-			}
-		},
-		homeMenuEntry: {
-			en: 'Home',
-			de: 'Start'
-		},
-		homeMenuBack: {
-			en: 'back',
-			de: 'zurück'
-		},
-		homeMenuForth: {
-			en: 'forward',
-			de: 'vor'
-		},
-		homeMenuRestart: {
-			en: 'restart',
-			de: 'neu starten'
-		},
-		homeMenuFeedbackRequest: {
-			en: 'feedback / request',
-			de: 'Rückmeldung / Anfrage'
-		},
-		importantMails: {
-			en: 'important eMail-addresses',
-			de: 'wichtige eMail-Adressen'
-		},
-
-		drmConfirmationSubmit: {
-			en: 'Approval',
-			de: 'Freigabe'
-		},
-		drmConfirmationError: {
-			en: 'The entered values were invalid!',
-			de: 'Es wurden unzureichende Angaben gemacht!'
-		},
-
 	},
 };

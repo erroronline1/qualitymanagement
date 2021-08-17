@@ -12,7 +12,7 @@ if (typeof help === 'undefined') var help = {};
 
 help.api = {
 	available: function (search) {
-		core.fn.loadScript(core.var.moduleDataDir +'help.js',
+		core.fn.loadScript(core.var.moduleDataDir + 'help.js',
 			'help.api.processAfterImport(\'' + search + '\')');
 		core.performance.stop('help.api.available(\'' + search + '\')');
 	},
@@ -67,7 +67,7 @@ help.fn = {
 		core.fn.loadScript(core.var.moduleDataDir + 'help.js', 'help.fn.search(\'' + value(query) + '\')');
 		core.fn.stdout('input',
 			'<form id="search" action="javascript:help.fn.search();">' +
-			'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g,'&quot;') + '" placeholder="' + core.fn.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search" />' +
+			'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g, '&quot;') + '" placeholder="' + core.fn.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search" />' +
 			'<span onclick="help.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
 			'<input type="submit" id="artikelsuche" value="' + core.fn.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
 			'</form>');

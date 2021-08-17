@@ -6,8 +6,8 @@
 //  dependencies:	{core.var.moduleVarDir}documentlookup.var.js
 //					{core.var.moduleDataDir}documentlookup_int.js,
 //					{core.var.moduleDataDir}documentlookup_ext.js,
-//					documents.xlsm,
-//					external_dokuments.xlsm
+//					internal documents in force.xlsm,
+//					external documents in force.xlsm
 //
 //////////////////////////////////////////////////////////////
 
@@ -84,7 +84,6 @@ documentlookup.fn = {
 				Object.keys(interimobject).forEach(function (key) {
 					tfav[documentlookup.fn.favouriteHandler.prepare(interimobject[key][0])] = documentlookup.fn.linkfile([interimobject[key][0], interimobject[key][1]], true, interimobject[key][2], 1);
 				});
-
 				var tfav2 = output.split(',');
 				output = '<br />' + core.fn.lang('favouriteCaption', 'documentlookup') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
 					core.fn.insert.icon('delete', 'bigger', false, 'title="' + core.fn.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.reset(\'\')"') +
@@ -119,7 +118,6 @@ documentlookup.fn = {
 				list += documentlookup.fn.linkfile([interimobject[key][0], interimobject[key][1]], true) + '<br />';
 			});
 			core.fn.stdout('temp', list);
-
 			if (value(query) !== '') {
 				var found = core.fn.smartSearch.lookup(query, interimobject, true);
 
@@ -147,10 +145,9 @@ documentlookup.fn = {
 		Object.keys(documentlookup.var.submodules).forEach(function (key) {
 			selection[key] = [key, documentlookup.var.submodules[key][core.var.selectedLanguage]];
 		});
-
 		core.fn.stdout('input',
 			'<form id="search" action="javascript:documentlookup.fn.search();">' +
-			'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.fn.lang('searchPlaceholder', 'documentlookup') + '" class="search" value="' + value(query).replace(/"/g,'&quot;') + '" />' +
+			'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.fn.lang('searchPlaceholder', 'documentlookup') + '" class="search" value="' + value(query).replace(/"/g, '&quot;') + '" />' +
 			'<span onclick="documentlookup.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
 			core.fn.insert.select(selection, 'lookup', 'lookup', (core.fn.setting.get('lookup_bundle') || false), 'onchange="this.selectedIndex == 0 ? core.fn.setting.unset(\'lookup_bundle\') : core.fn.setting.set(\'lookup_bundle\',this.options[this.selectedIndex].value); core.fn.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.fn.search()\');"') +
 			'<input type="submit" id="submit" value="' + core.fn.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
