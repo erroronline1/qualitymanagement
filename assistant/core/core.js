@@ -11,15 +11,22 @@ function value(v) { //handles even unset parameters when in doubt
 	else return v;
 }
 
-function focusWithin(activate){
+function focusWithin(activate) {
 	//would be neat if ie supported this selector...
-	if (activate){
-		el('temp').addEventListener('click',function(){el('temp').classList.add('contentWide');})
-		el('output').addEventListener('click',function(){el('temp').classList.remove('contentWide');})
-	}
-	else {
-		el('temp').removeEventListener('click',function(){el('temp').classList.add('contentWide');})
-		el('output').removeEventListener('click',function(){el('temp').classList.remove('contentWide');})
+	if (activate) {
+		el('temp').addEventListener('click', function () {
+			el('temp').classList.add('contentWide');
+		})
+		el('output').addEventListener('click', function () {
+			el('temp').classList.remove('contentWide');
+		})
+	} else {
+		el('temp').removeEventListener('click', function () {
+			el('temp').classList.add('contentWide');
+		})
+		el('output').removeEventListener('click', function () {
+			el('temp').classList.remove('contentWide');
+		})
 		el('temp').classList.remove('contentWide')
 	}
 }
@@ -365,12 +372,12 @@ core.fn = {
 					var c = x.substring(x.indexOf(name)),
 						start = c.indexOf('=') + 1,
 						end = c.indexOf(';') > -1 ? c.indexOf(';') : false;
-					value = decodeURIComponent(end ? c.substring(start, end) : c.substring(start));
+					value = end ? c.substring(start, end) : c.substring(start);
 
 				} else return false;
 			}
-			//			if (value) return core.fn.stringcompression.inflate(value);
-			if (value) return value;
+			if (value) return core.fn.stringcompression.decompress(value);
+			//if (value) return value;
 		},
 		isset: function (name) {
 			if (this.localStorage.api()) {
@@ -406,26 +413,26 @@ core.fn = {
 		},
 		set: function (name, value, errormsg) {
 			var saved = false;
-			//			value=core.fn.stringcompression.deflate(value.toString());
-			if (this.localStorage.api()) {
-				if (this.localStorage.remainingSpace() > name.length + toString(value).length) {
-					window.localStorage.setItem(name, value);
-					saved = true;
+			if (value) {
+				value = core.fn.stringcompression.compress(value.toString());
+				if (this.localStorage.api()) {
+					if (this.localStorage.remainingSpace() > name.length + toString(value).length) {
+						window.localStorage.setItem(name, value);
+						saved = true;
+					}
+				} else {
+					var now = new Date(),
+						time = now.getTime() + 3600 * 24 * 365 * 1000;
+					now.setTime(time);
+					cookie = name + '=' + value + '; expires=' + now.toUTCString() + ';';
+					if (this.localStorage.remainingSpace() > cookie.length && cookie.length < 4092) {
+						document.cookie = cookie;
+						saved = true;
+					}
 				}
-			} else {
-				var now = new Date(),
-					time = now.getTime() + 3600 * 24 * 365 * 1000;
-				now.setTime(time);
-
-				cookie = name + '=' + encodeURIComponent(value) + '; expires=' + now.toUTCString() + ';';
-				cookie = name + '=' + value + '; expires=' + now.toUTCString() + ';';
-				if (this.localStorage.remainingSpace() > cookie.length && cookie.length < 4092) {
-					document.cookie = cookie;
-					saved = true;
-				}
-			}
-			if (!saved) core.fn.popup(core.fn.lang('errorStorageLimit') + (typeof errormsg !== 'undefined' ? '<br />' + errormsg : ''));
-			return saved;
+				if (!saved) core.fn.popup(core.fn.lang('errorStorageLimit') + (typeof errormsg !== 'undefined' ? '<br />' + errormsg : ''));
+				return saved;
+			} else this.unset(name);
 		},
 		setup: function () { //displays settings menu
 			return '<div id="popupcontent">' +
@@ -503,16 +510,27 @@ core.fn = {
 				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingMailtoMethod'), 'settingMailtoMethod', (core.fn.setting.get('settingMailtoMethod') || 0), 'onchange="core.fn.setting.switch(\'settingMailtoMethod\')"');
 		},
 		setupDebug: function () { //return debugging options
-			var settingsDump = '';
-			if (this.localStorage.api()) settingsDump = JSON.stringify(localStorage, null, '\t')
-			else if (document.cookie.length) document.cookie.split("; ").forEach(function (c) {
-				var settings = c.split('=');
-				settingsDump += settings[0] + '=' + decodeURIComponent(settings[1]) + '\n';
+			var settingsDump = '',
+				compressed = 0,
+				uncompressed = 0,
+				settings;
+			if (this.localStorage.api()) {
+				Object.keys(localStorage).forEach(function (key) {
+					settingsDump += key + '=' + (core.fn.setting.get('settingCompressedDump') ? window.localStorage.getItem(key) : core.fn.stringcompression.decompress(core.fn.setting.get(key))) + '\n';
+					compressed += window.localStorage.getItem(key).length;
+					uncompressed += encodeURIComponent(core.fn.stringcompression.decompress(core.fn.setting.get(key))).length;
+				});
+			} else if (document.cookie.length) document.cookie.split("; ").forEach(function (c) {
+				settings = c.split('=');
+				settingsDump += settings[0] + '=' + (core.fn.setting.get('settingCompressedDump') ? settings[1] : core.fn.stringcompression.decompress(settings[1])) + '\n';
+				compressed += settings[1].length;
+				uncompressed += encodeURIComponent(core.fn.stringcompression.decompress(settings[1])).length;
 			});
 			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingPerformanceMonitor\')"') +
 				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.fn.setting.get('settingOutputMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingOutputMonitor\')"') +
-				'<br /><br />' + core.fn.lang('settingDebugSpaceCaption') + core.fn.setting.localStorage.remainingSpace() + ' Byte' +
-				'<br /><br />' + core.fn.lang('settingDebugDumpCaption') + ':<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
+				'<br /><br />' + core.fn.lang('settingDebugSpaceCaption') + core.fn.setting.localStorage.remainingSpace() + ' Byte<br />' +
+				core.fn.lang('settingDebugDumpCaption') + ':<br /> ' + core.fn.insert.checkbox(core.fn.lang('settingDebugCompressedCaption') + ' @' + Math.round(100 * compressed / uncompressed) + '%', 'settingCompressedDump', (core.fn.setting.get('settingCompressedDump') || 0), 'onchange="core.fn.setting.switch(\'settingCompressedDump\')"') +
+				'<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
 				'<br /><input type="text" placeholder="' + core.fn.lang('settingDeleteDistinctPlaceholder') + '" id="deleteDistinctSettings" />' +
 				core.fn.insert.icon('delete', 'bigger', false,
 					'title="' + core.fn.lang('settingDeleteDistinctPlaceholder') + '" ' +
@@ -614,12 +632,10 @@ core.fn = {
 				}
 				return false;
 			};
-
 			if (query.length > 0) {
 				//reminder: keep these kind of assignments out of loops for performance reasons!
 				var fuzzySearch = core.fn.setting.get('settingFuzzySearch') || Boolean(userInput.match(fuzzyOverride));
 				var fuzzyRatio = 2 - ((core.fn.setting.get('settingFuzzyThreshold') || 5) * .1); //fuzzy ratio of 1.5 by default is quite reasonable determined through trial and error
-
 				Object.keys(dataBaseObject).forEach(function (key) {
 					var haystack = dataBaseObject[key],
 						filtered = false;
@@ -634,7 +650,6 @@ core.fn = {
 							break;
 						}
 					}
-
 					if (!filtered) {
 						//compare every query part between whitespaces 
 						query.forEach(function (needle) {
@@ -693,26 +708,28 @@ core.fn = {
 				else console.log(what);
 				console.groupEnd(group);
 			}
-			if (w !== 'console') document.getElementById(w).innerHTML = what;
+			if (w !== 'console' && el(w)) el(w).innerHTML = what;
 		});
 	},
 	stringcompression: {
-		// this makes sense for expectable long strings that have to be uricomponent-encoded to save up a bit storage space e.g. within cookies
-		// do not use generally for short strings being bloated up (like settings etc) 
+		//string-compression always checks if it is more effective if an URI encoded value is compressed or left raw.
+		//compressed strings will be marked as such, returned values always are cookie-safe encoded or base64.
+
 		//LZW Compression/Decompression for Strings
 		//modified from https://gist.github.com/fliptopbox/6990878#file-string-compress-js-L1
 		compress: function (uncompressed) {
 			// Build the dictionary.
-			var dictionary = {},
+			var i, dictionary = {},
 				c,
 				wc,
 				w = '',
 				output = '',
-				dictSize = 256;
-			for (var i = 0; i < 256; i++) {
+				dictSize = 256,
+				compressed;
+			for (i = 0; i < 256; i++) {
 				dictionary[String.fromCharCode(i)] = i;
 			}
-			for (var i = 0; i < uncompressed.length; i++) {
+			for (i = 0; i < uncompressed.length; i++) {
 				c = uncompressed.charAt(i);
 				wc = w + c;
 				if (dictionary.hasOwnProperty(wc)) {
@@ -728,10 +745,16 @@ core.fn = {
 			if (w !== "") {
 				output += String.fromCharCode(dictionary[w]);
 			}
-			return encodeURIComponent(output);
+			compressed = 'compressed' + btoa(unescape(encodeURIComponent(output)));
+			uncompressed= encodeURIComponent(uncompressed);
+			var s = '';
+			return (uncompressed.length < compressed.length) ? uncompressed : compressed;
 		},
 		decompress: function (compressed) {
-			compressed=decodeURIComponent(compressed);
+			if (compressed.substring(0, 10) === 'compressed')
+				compressed = decodeURIComponent(escape(atob(compressed.substring(10))));
+			else
+				compressed = decodeURIComponent(compressed);
 			// Build the dictionary.
 			var i, tmp = [],
 				dictionary = [],
@@ -750,7 +773,7 @@ core.fn = {
 			compressed = tmp;
 			w = String.fromCharCode(compressed[0]);
 			result = w;
-			for (var i = 1; i < compressed.length; i++) {
+			for (i = 1; i < compressed.length; i++) {
 				k = compressed[i];
 				if (dictionary[k]) {
 					entry = dictionary[k];
@@ -944,7 +967,6 @@ var globalSearch = { //searches all modules using their api-methods from the sta
 					core.var.modules[mod].icon + core.var.modules[mod].display[core.var.selectedLanguage] + '<br />';
 				globalSearch.result[mod].sort(core.fn.sortBySecondColumn);
 				globalSearch.result[mod].forEach(function (key) {
-					//console.log(mod,key);
 					displayResult += key[0] + '<br />';
 				});
 				displayResult += '</div>';
