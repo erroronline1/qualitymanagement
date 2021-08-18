@@ -133,16 +133,15 @@ Public Sub ManualVersioning()
             setup("manualVersioning.versionTitle"), currentDocumentVersion + 1)
     End If
     releasedate = InputBox(setup("manualVersioning.releasedatePrompt") & ": " & ThisDocument.Variables("releasedate").Value, setup("manualVersioning.releasedateTitle"), format(Date, "yyyymmdd"))
-    If currentDocumentVersion And Not futureVersion = vbNullString And CInt(futureVersion)<>0 Then
-        currentDocumentVersion = futureVersion
+    If currentDocumentVersion And isNumeric(futureVersion) Then
+        If CInt(futureVersion) <> 0 Then currentDocumentVersion = futureVersion
         ThisDocument.Variables("version").Value = currentDocumentVersion
     End If
     If Not releasedate = vbNullString Then
         ThisDocument.Variables("releasedate").Value = releasedate
     End If
     ' guide through releasing new document version if user applied values only
-    If (currentDocumentVersion And  Not releasedate = vbNullString) _
-        Or (currentDocumentVersion = False And Not releasedate = vbNullString) Then
+    If Not releasedate = vbNullString Then
         UpdateAndExport
     End If
 End Sub
