@@ -161,8 +161,8 @@ ticketorder.fn = {
 		form += '</tr></table>';
 		form += '<input type="button" value="' + core.fn.lang('orderAdd', 'ticketorder') + '" onclick="ticketorder.fn.addrow()" />' +
 			'<br /><br /><textarea id="orderNote" rows="5" style="width:90%" placeholder="' + core.fn.lang('orderNote', 'ticketorder') + '"></textarea>' +
-			'<br /><br /><input type="submit" id="submitOrder" disabled value="' + core.fn.lang('orderSubmit', 'ticketorder') + '" />';
-
+			'<br /><br /><input type="submit" id="submitOrder" disabled value="' + core.fn.lang('orderSubmit', 'ticketorder') + '" />' +
+			core.fn.insert.limitBar('11.6em', core.fn.lang('ticketorderLimitBar', 'ticketorder'));
 		form += '<hr /><input type="button" id="confirmOrder" value="' + core.fn.lang('orderConfirm', 'ticketorder') + '" onclick=\'ticketorder.fn.drm.confirmform()\' />' +
 			'<br /><br /><a id="mailto" href="javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\',\'\')">' +
 			core.fn.insert.icon('email') + core.fn.lang('openMailApp', 'ticketorder') + '</a><br /><br />';
@@ -205,7 +205,6 @@ ticketorder.fn = {
 			//prepare order object, add properties according to form fields and language chunks
 			var orderobj = {}
 			orderobj.subject = core.fn.lang('orderMailSubject', 'ticketorder') + el('ordererDept').value + ' | ' + el('orderer').value;
-			orderobj.captionCheckTicket = ticketorder.var.newTicket;
 			['notcommissioned', 'commissioned', 'retour', 'service'].forEach(function (field) {
 				if (el(field).checked) orderobj.type = core.fn.lang(field, 'ticketorder');
 			});
@@ -259,6 +258,7 @@ ticketorder.fn = {
 						var orderobj = JSON.parse(orders);
 						output += orderobj.subject + '<br /><br />';
 						output += '<i>' + orderobj.type + '</i><br /><br />'
+						output += core.fn.lang('captionCheckTicket', 'ticketorder') + ': ' + ticketorder.var.newTicket + '<br />';
 						Object.keys(orderobj).forEach(function (key) {
 							if (['subject', 'type', 'items'].indexOf(key) === -1) {
 								output += core.fn.lang(key, 'ticketorder') + ": " + orderobj[key] + '<br />';
@@ -299,6 +299,7 @@ ticketorder.fn = {
 					}
 				}
 			}
+			core.fn.limitBar(core.fn.setting.localStorage.maxSpace() - core.fn.setting.localStorage.remainingSpace(), core.fn.setting.localStorage.maxSpace());
 			return output;
 		},
 		clear: function () {

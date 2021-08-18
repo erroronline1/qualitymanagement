@@ -176,6 +176,10 @@ ticketorder.var = {
 		apiItemsFound: {
 			en: ' tickets found',
 			de: ' Tickets gefunden'
+		},
+		ticketorderLimitBar: {
+			en: 'remaining space to store orders',
+			de: 'verbleibender Speicher um Bestellungen zu sammeln'
 		}
 	},
 	disableOutputSelect: true,
