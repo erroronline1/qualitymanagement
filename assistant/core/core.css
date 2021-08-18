@@ -345,6 +345,10 @@ input[type='text'].search {
 	flex: 1 1 auto;
 }
 
+input:disabled {
+	opacity:.6;
+}
+
 span.search {
 	padding: .375em 0;
 	max-width: 2em;
@@ -383,13 +387,13 @@ hr {
 	margin: 1em;
 }
 
-#mailtoLimitBar {
+#limitBar {
 	display: block;
 	height: .5em;
 	border: 1px solid;
 }
 
-#mailtoLimit {
+#limitIndicator {
 	height: 100%;
 }
 
