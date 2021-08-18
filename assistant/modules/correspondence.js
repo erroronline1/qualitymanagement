@@ -68,7 +68,7 @@ correspondence.fn = {
 				output += '<br />';
 			});
 			core.fn.stdout('output', output);
-			core.fn.mailtoLimit(output);
+			core.fn.limitBar(core.fn.escapeHTML(output, true).length, core.var.directMailSize);
 			//reassign variable value for mailto after actual output
 			if (output.length > core.var.directMailSize) output = core.fn.lang('errorMailSizeExport');
 			el('mailto').href = 'javascript:core.fn.dynamicMailto(\'\',\'\',\'' + output + '\')';
@@ -100,7 +100,7 @@ correspondence.fn = {
 				(typeof additionalOptions !== "undefined" && additionalOptions ? '<br />' + additionalOptions : '') +
 				(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '" target="_blank">' + core.fn.insert.icon('word') + core.fn.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.fn.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
 				'<br /><br /><a id="mailto" href="javascript:core.fn.dynamicMailto()">' + core.fn.insert.icon('email') + core.fn.lang('openMailApp', 'correspondence') + '</a>' +
-				core.fn.insert.mailtoLimit('13em') +
+				core.fn.insert.limitBar('13em', core.fn.lang('mailtoLimitBar')) +
 				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.fn.insert.icon('outlook') + core.fn.lang('openOutlook', 'correspondence') + '</a>' : '');
 			core.fn.stdout('temp', output);
 			if (value(query) !== '') correspondence.fn.gen(query);

@@ -94,7 +94,7 @@ input[type='range'] {
 }
 
 .checkmark,
-#mailtoLimitBar {
+#limitBar {
 	border-color: rgba(46, 52, 64, .5);
 }
 
@@ -189,14 +189,14 @@ hr {
 	background-color: rgba(46, 52, 64, .5);
 }
 
-#mailtoLimit.green {
+#limitIndicator.green {
 	background-color: #a3be8c;
 }
 
-#mailtoLimit.orange {
+#limitIndicator.orange {
 	background-color: #d08770;
 }
 
-#mailtoLimit.red {
+#limitIndicator.red {
 	background-color: #bf616a;
 }

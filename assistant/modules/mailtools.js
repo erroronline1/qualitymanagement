@@ -38,8 +38,8 @@ mailtools.fn = {
 			core.fn.lang('formRecipientListCaption', 'mailtools') + ':<br /><textarea id="names" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.fn.lang('formRecipientListPlaceholder', 'mailtools') + '"></textarea> ' +
 			'<textarea id="adresses" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.fn.lang('formRecipientMailPlaceholder', 'mailtools') + '"></textarea><br />' +
 			core.fn.lang('formContentCaption', 'mailtools') + ':<br /><input type="text" style="width:98%" id="subject" placeholder="' + core.fn.lang('formSubjectPlaceholder', 'mailtools') + '"><br />' +
-			'<textarea id="body" rows="10" style="width:98%;" placeholder="' + core.fn.lang('formBodyPlaceholder', 'mailtools') + '" onkeydown="core.fn.mailtoLimit(this.value)"></textarea>' +
-			core.fn.insert.mailtoLimit());
+			'<textarea id="body" rows="10" style="width:98%;" placeholder="' + core.fn.lang('formBodyPlaceholder', 'mailtools') + '" onkeydown="core.fn.limitBar(core.fn.escapeHTML(this.value, true).length, core.var.directMailSize)"></textarea>' +
+			core.fn.insert.limitBar(false, core.fn.lang('mailtoLimitBar')));
 		core.fn.stdout('output', '');
 		core.history.write(['mailtools.fn.init(\'serialmail\')']);
 	},

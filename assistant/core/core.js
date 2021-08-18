@@ -213,8 +213,8 @@ core.fn = {
 			if (title) return ['<span ' + title + '>', rtrn, '</span>'].join('');
 			else return rtrn;
 		},
-		mailtoLimit: function (width) {
-			return '<div id="mailtoLimitBar" style="width:' + (width || '100%') + '" title="' + core.fn.lang('mailtoLimitBar') + '"><div id="mailtoLimit"></div></div>';
+		limitBar: function (width, title) {
+			return '<div id="limitBar" style="width:' + (width || '100%') + '" title="' + title + '"><div id="limitIndicator"></div></div>';
 		},
 		radio: function (label, name, id, checked, additionalProperty, title) {
 			return '<label class="custominput"' + (title ? ' title="' + title + '"' : '') + '>' + label + '<input type="radio" name="' + name + '" id="' + id + '" ' + (eval(checked) ? 'checked="checked"' : '') + (additionalProperty ? additionalProperty : '') + ' /><span class="checkmark"></span></label>';
@@ -297,18 +297,17 @@ core.fn = {
 			}, core.fn.setting.get('settingVarPreloadTime') || 50);
 		}
 	},
-	mailtoLimit: function (body) {
-		var bodysize = core.fn.escapeHTML(body, true).length;
-		el('mailtoLimit').style.width = Math.min(bodysize / core.var.directMailSize, 1) * 100 + "%";
-		if (bodysize > core.var.directMailSize) {
-			el('mailtoLimit').classList.remove('green', 'orange');
-			el('mailtoLimit').classList.add('red');
-		} else if (bodysize > core.var.directMailSize * .8) {
-			el('mailtoLimit').classList.remove('green', 'red');
-			el('mailtoLimit').classList.add('orange');
+	limitBar: function (actual, max) {
+		el('limitIndicator').style.width = Math.min(actual / max, 1) * 100 + "%";
+		if (actual > max) {
+			el('limitIndicator').classList.remove('green', 'orange');
+			el('limitIndicator').classList.add('red');
+		} else if (actual > max * .8) {
+			el('limitIndicator').classList.remove('green', 'red');
+			el('limitIndicator').classList.add('orange');
 		} else {
-			el('mailtoLimit').classList.remove('orange', 'red');
-			el('mailtoLimit').classList.add('green');
+			el('limitIndicator').classList.remove('orange', 'red');
+			el('limitIndicator').classList.add('green');
 		}
 	},
 	maxMailSize: function () {
@@ -398,16 +397,18 @@ core.fn = {
 					return false;
 				}
 			},
+			maxSpace: function () {
+				return this.api() ? 5000000 : 10234;
+			},
 			remainingSpace: function () {
 				if (this.api()) {
-					var max = 5000000,
-						current = 0; //tested in compatible browsers to be slightly more than 5mb
+					var current = 0; //tested in compatible browsers to be slightly more than 5mb
 					Object.keys(localStorage).forEach(function (key) {
 						current += key.length + localStorage.getItem(key).length;
 					});
-					return max - current;
+					return this.maxSpace() - current;
 				} else {
-					return 10234 - document.cookie.length; //maximum overall cookie storage size
+					return this.maxSpace() - document.cookie.length; //maximum overall cookie storage size
 				}
 			}
 		},
@@ -528,7 +529,7 @@ core.fn = {
 			});
 			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingPerformanceMonitor\')"') +
 				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.fn.setting.get('settingOutputMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingOutputMonitor\')"') +
-				'<br /><br />' + core.fn.lang('settingDebugSpaceCaption') + core.fn.setting.localStorage.remainingSpace() + ' Byte<br />' +
+				'<br /><br />' + core.fn.lang('settingDebugSpaceCaption') + core.fn.setting.localStorage.remainingSpace() + '/' + core.fn.setting.localStorage.maxSpace() + ' Byte<br />' +
 				core.fn.lang('settingDebugDumpCaption') + ':<br /> ' + core.fn.insert.checkbox(core.fn.lang('settingDebugCompressedCaption') + ' @' + Math.round(100 * compressed / uncompressed) + '%', 'settingCompressedDump', (core.fn.setting.get('settingCompressedDump') || 0), 'onchange="core.fn.setting.switch(\'settingCompressedDump\')"') +
 				'<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
 				'<br /><input type="text" placeholder="' + core.fn.lang('settingDeleteDistinctPlaceholder') + '" id="deleteDistinctSettings" />' +
