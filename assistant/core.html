@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=11">
 	<script src="core/core.js">
 		//////////////////////////////////////////////////////////////
-		//  2020 by error on line 1 (erroronline.one)
+		//  2020-2021 by error on line 1 (erroronline.one)
 		//
 		//  modular software platform to handle different javascripts
 		//  for automated dataprocessing where security setting leave
@@ -24,10 +24,8 @@
 	<script src="library/core/core.fn.languageSynthesis.js"></script>
 	<script src="library/core/core.userDialogue.js"></script>
 	<script src="library/core/core.drm.js"></script>
-
 	<link href="core/core.css" rel="stylesheet" type="text/css" />
 	<link id="colortheme" rel="stylesheet" type="text/css" />
-
 </head>
 
 <body>
@@ -48,13 +46,12 @@
 				core.fn.insert.icon('feedbackrequest', 'bigger', false,
 					'title="' + core.fn.lang('homeMenuFeedbackRequest') +
 					'" onclick="core.fn.dynamicMailto(core.var.eMailAddress.admin.address, document.title)"') +
-					core.fn.insert.icon('settings', 'bigger', false,
+				core.fn.insert.icon('settings', 'bigger', false,
 					'title="' + core.fn.lang('settingMenuEntry') +
 					'" onclick="core.fn.popup(core.fn.setting.setup()); return;"') +
 				'</aside>');
 		</script>
 	</header>
-
 	<main>
 		<nav id="menu">
 			<span id="title">
@@ -77,7 +74,6 @@
 		<div id="popuptext"></div>
 	</div>
 	<div id="growlNotif"></div>
-
 	<script>
 		select_module();
 		document.title = core.fn.lang('title');
