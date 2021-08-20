@@ -3,7 +3,7 @@ Option Explicit
 Private Sub Worksheet_BeforeDoubleClick(ByVal target As Range, Cancel As Boolean)
     Dim setup As New Collection
     Set setup = Locals.setupVendorList
-    If Essentials.getWritePermission() Then
+    If Essentials.WriteFile(ActiveWorkbook.path & "\writepermission.temp", "1", True) Then
         'define values from this sheet and initialize variables
         Dim lastrow: lastrow = Essentials.LastRowOrColumn(ThisWorkbook, "rows", setup("vendor.sheetName"), 1, setup("vendor.vendorColumn"), False)
         
