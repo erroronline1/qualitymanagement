@@ -94,7 +94,7 @@ input[type='range'] {
 }
 
 .checkmark,
-#limitBar {
+.limitBar {
 	border-color: rgba(46, 52, 64, .5);
 }
 
@@ -189,14 +189,14 @@ hr {
 	background-color: rgba(46, 52, 64, .5);
 }
 
-#limitIndicator.green {
+.green {
 	background-color: #a3be8c;
 }
 
-#limitIndicator.orange {
+.orange {
 	background-color: #d08770;
 }
 
-#limitIndicator.red {
+.red {
 	background-color: #bf616a;
 }
