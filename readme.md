@@ -722,9 +722,9 @@ a shortened overview of the core-functions that can be made use of in future mod
 
 `core.fn.setting.clear()` resets the whole application
 
-`core.fn.stringcompression.compress()` returns an lzh-compressed string to save some bytes for storage of long strings. this is currently implemented selective but could most possably be used for every storage. general use has yet to be tested.
+`core.fn.stringcompression.compress()` returns an lzh-compressed and encoded string to occasionally save some bytes for storage of long strings. this uses [the magnificent library by pieroxy](https://github.com/pieroxy/lz-string). still not every information can be efficiently compressed, so it will always be checked if the compression really saves the amount data
 
-`core.fn.stringcompression.decompress()` reverts the compressed string
+`core.fn.stringcompression.decompress()` reverts the occasionally compressed string
 
 `core.fn.drm.table(table)` returns a translated table according to data rights managament excel sheet
 
