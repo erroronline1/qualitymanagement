@@ -213,8 +213,9 @@ core.fn = {
 			if (title) return ['<span ' + title + '>', rtrn, '</span>'].join('');
 			else return rtrn;
 		},
-		limitBar: function (width, title) {
-			return '<div id="limitBar" style="width:' + (width || '100%') + '" title="' + title + '"><div id="limitIndicator"></div></div>';
+		limitBar: function (width, title, id) {
+			if (id === undefined) id = 'limitBar';
+			return '<div id="' + id + '" class="limitBar" style="width:' + (width || '100%') + '" title="' + title + '"><div id="' + id + 'Indicator"></div></div>';
 		},
 		radio: function (label, name, id, checked, additionalProperty, title) {
 			return '<label class="custominput"' + (title ? ' title="' + title + '"' : '') + '>' + label + '<input type="radio" name="' + name + '" id="' + id + '" ' + (eval(checked) ? 'checked="checked"' : '') + (additionalProperty ? additionalProperty : '') + ' /><span class="checkmark"></span></label>';
@@ -297,17 +298,18 @@ core.fn = {
 			}, core.fn.setting.get('settingVarPreloadTime') || 50);
 		}
 	},
-	limitBar: function (actual, max) {
-		el('limitIndicator').style.width = Math.min(actual / max, 1) * 100 + "%";
+	limitBar: function (actual, max, id) {
+		if (id===undefined)id='limitBar'
+		el(id+'Indicator').style.width = Math.min(actual / max, 1) * 100 + "%";
 		if (actual > max) {
-			el('limitIndicator').classList.remove('green', 'orange');
-			el('limitIndicator').classList.add('red');
+			el(id+'Indicator').classList.remove('green', 'orange');
+			el(id+'Indicator').classList.add('red');
 		} else if (actual > max * .8) {
-			el('limitIndicator').classList.remove('green', 'red');
-			el('limitIndicator').classList.add('orange');
+			el(id+'Indicator').classList.remove('green', 'red');
+			el(id+'Indicator').classList.add('orange');
 		} else {
-			el('limitIndicator').classList.remove('orange', 'red');
-			el('limitIndicator').classList.add('green');
+			el(id+'Indicator').classList.remove('orange', 'red');
+			el(id+'Indicator').classList.add('green');
 		}
 	},
 	maxMailSize: function () {
@@ -442,7 +444,7 @@ core.fn = {
 				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupAdvanced());" style="cursor:pointer">' + core.fn.insert.icon('advancedsetting') + core.fn.lang('settingAdvancedCaption') + '</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupModules());" style="cursor:pointer">' + core.fn.insert.icon('moduleselector') + core.fn.lang('settingModuleselectorCaption') + '</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupKey());" style="cursor:pointer">' + core.fn.insert.icon('key') + core.fn.lang('settingKeyCaption') + '</span><br />' +
-				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupDebug());" style="cursor:pointer">' + core.fn.insert.icon('bug') + 'Debugging</span><br />' +
+				'<span onclick="core.fn.stdout(\'settingContent\', core.fn.setting.setupDebug()); core.fn.limitBar(core.fn.setting.localStorage.maxSpace() - core.fn.setting.localStorage.remainingSpace(), core.fn.setting.localStorage.maxSpace(),\'debugSpace\');" style="cursor:pointer">' + core.fn.insert.icon('bug') + 'Debugging</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', updateTracker.enlist());" style="cursor:pointer">' + core.fn.insert.icon('update') + 'Updates</span><br />' +
 				'<span onclick="core.fn.stdout(\'settingContent\', aboutNotification[core.var.selectedLanguage]+\'<hr />\'+core.fn.lang(\'settingGeneralHint\')+\'<hr />\'+randomTip.enlist());" style="cursor:pointer">' + core.fn.insert.icon('info') + 'About</span><br />' +
 				'</article>' +
@@ -529,7 +531,8 @@ core.fn = {
 			});
 			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingPerformanceMonitor\')"') +
 				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.fn.setting.get('settingOutputMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingOutputMonitor\')"') +
-				'<br /><br />' + core.fn.lang('settingDebugSpaceCaption') + core.fn.setting.localStorage.remainingSpace() + '/' + core.fn.setting.localStorage.maxSpace() + ' Byte<br />' +
+				'<br /><br />' + core.fn.lang('settingDebugSpaceCaption') + (core.fn.setting.localStorage.maxSpace() - core.fn.setting.localStorage.remainingSpace()) + '/' + core.fn.setting.localStorage.maxSpace() + ' Byte<br />' +
+				core.fn.insert.limitBar(false, core.fn.lang('settingDebugSpaceCaption'),'debugSpace') + '<br />' +
 				core.fn.lang('settingDebugDumpCaption') + ':<br /> ' + core.fn.insert.checkbox(core.fn.lang('settingDebugCompressedCaption') + ' @' + Math.round(100 * compressed / uncompressed) + '%', 'settingCompressedDump', (core.fn.setting.get('settingCompressedDump') || 0), 'onchange="core.fn.setting.switch(\'settingCompressedDump\')"') +
 				'<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
 				'<br /><input type="text" placeholder="' + core.fn.lang('settingDeleteDistinctPlaceholder') + '" id="deleteDistinctSettings" />' +
@@ -668,14 +671,12 @@ core.fn = {
 				});
 			}
 			found = found.sort(core.fn.sortBySecondColumn) || 0
-
 			// deletes all results that have not the highest ranking if mandatory-flag is set, aka if only all query terms apply
 			if (mandatory && found) {
 				for (var i = found.length - 1; i > 0; i--) {
 					if (found[i][1] < found[0][1]) found.splice(i, 1);
 				}
 			}
-
 			return found;
 		},
 		relevance: {
@@ -716,79 +717,20 @@ core.fn = {
 		//string-compression always checks if it is more effective if an URI encoded value is compressed or left raw.
 		//compressed strings will be marked as such, returned values always are cookie-safe encoded or base64.
 
-		//LZW Compression/Decompression for Strings
-		//modified from https://gist.github.com/fliptopbox/6990878#file-string-compress-js-L1
+		// using this wonderful piece of magic:
+		// LZ-based compression algorithm, version 1.4.4
+		// Copyright (c) 2013 Pieroxy <pieroxy@pieroxy.net>
+		// https://github.com/pieroxy/lz-string
 		compress: function (uncompressed) {
-			// Build the dictionary.
-			var i, dictionary = {},
-				c,
-				wc,
-				w = '',
-				output = '',
-				dictSize = 256,
-				compressed;
-			for (i = 0; i < 256; i++) {
-				dictionary[String.fromCharCode(i)] = i;
-			}
-			for (i = 0; i < uncompressed.length; i++) {
-				c = uncompressed.charAt(i);
-				wc = w + c;
-				if (dictionary.hasOwnProperty(wc)) {
-					w = wc;
-				} else {
-					output += String.fromCharCode(dictionary[w]);
-					// add wc to the dictionary.
-					dictionary[wc] = dictSize++;
-					w = String(c);
-				}
-			}
-			// add last code for w.
-			if (w !== "") {
-				output += String.fromCharCode(dictionary[w]);
-			}
-			compressed = 'compressed' + btoa(unescape(encodeURIComponent(output)));
+			compressed = 'compressed' + LZString.compressToEncodedURIComponent(uncompressed);
 			uncompressed = encodeURIComponent(uncompressed);
 			return (uncompressed.length < compressed.length) ? uncompressed : compressed;
 		},
 		decompress: function (compressed) {
 			if (compressed.substring(0, 10) === 'compressed')
-				compressed = decodeURIComponent(escape(atob(compressed.substring(10))));
+				result = LZString.decompressFromEncodedURIComponent(compressed.substring(10));
 			else
-				compressed = decodeURIComponent(compressed);
-			// Build the dictionary.
-			var i, tmp = [],
-				dictionary = [],
-				w,
-				result,
-				k,
-				entry = '',
-				dictSize = 256;
-			for (var i = 0; i < 256; i++) {
-				dictionary[i] = String.fromCharCode(i);
-			}
-			// convert string into Array.
-			for (i = 0; i < compressed.length; i += 1) {
-				tmp.push(compressed[i].charCodeAt(0));
-			}
-			compressed = tmp;
-			w = String.fromCharCode(compressed[0]);
-			result = w;
-			for (i = 1; i < compressed.length; i++) {
-				k = compressed[i];
-				if (dictionary[k]) {
-					entry = dictionary[k];
-				} else {
-					if (k === dictSize) {
-						entry = w + w.charAt(0);
-					} else {
-						return null;
-					}
-				}
-				result += entry;
-				// Add w+entry[0] to the dictionary.
-				dictionary[dictSize++] = w + entry.charAt(0);
-				w = entry;
-			}
+				result = decodeURIComponent(compressed);
 			return result;
 		}
 	},
