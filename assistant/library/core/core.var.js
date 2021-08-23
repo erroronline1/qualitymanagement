@@ -379,8 +379,8 @@ core.var = {
 			de: 'aktuell gespeicherte Einstellungen'
 		},
 		settingDebugSpaceCaption: {
-			en: 'Available storage space: ',
-			de: 'Verfügbarer Speicherplatz: '
+			en: 'Used storage space: ',
+			de: 'Genutzter Speicherplatz: '
 		},
 		settingDeleteDistinctPlaceholder: {
 			en: 'delete distinct settings, csv',
