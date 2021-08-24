@@ -65,7 +65,7 @@ ticketorder.api = {
 		display = (cart.length ? core.fn.lang('currentCart', 'ticketorder') + cart.length + '<br />' : '') +
 			(orders ? core.fn.lang('currentOrders', 'ticketorder') + orders + '<br />' : '');
 		//add value and relevance
-		globalSearch.contribute('ticketorder', [display, 1]);
+		if (display) globalSearch.contribute('ticketorder', [display, 1]);
 		core.performance.stop('ticketorder.api.currentStatus()');
 	},
 };

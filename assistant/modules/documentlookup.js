@@ -38,7 +38,7 @@ documentlookup.api = {
 		core.fn.loadScript(core.var.moduleDataDir + documentlookup.var.selectedModule() + '.js');
 		setTimeout(function () {
 			var display = documentlookup.fn.favouriteHandler.get();
-			globalSearch.contribute('documentlookup', [display, 1]);
+			if (display) globalSearch.contribute('documentlookup', [display, 1]);
 			core.performance.stop('documentlookup.api.currentStatus()');
 		}, (core.fn.setting.get('settingGlobalSearchTime') / 6 || .5) * 1000);
 	}

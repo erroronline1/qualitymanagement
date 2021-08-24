@@ -35,7 +35,7 @@ timetable.api = {
 	},
 	currentStatus: function () {
 		var display = timetable.fn.favouriteHandler.get();
-		globalSearch.contribute('timetable', [display, 1]);
+		if (display) globalSearch.contribute('timetable', [display, 1]);
 		core.performance.stop('timetable.api.currentStatus()');
 	}
 };
@@ -102,7 +102,6 @@ timetable.fn = {
 		get: function (tools) {
 			var output = core.fn.setting.get('favouritetimetable');
 			if (output) {
-
 				var tfav2 = output.split(',');
 				output = tools !== undefined ? '<br />' + core.fn.lang('favouriteCaption', 'timetable') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
 					core.fn.insert.icon('delete', 'bigger', false, 'title="' + core.fn.lang('favouriteDeleteTitle', 'timetable') + '" onclick="timetable.fn.favouriteHandler.reset(\'\')"') +
