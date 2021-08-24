@@ -33,6 +33,11 @@ timetable.api = {
 		}
 		core.performance.stop('timetable.api.available(\'' + search + '\')');
 	},
+	currentStatus: function () {
+		var display = timetable.fn.favouriteHandler.get();
+		globalSearch.contribute('timetable', [display, 1]);
+		core.performance.stop('timetable.api.currentStatus()');
+	}
 };
 timetable.fn = {
 	open: function (name, js) {
@@ -92,16 +97,16 @@ timetable.fn = {
 			} else if (!deleteValue) output = value + ',1';
 			if (output) core.fn.setting.set('favouritetimetable', output);
 			else core.fn.setting.unset('favouritetimetable')
-			core.fn.stdout('favourites', timetable.fn.favouriteHandler.get());
+			core.fn.stdout('favourites', timetable.fn.favouriteHandler.get('withtools'));
 		},
-		get: function () {
+		get: function (tools) {
 			var output = core.fn.setting.get('favouritetimetable');
 			if (output) {
 
 				var tfav2 = output.split(',');
-				output = '<br />' + core.fn.lang('favouriteCaption', 'timetable') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
+				output = tools !== undefined ? '<br />' + core.fn.lang('favouriteCaption', 'timetable') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
 					core.fn.insert.icon('delete', 'bigger', false, 'title="' + core.fn.lang('favouriteDeleteTitle', 'timetable') + '" onclick="timetable.fn.favouriteHandler.reset(\'\')"') +
-					'</span><br /><br />';
+					'</span><br /><br />' : '';
 				for (var person = 0; person < tfav2.length; person += 2) {
 					var favName = tfav2[person];
 					output += timetable.fn.linkfile(favName, true) + '<br />';
@@ -133,7 +138,7 @@ timetable.fn = {
 			'</form>');
 		el('timetablequery').focus();
 		core.fn.stdout('temp', core.fn.lang('explanation', 'timetable') + '<br />');
-		core.fn.stdout('output', '<div id="favourites">' + timetable.fn.favouriteHandler.get() + '</div>');
+		core.fn.stdout('output', '<div id="favourites">' + timetable.fn.favouriteHandler.get('withtools') + '</div>');
 		if (value(query) !== '') timetable.fn.search(value(query));
 		core.performance.stop('timetable.fn.init(\'' + value(query) + '\')');
 	},

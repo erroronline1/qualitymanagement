@@ -180,6 +180,14 @@ ticketorder.var = {
 		ticketorderLimitBar: {
 			en: 'remaining space to store orders',
 			de: 'verbleibender Speicher um Bestellungen zu sammeln'
+		},
+		currentCart:{
+			en: 'items in cart: ',
+			de: 'Artikel im Einkaufswagen: '
+		},
+		currentOrders:{
+			en: 'orders for approval: ',
+			de: 'Bestellungen zur Freigabe: '
 		}
 	},
 	disableOutputSelect: true,

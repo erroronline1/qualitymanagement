@@ -29,6 +29,10 @@ mailtools.api = {
 		});
 		core.performance.stop('mailtools.api.available(\'' + search + '\')');
 	},
+	currentStatus: function () {
+		core.performance.stop('mailtools.api.currentStatus()');
+		return false;
+	}
 };
 mailtools.fn = {
 	serialmailinput: function () {

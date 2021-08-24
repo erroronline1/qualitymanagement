@@ -39,6 +39,10 @@ stocklist.api = {
 	addToCart: function (index) {
 		// this only makes sense in case of using the ticketorder-module
 		core.fn.setting.set('moduleExchangeTicketorder', core.fn.setting.get('moduleExchangeTicketorder') + index + ",");
+	},
+	currentStatus: function () {
+		core.performance.stop('stocklist.api.currentStatus()');
+		return false;
 	}
 };
 stocklist.fn = {
@@ -75,6 +79,7 @@ stocklist.fn = {
 						helpChangeItemCaption: core.fn.lang('helpChangeItemCaption', 'stocklist'),
 						helpDeleteItemCaption: core.fn.lang('helpDeleteItemCaption', 'stocklist'),
 					};
+
 					function mklink(str) {
 						//replaces http://website and c:/folder/file with links
 						//given folders may contain whitespaces but are not embedded into text

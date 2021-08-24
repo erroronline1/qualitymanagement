@@ -33,6 +33,14 @@ documentlookup.api = {
 			});
 		}
 		core.performance.stop('documentlookup.api.processAfterImport(\'' + search + '\', \'' + objectname + '\')', found);
+	},
+	currentStatus: function () {
+		core.fn.loadScript(core.var.moduleDataDir + documentlookup.var.selectedModule() + '.js');
+		setTimeout(function () {
+			var display = documentlookup.fn.favouriteHandler.get();
+			globalSearch.contribute('documentlookup', [display, 1]);
+			core.performance.stop('documentlookup.api.currentStatus()');
+		}, (core.fn.setting.get('settingGlobalSearchTime') / 6 || .5) * 1000);
 	}
 };
 documentlookup.fn = {
@@ -72,9 +80,9 @@ documentlookup.fn = {
 				} else output += ',' + value + ',1';
 			} else output = value + ',1';
 			core.fn.setting.set('favouritedocs', output);
-			core.fn.stdout('favourites', documentlookup.fn.favouriteHandler.get());
+			core.fn.stdout('favourites', documentlookup.fn.favouriteHandler.get('withtools'));
 		},
-		get: function () {
+		get: function (tools) {
 			var output = core.fn.setting.get('favouritedocs');
 			if (output) {
 				var tfav = tfav2 = new Array();
@@ -85,12 +93,12 @@ documentlookup.fn = {
 					tfav[documentlookup.fn.favouriteHandler.prepare(interimobject[key][0])] = documentlookup.fn.linkfile([interimobject[key][0], interimobject[key][1]], true, interimobject[key][2], 1);
 				});
 				var tfav2 = output.split(',');
-				output = '<br />' + core.fn.lang('favouriteCaption', 'documentlookup') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
+				output = (tools !== undefined) ? '<br />' + core.fn.lang('favouriteCaption', 'documentlookup') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
 					core.fn.insert.icon('delete', 'bigger', false, 'title="' + core.fn.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.reset(\'\')"') +
 					core.fn.insert.icon('clipboard', 'bigger', false, 'title="' + core.fn.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.reset(\'' + documentlookup.var.defaultFavourites + '\')"') +
 					core.fn.insert.icon('refresh', 'bigger', false, 'title="' + core.fn.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.reset(\'' + core.fn.setting.get('customfavouritedocs') + '\')"') +
 					core.fn.insert.icon('save', 'bigger', false, 'title="' + core.fn.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.customreset()"') +
-					'</span><br /><br />';
+					'</span><br /><br />' : '';
 				for (var i = 0; i < tfav2.length; i += 2) {
 					if (tfav[tfav2[i]] !== undefined) output += tfav[tfav2[i]] + '<br />';
 				}
@@ -132,7 +140,7 @@ documentlookup.fn = {
 					core.fn.stdout('output', list);
 					list = '';
 				} else core.fn.stdout('output', core.fn.lang('errorNothingFound', 'documentlookup', query));
-			} else core.fn.stdout('output', '<div id="favourites">' + (documentlookup.fn.favouriteHandler.get() || '') + '</div>');
+			} else core.fn.stdout('output', '<div id="favourites">' + (documentlookup.fn.favouriteHandler.get('withtools') || '') + '</div>');
 		}
 		core.performance.stop('documentlookup.fn.search(\'' + value(query) + '\')', found);
 		core.history.write(['documentlookup.fn.init(\'' + value(query) + '\')']);

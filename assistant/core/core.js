@@ -140,6 +140,7 @@ core.fn = {
 			'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>'
 		);
 		core.fn.stdout('output', '');
+		globalSearch.updates();
 		core.var.currentScope = null;
 		Object.keys(core.var.modules).forEach(function (key) {
 			if (el('module' + key) != 'undefined' && el('module' + key) != null) el('module' + key).checked = false;
@@ -299,17 +300,17 @@ core.fn = {
 		}
 	},
 	limitBar: function (actual, max, id) {
-		if (id===undefined)id='limitBar'
-		el(id+'Indicator').style.width = Math.min(actual / max, 1) * 100 + "%";
+		if (id === undefined) id = 'limitBar'
+		el(id + 'Indicator').style.width = Math.min(actual / max, 1) * 100 + "%";
 		if (actual > max) {
-			el(id+'Indicator').classList.remove('green', 'orange');
-			el(id+'Indicator').classList.add('red');
+			el(id + 'Indicator').classList.remove('green', 'orange');
+			el(id + 'Indicator').classList.add('red');
 		} else if (actual > max * .8) {
-			el(id+'Indicator').classList.remove('green', 'red');
-			el(id+'Indicator').classList.add('orange');
+			el(id + 'Indicator').classList.remove('green', 'red');
+			el(id + 'Indicator').classList.add('orange');
 		} else {
-			el(id+'Indicator').classList.remove('orange', 'red');
-			el(id+'Indicator').classList.add('green');
+			el(id + 'Indicator').classList.remove('orange', 'red');
+			el(id + 'Indicator').classList.add('green');
 		}
 	},
 	maxMailSize: function () {
@@ -532,7 +533,7 @@ core.fn = {
 			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingPerformanceMonitor\')"') +
 				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.fn.setting.get('settingOutputMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingOutputMonitor\')"') +
 				'<br /><br />' + core.fn.lang('settingDebugSpaceCaption') + (core.fn.setting.localStorage.maxSpace() - core.fn.setting.localStorage.remainingSpace()) + '/' + core.fn.setting.localStorage.maxSpace() + ' Byte<br />' +
-				core.fn.insert.limitBar(false, core.fn.lang('settingDebugSpaceCaption'),'debugSpace') + '<br />' +
+				core.fn.insert.limitBar(false, core.fn.lang('settingDebugSpaceCaption'), 'debugSpace') + '<br />' +
 				core.fn.lang('settingDebugDumpCaption') + ':<br /> ' + core.fn.insert.checkbox(core.fn.lang('settingDebugCompressedCaption') + ' @' + Math.round(100 * compressed / uncompressed) + '%', 'settingCompressedDump', (core.fn.setting.get('settingCompressedDump') || 0), 'onchange="core.fn.setting.switch(\'settingCompressedDump\')"') +
 				'<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
 				'<br /><input type="text" placeholder="' + core.fn.lang('settingDeleteDistinctPlaceholder') + '" id="deleteDistinctSettings" />' +
@@ -900,9 +901,10 @@ var globalSearch = { //searches all modules using their api-methods from the sta
 		if (typeof this.result[property] === 'undefined') this.result[property] = [value];
 		else this.result[property].push(value);
 	},
-	display: function () {
+	display: function (search) {
+		var displayResult = '';
 		if (Object.keys(this.result).length) {
-			var displayResult = '<br />';
+			displayResult = '<br />';
 			Object.keys(this.result).forEach(function (mod) {
 				displayResult += '<div class="items items143" onclick="core.fn.toggleHeight(this)">' +
 					core.fn.insert.expand() +
@@ -913,7 +915,7 @@ var globalSearch = { //searches all modules using their api-methods from the sta
 				});
 				displayResult += '</div>';
 			});
-		} else var displayResult = core.fn.lang('errorNothingFound', null, el('globalsearch').value);
+		} else if (search !== undefined) var displayResult = core.fn.lang('errorNothingFound', null, el('globalsearch').value);
 		core.fn.stdout('output', displayResult);
 		document.body.style.cursor = 'default';
 		core.performance.stop('globalSearch', null, 'endgroup');
@@ -922,7 +924,6 @@ var globalSearch = { //searches all modules using their api-methods from the sta
 		if (value(search) != '') {
 			core.performance.start('globalSearch', 'group');
 			document.body.style.cursor = 'progress';
-			var delay = 0;
 			//clear result on search initialization
 			globalSearch.result = {};
 			//load every module and fire api. api appends its result to the global search result because of asynchronous loading.
@@ -934,9 +935,26 @@ var globalSearch = { //searches all modules using their api-methods from the sta
 				}
 			});
 			setTimeout(function () {
-				globalSearch.display()
+				globalSearch.display(search)
 			}, (core.fn.setting.get('settingGlobalSearchTime') || 3) * 1000);
 			core.history.write(['core.fn.init(\'' + search + '\')']);
 		}
+	},
+	updates: function () {
+		core.performance.start('globalSearch', 'group');
+		document.body.style.cursor = 'progress';
+		//clear result on search initialization
+		globalSearch.result = {};
+		//load every module and fire api. api appends its result to the global search result because of asynchronous loading.
+		Object.keys(core.var.modules).forEach(function (key) {
+			if (typeof core.var.modules[key] === 'object') {
+				//load every module and fire api function
+				opt = 'modules/' + key + '.js';
+				core.fn.loadScript(opt, key + '.api.currentStatus()');
+			}
+		});
+		setTimeout(function () {
+			globalSearch.display()
+		}, (core.fn.setting.get('settingGlobalSearchTime') || 3) * 1000);
 	}
 };

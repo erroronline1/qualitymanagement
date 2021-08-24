@@ -31,6 +31,10 @@ documentbundles.api = {
 			});
 		}
 		core.performance.stop('documentbundles.api.processAfterImport(\'' + search + '\')');
+	},
+	currentStatus: function () {
+		core.performance.stop('documentbundles.api.currentStatus()');
+		return false;
 	}
 };
 documentbundles.fn = {

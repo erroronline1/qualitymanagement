@@ -15,6 +15,10 @@ auditplanner.api = {
 	available: function (search) {
 		core.performance.stop('auditplanner.api.available(\'' + search + '\')');
 		return;
+	},
+	currentStatus: function () {
+		core.performance.stop('auditplanner.api.currentStatus()');
+		return false;
 	}
 };
 auditplanner.fn = {

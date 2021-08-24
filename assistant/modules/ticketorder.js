@@ -55,6 +55,19 @@ ticketorder.api = {
 			});
 		}
 	},
+	currentStatus: function () {
+		var display, cart, orders;
+		cart = core.fn.setting.get('moduleExchangeTicketorder') || '';
+		if (cart) {
+			cart = cart.split(',');
+		cart.pop();}
+		orders = core.fn.setting.get('ticketorderAwaitingOrders');
+		display = (cart.length ? core.fn.lang('currentCart', 'ticketorder') + cart.length + '<br />' : '') +
+			(orders ? core.fn.lang('currentOrders', 'ticketorder') + orders + '<br />' : '');
+		//add value and relevance
+		globalSearch.contribute('ticketorder', [display, 1]);
+		core.performance.stop('ticketorder.api.currentStatus()');
+	},
 };
 ticketorder.fn = {
 	translate: {

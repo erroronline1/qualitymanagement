@@ -36,6 +36,10 @@ correspondence.api = {
 			globalSearch.contribute('correspondence', [display, value[1]]);
 		});
 		core.performance.stop('correspondence.api.processAfterImport(\'' + search + '\', \'' + submodule + '\', \'' + objectname + '\')');
+	},
+	currentStatus: function () {
+		core.performance.stop('correspondence.api.currentStatus()');
+		return false;
 	}
 };
 correspondence.fn = {

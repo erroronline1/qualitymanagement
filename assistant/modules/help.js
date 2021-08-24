@@ -27,6 +27,10 @@ help.api = {
 			});
 		}
 		core.performance.stop('help.api.processAfterImport(\'' + search + '\')');
+	},
+	currentStatus: function () {
+		core.performance.stop('help.api.currentStatus()');
+		return false;
 	}
 };
 help.fn = {
