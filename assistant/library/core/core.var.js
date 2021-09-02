@@ -466,17 +466,9 @@ core.var = {
 			en: 'Open email using Windows 7',
 			de: 'eMails öffnen in Windows 7'
 		},
-		settingMenusizeCaption: {
-			en: 'Menu size',
-			de: 'Menügröße'
-		},
 		settingMenuEntry: {
 			en: 'Settings',
 			de: 'Einstellungen'
-		},
-		settingMenusizeSelector: {
-			en: 'always small',
-			de: 'immer schmal'
 		},
 		settingModuleselectorCaption: {
 			en: 'Displayed modules',

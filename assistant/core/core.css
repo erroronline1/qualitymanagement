@@ -106,6 +106,7 @@ aside {
 	overflow-x: hidden;
 	overflow-y: auto;
 	user-select: none;
+	white-space: nowrap;
 }
 
 /* browser switch for ie
@@ -113,21 +114,10 @@ aside {
 (-ms-high-contrast: none) {
 }
 */
-@media (max-width:75em) {
-	#menu {
-		max-width: 4em;
-		white-space: nowrap;
-	}
-
-	#menu label {
-		color: transparent !important;
-	}
-}
 
 /* small menu like responsive version by user demand */
 #menu.small {
-	max-width: 4em;
-	white-space: nowrap;
+	flex: 0 0 4em;
 }
 
 #menu.small label {
@@ -346,7 +336,7 @@ input[type='text'].search {
 }
 
 input:disabled {
-	opacity:.6;
+	opacity: .6;
 }
 
 span.search {
@@ -369,16 +359,6 @@ textarea {
 
 a {
 	text-decoration: none;
-}
-
-a::after {
-	content: ' \2197';
-	padding-left: 0;
-	padding-right: 1em;
-}
-
-#search a::after {
-	content: none
 }
 
 hr {

@@ -27,6 +27,7 @@
 	<script src="library/core/core.drm.js"></script>
 	<link href="core/core.css" rel="stylesheet" type="text/css" />
 	<link id="colortheme" rel="stylesheet" type="text/css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -82,8 +83,6 @@
 		var fontsize = document.body.style.fontSize = ((core.fn.setting.get('settingFontsize') || 0) / 10 + 1) + 'em';
 		el('colortheme').href = 'core/' + ((core.fn.setting.get('settingTheme') in core.var.themes ? core.fn
 			.setting.get('settingTheme') : 'default') || 'default') + '.css';
-		core.fn.setting.get('settingSmallmenu') && el('menu').classList.add('small') && el('menuwidth').classList.add(
-			'small');
 		core.fn.init();
 		updateTracker.alert();
 	</script>
