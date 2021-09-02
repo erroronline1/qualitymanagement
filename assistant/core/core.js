@@ -150,6 +150,21 @@ core.fn = {
 		focusWithin(false);
 		core.history.write(['core.fn.init(\'' + value(query) + '\')']);
 	},
+	initMenu: function () {
+		if (typeof (core.var.modules) !== 'undefined') {
+			var output = '<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.lang('title', false) + '</span>';
+			Object.keys(core.var.modules).forEach(function (key) {
+				if (typeof core.var.modules[key] === 'object' && (core.fn.setting.isset('core_' + key) ? Boolean(Number(core.fn.setting.get('core_' + key))) : core.var.modules[key].enabledByDefault)) {
+					//create module-selector
+					opt = 'modules/' + key + '.js';
+					output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.fn.loadScript(\'' + opt + '\', \'' + key + '.fn.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
+					slider.modules.push(key);
+				}
+			});
+			output += '<br /><br />' + core.fn.insert.icon('decreaseindent', 'bigger', false, ' onclick="el(\'menu\').classList.toggle(\'small\'); this.style.transform=\'scale(\' + (el(\'menu\').classList.contains(\'small\')? -1 : 1) + \',1)\'"');
+			core.fn.stdout('menu', output);
+		} else core.fn.popup(core.fn.lang('errorLoadingModules'));
+	},
 	insert: { //handle repetitive design patterns
 		checkbox: function (label, id, checked, additionalProperty, title) {
 			return '<label class="custominput"' + (title ? ' title="' + title + '"' : '') + '>' + label + '<input type="checkbox" id="' + id + '" ' + (eval(checked) ? 'checked="checked" ' : '') + (additionalProperty ? additionalProperty : '') + ' /><span class="checkmark"></span></label>';
@@ -348,6 +363,34 @@ core.fn = {
 			setTimeout(function () {
 				el('popuptext').style.right = '0vw';
 			}, 100);
+		}
+	},
+	selectText: function (element) { //selection of output-content on click if not disabled
+		if (core.var.currentScope != null && (eval(core.var.currentScope).var.disableOutputSelect === "undefined" || !(eval(core.var.currentScope).var.disableOutputSelect))) {
+			if (core.fn.setting.get('coreNewWindowCopy')) {
+				var win = window.open("", "win"),
+					doc = win.document;
+				doc.open("text/html", "replace");
+				doc.write('<html><head><title>' + core.fn.lang('copycontentNewWindowCaption') + '</title><style>body {font-family:\'' + core.var.corporateFontFace + '\'; font-size:' + core.var.corporateFontSize + '; background-color:' + window.getComputedStyle(document.body, "").getPropertyValue("background-color") + '; font-color:' + window.getComputedStyle(document.body, "").getPropertyValue("color") + ';}</style></head><body onclick="window.self.close()"><div id="text">' + el(element).innerHTML + '</div></body></html>');
+				doc.close();
+				var text = doc.getElementById('text'),
+					range, selection;
+			} else {
+				var doc = document,
+					text = doc.getElementById(element),
+					range, selection, win = window.self;
+			}
+			if (doc.body.createTextRange) {
+				range = doc.body.createTextRange();
+				range.moveToElementText(text);
+				range.select();
+			} else if (window.getSelection) {
+				selection = win.getSelection();
+				range = doc.createRange();
+				range.selectNodeContents(text);
+				selection.removeAllRanges();
+				selection.addRange(range);
+			}
 		}
 	},
 	setting: { //core-object because of reusable switch-methods
@@ -849,53 +892,6 @@ var slider = { //just fancy animation of content on module change
 	}
 };
 
-function select_module() { //load module list and return the main menu
-	if (typeof (core.var.modules) !== 'undefined') {
-		var output = '<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.lang('title', false) + '</span>';
-		Object.keys(core.var.modules).forEach(function (key) {
-			if (typeof core.var.modules[key] === 'object' && (core.fn.setting.isset('core_' + key) ? Boolean(Number(core.fn.setting.get('core_' + key))) : core.var.modules[key].enabledByDefault)) {
-				//create module-selector
-				opt = 'modules/' + key + '.js';
-				output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.fn.loadScript(\'' + opt + '\', \'' + key + '.fn.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
-				slider.modules.push(key);
-			}
-		});
-		output += '<br /><br />' + core.fn.insert.icon('decreaseindent', 'bigger', false, ' onclick="el(\'menu\').classList.toggle(\'small\'); this.style.transform=\'scale(\' + (el(\'menu\').classList.contains(\'small\')? -1 : 1) + \',1)\'"');
-		core.fn.stdout('menu', output);
-	} else core.fn.popup(core.fn.lang('errorLoadingModules'));
-}
-
-function selectText(element) { //selection of output-content on click if not disabled
-	if (core.var.currentScope != null && (eval(core.var.currentScope).var.disableOutputSelect === "undefined" || !(eval(core.var.currentScope).var.disableOutputSelect))) {
-		if (core.fn.setting.get('coreNewWindowCopy')) {
-			var win = window.open("", "win"),
-				doc = win.document;
-			doc.open("text/html", "replace");
-			doc.write('<html><head><title>' + core.fn.lang('copycontentNewWindowCaption') + '</title><style>body {font-family:\'' + core.var.corporateFontFace + '\'; font-size:' + core.var.corporateFontSize + '; background-color:' + window.getComputedStyle(document.body, "").getPropertyValue("background-color") + '; font-color:' + window.getComputedStyle(document.body, "").getPropertyValue("color") + ';}</style></head><body onclick="window.self.close()"><div id="text">' + el(element).innerHTML + '</div></body></html>');
-			doc.close();
-
-			var text = doc.getElementById('text'),
-				range, selection;
-		} else {
-			var doc = document,
-				text = doc.getElementById(element),
-				range, selection, win = window.self;
-		}
-
-		if (doc.body.createTextRange) {
-			range = doc.body.createTextRange();
-			range.moveToElementText(text);
-			range.select();
-		} else if (window.getSelection) {
-			selection = win.getSelection();
-			range = doc.createRange();
-			range.selectNodeContents(text);
-			selection.removeAllRanges();
-			selection.addRange(range);
-		}
-	}
-}
-
 var globalSearch = { //searches all modules using their api-methods from the start page
 	result: {},
 	contribute: function (property, value) {
@@ -917,7 +913,7 @@ var globalSearch = { //searches all modules using their api-methods from the sta
 				displayResult += '</div>';
 			});
 		} else if (search !== undefined) var displayResult = core.fn.lang('errorNothingFound', null, el('globalsearch').value);
-		core.fn.stdout('output', displayResult);
+		if (core.var.currentScope === null) core.fn.stdout('output', displayResult);
 		document.body.style.cursor = 'default';
 		core.performance.stop('globalSearch', null, 'endgroup');
 	},

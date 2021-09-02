@@ -68,7 +68,7 @@
 		<div id="content">
 			<article id="temp">
 			</article>
-			<aside id="output" onclick="selectText('output')">
+			<aside id="output" onclick="core.fn.selectText('output')">
 			</aside>
 		</div>
 	</main>
@@ -77,7 +77,7 @@
 	</div>
 	<div id="growlNotif"></div>
 	<script>
-		select_module();
+		core.fn.initMenu();
 		document.title = core.fn.lang('title');
 		//load settings or defaults
 		var fontsize = document.body.style.fontSize = ((core.fn.setting.get('coreFontsize') || 0) / 10 + 1) + 'em';
