@@ -157,11 +157,11 @@ core.fn = {
 				if (typeof core.var.modules[key] === 'object' && (core.fn.setting.isset('core_' + key) ? Boolean(Number(core.fn.setting.get('core_' + key))) : core.var.modules[key].enabledByDefault)) {
 					//create module-selector
 					opt = 'modules/' + key + '.js';
-					output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.fn.loadScript(\'' + opt + '\', \'' + key + '.fn.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
+					output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" onclick="slider.slide(\'' + key + '\'); core.fn.loadScript(\'' + opt + '\', \'' + key + '.fn.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + '<div>' + core.var.modules[key].display[core.var.selectedLanguage] + '</div></label>';
 					slider.modules.push(key);
 				}
 			});
-			output += '<br /><br />' + core.fn.insert.icon('decreaseindent', 'bigger', false, ' onclick="el(\'menu\').classList.toggle(\'small\'); this.style.transform=\'scale(\' + (el(\'menu\').classList.contains(\'small\')? -1 : 1) + \',1)\'"');
+			output += '<br /><br />' + core.fn.insert.icon('decreaseindent', 'bigger', false, ' onclick="el(\'menu\').classList.toggle(\'small\'); this.style.transform=\'scale(\' + (el(\'menu\').classList.contains(\'small\')? -1 : 1) + \', -1)\'"');
 			core.fn.stdout('menu', output);
 		} else core.fn.popup(core.fn.lang('errorLoadingModules'));
 	},
@@ -185,7 +185,7 @@ core.fn = {
 				clock: ['0 0 2048 2048', '1,-1', 'M1024 0q-142 0 -272.5 36.5t-244.5 103t-207.5 160t-160 207.5t-103 245t-36.5 272t36.5 272t103 245t160 207.5t207.5 160t245 103t272 36.5t272 -36.5t245 -103t207.5 -160t160 -207.5t103 -245t36.5 -272q0 -142 -36.5 -272.5t-103 -244.5t-160 -207.5t-207.5 -160t-245 -103t-272 -36.5zM1024 1920q-123 0 -237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5t32 -237.5t90.5 -214t140.5 -181.5t181.5 -140.5t214 -90.5t237.5 -32t237.5 32t214 90.5t181.5 140.5t140.5 181.5t90.5 214t32 237.5t-32 237.5t-90.5 214t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32zM1024 1024v640h-128v-768h512v128h-384z'],
 				closepopup: ['0 0 2048 2048', '1,-1', 'M0 1664h2048v-1152h-2048v1152zM128 1536v-896h1280v896h-1280zM1920 640v896h-384v-896h384zM989 1405l317 -317l-317 -317l-90 90l162 163h-421v128h421l-162 163z'],
 				construction: ['0 0 2048 2048', '1,-1', 'M1280 0l140 281l-268 268v-357q0 -40 -15 -75t-41 -61t-61 -41t-75 -15t-75 15t-61 41t-41 61t-15 75v241l-1 2q-5 -19 -18 -32l-280 -281q-28 -28 -65 -43t-76 -15q-41 0 -77.5 15.5t-63.5 42.5t-43 63.5t-16 77.5q0 40 15.5 77t43.5 65l197 198v368q-33 -11 -64 -11 q-40 0 -75 15t-61 41t-41 61t-15 75v320q0 20 11.5 36.5t30.5 23.5l-151 151q-19 19 -19 45t19 45t45 19t45 -19l205 -204l375 93q18 5 39 3.5t40 -1.5q0 53 20 99.5t55 81.5t81.5 55t99.5 20t99.5 -20t81.5 -55t55 -81.5t20 -99.5q0 -51 -19.5 -98t-54.5 -82l134 -611 q2 -10 3 -20t1 -20q0 -58 -31.5 -106.5t-85.5 -71.5l254 -253l183 366l384 -768h-768zM1024 1792q-27 0 -50 -10t-40.5 -27.5t-27.5 -40.5t-10 -50t10 -50t27.5 -40.5t40.5 -27.5t50 -10t50 10t40.5 27.5t27.5 40.5t10 50t-10 50t-27.5 40.5t-40.5 27.5t-50 10zM320 1088 q26 0 45 19t19 45v115q0 23 14 40t35 22q14 4 44 12t62 16.5t60.5 15t39.5 6.5q26 0 45.5 -19t19.5 -46q0 -17 -5.5 -28t-15.5 -18.5t-22.5 -12t-25.5 -8.5l261 -260v124q0 26 18.5 45t44.5 19q23 0 41 -13.5t23 -36.5q18 -77 32.5 -154t34.5 -153q6 -23 22.5 -36.5 t40.5 -13.5q26 0 44.5 18.5t18.5 44.5q0 5 -2 15l-124 571q-32 -9 -66 -9q-69 0 -128 34t-94 94h-90l-456 -114v-270q0 -26 19 -45t45 -19zM1024 561q-3 5 -12 23.5t-22 44t-27 54t-26 53t-20.5 41t-9.5 17.5q-17 21 -32.5 37t-31 30.5t-32.5 29.5t-36 35l-263 263v-613 q0 -26 -19 -45l-216 -216q-21 -21 -21 -51q0 -29 21 -50.5t50 -21.5q30 0 51 21l262 262v229q0 26 19 45t45 19q18 0 33.5 -9.5t23.5 -25.5l128 -256q7 -13 7 -29v-256q0 -26 19 -45t45 -19t45 19t19 45v369zM1664 482l-177 -354h354z'],
-				decreaseindent: ['0 0 2048 2048', '1, 1', 'M1024 384h1024v128H1024V384zm0 1152v-128h1024v128H1024zm0-512V896h1024v128H1024zm768-384v128h-768V640h768zm0 512v128h-768v-128h768zM413 733L250 896h646v128H250l163 163-90 90L6 960l317-317z'],
+				decreaseindent: ['0 0 2048 2048', '1, -1', 'M1024 384h1024v128H1024V384zm0 1152v-128h1024v128H1024zm0-512V896h1024v128H1024zm768-384v128h-768V640h768zm0 512v128h-768v-128h768zM413 733L250 896h646v128H250l163 163-90 90L6 960l317-317z'],
 				delete: ['0 0 2048 2048', '1,-1', 'M1792 1664h-128v-1472q0 -40 -15 -75t-41 -61t-61 -41t-75 -15h-1024q-40 0 -75 15t-61 41t-41 61t-15 75v1472h-128v128h512v128q0 27 10 50t27.5 40.5t40.5 27.5t50 10h384q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50v-128h512v-128zM768 1792h384v128h-384v-128z M1536 1664h-1152v-1472q0 -26 19 -45t45 -19h1024q26 0 45 19t19 45v1472zM768 384h-128v1024h128v-1024zM1024 384h-128v1024h128v-1024zM1280 384h-128v1024h128v-1024z'],
 				document: ['0 0 2048 2048', '1,-1', 'M1792 1499v-1499h-1664v2048h1115zM1280 1536h293l-293 293v-293zM1664 128v1280h-512v512h-896v-1792h1408z'],
 				email: ['0 0 2048 2048', '1,-1', 'M1024 2048q141 0 272 -36.5t245 -103t207.5 -160t160 -207.5t103 -245t36.5 -272q0 -55 -10.5 -114.5t-31.5 -116.5t-53 -108t-74.5 -89.5t-96.5 -61t-118 -22.5q-54 0 -105.5 14.5t-95.5 41.5t-80.5 66t-60.5 88q-30 -47 -69 -85.5t-85 -66.5t-98.5 -43t-109.5 -15 q-102 0 -185 44.5t-141.5 116.5t-90 164t-31.5 187t31.5 187t90 164t141.5 116.5t185 44.5q95 0 176.5 -41t143.5 -112v153h128v-512v-128q0 -53 20 -99.5t55 -81.5t81.5 -55t99.5 -20q44 0 80.5 18.5t65 49t49.5 70t34.5 82.5t20 85.5t6.5 78.5q0 123 -32 237.5t-90.5 214 t-140.5 181.5t-181.5 140.5t-214 90.5t-237.5 32t-237.5 -32t-214 -90.5t-181.5 -140.5t-140.5 -181.5t-90.5 -214t-32 -237.5t32 -237.5t90.5 -214t140.5 -181.5t181.5 -140.5t213.5 -90.5t238 -32q178 0 343 68l49 -118q-94 -39 -192.5 -58.5t-199.5 -19.5 q-141 0 -272 36.5t-245 103t-207.5 160t-160 207.5t-103 244.5t-36.5 272.5q0 141 36.5 272t103 245t160 207.5t207.5 160t244.5 103t272.5 36.5zM960 640q75 0 134.5 34.5t100.5 89.5t63 123.5t22 136.5t-22 136.5t-63 123.5t-100.5 89.5t-134.5 34.5t-134.5 -34.5 t-100.5 -89.5t-63 -123.5t-22 -136.5t22 -136.5t63 -123.5t100.5 -89.5t134.5 -34.5z'],
@@ -562,12 +562,12 @@ core.fn = {
 				uncompressed = 0,
 				settings;
 			if (this.localStorage.api()) {
-				Object.keys(localStorage).forEach(function (key) {
+				Object.keys(localStorage).sort().forEach(function (key) {
 					settingsDump += key + '=' + (core.fn.setting.get('coreCompressedDump') ? window.localStorage.getItem(key) : core.fn.stringcompression.decompress(core.fn.setting.get(key))) + '\n';
 					compressed += window.localStorage.getItem(key).length;
 					uncompressed += encodeURIComponent(core.fn.stringcompression.decompress(core.fn.setting.get(key))).length;
 				});
-			} else if (document.cookie.length) document.cookie.split("; ").forEach(function (c) {
+			} else if (document.cookie.length) document.cookie.split("; ").sort().forEach(function (c) {
 				settings = c.split('=');
 				settingsDump += settings[0] + '=' + (core.fn.setting.get('coreCompressedDump') ? settings[1] : core.fn.stringcompression.decompress(settings[1])) + '\n';
 				compressed += settings[1].length;
