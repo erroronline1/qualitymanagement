@@ -106,22 +106,37 @@ aside {
 	overflow-x: hidden;
 	overflow-y: auto;
 	user-select: none;
+	-ms-user-select: none;
 	white-space: nowrap;
 }
 
-/* browser switch for ie
-@media screen and (-ms-high-contrast: active),
-(-ms-high-contrast: none) {
+#menu div {
+	display: inline
 }
-*/
 
 /* small menu like responsive version by user demand */
 #menu.small {
 	flex: 0 0 4em;
 }
 
-#menu.small label {
-	color: transparent
+/* browser switch for ie */
+@media screen and (-ms-high-contrast: active),
+(-ms-high-contrast: none) {
+	#menu.small {
+		flex: 0 0 2em;
+	}	
+}
+
+#menu.small div {
+	color: transparent;
+	background-color: transparent;
+}
+
+#menu.small>label:hover div {
+	position: absolute;
+	z-index: 99;
+	padding: .25em .75em;
+	border: 1px solid;
 }
 
 #menu input[type='radio'] {

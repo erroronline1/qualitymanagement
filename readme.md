@@ -852,6 +852,8 @@ by 6/20 it is possible to handle special permissions due to the data rights mana
 
 the assistant is designed to hopefully transition mostly seamlessly into windows 10 fluent design. styling and icon set was selected with this intention. i don't want to collide with foreign rights and hope this will be recognized as the reverence it is intended to be. i am not a fanboy in the first place, although i like microsofts os design. i just try to make it look as native as possible to not disturb the co-workers. it is hard enough to convince them to utilize quality management as well as this tool.
 
+even if the assistant scales itself on smaller screens it is generally not recommended to use it on these (like mobile). some minor features don't even work properly (like tooltips on reduced menu). it's more like a desktop-first-experience...
+
 *funny what can evolute from a personal tool to generate standardized email answers to recurrent enquiries and some messing around with conditional formatting in excel.*
 
 [back to top](#table-of-contents)

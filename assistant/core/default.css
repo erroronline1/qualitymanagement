@@ -21,7 +21,8 @@ select optgroup {
 #popuptext svg,
 #popuptext textarea,
 #growlNotif,
-::selection {
+::selection,
+#menu.small>label:hover div {
 	color: #fff;
 	fill: #fff
 }
@@ -98,7 +99,8 @@ input[type='range'] {
 	border-color: rgba(0, 0, 0, .5);
 }
 
-#popuptext .checkmark {
+#popuptext .checkmark,
+#menu.small>label:hover div {
 	border-color: rgba(255, 255, 255, 1);
 }
 
@@ -138,7 +140,8 @@ span.search {
 
 #menu,
 #popuptext,
-#growlNotif {
+#growlNotif,
+#menu.small>label:hover div {
 	background-color: rgba(0, 78, 152, .9);
 }
 
