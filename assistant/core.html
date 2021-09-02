@@ -80,9 +80,9 @@
 		select_module();
 		document.title = core.fn.lang('title');
 		//load settings or defaults
-		var fontsize = document.body.style.fontSize = ((core.fn.setting.get('settingFontsize') || 0) / 10 + 1) + 'em';
-		el('colortheme').href = 'core/' + ((core.fn.setting.get('settingTheme') in core.var.themes ? core.fn
-			.setting.get('settingTheme') : 'default') || 'default') + '.css';
+		var fontsize = document.body.style.fontSize = ((core.fn.setting.get('coreFontsize') || 0) / 10 + 1) + 'em';
+		el('colortheme').href = 'core/' + ((core.fn.setting.get('coreTheme') in core.var.themes ? core.fn
+			.setting.get('coreTheme') : 'default') || 'default') + '.css';
 		core.fn.init();
 		updateTracker.alert();
 	</script>

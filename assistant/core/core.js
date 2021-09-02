@@ -91,7 +91,7 @@ core.fn = {
 		if (core.fn.escapeHTML(body, true).length > core.var.directMailSize) body = core.fn.lang('errorMailSizeExport');
 		var mail, content = 'mailto:' + value(address) + '?' + (value(subject).length ? 'subject=' + core.fn.escapeHTML(value(subject), true) : '') + (value(subject).length && body.length ? '&' : '') + (body.length ? 'body=' + core.fn.escapeHTML(body, true) : '');
 
-		if (!core.fn.setting.get('settingMailtoMethod')) { //i told you this might switch in future
+		if (!core.fn.setting.get('coreMailtoMethod')) { //i told you this might switch in future
 			//this elegant way works with windows 10
 			mail = document.createElement('a');
 			mail.href = content;
@@ -111,7 +111,7 @@ core.fn = {
 		if (typeof text !== 'undefined') {
 			el('growlNotif').innerHTML = text;
 			el('growlNotif').classList.add('growlNotifshow');
-			window.setTimeout(core.fn.growlNotif, core.fn.setting.get('settinggrowlNotifInterval') * 1000 || 2000);
+			window.setTimeout(core.fn.growlNotif, core.fn.setting.get('coregrowlNotifInterval') * 1000 || 2000);
 		} else el('growlNotif').classList.remove('growlNotifshow');
 	},
 	init: function (query) { //displays start screen
@@ -297,7 +297,7 @@ core.fn = {
 			if (typeof scriptvar !== "undefined") document.head.appendChild(scriptvar);
 			setTimeout(function () {
 				document.head.appendChild(script);
-			}, core.fn.setting.get('settingVarPreloadTime') || 50);
+			}, core.fn.setting.get('coreVarPreloadTime') || 50);
 		}
 	},
 	limitBar: function (actual, max, id) {
@@ -316,7 +316,7 @@ core.fn = {
 	},
 	maxMailSize: function () {
 		if (confirm(core.fn.lang('settingMailSizeDeterminationHint'))) {
-			for (var i = core.fn.setting.get('settingDirectMailSize'); i > 256; i--) {
+			for (var i = core.fn.setting.get('coreDirectMailSize'); i > 256; i--) {
 				var good = 1,
 					num = '';
 				for (var j = 0; j < i; j++) num += 'a';
@@ -362,7 +362,7 @@ core.fn = {
 		},
 		fontsize: function (value) {
 			fontsize = document.body.style.fontSize = (value / 10 + 1) + 'em';
-			core.fn.setting.set('settingFontsize', value);
+			core.fn.setting.set('coreFontsize', value);
 		},
 		get: function (name) {
 			var value = false;
@@ -418,7 +418,7 @@ core.fn = {
 		},
 		set: function (name, value, errormsg) {
 			var saved = false;
-			if (value) {
+			if (typeof value !== 'boolean' || value) {
 				value = core.fn.stringcompression.compress(value.toString());
 				if (this.localStorage.api()) {
 					if (this.localStorage.remainingSpace() > name.length + toString(value).length) {
@@ -461,14 +461,14 @@ core.fn = {
 					themeSelector[key] = [key, core.var.themes[key][core.var.selectedLanguage]];
 				});
 			}
-			return core.fn.lang('settingThemeCaption') + ':<br />' + core.fn.insert.select(themeSelector, 'settingTheme', 'settingTheme', (core.fn.setting.get('settingTheme') || null), 'onchange="core.fn.setting.theme(this.value)"') +
-				'<br /><br />' + core.fn.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (core.fn.setting.get('settingFontsize') || 0) + '" onchange="core.fn.setting.fontsize(this.value)" />' +
-				'<br />' + core.fn.lang('settingLanguageCaption') + ':<br />' + core.fn.insert.select(core.var.registeredLanguages, 'settingLanguage', 'settingLanguage', (core.var.selectedLanguage || null), 'title="' + core.fn.lang('settingRestartNeccessary') + '" onchange="core.fn.setting.set(\'settingLanguage\',(this.value)); core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))"') +
-				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingSearchOptionFuzzy'), 'settingFuzzySearch', (core.fn.setting.get('settingFuzzySearch') || 0), 'onchange="core.fn.setting.switch(\'settingFuzzySearch\')"') +
+			return core.fn.lang('settingThemeCaption') + ':<br />' + core.fn.insert.select(themeSelector, 'coreTheme', 'coreTheme', (core.fn.setting.get('coreTheme') || null), 'onchange="core.fn.setting.theme(this.value)"') +
+				'<br /><br />' + core.fn.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (core.fn.setting.get('coreFontsize') || 0) + '" onchange="core.fn.setting.fontsize(this.value)" />' +
+				'<br />' + core.fn.lang('settingLanguageCaption') + ':<br />' + core.fn.insert.select(core.var.registeredLanguages, 'coreLanguage', 'coreLanguage', (core.var.selectedLanguage || null), 'title="' + core.fn.lang('settingRestartNeccessary') + '" onchange="core.fn.setting.set(\'coreLanguage\',(this.value)); core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))"') +
+				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingSearchOptionFuzzy'), 'coreFuzzySearch', (core.fn.setting.get('coreFuzzySearch') || 0), 'onchange="core.fn.setting.switch(\'coreFuzzySearch\')"') +
 				'<br /><small>' + core.fn.lang('settingSearchOptionFuzzyHint') + '</small>' +
-				'<br />' + core.fn.insert.checkbox(core.fn.lang('settingCopyOptionSelector'), 'settingNewWindowCopy', (core.fn.setting.get('settingNewWindowCopy') || 0), 'onchange="core.fn.setting.switch(\'settingNewWindowCopy\')"') +
+				'<br />' + core.fn.insert.checkbox(core.fn.lang('settingCopyOptionSelector'), 'coreNewWindowCopy', (core.fn.setting.get('coreNewWindowCopy') || 0), 'onchange="core.fn.setting.switch(\'coreNewWindowCopy\')"') +
 				'<br /><small>' + core.fn.lang('settingCopyOptionHint') + '</small>' +
-				'<br />' + core.fn.insert.checkbox(core.fn.lang('settingNotificationSelector'), 'settingNotificationHide' + updateTracker.latestMajorUpdate(), (core.fn.setting.get('settingNotificationHide' + updateTracker.latestMajorUpdate())), 'onchange="core.fn.setting.switch(\'settingNotificationHide' + updateTracker.latestMajorUpdate() + '\')"', core.fn.lang('settingRestartNeccessary')) +
+				'<br />' + core.fn.insert.checkbox(core.fn.lang('settingNotificationSelector'), 'coreNotificationHide' + updateTracker.latestMajorUpdate(), (core.fn.setting.get('coreNotificationHide' + updateTracker.latestMajorUpdate())), 'onchange="core.fn.setting.switch(\'coreNotificationHide' + updateTracker.latestMajorUpdate() + '\')"', core.fn.lang('settingRestartNeccessary')) +
 				'<br /><small>' + core.fn.lang('settingNotificationHint') + '</small>';
 		},
 		setupModules: function () { //returns module selector
@@ -476,7 +476,7 @@ core.fn = {
 				var moduleSelector = '';
 				//create module-selector
 				Object.keys(core.var.modules).forEach(function (key) {
-					moduleSelector += core.fn.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'module_' + key, (core.fn.setting.isset('module_' + key) ? core.fn.setting.get('module_' + key) : core.var.modules[key].enabledByDefault), 'onchange="core.var.modules[\'' + key + '\'].enabledByDefault == el(\'module_' + key + '\').checked ? core.fn.setting.unset(\'module_' + key + '\'): core.fn.setting.set(\'module_' + key + '\', el(\'module_' + key + '\').checked); core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))"', core.fn.lang('settingRestartNeccessary')) + '<br />';
+					moduleSelector += core.fn.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'core_' + key, (core.fn.setting.isset('core_' + key) ? core.fn.setting.get('core_' + key) : core.var.modules[key].enabledByDefault), 'onchange="core.var.modules[\'' + key + '\'].enabledByDefault == el(\'core_' + key + '\').checked ? core.fn.setting.unset(\'core_' + key + '\'): core.fn.setting.set(\'core_' + key + '\', Number(el(\'core_' + key + '\').checked)); core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))"', core.fn.lang('settingRestartNeccessary')) + '<br />';
 				});
 			} else moduleSelector = core.fn.lang('errorLoadingModules');
 			return moduleSelector;
@@ -502,16 +502,16 @@ core.fn = {
 				osSelector[key] = [key, core.var.oss[key]];
 			});
 			return '<input type="button" onclick="core.fn.setting.clear(); core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))" value="' + core.fn.lang('settingResetApp') + '" title="' + core.fn.lang('settingRestartNeccessary') + '" /><br />' +
-				'<br />' + core.fn.lang('settingSelectedOsCaption') + ':<br />' + core.fn.insert.select(osSelector, 'settingSelectedOs', 'settingSelectedOs', core.var.selectedOs(), 'onchange="core.fn.setting.set(\'settingSelectedOs\',this.value)"') +
-				'<br /><br />' + core.fn.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.fn.setting.get('settingFuzzyThreshold') || 5) + '" onchange="core.fn.setting.set(\'settingFuzzyThreshold\',(this.value))" />' +
-				'<br />' + core.fn.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.fn.setting.get('settingGlobalSearchTime') || 3) + '" onchange="core.fn.setting.set(\'settingGlobalSearchTime\',(this.value))" />' +
-				'<br />' + core.fn.lang('settinggrowlNotifIntervalCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.fn.setting.get('settinggrowlNotifInterval') || 2) + '" onchange="core.fn.setting.set(\'settinggrowlNotifInterval\',(this.value))" />' +
-				'<br />' + core.fn.lang('settingVarPreloadCaption') + ':<br /><input type="range" min="0" max="1000" step="50" value="' + (core.fn.setting.get('settingVarPreloadTime') || 50) + '" onchange="core.fn.setting.set(\'settingVarPreloadTime\',(this.value))" />' +
+				'<br />' + core.fn.lang('settingSelectedOsCaption') + ':<br />' + core.fn.insert.select(osSelector, 'coreSelectedOs', 'coreSelectedOs', core.var.selectedOs(), 'onchange="core.fn.setting.set(\'coreSelectedOs\',this.value)"') +
+				'<br /><br />' + core.fn.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (core.fn.setting.get('coreFuzzyThreshold') || 5) + '" onchange="core.fn.setting.set(\'coreFuzzyThreshold\',(this.value))" />' +
+				'<br />' + core.fn.lang('settingGlobalSearchCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.fn.setting.get('coreGlobalSearchTime') || 3) + '" onchange="core.fn.setting.set(\'coreGlobalSearchTime\',(this.value))" />' +
+				'<br />' + core.fn.lang('settinggrowlNotifIntervalCaption') + ':<br /><input type="range" min="1" max="10" value="' + (core.fn.setting.get('coregrowlNotifInterval') || 2) + '" onchange="core.fn.setting.set(\'coregrowlNotifInterval\',(this.value))" />' +
+				'<br />' + core.fn.lang('settingVarPreloadCaption') + ':<br /><input type="range" min="0" max="1000" step="50" value="' + (core.fn.setting.get('coreVarPreloadTime') || 50) + '" onchange="core.fn.setting.set(\'coreVarPreloadTime\',(this.value))" />' +
 				//  as of 2-2020 chrome, edge and ie11 support somewhere (but not exactly) up to 2^11 characters minus mailto:{xxx}?subject={xxx}&body=
 				//  only firefox seemingly supports up to 2^15 characters (32768 - the afore mentioned)
-				'<br />' + core.fn.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="100" max="32400" step="300" value="' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '" onchange="core.fn.setting.set(\'settingDirectMailSize\',(this.value)); el(\'currentDirectMailSize\').innerHTML=this.value; core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))" title="' + core.fn.lang('settingRestartNeccessary') + '" />' +
-				' <span id="currentDirectMailSize">' + ((core.fn.setting.get('settingDirectMailSize') || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.maxMailSize()" value="' + core.fn.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.lang('settingMailSizeDeterminationHint') + '" />' +
-				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingMailtoMethod'), 'settingMailtoMethod', (core.fn.setting.get('settingMailtoMethod') || 0), 'onchange="core.fn.setting.switch(\'settingMailtoMethod\')"');
+				'<br />' + core.fn.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="100" max="32400" step="300" value="' + ((core.fn.setting.get('coreDirectMailSize') || core.var.directMailSize)) + '" onchange="core.fn.setting.set(\'coreDirectMailSize\',(this.value)); el(\'currentDirectMailSize\').innerHTML=this.value; core.fn.growlNotif(core.fn.lang(\'settingRestartNeccessary\'))" title="' + core.fn.lang('settingRestartNeccessary') + '" />' +
+				' <span id="currentDirectMailSize">' + ((core.fn.setting.get('coreDirectMailSize') || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.maxMailSize()" value="' + core.fn.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.lang('settingMailSizeDeterminationHint') + '" />' +
+				'<br /><br />' + core.fn.insert.checkbox(core.fn.lang('settingMailtoMethod'), 'coreMailtoMethod', (core.fn.setting.get('coreMailtoMethod') || 0), 'onchange="core.fn.setting.switch(\'coreMailtoMethod\')"');
 		},
 		setupDebug: function () { //return debugging options
 			var settingsDump = '',
@@ -520,21 +520,21 @@ core.fn = {
 				settings;
 			if (this.localStorage.api()) {
 				Object.keys(localStorage).forEach(function (key) {
-					settingsDump += key + '=' + (core.fn.setting.get('settingCompressedDump') ? window.localStorage.getItem(key) : core.fn.stringcompression.decompress(core.fn.setting.get(key))) + '\n';
+					settingsDump += key + '=' + (core.fn.setting.get('coreCompressedDump') ? window.localStorage.getItem(key) : core.fn.stringcompression.decompress(core.fn.setting.get(key))) + '\n';
 					compressed += window.localStorage.getItem(key).length;
 					uncompressed += encodeURIComponent(core.fn.stringcompression.decompress(core.fn.setting.get(key))).length;
 				});
 			} else if (document.cookie.length) document.cookie.split("; ").forEach(function (c) {
 				settings = c.split('=');
-				settingsDump += settings[0] + '=' + (core.fn.setting.get('settingCompressedDump') ? settings[1] : core.fn.stringcompression.decompress(settings[1])) + '\n';
+				settingsDump += settings[0] + '=' + (core.fn.setting.get('coreCompressedDump') ? settings[1] : core.fn.stringcompression.decompress(settings[1])) + '\n';
 				compressed += settings[1].length;
 				uncompressed += encodeURIComponent(core.fn.stringcompression.decompress(settings[1])).length;
 			});
-			return core.fn.insert.checkbox('Console Performance Monitor', 'settingPerformanceMonitor', (core.fn.setting.get('settingPerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingPerformanceMonitor\')"') +
-				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'settingOutputMonitor', (core.fn.setting.get('settingOutputMonitor') || 0), 'onchange="core.fn.setting.switch(\'settingOutputMonitor\')"') +
+			return core.fn.insert.checkbox('Console Performance Monitor', 'corePerformanceMonitor', (core.fn.setting.get('corePerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'corePerformanceMonitor\')"') +
+				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'coreOutputMonitor', (core.fn.setting.get('coreOutputMonitor') || 0), 'onchange="core.fn.setting.switch(\'coreOutputMonitor\')"') +
 				'<br /><br />' + core.fn.lang('settingDebugSpaceCaption') + (core.fn.setting.localStorage.maxSpace() - core.fn.setting.localStorage.remainingSpace()) + '/' + core.fn.setting.localStorage.maxSpace() + ' Byte<br />' +
 				core.fn.insert.limitBar(false, core.fn.lang('settingDebugSpaceCaption'), 'debugSpace') + '<br />' +
-				core.fn.lang('settingDebugDumpCaption') + ':<br /> ' + core.fn.insert.checkbox(core.fn.lang('settingDebugCompressedCaption') + ' @' + Math.round(100 * compressed / uncompressed) + '%', 'settingCompressedDump', (core.fn.setting.get('settingCompressedDump') || 0), 'onchange="core.fn.setting.switch(\'settingCompressedDump\')"') +
+				core.fn.lang('settingDebugDumpCaption') + ':<br /> ' + core.fn.insert.checkbox(core.fn.lang('settingDebugCompressedCaption') + ' @' + Math.round(100 * compressed / uncompressed) + '%', 'coreCompressedDump', (core.fn.setting.get('coreCompressedDump') || 0), 'onchange="core.fn.setting.switch(\'coreCompressedDump\')"') +
 				'<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
 				'<br /><input type="text" placeholder="' + core.fn.lang('settingDeleteDistinctPlaceholder') + '" id="deleteDistinctSettings" />' +
 				core.fn.insert.icon('delete', 'bigger', false,
@@ -551,7 +551,7 @@ core.fn = {
 		},
 		theme: function (theme) {
 			el('colortheme').href = 'core/' + theme + '.css';
-			core.fn.setting.set('settingTheme', theme);
+			core.fn.setting.set('coreTheme', theme);
 		},
 		unset: function (name) {
 			if (this.localStorage.api()) {
@@ -639,8 +639,8 @@ core.fn = {
 			};
 			if (query.length > 0) {
 				//reminder: keep these kind of assignments out of loops for performance reasons!
-				var fuzzySearch = core.fn.setting.get('settingFuzzySearch') || Boolean(userInput.match(fuzzyOverride));
-				var fuzzyRatio = 2 - ((core.fn.setting.get('settingFuzzyThreshold') || 5) * .1); //fuzzy ratio of 1.5 by default is quite reasonable determined through trial and error
+				var fuzzySearch = core.fn.setting.get('coreFuzzySearch') || Boolean(userInput.match(fuzzyOverride));
+				var fuzzyRatio = 2 - ((core.fn.setting.get('coreFuzzyThreshold') || 5) * .1); //fuzzy ratio of 1.5 by default is quite reasonable determined through trial and error
 				Object.keys(dataBaseObject).forEach(function (key) {
 					var haystack = dataBaseObject[key],
 						filtered = false;
@@ -704,7 +704,7 @@ core.fn = {
 		//can set array of where to same what, strings are converted to array automatically, 'console' is reserved
 		if (typeof where === 'string') where = [where];
 		where.forEach(function (w) {
-			if (core.fn.setting.get('settingOutputMonitor') || w === 'console') {
+			if (core.fn.setting.get('coreOutputMonitor') || w === 'console') {
 				var group = w + ' from ' + core.var.currentScope;
 				console.groupCollapsed(group);
 				if (isIE()) console.log(what.match(/.{1,1024}/g));
@@ -806,13 +806,13 @@ core.history = { //stores and restores last actions. since last actions can only
 };
 core.performance = { //starts and dispays timers to console, assigned with function calls and can display additional results
 	start: function (track, group) {
-		if (core.fn.setting.get('settingPerformanceMonitor')) {
+		if (core.fn.setting.get('corePerformanceMonitor')) {
 			if (typeof group !== 'undefined') console.group(track);
 			console.time(track);
 		}
 	},
 	stop: function (track, info, group) {
-		if (core.fn.setting.get('settingPerformanceMonitor')) {
+		if (core.fn.setting.get('corePerformanceMonitor')) {
 			console.groupCollapsed(track);
 			console.timeEnd(track);
 			console.trace();
@@ -853,7 +853,7 @@ function select_module() { //load module list and return the main menu
 	if (typeof (core.var.modules) !== 'undefined') {
 		var output = '<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.lang('title', false) + '</span>';
 		Object.keys(core.var.modules).forEach(function (key) {
-			if (typeof core.var.modules[key] === 'object' && (core.fn.setting.isset('module_' + key) ? eval(core.fn.setting.get('module_' + key)) : core.var.modules[key].enabledByDefault)) {
+			if (typeof core.var.modules[key] === 'object' && (core.fn.setting.isset('core_' + key) ? Boolean(Number(core.fn.setting.get('core_' + key))) : core.var.modules[key].enabledByDefault)) {
 				//create module-selector
 				opt = 'modules/' + key + '.js';
 				output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" title="' + core.var.modules[key].display[core.var.selectedLanguage] + '" onclick="slider.slide(\'' + key + '\'); core.fn.loadScript(\'' + opt + '\', \'' + key + '.fn.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + core.var.modules[key].display[core.var.selectedLanguage] + '</label>';
@@ -867,7 +867,7 @@ function select_module() { //load module list and return the main menu
 
 function selectText(element) { //selection of output-content on click if not disabled
 	if (core.var.currentScope != null && (eval(core.var.currentScope).var.disableOutputSelect === "undefined" || !(eval(core.var.currentScope).var.disableOutputSelect))) {
-		if (core.fn.setting.get('settingNewWindowCopy')) {
+		if (core.fn.setting.get('coreNewWindowCopy')) {
 			var win = window.open("", "win"),
 				doc = win.document;
 			doc.open("text/html", "replace");
@@ -937,7 +937,7 @@ var globalSearch = { //searches all modules using their api-methods from the sta
 			});
 			setTimeout(function () {
 				globalSearch.display(search)
-			}, (core.fn.setting.get('settingGlobalSearchTime') || 3) * 1000);
+			}, (core.fn.setting.get('coreGlobalSearchTime') || 3) * 1000);
 			core.history.write(['core.fn.init(\'' + search + '\')']);
 		}
 	},
@@ -956,6 +956,6 @@ var globalSearch = { //searches all modules using their api-methods from the sta
 		});
 		setTimeout(function () {
 			globalSearch.display()
-		}, (core.fn.setting.get('settingGlobalSearchTime') || 3) * 1000);
+		}, (core.fn.setting.get('coreGlobalSearchTime') || 3) * 1000);
 	}
 };

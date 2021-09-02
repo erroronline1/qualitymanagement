@@ -39,7 +39,7 @@ ticketorder.api = {
 		}
 	},
 	getShoppingCart: function () {
-		var cart = core.fn.setting.get('moduleExchangeTicketorder');
+		var cart = core.fn.setting.get('ticketorderCart');
 		if (cart) {
 			cart = cart.split(',');
 			cart.pop();
@@ -57,7 +57,7 @@ ticketorder.api = {
 	},
 	currentStatus: function () {
 		var display, cart, orders;
-		cart = core.fn.setting.get('moduleExchangeTicketorder') || '';
+		cart = core.fn.setting.get('ticketorderCart') || '';
 		if (cart) {
 			cart = cart.split(',');
 		cart.pop();}
@@ -148,7 +148,7 @@ ticketorder.fn = {
 			});
 		ordererDeptList.unshift(['', core.fn.lang('ordererDept', 'ticketorder')]);
 		ordererCostUnitList.unshift(['', core.fn.lang('ordererCostUnit', 'ticketorder')]);
-		if (core.fn.setting.get('moduleExchangeTicketorder')) form += '<input type="button" id="deleteCart" style="float:right; margin:0 .25em" value="' + core.fn.lang('deleteCart', 'ticketorder') + '" onclick="core.fn.setting.unset(\'moduleExchangeTicketorder\'); this.value=\'' + core.fn.lang('deleteCartDeleted', 'ticketorder') + '\'; this.disabled=true; core.fn.growlNotif(\'' + core.fn.lang('deleteCartDeleted', 'ticketorder') + '\');" />';
+		if (core.fn.setting.get('ticketorderCart')) form += '<input type="button" id="deleteCart" style="float:right; margin:0 .25em" value="' + core.fn.lang('deleteCart', 'ticketorder') + '" onclick="core.fn.setting.unset(\'ticketorderCart\'); this.value=\'' + core.fn.lang('deleteCartDeleted', 'ticketorder') + '\'; this.disabled=true; core.fn.growlNotif(\'' + core.fn.lang('deleteCartDeleted', 'ticketorder') + '\');" />';
 		if (core.fn.setting.get('ticketorderAwaitingOrders')) form += '<input type="button" id="deletecurrentOrder" style="float:right; margin:0 .25em" value="' + core.fn.lang('deleteCurrentOrder', 'ticketorder') + '" onclick="ticketorder.fn.currentorder.clear(); this.value=\'' + core.fn.lang('deleteCurrentOrderDeleted', 'ticketorder') + '\'; this.disabled=true;" />';
 		form += '<form action="javascript:ticketorder.fn.currentorder.add()">';
 		form += '<br /><input type="text" id="orderer" required placeholder="' + core.fn.lang('orderer', 'ticketorder') + '" title="' + core.fn.lang('orderer', 'ticketorder') + '" /> ';
@@ -255,7 +255,7 @@ ticketorder.fn = {
 				core.fn.setting.set('ticketorderAwaitingOrders', ordernum);
 				core.fn.stdout('output', ticketorder.fn.currentorder.get());
 				el('output').scrollTop = el('output').scrollHeight;
-				core.fn.setting.unset('moduleExchangeTicketorder')
+				core.fn.setting.unset('ticketorderCart')
 				if (el('deleteCart')) el('deleteCart').style.display = 'none';
 			}
 		},
@@ -394,7 +394,7 @@ ticketorder.fn = {
 		//delay build up until module.data is loaded
 		setTimeout(function () {
 			ticketorder.fn.start(value(query));
-		}, core.fn.setting.get('settingVarPreloadTime') || 150);
+		}, core.fn.setting.get('coreVarPreloadTime') || 150);
 
 		core.history.write(['ticketorder.fn.init(\'' + value(query) + '\')']);
 		core.performance.stop('ticketorder.fn.init(\'' + value(query) + '\')');

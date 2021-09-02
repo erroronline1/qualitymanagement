@@ -144,11 +144,11 @@ core.var = {
 		de: ["de", "deutsch"]
 	},
 	//	selected language in settings or desired default fallback
-	selectedLanguage: (core.fn.setting.get('settingLanguage') || 'en'),
+	selectedLanguage: (core.fn.setting.get('coreLanguage') || 'en'),
 	//  size for content of mails for mailto, browser dependent, can be set in advanced settings
 	//  as of 2-2020 chrome, edge and ie11 support somewhere (but not exactly) up to 2^11 characters minus mailto:{xxx}?subject={xxx}&body=
 	//  only firefox seemingly supports up to 2^15 characters (32768 - the afore mentioned)
-	directMailSize: (core.fn.setting.get('settingDirectMailSize') || 1900),
+	directMailSize: (core.fn.setting.get('coreDirectMailSize') || 1900),
 	//	corporate design considerations for font. used for copied content. has to be installed on local machine
 	corporateFontFace: 'Calibri',
 	corporateFontSize: '10pt',
@@ -208,7 +208,7 @@ core.var = {
 		win7: 'Windows 7'
 	},
 	selectedOs: function () {
-		return core.fn.setting.get('settingSelectedOs') || 'win10k';
+		return core.fn.setting.get('coreSelectedOs') || 'win10k';
 	},
 
 	// permissions and data rights managament
@@ -272,10 +272,10 @@ core.var = {
 		},
 		errorNothingFound: {
 			en: function (query) {
-				return 'Search for <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'or Fuzzy-Search-setting ') + 'or look for parts of query. Please adhere to mimimum 3 character length.'
+				return 'Search for <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.fn.setting.get('coreFuzzySearch') ? '' : 'or Fuzzy-Search-setting ') + 'or look for parts of query. Please adhere to mimimum 3 character length.'
 			},
 			de: function (query) {
-				return 'Zum Begriff <span class="highlight">' + query + '</span> konnte nichts gefunden werden. Bitte eventuell Schreibweise ' + (core.fn.setting.get('settingFuzzySearch') ? '' : 'oder Tippfehler-Toleranz-Einstellung ') + 'überprüfen oder nach Wortteilen suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
+				return 'Zum Begriff <span class="highlight">' + query + '</span> konnte nichts gefunden werden. Bitte eventuell Schreibweise ' + (core.fn.setting.get('coreFuzzySearch') ? '' : 'oder Tippfehler-Toleranz-Einstellung ') + 'überprüfen oder nach Wortteilen suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
 			},
 		},
 		errorSelectModules: {
@@ -331,7 +331,7 @@ core.var = {
 			de: 'zeigt an, ob die gewünschte Textlänge direkt in die eMail exportiert werden kann'
 		},
 		openLetterTemplate: {
-			en: 'open letter tempate',
+			en: 'open letter template',
 			de: 'Briefvorlage öffnen'
 		},
 		openLetterTemplateHint: {
@@ -383,7 +383,7 @@ core.var = {
 			de: 'Genutzter Speicherplatz: '
 		},
 		settingDeleteDistinctPlaceholder: {
-			en: 'delete distinct settings, csv',
+			en: 'delete distinct settings, comma separated',
 			de: 'Einstellungen gezielt löschen, kommagetrennt'
 		},
 		settingFontsizeCaption: {
@@ -452,7 +452,7 @@ core.var = {
 		},
 		settingMailSizeDeterminationCaption: {
 			en: 'Browser dependent maximum size for direct email',
-			de: 'Maximale Browserabhängige Größe für Direkt-eMails',
+			de: 'Maximale browserabhängige Größe für Direkt-eMails',
 		},
 		settingMailSizeDeterminationCheck: {
 			en: 'Verify size setting',

@@ -40,7 +40,7 @@ documentlookup.api = {
 			var display = documentlookup.fn.favouriteHandler.get();
 			if (display) globalSearch.contribute('documentlookup', [display, 1]);
 			core.performance.stop('documentlookup.api.currentStatus()');
-		}, (core.fn.setting.get('settingGlobalSearchTime') / 6 || .5) * 1000);
+		}, core.fn.setting.get('coreVarPreloadTime') || 150);
 	}
 };
 documentlookup.fn = {
@@ -56,7 +56,7 @@ documentlookup.fn = {
 			return value.substring(value.lastIndexOf('/'), value.lastIndexOf('.')).substring(1).replace(/[^a-z0-9]/gi, '');
 		},
 		set: function (value) {
-			var output = core.fn.setting.get('favouritedocs'),
+			var output = core.fn.setting.get('documentlookupFav'),
 				deleteValue = false;
 			if (value.indexOf(':') == 0) { //if preceded by : the value will be deleted from the favourite list
 				deleteValue = true
@@ -79,11 +79,11 @@ documentlookup.fn = {
 					output = favourites.join(',');
 				} else output += ',' + value + ',1';
 			} else output = value + ',1';
-			core.fn.setting.set('favouritedocs', output);
+			core.fn.setting.set('documentlookupFav', output);
 			core.fn.stdout('favourites', documentlookup.fn.favouriteHandler.get('withtools'));
 		},
 		get: function (tools) {
-			var output = core.fn.setting.get('favouritedocs');
+			var output = core.fn.setting.get('documentlookupFav');
 			if (output) {
 				var tfav = tfav2 = new Array();
 				//bring selected object into scope to avoid method callbacks in loops for performance reasons
@@ -96,7 +96,7 @@ documentlookup.fn = {
 				output = (tools !== undefined) ? '<br />' + core.fn.lang('favouriteCaption', 'documentlookup') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
 					core.fn.insert.icon('delete', 'bigger', false, 'title="' + core.fn.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.reset(\'\')"') +
 					core.fn.insert.icon('clipboard', 'bigger', false, 'title="' + core.fn.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.reset(\'' + documentlookup.var.defaultFavourites + '\')"') +
-					core.fn.insert.icon('refresh', 'bigger', false, 'title="' + core.fn.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.reset(\'' + core.fn.setting.get('customfavouritedocs') + '\')"') +
+					core.fn.insert.icon('refresh', 'bigger', false, 'title="' + core.fn.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.reset(\'' + core.fn.setting.get('documentlookupCustomFav') + '\')"') +
 					core.fn.insert.icon('save', 'bigger', false, 'title="' + core.fn.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.customreset()"') +
 					'</span><br /><br />' : '';
 				for (var i = 0; i < tfav2.length; i += 2) {
@@ -106,11 +106,11 @@ documentlookup.fn = {
 			return output || '';
 		},
 		reset: function (output) {
-			core.fn.setting.set('favouritedocs', output);
+			core.fn.setting.set('documentlookupFav', output);
 			core.fn.growlNotif(core.fn.lang('favouriteRestoreConfirm', 'documentlookup'));
 		},
 		customreset: function () {
-			core.fn.setting.set('customfavouritedocs', core.fn.setting.get('favouritedocs'));
+			core.fn.setting.set('documentlookupCustomFav', core.fn.setting.get('documentlookupFav'));
 			core.fn.growlNotif(core.fn.lang('favouriteSaveConfirm', 'documentlookup'));
 		}
 	},

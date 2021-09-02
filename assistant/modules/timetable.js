@@ -71,7 +71,7 @@ timetable.fn = {
 	},
 	favouriteHandler: {
 		set: function (value) {
-			var output = core.fn.setting.get('favouritetimetable'),
+			var output = core.fn.setting.get('timetableFav'),
 				deleteValue = false;
 			if (value.indexOf(':') == 0) { //if preceded by : the value will be deleted from the favourite list
 				deleteValue = true;
@@ -95,12 +95,12 @@ timetable.fn = {
 					output = favourites.join(',');
 				} else output += ',' + value + ',1';
 			} else if (!deleteValue) output = value + ',1';
-			if (output) core.fn.setting.set('favouritetimetable', output);
-			else core.fn.setting.unset('favouritetimetable')
+			if (output) core.fn.setting.set('timetableFav', output);
+			else core.fn.setting.unset('timetableFav')
 			core.fn.stdout('favourites', timetable.fn.favouriteHandler.get('withtools'));
 		},
 		get: function (tools) {
-			var output = core.fn.setting.get('favouritetimetable');
+			var output = core.fn.setting.get('timetableFav');
 			if (output) {
 				var tfav2 = output.split(',');
 				output = tools !== undefined ? '<br />' + core.fn.lang('favouriteCaption', 'timetable') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
@@ -119,11 +119,11 @@ timetable.fn = {
 				name[i] = name[i][0].toUpperCase() + name[i].slice(1);
 			} //ucfirst
 			name = name.join(' '); //rejoin to string
-			if (core.fn.setting.get('favouritetimetable')) return core.fn.setting.get('favouritetimetable').indexOf(name) > -1;
+			if (core.fn.setting.get('timetableFav')) return core.fn.setting.get('timetableFav').indexOf(name) > -1;
 			else return false;
 		},
 		reset: function (output) {
-			core.fn.setting.set('favouritetimetable', output);
+			core.fn.setting.set('timetableFav', output);
 			core.fn.growlNotif(core.fn.lang('favouriteResetConfirm', 'timetable'));
 		},
 	},

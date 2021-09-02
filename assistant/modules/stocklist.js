@@ -38,7 +38,7 @@ stocklist.api = {
 	},
 	addToCart: function (index) {
 		// this only makes sense in case of using the ticketorder-module
-		core.fn.setting.set('moduleExchangeTicketorder', core.fn.setting.get('moduleExchangeTicketorder') + index + ",");
+		core.fn.setting.set('ticketorderCart', core.fn.setting.get('ticketorderCart') + index + ",");
 	},
 	currentStatus: function () {
 		core.performance.stop('stocklist.api.currentStatus()');
@@ -100,7 +100,7 @@ stocklist.fn = {
 						list += tresult +
 							'<a title="' + maillanguage.helpChangeItemTitle + '" onclick="return confirm(\'' + maillanguage.helpChangeItemPopup + '\');" href="javascript:core.fn.dynamicMailto(\'' + core.var.eMailAddress.inventorycontrol.address + '\',\'' + maillanguage.helpChangeItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpChangeItemCaption + '</a> ' +
 							'<a title="' + maillanguage.helpDeleteItemTitle + '" onclick="return confirm(\'' + maillanguage.helpDeleteItemPopup + '\');" href="javascript:core.fn.dynamicMailto(\'' + core.var.eMailAddress.inventorycontrol.address + '\',\'' + maillanguage.helpDeleteItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpDeleteItemCaption + '</a> ' +
-							(ordered_stocklist_data.content[value[0]][0] && (typeof core.var.modules['ticketorder'] === 'object' && (core.fn.setting.isset('module_ticketorder') ? eval(core.fn.setting.get('module_ticketorder')) : core.var.modules['ticketorder'].enabledByDefault)) ?
+							(ordered_stocklist_data.content[value[0]][0] && (typeof core.var.modules['ticketorder'] === 'object' && (core.fn.setting.isset('core_ticketorder') ? eval(core.fn.setting.get('core_ticketorder')) : core.var.modules['ticketorder'].enabledByDefault)) ?
 								'<span style="float:right">' + core.fn.insert.icon('shoppingcart', 'bigger', false, 'onclick="stocklist.api.addToCart(' + ordered_stocklist_data.content[value[0]][0] + '); core.fn.growlNotif(core.fn.lang(\'articleAdded\',\'stocklist\'))"') + '</span>' : '') +
 							'</div>';
 					});
@@ -154,8 +154,8 @@ stocklist.fn = {
 			'<form id="search" action="javascript:stocklist.fn.search();">' +
 			'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g, '&quot;') + '" placeholder="' + core.fn.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search" />' +
 			'<span onclick="stocklist.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
-			core.fn.insert.select(stocklist.fn.translate.returnselect(), 'stockfilter', 'stockfilter', (core.fn.setting.get('stockfilter') || 'all'), 'onchange="this.selectedIndex == 0 ? core.fn.setting.unset(\'stockfilter\') : core.fn.setting.set(\'stockfilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.fn.search();"') +
-			core.fn.insert.select(null, 'stockorder', 'stockorder', (core.fn.setting.get('stockorder') || 0), 'onchange="this.selectedIndex == 0 ? core.fn.setting.unset(\'stockorder\') : core.fn.setting.set(\'stockorder\',el(\'stockorder\').options[el(\'stockorder\').selectedIndex].value); stocklist.fn.search();"') +
+			core.fn.insert.select(stocklist.fn.translate.returnselect(), 'stockfilter', 'stockfilter', (core.fn.setting.get('stocklistFilter') || 'all'), 'onchange="this.selectedIndex == 0 ? core.fn.setting.unset(\'stocklistFilter\') : core.fn.setting.set(\'stocklistFilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.fn.search();"') +
+			core.fn.insert.select(null, 'stockorder', 'stockorder', (core.fn.setting.get('stocklistOrder') || 0), 'onchange="this.selectedIndex == 0 ? core.fn.setting.unset(\'stocklistOrder\') : core.fn.setting.set(\'stocklistOrder\',el(\'stockorder\').options[el(\'stockorder\').selectedIndex].value); stocklist.fn.search();"') +
 			'<input type="submit" id="submit" value="' + core.fn.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
 			core.fn.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.ecosia.org/search?q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.fn.lang('webSearchTitle', 'stocklist') + '"') +
 			'</form>');
