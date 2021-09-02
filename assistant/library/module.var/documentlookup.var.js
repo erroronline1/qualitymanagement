@@ -22,25 +22,9 @@ documentlookup.var = {
 			en: 'delete favourites until next request',
 			de: 'alle Favoriten bis zum nächsten Aufruf löschen'
 		},
-		favouriteDefaultTitle: {
-			en: 'default values',
-			de: 'Standardwerte'
-		},
-		favouriteRestoreTitle: {
-			en: 'restore personal favourites',
-			de: 'eigene Liste wiederherstellen'
-		},
-		favouriteSaveTitle: {
-			en: 'save personal favourites',
-			de: 'eigene Liste speichern'
-		},
 		favouriteRestoreConfirm: {
 			en: 'Favourites deleted / reset. Reload module to refresh...',
 			de: 'Favoriten wurden gelöscht / zurückgesetzt. Um die Anzeige zu aktualisieren bitte Modul neu starten...'
-		},
-		favouriteSaveConfirm: {
-			en: 'Recent favourites were saved.',
-			de: 'Die neue Favoritenliste wurde gespeichert.'
 		},
 		errorNothingFound: {
 			en: function (query) {

@@ -94,24 +94,13 @@ documentlookup.fn = {
 				});
 				var tfav2 = output.split(',');
 				output = (tools !== undefined) ? '<br />' + core.fn.lang('favouriteCaption', 'documentlookup') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
-					core.fn.insert.icon('delete', 'bigger', false, 'title="' + core.fn.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.reset(\'\')"') +
-					core.fn.insert.icon('clipboard', 'bigger', false, 'title="' + core.fn.lang('favouriteDefaultTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.reset(\'' + documentlookup.var.defaultFavourites + '\')"') +
-					core.fn.insert.icon('refresh', 'bigger', false, 'title="' + core.fn.lang('favouriteRestoreTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.reset(\'' + core.fn.setting.get('documentlookupCustomFav') + '\')"') +
-					core.fn.insert.icon('save', 'bigger', false, 'title="' + core.fn.lang('favouriteSaveTitle', 'documentlookup') + '" onclick="documentlookup.fn.favouriteHandler.customreset()"') +
+					core.fn.insert.icon('delete', 'bigger', false, 'title="' + core.fn.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="core.fn.setting.unset(\'documentlookupFav\'); core.fn.growlNotif(core.fn.lang(\'favouriteRestoreConfirm\', \'documentlookup\'))"') +
 					'</span><br /><br />' : '';
 				for (var i = 0; i < tfav2.length; i += 2) {
 					if (tfav[tfav2[i]] !== undefined) output += tfav[tfav2[i]] + '<br />';
 				}
 			}
 			return output || '';
-		},
-		reset: function (output) {
-			core.fn.setting.set('documentlookupFav', output);
-			core.fn.growlNotif(core.fn.lang('favouriteRestoreConfirm', 'documentlookup'));
-		},
-		customreset: function () {
-			core.fn.setting.set('documentlookupCustomFav', core.fn.setting.get('documentlookupFav'));
-			core.fn.growlNotif(core.fn.lang('favouriteSaveConfirm', 'documentlookup'));
 		}
 	},
 	search: function (query) {
