@@ -371,6 +371,10 @@ core.var = {
 			de: 'Zu kopierende Inhalte in neuem Fenster öffnen'
 		},
 		settingDebugCompressedCaption: {
+			en: 'raw data',
+			de: 'Rohdaten'
+		},
+		settingDebugCompressionRate: {
 			en: 'compressed',
 			de: 'komprimiert'
 		},

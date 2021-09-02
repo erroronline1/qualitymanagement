@@ -575,9 +575,9 @@ core.fn = {
 			});
 			return core.fn.insert.checkbox('Console Performance Monitor', 'corePerformanceMonitor', (core.fn.setting.get('corePerformanceMonitor') || 0), 'onchange="core.fn.setting.switch(\'corePerformanceMonitor\')"') +
 				'<br />' + core.fn.insert.checkbox('Console Output Monitor', 'coreOutputMonitor', (core.fn.setting.get('coreOutputMonitor') || 0), 'onchange="core.fn.setting.switch(\'coreOutputMonitor\')"') +
-				'<br /><br />' + core.fn.lang('settingDebugSpaceCaption') + (core.fn.setting.localStorage.maxSpace() - core.fn.setting.localStorage.remainingSpace()) + '/' + core.fn.setting.localStorage.maxSpace() + ' Byte<br />' +
+				'<br /><br />' + core.fn.lang('settingDebugSpaceCaption') + (core.fn.setting.localStorage.maxSpace() - core.fn.setting.localStorage.remainingSpace()) + ' / ' + core.fn.setting.localStorage.maxSpace() + ' Byte<br />' +
 				core.fn.insert.limitBar(false, core.fn.lang('settingDebugSpaceCaption'), 'debugSpace') + '<br />' +
-				core.fn.lang('settingDebugDumpCaption') + ':<br /> ' + core.fn.insert.checkbox(core.fn.lang('settingDebugCompressedCaption') + ' @' + Math.round(100 * compressed / uncompressed) + '%', 'coreCompressedDump', (core.fn.setting.get('coreCompressedDump') || 0), 'onchange="core.fn.setting.switch(\'coreCompressedDump\')"') +
+				core.fn.lang('settingDebugDumpCaption') + ':<br /> ' + core.fn.insert.checkbox(core.fn.lang('settingDebugCompressedCaption') + ' @ ' + Math.round(100 * compressed / uncompressed) + '% ' + core.fn.lang('settingDebugCompressionRate'), 'coreCompressedDump', (core.fn.setting.get('coreCompressedDump') || 0), 'onchange="core.fn.setting.switch(\'coreCompressedDump\')"') +
 				'<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
 				'<br /><input type="text" placeholder="' + core.fn.lang('settingDeleteDistinctPlaceholder') + '" id="deleteDistinctSettings" />' +
 				core.fn.insert.icon('delete', 'bigger', false,
