@@ -902,15 +902,17 @@ var globalSearch = { //searches all modules using their api-methods from the sta
 		var displayResult = '';
 		if (Object.keys(this.result).length) {
 			displayResult = '<br />';
-			Object.keys(this.result).forEach(function (mod) {
-				displayResult += '<div class="items items143" onclick="core.fn.toggleHeight(this)">' +
-					core.fn.insert.expand() +
-					core.var.modules[mod].icon + core.var.modules[mod].display[core.var.selectedLanguage] + '<br />';
-				globalSearch.result[mod].sort(core.fn.sortBySecondColumn);
-				globalSearch.result[mod].forEach(function (key) {
-					displayResult += key[0] + '<br />';
-				});
-				displayResult += '</div>';
+			Object.keys(core.var.modules).forEach(function (mod) {
+				if (mod in globalSearch.result){
+					displayResult += '<div class="items items143" onclick="core.fn.toggleHeight(this)">' +
+						core.fn.insert.expand() +
+						core.var.modules[mod].icon + core.var.modules[mod].display[core.var.selectedLanguage] + '<br />';
+					globalSearch.result[mod].sort(core.fn.sortBySecondColumn);
+					globalSearch.result[mod].forEach(function (key) {
+						displayResult += key[0] + '<br />';
+					});
+					displayResult += '</div>';
+				}
 			});
 		} else if (search !== undefined) var displayResult = core.fn.lang('errorNothingFound', null, el('globalsearch').value);
 		if (core.var.currentScope === null) core.fn.stdout('output', displayResult);
