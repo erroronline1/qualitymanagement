@@ -9,7 +9,8 @@ const link = [style, 'color: #a3be8c'].join(';');
 if (!isIE()) console.log('%c      coded with %c♥️ %cby error on line 1 - %c http://erroronline.one      ', main, heart, main, link);
 else console.log('coded with ♥️ by error on line 1 - http://erroronline.one');
 var developerAlert = 'Welcome to the console output of the ' + core.fn.lang('title') + '!\n' +
-	'Please be aware that displaying the console results in a significant decrease of speed.\n';
+	'Please be aware that displaying the console results in a significant decrease of speed.\n' +
+	'Operations that batch-load ressources might fail (e.g globalSearch).';
 console.warn(developerAlert);
 
 var randomTip = {
