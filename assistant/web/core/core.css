@@ -105,8 +105,9 @@ aside {
 	height: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
-	user-select: none;
 	-ms-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
 	white-space: nowrap;
 }
 
