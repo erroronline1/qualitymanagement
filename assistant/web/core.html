@@ -2,9 +2,8 @@
 <html lang="de">
 
 <head>
-	<title></title>
 	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=11">
+	<title></title>
 	<script src="core/core.js">
 		//////////////////////////////////////////////////////////////
 		//  2020-2021 by error on line 1 (erroronline.one)
@@ -47,6 +46,8 @@
 					'title="' + core.fn.lang('homeMenuBack') + '" onclick="core.history.go(\'back\')"') +
 				core.fn.insert.icon('forth', 'bigger inactiveicon', 'titleforthbutton',
 					'title="' + core.fn.lang('homeMenuForth') + '" onclick="core.history.go(\'forth\')"') +
+				core.fn.insert.icon('refresh', 'bigger', false,
+					'title="' + core.fn.lang('homeMenuRestart') + '" onclick="location.href=\'core.html\'"') +
 				'</nav>');
 			document.write('<article id="input"></article>');
 			document.write('<aside class="setting">' +
