@@ -25,6 +25,13 @@
 	<script src="library/core/core.fn.languageSynthesis.js"></script>
 	<script src="library/core/core.userDialogue.js"></script>
 	<script src="library/core/core.drm.js"></script>
+	<script src="/eel.js">
+		// import python implementation
+	</script>
+	<script src="core/core.eel.js">
+		// note that the order of fetching scripts is crucial as this library overrides the
+		// web compatible core functions with python replacements 
+	</script>
 	<link href="core/core.css" rel="stylesheet" type="text/css" />
 	<link id="colortheme" rel="stylesheet" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,8 +47,6 @@
 					'title="' + core.fn.lang('homeMenuBack') + '" onclick="core.history.go(\'back\')"') +
 				core.fn.insert.icon('forth', 'bigger inactiveicon', 'titleforthbutton',
 					'title="' + core.fn.lang('homeMenuForth') + '" onclick="core.history.go(\'forth\')"') +
-				core.fn.insert.icon('refresh', 'bigger', false,
-					'title="' + core.fn.lang('homeMenuRestart') + '" onclick="location.reload()"') +
 				'</nav>');
 			document.write('<article id="input"></article>');
 			document.write('<aside class="setting">' +
