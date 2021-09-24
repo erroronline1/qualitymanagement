@@ -12,67 +12,79 @@
 if (typeof timetable === 'undefined') var timetable = {};
 
 timetable.api = {
-	available: function (search) {
-		var queryString = search.split(/\s/),
+	available: async (search) => {
+		let found = false,
+			queryString = search.split(/\s/),
 			searchTerms = timetable.var.searchTerms[core.var.selectedLanguage],
-			found = false;
+			termsFound;
 		if (typeof searchTerms !== 'undefined') {
-			var termsFound = core.fn.smartSearch.lookup(search, searchTerms, true);
+			termsFound = await core.fn.async.smartSearch.lookup(search, searchTerms, true);
 			termsFound.forEach(function (value) {
 				found = true;
 			});
 		}
 		if (found) {
 			queryString.shift();
-			for (var i = 0; i < queryString.length; i++) {
+			for (let i = 0; i < queryString.length; i++) {
 				queryString[i] = queryString[i][0].toUpperCase() + queryString[i].slice(1);
 			} //ucfirst
-			display = '<a href="javascript:core.fn.loadScript(\'modules/timetable.js\',\'timetable.fn.init(\\\'' + queryString.join(' ') + '\\\')\')">' + core.var.modules.timetable.display[core.var.selectedLanguage] + (queryString.length > 0 ? core.fn.lang('apiFound', 'timetable') + queryString.join(' ') : '') + '</a>';
+			display = '<a href="javascript:core.fn.loadScript(\'' + core.var.moduleDir + 'timetable.js\',\'timetable.fn.init(\\\'' + queryString.join(' ') + '\\\')\')">' + core.var.modules.timetable.display[core.var.selectedLanguage] + (queryString.length > 0 ? core.fn.static.lang('apiFound', 'timetable') + queryString.join(' ') : '') + '</a>';
 			//add value and relevance
-			globalSearch.contribute('timetable', [display, 1]);
+			core.globalSearch.contribute('timetable', [display, 1]);
 		}
 		core.performance.stop('timetable.api.available(\'' + search + '\')');
 	},
-	currentStatus: function () {
-		var display = timetable.fn.favouriteHandler.get();
-		if (display) globalSearch.contribute('timetable', [display, 1]);
+	currentStatus: async () => {
+		let display = await timetable.fn.favouriteHandler.get();
+		if (display) core.globalSearch.contribute('timetable', [display, 1]);
 		core.performance.stop('timetable.api.currentStatus()');
 	}
 };
 timetable.fn = {
-	open: function (name, js) {
+	open: async (name, js) => {
+		let favouriteNameStored = await timetable.fn.favouriteHandler.stored(name),
+			linkfile = await timetable.fn.linkfile(name);
 		if (typeof js === 'undefined')
-			return core.fn.lang('legalReminder', 'timetable') +
-				timetable.fn.linkfile(name) +
-				core.fn.insert.checkbox(core.fn.lang('favouriteAdd', 'timetable'), 'favouriteAdd', this.favouriteHandler.stored(name), false, core.fn.lang('favouriteAdd', 'timetable'));
+			return core.fn.static.lang('legalReminder', 'timetable') +
+				linkfile +
+				core.fn.static.insert.checkbox(core.fn.static.lang('favouriteAdd', 'timetable'), 'favouriteAdd', favouriteNameStored, false, core.fn.static.lang('favouriteAdd', 'timetable'));
 		else
-			return core.fn.lang('legalReminder', 'timetable').replace(/"/g, '&quot;') +
-				timetable.fn.linkfile(name).replace(/"/g, '&quot;').replace(/\'/g, "\\\'") +
-				core.fn.insert.checkbox(core.fn.lang('favouriteAdd', 'timetable'), 'favouriteAdd', this.favouriteHandler.stored(name), false, core.fn.lang('favouriteAdd', 'timetable')).replace(/"/g, '&quot;').replace(/\'/g, "\\\'");
+			return core.fn.static.lang('legalReminder', 'timetable').replace(/"/g, '&quot;') +
+				linkfile.replace(/"/g, '&quot;').replace(/\'/g, "\\\'") +
+				core.fn.static.insert.checkbox(core.fn.static.lang('favouriteAdd', 'timetable'), 'favouriteAdd', favouriteNameStored, false, core.fn.static.lang('favouriteAdd', 'timetable')).replace(/"/g, '&quot;').replace(/\'/g, "\\\'");
 	},
-	search: function (query) {
+	search: async (query) => {
 		query = query || el('timetablequery').value;
 		core.performance.start('timetable.fn.input(\'' + value(query) + '\')'); //possible duplicate
+		let open;
 		if (value(query) !== '') {
-			core.fn.popup(this.open(query));
+			open = await timetable.fn.open(query);
+			core.fn.static.popup(open);
 		}
 		core.performance.stop('timetable.fn.input(\'' + value(query) + '\')');
 		core.history.write(['timetable.fn.init(\'\')']);
 	},
-	linkfile: function (name, favourite) {
+	linkfile: async (name, favourite) => {
+		let link,
+			withtools;
 		name = name.split(' '); //split to array
-		for (var i = 0; i < name.length; i++) {
+		for (let i = 0; i < name.length; i++) {
 			name[i] = name[i][0].toUpperCase() + name[i].slice(1);
 		} //ucfirst
 		name = name.join(' '); //rejoin to string
-		var link = '<a href="' + timetable.var.path + name.toLowerCase() + '.xlsm" onclick="timetable.fn.favouriteHandler.set(\'' + name + '\'); return;" target="_blank">' + core.fn.lang('linkTitle', 'timetable') + name + '</a> ';
-		if (value(favourite) !== '') link = '<span class="singlefavouritehandler"><a href="javascript:core.fn.popup(\'' + this.open(name, true) + '\')">' + name + '</a> ' + core.fn.insert.icon('delete', false, false, 'onclick="timetable.fn.favouriteHandler.set(\':' + name + '\'); return;"') + '</span>';
+		link = '<a href="' + timetable.var.path + name.toLowerCase() + '.xlsm" onclick="timetable.fn.favouriteHandler.set(\'' + name + '\'); return;" target="_blank">' + core.fn.static.lang('linkTitle', 'timetable') + name + '</a> ';
+		if (value(favourite) !== '') {
+			withtools = await timetable.fn.open(name, true);
+			link = '<span class="singlefavouritehandler"><a href="javascript:core.fn.static.popup(\'' + withtools + '\')">' + name + '</a> ' + core.fn.static.insert.icon('delete', false, false, 'onclick="timetable.fn.favouriteHandler.set(\':' + name + '\'); return;"') + '</span>';
+		}
 		return link;
 	},
 	favouriteHandler: {
-		set: function (value) {
-			var output = core.fn.setting.get('timetableFav'),
-				deleteValue = false;
+		set: async (value) => {
+			let deleteValue = false,
+				favourites = [],
+				output = await core.fn.async.memory.read('timetableFav'),
+				tfav;
 			if (value.indexOf(':') == 0) { //if preceded by : the value will be deleted from the favourite list
 				deleteValue = true;
 				value = value.substring(1);
@@ -80,64 +92,65 @@ timetable.fn = {
 				deleteValue = true;
 			if (output) {
 				if (output.indexOf(value) > -1) {
-					var tfav = output.split(','),
-						favourites = new Array();
+					tfav = output.split(',');
 					//create two dimensional array and add sighting if neccessary
-					for (var i = 0; i < tfav.length; i += 2) {
+					for (let i = 0; i < tfav.length; i += 2) {
 						if (!(deleteValue && tfav[i] === value)) favourites.push(new Array(tfav[i], parseInt(tfav[i + 1]) + (tfav[i] === value ? 1 : 0)));
 					}
 					favourites.sort(core.fn.sortBySecondColumn);
 					//reduce two dimensional array after sorting
-					for (i = 0; i < favourites.length; i++) {
+					for (let i = 0; i < favourites.length; i++) {
 						favourites[i] = favourites[i].join(',');
 					}
 					//reduce to flat
 					output = favourites.join(',');
 				} else output += ',' + value + ',1';
 			} else if (!deleteValue) output = value + ',1';
-			if (output) core.fn.setting.set('timetableFav', output);
-			else core.fn.setting.unset('timetableFav')
-			core.fn.stdout('favourites', timetable.fn.favouriteHandler.get('withtools'));
+			if (output) core.fn.async.memory.write('timetableFav', output);
+			else core.fn.async.memory.delete('timetableFav')
+			core.fn.async.stdout('favourites', await timetable.fn.favouriteHandler.get('withtools'));
 		},
-		get: function (tools) {
-			var output = core.fn.setting.get('timetableFav');
+		get: async (tools) => {
+			let favName = '',
+				output = await core.fn.async.memory.read('timetableFav'),
+				tfav2;
 			if (output) {
-				var tfav2 = output.split(',');
-				output = tools !== undefined ? '<br />' + core.fn.lang('favouriteCaption', 'timetable') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
-					core.fn.insert.icon('delete', 'bigger', false, 'title="' + core.fn.lang('favouriteDeleteTitle', 'timetable') + '" onclick="timetable.fn.favouriteHandler.reset(\'\')"') +
+				tfav2 = output.split(',');
+				output = tools !== undefined ? '<br />' + core.fn.static.lang('favouriteCaption', 'timetable') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
+					core.fn.static.insert.icon('delete', 'bigger', false, 'title="' + core.fn.static.lang('favouriteDeleteTitle', 'timetable') + '" onclick="timetable.fn.favouriteHandler.reset(\'\')"') +
 					'</span><br /><br />' : '';
-				for (var person = 0; person < tfav2.length; person += 2) {
-					var favName = tfav2[person];
-					output += timetable.fn.linkfile(favName, true) + '<br />';
+				for (let person = 0; person < tfav2.length; person += 2) {
+					favName = tfav2[person];
+					output += await timetable.fn.linkfile(favName, true) + '<br />';
 				}
 			}
 			return output || '';
 		},
-		stored: function (name) {
+		stored: async (name) => {
+			let timetableFav = await core.fn.async.memory.read('timetableFav');
 			name = name.split(' '); //split to array
-			for (var i = 0; i < name.length; i++) {
+			for (let i = 0; i < name.length; i++) {
 				name[i] = name[i][0].toUpperCase() + name[i].slice(1);
 			} //ucfirst
 			name = name.join(' '); //rejoin to string
-			if (core.fn.setting.get('timetableFav')) return core.fn.setting.get('timetableFav').indexOf(name) > -1;
+			if (timetableFav) return timetableFav.indexOf(name) > -1;
 			else return false;
 		},
-		reset: function (output) {
-			core.fn.setting.set('timetableFav', output);
-			core.fn.growlNotif(core.fn.lang('favouriteResetConfirm', 'timetable'));
+		reset: async (output) => {
+			await core.fn.async.memory.write('timetableFav', output);
+			core.fn.async.growlNotif(core.fn.static.lang('favouriteResetConfirm', 'timetable'));
 		},
 	},
-	init: function (query) {
-		el('moduletimetable').checked = true; // highlight menu icon
-		core.fn.stdout('input',
+	init: async (query) => {
+		await core.fn.async.stdout('input',
 			'<form id="search" action="javascript:timetable.fn.search();">' +
-			'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g, '&quot;') + '" placeholder="' + core.fn.lang('formInputPlaceholder', 'timetable') + '" id="timetablequery" class="search" />' +
-			'<span onclick="timetable.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
-			'<input type="submit" id="name" value="' + core.fn.lang('formSubmit', 'timetable') + '" hidden="hidden" /> ' +
+			'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g, '&quot;') + '" placeholder="' + core.fn.static.lang('formInputPlaceholder', 'timetable') + '" id="timetablequery" class="search" />' +
+			'<span onclick="timetable.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
+			'<input type="submit" id="name" value="' + core.fn.static.lang('formSubmit', 'timetable') + '" hidden="hidden" /> ' +
 			'</form>');
 		el('timetablequery').focus();
-		core.fn.stdout('temp', core.fn.lang('explanation', 'timetable') + '<br />');
-		core.fn.stdout('output', '<div id="favourites">' + timetable.fn.favouriteHandler.get('withtools') + '</div>');
+		core.fn.async.stdout('temp', core.fn.static.lang('explanation', 'timetable') + '<br />');
+		core.fn.async.stdout('output', '<div id="favourites">' + await timetable.fn.favouriteHandler.get('withtools') + '</div>');
 		if (value(query) !== '') timetable.fn.search(value(query));
 		core.performance.stop('timetable.fn.init(\'' + value(query) + '\')');
 	},

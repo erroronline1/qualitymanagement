@@ -239,9 +239,9 @@ ticketorder.var = {
 	filter: function () { //filters according to module.data/ticketorder.js
 		//id:[select value, select text, filter for smartsearch]
 		return {
-			nofilter: ['nofilter', core.fn.lang('filterNofilter', 'ticketorder'), 'true'],
-			closed: ['closed', core.fn.lang('filterClosed', 'ticketorder'), 'ticketorder_data.content[key][3]!=\'\''],
-			open: ['open', core.fn.lang('filterOpen', 'ticketorder'), 'ticketorder_data.content[key][3]==\'\''],
+			nofilter: ['nofilter', core.fn.static.lang('filterNofilter', 'ticketorder'), 'true'],
+			closed: ['closed', core.fn.static.lang('filterClosed', 'ticketorder'), 'ticketorder_data.content[key][3]!=\'\''],
+			open: ['open', core.fn.static.lang('filterOpen', 'ticketorder'), 'ticketorder_data.content[key][3]==\'\''],
 		};
 	},
 };

@@ -40,23 +40,24 @@
 	<header>
 		<script>
 			document.write('<nav class="home">' +
-				core.fn.insert.icon('home', 'bigger', false,
-					'title="' + core.fn.lang('homeMenuEntry') + '" onclick="slider.slide(\'null\'); core.fn.init()"') +
-				core.fn.insert.icon('back', 'bigger inactiveicon', 'titlebackbutton',
-					'title="' + core.fn.lang('homeMenuBack') + '" onclick="core.history.go(\'back\')"') +
-				core.fn.insert.icon('forth', 'bigger inactiveicon', 'titleforthbutton',
-					'title="' + core.fn.lang('homeMenuForth') + '" onclick="core.history.go(\'forth\')"') +
-				core.fn.insert.icon('refresh', 'bigger', false,
-					'title="' + core.fn.lang('homeMenuRestart') + '" onclick="location.href=\'core.html\'"') +
+				core.fn.static.insert.icon('home', 'bigger', false,
+					'title="' + core.fn.static.lang('homeMenuEntry') + '" onclick="slider.slide(\'null\'); core.init.ui()"'
+				) +
+				core.fn.static.insert.icon('back', 'bigger inactiveicon', 'titlebackbutton',
+					'title="' + core.fn.static.lang('homeMenuBack') + '" onclick="core.history.go(\'back\')"') +
+				core.fn.static.insert.icon('forth', 'bigger inactiveicon', 'titleforthbutton',
+					'title="' + core.fn.static.lang('homeMenuForth') + '" onclick="core.history.go(\'forth\')"') +
+				core.fn.static.insert.icon('refresh', 'bigger', false,
+					'title="' + core.fn.static.lang('homeMenuRestart') + '" onclick="location.href=\'core.html\'"') +
 				'</nav>');
 			document.write('<article id="input"></article>');
 			document.write('<aside class="setting">' +
-				core.fn.insert.icon('feedbackrequest', 'bigger', false,
-					'title="' + core.fn.lang('homeMenuFeedbackRequest') +
-					'" onclick="core.fn.dynamicMailto(core.var.eMailAddress.admin.address, document.title)"') +
-				core.fn.insert.icon('settings', 'bigger', false,
-					'title="' + core.fn.lang('settingMenuEntry') +
-					'" onclick="core.fn.popup(core.fn.setting.setup()); return;"') +
+				core.fn.static.insert.icon('feedbackrequest', 'bigger', false,
+					'title="' + core.fn.static.lang('homeMenuFeedbackRequest') +
+					'" onclick="core.fn.static.dynamicMailto(core.var.eMailAddress.admin.address, document.title)"') +
+				core.fn.static.insert.icon('settings', 'bigger', false,
+					'title="' + core.fn.static.lang('settingMenuEntry') +
+					'" onclick="core.setup.setup(); return;"') +
 				'</aside>');
 		</script>
 	</header>
@@ -64,7 +65,7 @@
 		<nav id="menu">
 			<span id="title">
 				<script>
-					document.write(core.var.logo + '<div style="display:inline-block">' + core.fn.lang('title') +
+					document.write(core.var.logo + '<div style="display:inline-block">' + core.fn.static.lang('title') +
 						'&nbsp;</div>');
 				</script>
 			</span><br /><br />
@@ -74,7 +75,7 @@
 		<div id="content">
 			<article id="temp">
 			</article>
-			<aside id="output" onclick="core.fn.selectText('output')">
+			<aside id="output" onclick="core.fn.static.selectText('output')">
 			</aside>
 		</div>
 	</main>
@@ -83,14 +84,7 @@
 	</div>
 	<div id="growlNotif"></div>
 	<script>
-		core.fn.initMenu();
-		document.title = core.fn.lang('title');
-		//load settings or defaults
-		var fontsize = document.body.style.fontSize = ((core.fn.setting.get('coreFontsize') || 0) / 10 + 1) + 'em';
-		el('colortheme').href = 'core/' + ((core.fn.setting.get('coreTheme') in core.var.themes ? core.fn
-			.setting.get('coreTheme') : 'default') || 'default') + '.css';
-		core.fn.init();
-		updateTracker.alert();
+		core.init.application();
 	</script>
 </body>
 

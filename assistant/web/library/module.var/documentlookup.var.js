@@ -28,18 +28,18 @@ documentlookup.var = {
 		},
 		errorNothingFound: {
 			en: function (query) {
-				return 'Query for document searched by <span class="highlight">' + query + '</span> returned no results. Check spelling' + (core.fn.setting.get('coreFuzzySearch') ? '' : ' or Fuzzy-Search-setting ') + ', look for parts of query, in another document group or within <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.lang('optionThirdType', 'documentlookup') + '</a>. Please adhere to mimimum 3 character length.'
+				return 'Query for document searched by <span class="highlight">' + query + '</span> returned no results. Check spelling' + (core.var.fuzzySearch ? '' : ' or Fuzzy-Search-setting ') + ', look for parts of query, in another document group or within <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.static.lang('optionThirdType', 'documentlookup') + '</a>. Please adhere to mimimum 3 character length.'
 			},
 			de: function (query) {
-				return 'Es konnte kein Dokument mit dem Begriff <span class="highlight">' + query + '</span> gefunden werden. Bitte eventuell Schreibweise' + (core.fn.setting.get('coreFuzzySearch') ? '' : ' oder Tippfehler-Toleranz-Einstellung') + ' überprüfen, nach Wortteilen, in einer anderen Dokumentengruppe oder bei den <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.lang('optionThirdType', 'documentlookup') + 'n</a> suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
+				return 'Es konnte kein Dokument mit dem Begriff <span class="highlight">' + query + '</span> gefunden werden. Bitte eventuell Schreibweise' + (core.var.fuzzySearch ? '' : ' oder Tippfehler-Toleranz-Einstellung') + ' überprüfen, nach Wortteilen, in einer anderen Dokumentengruppe oder bei den <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.static.lang('optionThirdType', 'documentlookup') + 'n</a> suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
 			},
 		},
 		generalThirdTypeHint: {
 			en: function () {
-				return 'Of course the requested document could be within the <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.lang('optionThirdType', 'documentlookup') + '</a>.'
+				return 'Of course the requested document could be within the <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.static.lang('optionThirdType', 'documentlookup') + '</a>.'
 			},
 			de: function () {
-				return 'Das gesuchte Dokument könnte natürlich auch bei den <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.lang('optionThirdType', 'documentlookup') + 'n</a> sein.'
+				return 'Das gesuchte Dokument könnte natürlich auch bei den <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.static.lang('optionThirdType', 'documentlookup') + 'n</a> sein.'
 			}
 		},
 	},
@@ -60,11 +60,13 @@ documentlookup.var = {
 	//set default document titles without whitespaces and special characters, predefined clicks for higher postion 
 	defaultFavourites: 'Protocol,10,' +
 		'AttendanceList,5,',
-	selectedModule: function () {
-		return (core.fn.setting.get('lookup_bundle') || 'documentlookup_int');
+	selectedModule: async () => {
+		let val = await core.fn.async.memory.read('documentlookupBundle');
+		return val || 'documentlookup_int';
 	},
-	selectedObject: function () {
-		return eval(documentlookup.var.selectedModule() + '_data');
+	selectedObject: async () => {
+		let val = await documentlookup.var.selectedModule();
+		return eval(val + '_data');
 	},
 	thirdDocumentCategoryPath: 'E:/Quality Management/TTD',
 	disableOutputSelect: true,

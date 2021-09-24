@@ -6,24 +6,23 @@ const style = ['background: #4c566a', 'padding: 10px 0px', 'line-height: 35px', 
 const main = [style, 'color: #eceff4'].join(';');
 const heart = [style, 'color: #bf616a'].join(';');
 const link = [style, 'color: #a3be8c'].join(';');
-if (!isIE()) console.log('%c      coded with %c♥️ %cby error on line 1 - %c http://erroronline.one      ', main, heart, main, link);
-else console.log('coded with ♥️ by error on line 1 - http://erroronline.one');
-var developerAlert = 'Welcome to the console output of the ' + core.fn.lang('title') + '!\n' +
+console.log('%c      coded with %c♥️ %cby error on line 1 - %c http://erroronline.one      ', main, heart, main, link);
+let developerAlert = 'Welcome to the console output of the ' + core.fn.static.lang('title') + '!\n' +
 	'Please be aware that displaying the console results in a significant decrease of speed.\n' +
 	'Operations that batch-load ressources might fail (e.g globalSearch).';
 console.warn(developerAlert);
 
-var randomTip = {
+let randomTip = {
 	show: function () {
 		// 	show random tip on startup
-		return '<span style="float:right" onclick="core.fn.stdout(\'randomTip\', randomTip.show());">' + core.fn.insert.icon('refresh') + '</span>' +
+		return '<span style="float:right" onclick="core.fn.async.stdout(\'randomTip\', randomTip.show());">' + core.fn.static.insert.icon('refresh') + '</span>' +
 			'<br /><span class="highlight">' + this.list[0][core.var.selectedLanguage] + ':</span>' +
 			'<br />' + this.list[Math.floor(Math.random() * (this.list.length - 1) + 1)][core.var.selectedLanguage] +
 			'';
 	},
 	enlist: function () {
-		var rtrn = '';
-		Object.keys(this.list).forEach(function (key) {
+		let rtrn = '';
+		Object.keys(this.list).forEach((key) => {
 			rtrn += randomTip.list[key][core.var.selectedLanguage] + '<br /><br />';
 		});
 		return rtrn;
@@ -80,10 +79,6 @@ var randomTip = {
 			de: 'Wenn Dir das Menü zu voll ist kannst du Module bei den Einstellungen deaktivieren.'
 		},
 		{
-			en: 'Save the application to your browsers favourite-bar, as a shortcut to the desktop or to the startup-folder to have quick access to the qm-system at any time.',
-			de: 'Speichere die Seite in der Favoriten-Leiste deines Browsers oder als Verknüpfung auf dem Desktop oder im Autostart-Ordner um jederzeit schnellen Zugriff auf das QM-System zu haben..'
-		},
-		{
 			en: 'Some settings take effect immediately, others need a restart of the application.',
 			de: 'Manche Einstellungen haben sofort einen Effekt, andere erfordern den Neustart der Oberfläche.'
 		},
@@ -92,12 +87,8 @@ var randomTip = {
 			de: 'Standardmäßig sind mehrere Sprachen implementiert. Sowohl die Oberfläche als auch Textblöcke können mehrsprachig dargestellt werden.'
 		},
 		{
-			en: 'Some browsers are slower than others (looking at you Edge - pre Chromium!). If the global search or modules do not load properly add a little delay in the advanced settings.',
-			de: 'Manche Browser sind langsamer als andere (fühle dich angesprochen Edge - vor Chromium!). Wenn die globale Suche oder die Module nicht richtig laden gib ihnen bei den erweiterten Einstellungen etwas mehr Zeit.'
-		},
-		{
-			en: 'Generated text may be pasted to the email occasionally. It depends on the browser. The texts length can be customized to the browsers abilities in the advanced settings.',
-			de: 'Generierter Text wird unter Umständen direkt in die eMail eingefügt. Das hängt vom Browser ab. Die Länge des Textes kann bei den erweiterten Einstellungen an den Browser angepasst werden. '
+			en: 'Generated text may be pasted to the email occasionally. It depends on the browser implementation. The texts length can be customized in the advanced settings.',
+			de: 'Generierter Text wird unter Umständen direkt in die eMail eingefügt. Das hängt vom Browserimplementierung ab. Die Länge des Textes kann bei den erweiterten Einstellungen angepasst werden. '
 		},
 		{
 			en: 'Some functions need operating system specific settings. The used operating system can be set in the advanced settings.',
@@ -124,35 +115,39 @@ var randomTip = {
 	],
 };
 
-var aboutNotification = {
+const aboutNotification = {
 	en: '<pre style="float:left; font-family:monospace; margin:0 1em 1em 0; line-height:1.2em;">     m\n    / \\\n   |...|\n   |...|\n   |___|\n   / | \\</pre>This application is part of the &quot;bottle light quality management software&quot;. It is a universal interface and can be modular extended.<br /><br />The complete system of application and depended documents can be used under GNU GENERAL PUBLIC LICENSE Version 3. The sourcecode with templates is available under <a href="https://github.com/erroronline1/qualitymanagement/" target="_blank">https://github.com/erroronline1/qualitymanagement/</a><br />&copy; 2020-2021, <a href="http://erroronline.one" target="_blank">error on line 1</a>',
 	de: '<pre style="float:left; font-family:monospace; margin:0 1em 1em 0; line-height:1.2em;">     m\n    / \\\n   |...|\n   |...|\n   |___|\n   / | \\</pre>Diese Anwendung ist Bestandteil der &quot;bottle light quality management software&quot;. Sie dient als universelle Schnittstelle und kann modular erweitert werden.<br /><br />Das Gesamtsystem aus Anwendung und anhängigen Dokumenten ist unter der GNU GENERAL PUBLIC LICENSE Version 3 verwendbar. Quelltexte und Templates sind erhältlich unter <a href="https://github.com/erroronline1/qualitymanagement/" target="_blank">https://github.com/erroronline1/qualitymanagement/</a><br />&copy; 2020-2021, <a href="http://erroronline.one" target="_blank">error on line 1</a>'
 };
 
 // in case of major updates something might happen to malfunction. this module keeps track of changes and informs every user about new features.
 
-var updateTracker = {
-	enlist: function () {
+let updateTracker = {
+	enlist: () => {
 		//	listing all update hints in reverse order
-		var tracker = '';
-		for (var i = this.list.length - 1; i > -1; i--) {
-			if (this.list[i][0].length) tracker += '<span class="highlight">' + this.list[i][0] + ':</span> ' + this.list[i][1] + '<br /><hr /><br />';
+		let tracker = '';
+		for (let i = updateTracker.list.length - 1; i > -1; i--) {
+			if (updateTracker.list[i][0].length) tracker += '<span class="highlight">' + updateTracker.list[i][0] + ':</span> ' + updateTracker.list[i][1] + '<br /><hr /><br />';
 		}
 		return 'Update Tracker:<br /><br />' + tracker;
 	},
-	latestMajorUpdate: function () {
-		for (var i = updateTracker.list.length - 1; i > -1; i--) {
-			if (this.list[i][0] === 'Major') return i;
+	latestMajorUpdate: () => {
+		for (let i = updateTracker.list.length - 1; i > -1; i--) {
+			if (updateTracker.list[i][0] === 'Major') return i;
 		}
 	},
-	alert: function () {
+	alert: async () => {
 		//	display latest update hint on startup as long as it is not disabled
-		if (core.fn.setting.get('coreNotificationHide' + this.latestMajorUpdate()) === false && this.list[this.list.length - 1][0].length) {
-			text = this.list[this.latestMajorUpdate()][1] + '<br /><br />' +
-				core.fn.insert.checkbox(core.fn.lang('settingNotificationSelector'), 'coreNotificationHide' + updateTracker.latestMajorUpdate(), (core.fn.setting.get('coreNotificationHide' + this.latestMajorUpdate())), 'onchange="core.fn.setting.switch(\'coreNotificationHide' + this.latestMajorUpdate() + '\')"', core.fn.lang('settingRestartNeccessary')) +
-				'<br /><small>' + core.fn.lang('settingNotificationHint') + '</small>';
-			core.fn.popup(text);
+		let latestNotif = 'coreNotificationHide' + updateTracker.latestMajorUpdate(),
+			module = {};
+		module[latestNotif] = await core.fn.async.memory.read(latestNotif);
+		if (module[latestNotif] === false && updateTracker.list[updateTracker.list.length - 1][0].length) {
+			text = updateTracker.list[updateTracker.latestMajorUpdate()][1] + '<br /><br />' +
+				core.fn.static.insert.checkbox(core.fn.static.lang('settingNotificationSelector'), latestNotif, 0, 'onchange="this.checked ? core.fn.async.memory.write(\'' + latestNotif + '\', 1) : core.fn.async.memory.delete(\'' + latestNotif + '\')"', core.fn.static.lang('settingRestartNeccessary')) +
+				'<br /><small>' + core.fn.static.lang('settingNotificationHint') + '</small>';
+			core.fn.static.popup(text);
 		}
+		return true;
 	},
 	list: [
 		//	list of updates in ascending order. this is considered not to be critical in terms of language so feel free to fill this list in you main oder native language

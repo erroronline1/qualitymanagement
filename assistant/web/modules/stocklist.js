@@ -11,73 +11,84 @@
 
 if (typeof stocklist === 'undefined') var stocklist = {};
 
+stocklist.temp = {};
+
 stocklist.api = {
-	available: function (search) {
-		core.fn.loadScript(core.var.moduleDataDir + 'stocklist.js',
+	available: async (search) => {
+		await core.fn.async.loadScript(core.var.moduleDataDir + 'stocklist.js',
 			'stocklist.api.processAfterImport(\'' + search + '\')');
 		core.performance.stop('stocklist.api.available(\'' + search + '\')');
 	},
-	processAfterImport: function (search) {
-		var display;
+	processAfterImport: async (search) => {
+		let display,
+			found,
+			ordered_stocklist_data;
 		if (typeof stocklist_data !== 'undefined') {
 			//clone data object and reset first value to undefined otherwise header terms can be displayed as results
-			var ordered_stocklist_data = stocklist.fn.order.prepare('noOrder');
-			var found = core.fn.smartSearch.lookup(search, ordered_stocklist_data.content, true);
+			ordered_stocklist_data = await stocklist.fn.order.prepare('noOrder');
+			found = await core.fn.async.smartSearch.lookup(search, ordered_stocklist_data.content, true);
 			//the following would return the found items, but i decided otherwise in this case
 			//found.forEach(function (value) {
 			//	display=display:stocklist_data.content[value[0]][1] + ' ' +stocklist_data.content[value[0]][2] + ' '+ stocklist_data.content[value[0]][3];
 			//	globalSearch.contribute('stocklist', display);
 			//});
 			if (found.length) {
-				display = '<a href="javascript:core.fn.loadScript(\'modules/stocklist.js\',\'stocklist.fn.init(\\\'' + search.replace(/"/g, '&quot;') + '\\\')\')">' + found.length + core.fn.lang('apiItemsFound', 'stocklist') + '</a>';
+				display = '<a href="javascript:core.fn.loadScript(\'' + core.var.moduleDir + 'stocklist.js\',\'stocklist.fn.init(\\\'' + search.replace(/"/g, '&quot;') + '\\\')\')">' + found.length + core.fn.static.lang('apiItemsFound', 'stocklist') + '</a>';
 				//add value and relevance
-				globalSearch.contribute('stocklist', [display, 1]);
+				core.globalSearch.contribute('stocklist', [display, 1]);
 			}
 			core.performance.stop('stocklist.api.processAfterImport(\'' + search + '\')');
 		}
 	},
-	addToCart: function (index) {
+	addToCart: async (index) => {
 		// this only makes sense in case of using the ticketorder-module
-		core.fn.setting.set('ticketorderCart', core.fn.setting.get('ticketorderCart') + index + ",");
+		let ticketorderCart = await core.fn.async.memory.read('ticketorderCart');
+		core.fn.async.memory.write('ticketorderCart', ticketorderCart + index + ",");
 	},
-	currentStatus: function () {
+	currentStatus: () => {
 		core.performance.stop('stocklist.api.currentStatus()');
 		return false;
 	}
 };
 stocklist.fn = {
 	translate: {
-		returnselect: function () {
-			var output = new Object();
+		returnselect: () => {
+			let output = {};
 			Object.keys(stocklist.var.filter()).forEach(function (key) {
 				output[key] = [stocklist.var.filter()[key][0], stocklist.var.filter()[key][1]];
 			});
 			return output;
 		},
 	},
-	search: function (query) {
+	search: async (query) => {
 		query = query || el('itemname').value;
 		core.performance.start('stocklist.fn.input(\'' + value(query) + '\')'); //possible duplicate
-		stocklist.fn.order.options();
-		var list = '';
+		let core_ticketorder = await core.fn.async.memory.read('core_ticketorder'),
+			found,
+			list = '',
+			mailbody,
+			maillanguage,
+			ordered_stocklist_data,
+			tresult;
+		await stocklist.fn.order.options();
 		if (typeof stocklist_data !== 'undefined') {
 			if (value(query) !== '') {
 				//clone data object and reset first value to undefined otherwise header terms can be displayed as results
-				var ordered_stocklist_data = this.order.prepare();
-				var found = core.fn.smartSearch.lookup(query, ordered_stocklist_data.content, stocklist.var.filter()[el('stockfilter').options[el('stockfilter').selectedIndex].value][2]);
+				ordered_stocklist_data = await stocklist.fn.order.prepare();
+				found = await core.fn.async.smartSearch.lookup(query, ordered_stocklist_data.content, stocklist.var.filter()[el('stockfilter').options[el('stockfilter').selectedIndex].value][2]);
 				// check if search matches item-list
 				if (found.length > 0) {
-					core.fn.smartSearch.relevance.init();
+					core.fn.async.smartSearch.relevance.init();
 					//reminder: keep these kind of assignments out of loops for performance reasons!
-					var maillanguage = {
-						helpChangeItemTitle: core.fn.lang('helpChangeItemTitle', 'stocklist'),
-						helpDeleteItemTitle: core.fn.lang('helpDeleteItemTitle', 'stocklist'),
-						helpChangeItemPopup: core.fn.lang('helpChangeItemPopup', 'stocklist'),
-						helpDeleteItemPopup: core.fn.lang('helpDeleteItemPopup', 'stocklist'),
-						helpChangeItemSubject: core.fn.lang('helpChangeItemSubject', 'stocklist'),
-						helpDeleteItemSubject: core.fn.lang('helpDeleteItemSubject', 'stocklist'),
-						helpChangeItemCaption: core.fn.lang('helpChangeItemCaption', 'stocklist'),
-						helpDeleteItemCaption: core.fn.lang('helpDeleteItemCaption', 'stocklist'),
+					maillanguage = {
+						helpChangeItemTitle: core.fn.static.lang('helpChangeItemTitle', 'stocklist'),
+						helpDeleteItemTitle: core.fn.static.lang('helpDeleteItemTitle', 'stocklist'),
+						helpChangeItemPopup: core.fn.static.lang('helpChangeItemPopup', 'stocklist'),
+						helpDeleteItemPopup: core.fn.static.lang('helpDeleteItemPopup', 'stocklist'),
+						helpChangeItemSubject: core.fn.static.lang('helpChangeItemSubject', 'stocklist'),
+						helpDeleteItemSubject: core.fn.static.lang('helpDeleteItemSubject', 'stocklist'),
+						helpChangeItemCaption: core.fn.static.lang('helpChangeItemCaption', 'stocklist'),
+						helpDeleteItemCaption: core.fn.static.lang('helpDeleteItemCaption', 'stocklist'),
 					};
 
 					function mklink(str) {
@@ -87,11 +98,11 @@ stocklist.fn = {
 							return '<a href="' + l + '" target="_blank">' + l + '</a>';
 						});
 					}
-					found.forEach(function (value) {
-						list += core.fn.smartSearch.relevance.nextstep(value[1]);
-						var tresult = '<div class="items items71" onclick="core.fn.toggleHeight(this)">' + core.fn.insert.expand(),
-							mailbody = '';
-						for (var h = 1; h < stocklist_data.content[0].length; h++) { // start from 1 because of assigned id on position 0
+					await found.forEach(async (value) => {
+						list += core.fn.async.smartSearch.relevance.nextstep(value[1]);
+						tresult = '<div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand();
+						mailbody = '';
+						for (let h = 1; h < stocklist_data.content[0].length; h++) { // start from 1 because of assigned id on position 0
 							if (ordered_stocklist_data.content[value[0]][h] != '') {
 								tresult += '<p><span class="highlight">' + stocklist_data.content[0][h - 1] + ':</span> ' + mklink(ordered_stocklist_data.content[value[0]][h]) + '</p>';
 								mailbody += stocklist_data.content[0][h - 1] + ': ' + ordered_stocklist_data.content[value[0]][h] + "<br />";
@@ -100,13 +111,12 @@ stocklist.fn = {
 						list += tresult +
 							'<a title="' + maillanguage.helpChangeItemTitle + '" onclick="return confirm(\'' + maillanguage.helpChangeItemPopup + '\');" href="javascript:core.fn.dynamicMailto(\'' + core.var.eMailAddress.inventorycontrol.address + '\',\'' + maillanguage.helpChangeItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpChangeItemCaption + '</a> ' +
 							'<a title="' + maillanguage.helpDeleteItemTitle + '" onclick="return confirm(\'' + maillanguage.helpDeleteItemPopup + '\');" href="javascript:core.fn.dynamicMailto(\'' + core.var.eMailAddress.inventorycontrol.address + '\',\'' + maillanguage.helpDeleteItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpDeleteItemCaption + '</a> ' +
-							(ordered_stocklist_data.content[value[0]][0] && (typeof core.var.modules['ticketorder'] === 'object' && (core.fn.setting.isset('core_ticketorder') ? eval(core.fn.setting.get('core_ticketorder')) : core.var.modules['ticketorder'].enabledByDefault)) ?
-								'<span style="float:right">' + core.fn.insert.icon('shoppingcart', 'bigger', false, 'onclick="stocklist.api.addToCart(' + ordered_stocklist_data.content[value[0]][0] + '); core.fn.growlNotif(core.fn.lang(\'articleAdded\',\'stocklist\'))"') + '</span>' : '') +
+							(ordered_stocklist_data.content[value[0]][0] && (typeof core.var.modules['ticketorder'] === 'object' && (core_ticketorder !== false ? eval(core_ticketorder) : core.var.modules['ticketorder'].enabledByDefault)) ?
+								'<span style="float:right">' + core.fn.static.insert.icon('shoppingcart', 'bigger', false, 'onclick="stocklist.api.addToCart(' + ordered_stocklist_data.content[value[0]][0] + '); core.fn.async.growlNotif(core.fn.static.lang(\'articleAdded\',\'stocklist\'))"') + '</span>' : '') +
 							'</div>';
 					});
-				} else list = core.fn.lang('errorNothingFound', 'stocklist', query);
-				core.fn.stdout('output', list);
-				list = '';
+				} else list = core.fn.static.lang('errorNothingFound', 'stocklist', query);
+				core.fn.async.stdout('output', list);
 			} else {
 				return stocklist_data.content.length - 1;
 			}
@@ -115,53 +125,58 @@ stocklist.fn = {
 		core.history.write(['stocklist.fn.init(\'' + value(query) + '\')']);
 	},
 	order: {
-		options: function () {
+		options: async () => {
+			let option,
+				stocklistOrder = await core.fn.async.memory.read('stocklistOrder');
 			try {
 				if (stocklist_data != 'undefined' && el('stocklistorderoption0') == null)
 					Object.keys(stocklist_data.content[0]).forEach(function (key) {
-						var option = document.createElement('option');
+						option = document.createElement('option');
 						option.setAttribute('value', key);
 						option.setAttribute('id', 'stocklistorderoption' + key);
-						if (core.fn.setting.get('stockorder') == key)
+						if (stocklistOrder == key)
 							option.setAttribute('selected', 'selected');
-						var optiontext = document.createTextNode(core.fn.lang('orderBy', 'stocklist') + stocklist_data.content[0][key]);
+						var optiontext = document.createTextNode(core.fn.static.lang('orderBy', 'stocklist') + stocklist_data.content[0][key]);
 						option.appendChild(optiontext);
-						el('stockorder').appendChild(option);
+						el('stocklistOrder').appendChild(option);
 					});
 			} catch (e) {
 				return
 			}
 		},
-		prepare: function (noOrder) {
+		prepare: async (noOrder) => {
 			// clone data object and reset first value to undefined otherwise header terms can be displayed as results
-			var order = core.fn.setting.get('stockorder') || 0;
-			var data_without_header = JSON.parse(JSON.stringify(stocklist_data)); // copy object to manipulate
+			let data_without_header = JSON.parse(JSON.stringify(stocklist_data)), // copy object to manipulate
+				order = await core.fn.async.memory.read('stocklistOrder');
+			order = order || 0;
 			data_without_header.content[0] = new Array(data_without_header.content[0].length + 1); // "unset" header item
-			for (var id = 0; id < data_without_header.content.length; id++) data_without_header.content[id].unshift(id); // assign id to keep even if sorted for shopping cart
+			for (let id = 0; id < data_without_header.content.length; id++) data_without_header.content[id].unshift(id); // assign id to keep even if sorted for shopping cart
 			function sortByOrderColumn(a, b) {
 				if (a[order] === b[order]) return 0;
 				else return (a[order] > b[order]) ? 1 : -1;
 			}
-			if (core.fn.setting.get('stockorder') && typeof (noOrder) == 'undefined')
+			if (order && typeof (noOrder) == 'undefined')
 				data_without_header.content = data_without_header.content.sort(sortByOrderColumn);
 			return data_without_header;
 		}
 	},
-	init: function (query) {
-		el('modulestocklist').checked = true; // highlight menu icon
-		core.fn.loadScript(core.var.moduleDataDir + 'stocklist.js', 'stocklist.fn.search(\'' + value(query) + '\')');
-		core.fn.stdout('input',
+	init: async (query) => {
+		let stocklistFilter = await core.fn.async.memory.read('stocklistFilter'),
+			stocklistOrder = await core.fn.async.memory.read('stocklistOrder');
+		await core.fn.async.loadScript(core.var.moduleDataDir + 'stocklist.js', 'stocklist.fn.search(\'' + value(query) + '\')');
+		await core.fn.async.stdout('input',
 			'<form id="search" action="javascript:stocklist.fn.search();">' +
-			'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g, '&quot;') + '" placeholder="' + core.fn.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search" />' +
-			'<span onclick="stocklist.fn.search();" class="search">' + core.fn.insert.icon('search') + '</span> ' +
-			core.fn.insert.select(stocklist.fn.translate.returnselect(), 'stockfilter', 'stockfilter', (core.fn.setting.get('stocklistFilter') || 'all'), 'onchange="this.selectedIndex == 0 ? core.fn.setting.unset(\'stocklistFilter\') : core.fn.setting.set(\'stocklistFilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.fn.search();"') +
-			core.fn.insert.select(null, 'stockorder', 'stockorder', (core.fn.setting.get('stocklistOrder') || 0), 'onchange="this.selectedIndex == 0 ? core.fn.setting.unset(\'stocklistOrder\') : core.fn.setting.set(\'stocklistOrder\',el(\'stockorder\').options[el(\'stockorder\').selectedIndex].value); stocklist.fn.search();"') +
-			'<input type="submit" id="submit" value="' + core.fn.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
-			core.fn.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.ecosia.org/search?q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.fn.lang('webSearchTitle', 'stocklist') + '"') +
+			'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g, '&quot;') + '" placeholder="' + core.fn.static.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search" />' +
+			'<span onclick="stocklist.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
+			core.fn.static.insert.select(stocklist.fn.translate.returnselect(), 'stockfilter', 'stockfilter', (stocklistFilter || 'all'), 'onchange="this.selectedIndex == 0 ? core.fn.async.memory.delete(\'stocklistFilter\') : core.fn.async.memory.write(\'stocklistFilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.fn.search();"') +
+			core.fn.static.insert.select(null, 'stocklistOrder', 'stocklistOrder', (stocklistOrder || 0), 'onchange="this.selectedIndex == 0 ? core.fn.async.memory.delete(\'stocklistOrder\') : core.fn.async.memory.write(\'stocklistOrder\',el(\'stocklistOrder\').options[el(\'stocklistOrder\').selectedIndex].value); stocklist.fn.search();"') +
+			'<input type="submit" id="submit" value="' + core.fn.static.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
+			core.fn.static.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.ecosia.org/search?q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.fn.static.lang('webSearchTitle', 'stocklist') + '"') +
 			'</form>');
-		stocklist.fn.order.options();
+		await stocklist.fn.order.options();
 		el('itemname').focus();
-		core.fn.stdout('temp', core.fn.lang('useCaseDescription', 'stocklist'));
+		stocklist.temp.overallItems = await stocklist.fn.search();
+		core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'stocklist'));
 		core.performance.stop('stocklist.fn.init(\'' + value(query) + '\')');
 	},
 };

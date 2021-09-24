@@ -11,23 +11,24 @@
 if (typeof documentbundles === 'undefined') var documentbundles = {};
 
 documentbundles.api = {
-	available: function (search) {
-		core.fn.loadScript(core.var.moduleDataDir + 'documentbundles.js',
+	available: async (search) => {
+		await core.fn.async.loadScript(core.var.moduleDataDir + 'documentbundles.js',
 			'documentbundles.api.processAfterImport(\'' + search + '\')');
 		core.performance.stop('documentbundles.api.available(\'' + search + '\')');
 	},
-	processAfterImport: function (search) {
-		var searchobject = [],
-			display;
+	processAfterImport: async (search) => {
+		let display,
+			found,
+			searchobject = [];
 		if (typeof documentbundles_data !== 'undefined') {
 			Object.keys(documentbundles_data).forEach(function (key) {
 				searchobject.push([key, key]);
 			});
-			var found = core.fn.smartSearch.lookup(search, searchobject, true);
+			found = await core.fn.async.smartSearch.lookup(search, searchobject, true);
 			found.forEach(function (value) {
-				display = '<a href="javascript:core.fn.loadScript(\'modules/documentbundles.js\',\'documentbundles.fn.init(\\\'' + searchobject[value[0]][0] + '\\\')\')">' + searchobject[value[0]][0].replace(/_/g, " ") + '</a>';
+				display = '<a href="javascript:core.fn.loadScript(\'' + core.var.moduleDir + 'documentbundles.js\',\'documentbundles.fn.init(\\\'' + searchobject[value[0]][0] + '\\\')\')">' + searchobject[value[0]][0].replace(/_/g, " ") + '</a>';
 				//add value and relevance
-				globalSearch.contribute('documentbundles', [display, value[1]]);
+				core.globalSearch.contribute('documentbundles', [display, value[1]]);
 			});
 		}
 		core.performance.stop('documentbundles.api.processAfterImport(\'' + search + '\')');
@@ -48,40 +49,30 @@ documentbundles.fn = {
 	},
 	serialPrint: function (files) {
 		files = files.substring(1).replace(/\//g, '\\').split(',');
-		if (!!document.documentMode) {
-			try {
-				var shell = new ActiveXObject("WScript.Shell");
-				var command = 'cmd /c';
-				files.forEach(function (el) {
-					var extension = el.split('.').pop()
-					command += ' start "" ' + documentbundles.var.serialPrintShellCommand[core.var.selectedOs()][extension.toLowerCase()] + ' "' + el + '" &';
-				});
-				shell.run(command.slice(0, -2) + ' & exit');
-			} catch (e) {
-				core.fn.popup(core.fn.lang('errorNoActiveX', 'documentbundles'));
-			}
-		} else { // ok, i added this here, but due to cors-issues this won't print - even with relative paths; currently opening all files instead; popup-blocking might have to be set
-			var index = 0,
-				print = setInterval(function () {
-					if (index < files.length) {
-						this['print' + index] = window.open('file:///' + files[index], 'print' + index);
-						index++;
-					} else clearInterval(print);
-				}, 100);
-		}
+		let
+			index = 0,
+			print;
+		// ok, i added this here, but due to cors-issues this won't print - even with relative paths; currently opening all files instead; popup-blocking might have to be set
+		print = setInterval(function () {
+			if (index < files.length) {
+				this['print' + index] = window.open('file:///' + files[index], 'print' + index);
+				index++;
+			} else clearInterval(print);
+		}, 100);
 	},
-	gen: function (treatment) {
-		var pack = documentbundles_data[treatment],
+	gen: (treatment) => {
+		let pack = documentbundles_data[treatment],
 			primary = '',
 			secondary = '',
-			serialPDFlist = '';
+			serialPDFlist = '',
+			serialPrintExceptions;
 		// regular documents
 		if (typeof pack !== 'undefined') {
 			Object.keys(pack.primary).forEach(function (index) {
 				primary += documentbundles.fn.linkfile(pack.primary[index]);
 				if (EXCEPTIONS.noserialprint.indexOf(pack.primary[index]) < 0) serialPDFlist += ',' + pack.primary[index];
 			});
-			var serialPrintExceptions = '';
+			serialPrintExceptions = '';
 			EXCEPTIONS.noserialprint.forEach(function (el) {
 				serialPrintExceptions += ', ' + el.substring(el.lastIndexOf('/'), el.lastIndexOf('.')).substring(1);
 			});
@@ -94,34 +85,34 @@ documentbundles.fn = {
 					}
 				});
 			}
-			primary += '<hr /><a href="javascript:documentbundles.fn.serialPrint(\'' + serialPDFlist + '\')">' + core.fn.lang('serialPrintLink', 'documentbundles', serialPrintExceptions.substring(2)) + '</a>';
-			primary += '<br /><br />' + core.fn.lang('additionalInfo', 'documentbundles');
+			primary += '<hr /><a href="javascript:documentbundles.fn.serialPrint(\'' + serialPDFlist + '\')">' + core.fn.static.lang('serialPrintLink', 'documentbundles', serialPrintExceptions.substring(2)) + '</a>';
+			primary += '<br /><br />' + core.fn.static.lang('additionalInfo', 'documentbundles');
 			Object.keys(pack.secondary).forEach(function (index) {
 				secondary += documentbundles.fn.linkfile(pack.secondary[index]);
 			});
-			core.fn.stdout('temp', '<span class="highlight">' + core.fn.lang('primaryCaption', 'documentbundles') + '</span><br />' + primary);
-			core.fn.stdout('output', '<span class="highlight">' + core.fn.lang('secondaryCaption', 'documentbundles') + '</span><br />' + secondary);
+			core.fn.async.stdout('temp', '<span class="highlight">' + core.fn.static.lang('primaryCaption', 'documentbundles') + '</span><br />' + primary);
+			core.fn.async.stdout('output', '<span class="highlight">' + core.fn.static.lang('secondaryCaption', 'documentbundles') + '</span><br />' + secondary);
 		}
 		core.history.write(['documentbundles.fn.init(\'' + treatment + '\')']);
 	},
-	input: function (query) {
+	input: (query) => {
 		core.performance.start('documentbundles.fn.input(\'' + value(query) + '\')'); //possible duplicate
+		let out;
 		if (typeof documentbundles_data !== 'undefined') {
-			var out = '<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.fn.gen(sel)"><option value="">' + core.fn.lang('selectDefault', 'documentbundles') + '</option>';
+			out = '<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.fn.gen(sel)"><option value="">' + core.fn.static.lang('selectDefault', 'documentbundles') + '</option>';
 			Object.keys(documentbundles_data).forEach(function (key) {
 				out += '<option id="' + key + '" value="' + key + '" ' + (query === key ? 'selected' : '') + '>' + key.replace(/_/g, " ") + '</option>';
 			});
 			out += '</select>';
-			core.fn.stdout('input', out + '<span class="inline" style="padding-top:.375em">' + core.fn.insert.checkbox(core.fn.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.fn.gen(sel)"') + '</span>');
+			core.fn.async.stdout('input', out + '<span class="inline" style="padding-top:.375em">' + core.fn.static.insert.checkbox(core.fn.static.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.fn.gen(sel)"') + '</span>');
 			if (value(query) !== '') documentbundles.fn.gen(query);
 		}
 		core.performance.stop('documentbundles.fn.input(\'' + value(query) + '\')');
 		core.history.write(['documentbundles.fn.init(\'' + value(query) + '\')']);
 	},
-	init: function (query) {
-		el('moduledocumentbundles').checked = true; // highlight menu icon
-		core.fn.loadScript(core.var.moduleDataDir + 'documentbundles.js', 'documentbundles.fn.input(\'' + value(query) + '\')');
-		core.fn.stdout('temp', '<br />' + core.fn.lang('useCaseDescription', 'documentbundles'));
+	init: async (query) => {
+		await core.fn.async.loadScript(core.var.moduleDataDir + 'documentbundles.js', 'documentbundles.fn.input(\'' + value(query) + '\')');
+		await core.fn.async.stdout('temp', '<br />' + core.fn.static.lang('useCaseDescription', 'documentbundles'));
 		core.performance.stop('documentbundles.fn.init(\'' + value(query) + '\')');
 	},
 };

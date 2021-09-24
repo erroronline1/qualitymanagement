@@ -42,7 +42,7 @@ var mailtools_data = {
 				'  ' + (!form && el('funktion') ? el('funktion').value : '<input type="text" placeholder="Position" id="funktion" title="Position" />') +
 				' | Department<br><br>' +
 				'  Company | Address<br>' +
-				'  Tel. +49 1234 56789 | Fax. +49 1234 56789 | eMail: ' + (!form && el('email') ? '<a' +
+				'  Tel. <a href="tel:+49 1234 56789">+49 1234 56789</a> | Fax. +49 1234 56789 | eMail: ' + (!form && el('email') ? '<a' +
 					'  href="mailto:' + el('email').value + '@email.tld">' + el('email').value : '<input type="text" placeholder="eMail" id="email" title="eMail" />') + '@email.tld</a><br>' +
 				'  <a href="http://www.website.tld">http://www.website.tld</a> </p>' +
 				'  </td>' +
@@ -71,7 +71,7 @@ var mailtools_data = {
 				'  ' + (!form && el('funktion') ? el('funktion').value : '<input type="text" placeholder="Funktion" id="funktion" title="Funktion" />') +
 				' Abteilung<br><br>' +
 				'  Firma | Adresse<br>' +
-				'  Tel. +49 1234 56789 | Fax. +49 1234 56789 | eMail: ' + (!form && el('email') ? '<a' +
+				'  Tel. <a href="tel:+49 1234 56789">+49 1234 56789</a> | Fax. +49 1234 56789 | eMail: ' + (!form && el('email') ? '<a' +
 					'  href="mailto:' + el('email').value + '@email.tld">' + el('email').value : '<input type="text" placeholder="eMail" id="email" title="eMail" />') + '@email.tld</a><br>' +
 				'  <a href="http://www.website.tld">http://www.website.tld</a> </p>' +
 				'  </td>' +
