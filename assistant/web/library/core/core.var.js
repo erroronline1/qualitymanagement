@@ -12,7 +12,7 @@ core.var = {
 		//			wide: boolean to make the temp-container wide for content on mouseover
 		//		},		
 		documentlookup: {
-			icon: core.fn.insert.icon('document'),
+			icon: core.fn.static.insert.icon('document'),
 			display: {
 				en: "Document Lookup",
 				de: "Dokumentensuche",
@@ -21,7 +21,7 @@ core.var = {
 			wide: false,
 		},
 		documentbundles: {
-			icon: core.fn.insert.icon('folder'),
+			icon: core.fn.static.insert.icon('folder'),
 			display: {
 				en: "Document Bundles",
 				de: "Dokumentenpakete"
@@ -30,7 +30,7 @@ core.var = {
 			wide: false,
 		},
 		stocklist: {
-			icon: core.fn.insert.icon('shelf'),
+			icon: core.fn.static.insert.icon('shelf'),
 			display: {
 				en: "Stock List",
 				de: "Lager- und Artikelliste"
@@ -39,7 +39,7 @@ core.var = {
 			wide: false,
 		},
 		ticketorder: {
-			icon: core.fn.insert.icon('shoppingcart'),
+			icon: core.fn.static.insert.icon('shoppingcart'),
 			display: {
 				en: "Orders",
 				de: "Bestellungen"
@@ -48,7 +48,7 @@ core.var = {
 			wide: true,
 		},
 		timetable: {
-			icon: core.fn.insert.icon('clock'),
+			icon: core.fn.static.insert.icon('clock'),
 			display: {
 				en: "Timetable",
 				de: "Arbeitszeittabelle"
@@ -57,7 +57,7 @@ core.var = {
 			wide: false,
 		},
 		correspondence: {
-			icon: core.fn.insert.icon('mail'),
+			icon: core.fn.static.insert.icon('mail'),
 			display: {
 				en: "Recommendation for Correspondence",
 				de: "Textvorschläge für Korrespondenz"
@@ -66,7 +66,7 @@ core.var = {
 			wide: false,
 		},
 		mailtools: {
-			icon: core.fn.insert.icon('batchmail'),
+			icon: core.fn.static.insert.icon('batchmail'),
 			display: {
 				en: "Mail Tools",
 				de: "eMail Tools"
@@ -75,7 +75,7 @@ core.var = {
 			wide: false,
 		},
 		auditplanner: {
-			icon: core.fn.insert.icon('checklist'),
+			icon: core.fn.static.insert.icon('checklist'),
 			display: {
 				en: "Audit Planner",
 				de: "Auditplaner"
@@ -84,7 +84,7 @@ core.var = {
 			wide: false,
 		},
 		help: {
-			icon: core.fn.insert.icon('faq'),
+			icon: core.fn.static.insert.icon('faq'),
 			display: {
 				en: "Help",
 				de: "Hilfe"
@@ -130,6 +130,8 @@ core.var = {
 	},
 	//	rootdir in case different handling of source files is necessary over developement and production sites
 	coreRootDir: location.pathname.substring(1, location.pathname.lastIndexOf('/')).replace(/%20/g, " ") + '/',
+	// moduleDir path to modules
+	moduleDir: 'modules/',
 	// moduleDataDir path to modules data files according to xlsm-files
 	moduleDataDir: 'library/module.data/',
 	// moduleVarDir path to modules config files
@@ -143,12 +145,17 @@ core.var = {
 		en: ["en", "english"],
 		de: ["de", "deutsch"]
 	},
-	//	selected language in settings or desired default fallback
-	selectedLanguage: (core.fn.setting.get('coreLanguage') || 'en'),
+	//	selected language with default value, will be occasionally overridden with asynchronous settings query on startup
+	selectedLanguage: 'en',
 	//  size for content of mails for mailto, browser dependent, can be set in advanced settings
 	//  as of 2-2020 chrome, edge and ie11 support somewhere (but not exactly) up to 2^11 characters minus mailto:{xxx}?subject={xxx}&body=
 	//  only firefox seemingly supports up to 2^15 characters (32768 - the afore mentioned)
-	directMailSize: (core.fn.setting.get('coreDirectMailSize') || 1900),
+	//  will be occasionally overridden with asynchronous settings query on startup
+	directMailSize: 1900,
+	//  generated content opens in new window, will be occasionally overridden with asynchronous settings query on startup
+	copyFromNewWindow: false,
+	//  will be occasionally overridden with asynchronous settings query on startup
+	fuzzySearch: false,
 	//	corporate design considerations for font. used for copied content. has to be installed on local machine
 	corporateFontFace: 'Calibri',
 	corporateFontSize: '10pt',
@@ -207,9 +214,7 @@ core.var = {
 		win10: 'Windows 10 Adobe Reader XI',
 		win7: 'Windows 7'
 	},
-	selectedOs: function () {
-		return core.fn.setting.get('coreSelectedOs') || 'win10k';
-	},
+	selectedOs: 'win10k',
 
 	// permissions and data rights managament
 	drm: {
@@ -272,10 +277,10 @@ core.var = {
 		},
 		errorNothingFound: {
 			en: function (query) {
-				return 'Search for <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.fn.setting.get('coreFuzzySearch') ? '' : 'or Fuzzy-Search-setting ') + 'or look for parts of query. Please adhere to mimimum 3 character length.'
+				return 'Search for <span class="highlight">' + query + '</span> returned no results. Check spelling ' + (core.var.fuzzySearch ? '' : 'or Fuzzy-Search-setting ') + 'or look for parts of query. Please adhere to mimimum 3 character length.'
 			},
 			de: function (query) {
-				return 'Zum Begriff <span class="highlight">' + query + '</span> konnte nichts gefunden werden. Bitte eventuell Schreibweise ' + (core.fn.setting.get('coreFuzzySearch') ? '' : 'oder Tippfehler-Toleranz-Einstellung ') + 'überprüfen oder nach Wortteilen suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
+				return 'Zum Begriff <span class="highlight">' + query + '</span> konnte nichts gefunden werden. Bitte eventuell Schreibweise ' + (core.var.fuzzySearch ? '' : 'oder Tippfehler-Toleranz-Einstellung ') + 'überprüfen oder nach Wortteilen suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
 			},
 		},
 		errorSelectModules: {
@@ -402,10 +407,6 @@ core.var = {
 			en: 'Local security settings can result in loss of settings on closing browser window.',
 			de: 'Lokale Sicherheitseinstellungen können dazu führen, dass beim Schließen des Browser-Fensters die Einstellungen verloren gehen.'
 		},
-		settingGlobalSearchCaption: {
-			en: 'Seconds to deliver global search results',
-			de: 'Sekunden für die Bereitstellung von globalen Suchergebnissen'
-		},
 		settinggrowlNotifIntervalCaption: {
 			en: 'Seconds to show short information',
 			de: 'Sekunden für Anzeige von Kurzinformationen'
@@ -466,10 +467,6 @@ core.var = {
 			en: 'If your browser supports the setting a mail will open without further use that can be closed afterwards. If not reduce the setting value and try again. Finally a restart of application is necessary. A possible overflow might make a restart of the browser necessary. Tested browsers support the closest smaller value to 2000, only Firefox is capable of almost up to 32500 characters.',
 			de: 'Wenn der Browser die Einstellung unterstützt öffnet sich ein eMail-Fenster das keine weitere Verwendung hat und anschließend geschlossen werden kann. Ist dies nicht der Fall muss der Wert reduziert und erneut geprüft werden. Anschließen ist ein Neustart der Oberfläche erforderlich. Es kann zu einer Überforderung des Browsers kommen der seinen Neustart erfordert. Die gestesteten Browser unterstützen den nächstkleineren Wert zu 2000, nur Firefox schafft bis zu 35500 Zeichen.',
 		},
-		settingMailtoMethod: {
-			en: 'Open email using Windows 7',
-			de: 'eMails öffnen in Windows 7'
-		},
 		settingMenuEntry: {
 			en: 'Settings',
 			de: 'Einstellungen'
@@ -513,10 +510,6 @@ core.var = {
 		settingThemeCaption: {
 			en: 'Color-Theme',
 			de: 'Farbschema'
-		},
-		settingVarPreloadCaption: {
-			en: 'Delay between loading modules data and functions in milliseconds (Edge)',
-			de: 'Millisekunden Ladeverzögerung zwischen Moduldaten und -funktionen (Edge)'
 		},
 		title: {
 			en: 'QM-Assistant',
