@@ -109,7 +109,7 @@ var documentbundles = {
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'documentbundles.var.js');
-			await core.fn.async.loadScript(core.var.moduleDataDir + 'documentbundles.js');
+			await core.fn.async.loadScript(core.var.moduleDataDir + 'documentbundles.data.js');
 		}
 	}
 };

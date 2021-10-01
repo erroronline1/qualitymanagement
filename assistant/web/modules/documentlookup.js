@@ -160,7 +160,7 @@ var documentlookup = {
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'documentlookup.var.js');
 			for (let m of Object.keys(documentlookup.var.submodules)) {
-				await core.fn.async.loadScript(core.var.moduleDataDir + 'documentlookup_' + m + '.js');
+				await core.fn.async.loadScript(core.var.moduleDataDir + 'documentlookup_' + m + '.data.js');
 			}
 		}
 	}

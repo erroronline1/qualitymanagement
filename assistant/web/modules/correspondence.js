@@ -127,7 +127,7 @@ var correspondence = {
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'correspondence.var.js');
 			for (let m of Object.keys(correspondence.var.submodules)) {
-				await core.fn.async.loadScript(core.var.moduleDataDir + 'correspondence_' + m + '.js');
+				await core.fn.async.loadScript(core.var.moduleDataDir + 'correspondence_' + m + '.data.js');
 			}
 		}
 	}

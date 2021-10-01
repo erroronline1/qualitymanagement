@@ -101,7 +101,7 @@ auditplanner = {
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'auditplanner.var.js');
-			await core.fn.async.loadScript(core.var.moduleDataDir + 'auditplanner.js');
+			await core.fn.async.loadScript(core.var.moduleDataDir + 'auditplanner.data.js');
 		}
 	}
 };

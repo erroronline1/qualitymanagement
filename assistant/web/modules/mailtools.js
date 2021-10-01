@@ -130,7 +130,7 @@ var mailtools = {
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'mailtools.var.js');
-			await core.fn.async.loadScript(core.var.moduleDataDir + 'mailtools.js');
+			await core.fn.async.loadScript(core.var.moduleDataDir + 'mailtools.data.js');
 		}
 	}
 };

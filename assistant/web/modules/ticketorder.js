@@ -417,8 +417,8 @@ var ticketorder = {
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'ticketorder.var.js');
-			await core.fn.async.loadScript(core.var.moduleDataDir + 'ticketorder.js', '');
-			await core.fn.async.loadScript(core.var.moduleDataDir + 'stocklist.js');
+			await core.fn.async.loadScript(core.var.moduleDataDir + 'ticketorder.data.js', '');
+			await core.fn.async.loadScript(core.var.moduleDataDir + 'stocklist.data.js');
 		}
 	}
 };

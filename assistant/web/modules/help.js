@@ -72,7 +72,7 @@ var help = {
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'help.var.js');
-			await core.fn.async.loadScript(core.var.moduleDataDir + 'help.js');
+			await core.fn.async.loadScript(core.var.moduleDataDir + 'help.data.js');
 		}
 	}
 };

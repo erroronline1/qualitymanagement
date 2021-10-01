@@ -168,7 +168,7 @@ var stocklist = {
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'stocklist.var.js');
-			await core.fn.async.loadScript(core.var.moduleDataDir + 'stocklist.js');
+			await core.fn.async.loadScript(core.var.moduleDataDir + 'stocklist.data.js');
 		}
 	}
 };
