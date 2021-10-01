@@ -43,17 +43,17 @@ if (typeof core === 'undefined') var core = {};
 core.fn = {
 	static: { // these methods do not depend on asynchronous calls
 		drm: {
-			table: (table) => {
+			table: function (table) {
 				return core.var.drm.data[core.var.drm.translate[table]];
 			},
-			createHash: (str) => {
+			createHash: function (str) {
 				let hash = 0;
 				for (let i = 0; i < str.length; i++) {
 					hash = (hash * 31) + str.charCodeAt(i) | 0;
 				}
 				return hash;
 			},
-			searchHash: (hashTable, hash) => {
+			searchHash: function (hashTable, hash) {
 				let found = false;
 				Object.keys(hashTable).forEach((key) => {
 					if (hashTable[key] == hash) {
@@ -62,13 +62,13 @@ core.fn = {
 				});
 				return found;
 			},
-			encryptToken: (base36Timestamp, name, password) => {
+			encryptToken: function (base36Timestamp, name, password) {
 				// encrypt with unknown password length
 				// ridiculous high divisor because large numbers will be parsed with scientific exponent in ie
 				// Math.round for floating errors
 				return Math.round((this.createHash(name + password) * password.length * parseInt(base36Timestamp, 36) / Math.pow(2, 22))).toString(36);
 			},
-			decryptToken: (hashTable, base36Timestamp, token) => {
+			decryptToken: function (hashTable, base36Timestamp, token) {
 				// Math.round for floating errors
 				let embeddedhash = Math.round(parseInt(token, 36) * Math.pow(2, 22) / parseInt(base36Timestamp, 36)),
 					found,
@@ -306,10 +306,10 @@ core.fn = {
 			// Copyright (c) 2013 Pieroxy <pieroxy@pieroxy.net>
 			// https://github.com/pieroxy/lz-string
 			compress: (uncompressed) => {
-				return LZString.compress(uncompressed);
+				return LZString.compressToBase64(uncompressed);
 			},
 			decompress: (compressed) => {
-				return LZString.decompress(compressed);
+				return LZString.decompressFromBase64(compressed);
 			}
 		},
 		toggleHeight: (toggleel) => { //toggle height from divs having .items-class
