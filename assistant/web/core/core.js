@@ -297,7 +297,7 @@ core.fn = {
 				return (a[1] < b[1]) ? 1 : -1;
 			}
 		},
-		stringcompression: {
+		string: {
 			//string-compression always checks if it is more effective if an URI encoded value is compressed or left raw.
 			//compressed strings will be marked as such, returned values always are cookie-safe encoded or base64.
 
@@ -306,17 +306,10 @@ core.fn = {
 			// Copyright (c) 2013 Pieroxy <pieroxy@pieroxy.net>
 			// https://github.com/pieroxy/lz-string
 			compress: (uncompressed) => {
-				let compressed = 'compressed' + LZString.compressToEncodedURIComponent(uncompressed);
-				uncompressed = encodeURIComponent(uncompressed);
-				return (uncompressed.length < compressed.length) ? uncompressed : compressed;
+				return LZString.compress(uncompressed);
 			},
 			decompress: (compressed) => {
-				let result;
-				if (compressed.substring(0, 10) === 'compressed')
-					result = LZString.decompressFromEncodedURIComponent(compressed.substring(10));
-				else
-					result = decodeURIComponent(compressed);
-				return result;
+				return LZString.decompress(compressed);
 			}
 		},
 		toggleHeight: (toggleel) => { //toggle height from divs having .items-class
@@ -329,8 +322,8 @@ core.fn = {
 			});
 		}
 	},
-	async: { // these methods depend on asynchronous calls at some time
 
+	async: { // these methods depend on asynchronous calls at some time
 		growlNotif: async (text) => { // short popups for status information
 			let coregrowlNotifInterval = await core.fn.async.memory.read('coregrowlNotifInterval');
 			if (typeof text !== 'undefined') {
@@ -372,6 +365,7 @@ core.fn = {
 			}
 		},
 		memory: {
+			// async methods for eel compatibility
 			clear: async () => { //resets whole application
 				window.localStorage.clear();
 				return true;
@@ -380,28 +374,31 @@ core.fn = {
 				window.localStorage.removeItem(name);
 				return true;
 			},
-			localStorage: {
-				maxSpace: () => {
-					return 5000000;
-				},
-				remainingSpace: () => {
-					let current = 0; //tested in compatible browsers to be slightly more than 5mb
-					Object.keys(localStorage).forEach((key) => {
-						current += key.length + localStorage.getItem(key).length;
-					});
-					return core.fn.async.memory.localStorage.maxSpace() - current;
-				}
+			dump: async () => {
+				return Object.keys(localStorage).sort();
+			},
+			maxSpace: async () => {
+				return 5000000;
+			},
+			usedSpace: async () => {
+				let current = 0; //tested in compatible browsers to be slightly more than 5mb
+				Object.keys(localStorage).forEach((key) => {
+					current += key.length + localStorage.getItem(key).length;
+				});
+				return current;
 			},
 			read: async (name) => {
 				let item = window.localStorage.getItem(name);
 				if (item === null) return false;
-				else return core.fn.static.stringcompression.decompress(item);
+				else return core.fn.static.string.decompress(item);
 			},
 			write: async (name, value, errormsg) => {
-				let saved = false;
-				if (typeof value !== 'boolean' || value) {
-					value = core.fn.static.stringcompression.compress(value.toString());
-					if (core.fn.async.memory.localStorage.remainingSpace() > name.length + toString(value).length) {
+				let maxSpace = await core.fn.async.memory.maxSpace(),
+					saved = false,
+					usedSpace = await core.fn.async.memory.usedSpace();
+				if (value || value.length) {
+					value = core.fn.static.string.compress(value.toString());
+					if (maxSpace - usedSpace > name.length + toString(value).length) {
 						window.localStorage.setItem(name, value);
 						saved = true;
 					}
@@ -574,7 +571,7 @@ core.init = {
 		if (coreDirectMailSize) core.var.directMailSize = coreDirectMailSize;
 		if (coreFuzzySearch) core.var.fuzzySearch = coreFuzzySearch;
 		if (coreLanguage) core.var.selectedLanguage = coreLanguage;
-		if (coreSelectedOs) core.var.selectedOS = coreSelectedOs;
+		if (coreSelectedOs) core.var.selectedOs = coreSelectedOs;
 		if (coreNewWindowCopy) core.var.copyFromNewWindow = coreNewWindowCopy;
 		document.title = core.fn.static.lang('title');
 		//load settings or defaults
@@ -637,7 +634,7 @@ core.setup = {
 	setup: async () => { //displays settings menu
 		core.fn.static.popup('<div id="popupcontent">' +
 			'<article class="home" style="border-right:1px solid; line-height:3em">' +
-			'<span onclick="core.setup.main();" style="cursor:pointer">' + core.fn.static.insert.icon('generalsetting') + core.fn.static.lang('settingMainCaption') + '</span><br />' +
+			'<span onclick="core.setup.common();" style="cursor:pointer">' + core.fn.static.insert.icon('generalsetting') + core.fn.static.lang('settingMainCaption') + '</span><br />' +
 			'<span onclick="core.setup.advanced();" style="cursor:pointer">' + core.fn.static.insert.icon('advancedsetting') + core.fn.static.lang('settingAdvancedCaption') + '</span><br />' +
 			'<span onclick="core.setup.modules();" style="cursor:pointer">' + core.fn.static.insert.icon('moduleselector') + core.fn.static.lang('settingModuleselectorCaption') + '</span><br />' +
 			'<span onclick="core.setup.key();" style="cursor:pointer">' + core.fn.static.insert.icon('key') + core.fn.static.lang('settingKeyCaption') + '</span><br />' +
@@ -647,7 +644,7 @@ core.setup = {
 			'</article>' +
 			'<aside id="settingContent"></aside>' +
 			'<div>');
-		await core.setup.main();
+		await core.setup.common();
 	},
 	advanced: async () => {
 		let coreFuzzyThreshold = await core.fn.async.memory.read('coreFuzzyThreshold'),
@@ -659,7 +656,7 @@ core.setup = {
 			osSelector[key] = [key, core.var.oss[key]];
 		});
 		display = '<input type="button" onclick="core.fn.async.memory.clear(); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))" value="' + core.fn.static.lang('settingResetApp') + '" title="' + core.fn.static.lang('settingRestartNeccessary') + '" /><br />' +
-			'<br />' + core.fn.static.lang('settingSelectedOsCaption') + ':<br />' + core.fn.static.insert.select(osSelector, 'coreSelectedOs', 'coreSelectedOs', core.var.selectedOs, 'onchange="core.fn.async.memory.write(\'coreSelectedOs\', this.value); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"') +
+			'<br />' + core.fn.static.lang('settingSelectedOsCaption') + ':<br />' + core.fn.static.insert.select(osSelector, 'coreSelectedOs', 'coreSelectedOs', core.var.selectedOs, 'onchange="core.var.selectedOs = this.value; core.fn.async.memory.write(\'coreSelectedOs\', this.value); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"') +
 			'<br /><br />' + core.fn.static.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (coreFuzzyThreshold || 5) + '" onchange="core.fn.async.memory.write(\'coreFuzzyThreshold\', this.value); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))" />' +
 			'<br />' + core.fn.static.lang('settinggrowlNotifIntervalCaption') + ':<br /><input type="range" min="1" max="10" value="' + (coregrowlNotifInterval || 2) + '" onchange="core.fn.async.memory.write(\'coregrowlNotifInterval\', this.value);  core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))" />' +
 			//  as of 2-2020 chrome and edge support somewhere (but not exactly) up to 2^11 characters minus mailto:{xxx}?subject={xxx}&body=
@@ -668,36 +665,7 @@ core.setup = {
 			' <span id="currentDirectMailSize">' + ((coreDirectMailSize || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.static.maxMailSize()" value="' + core.fn.static.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.static.lang('settingMailSizeDeterminationHint') + '" />';
 		core.fn.async.stdout('settingContent', display);
 	},
-	debug: async () => {
-		let compressed = 0,
-			coreOutputMonitor = await core.fn.async.memory.read('coreOutputMonitor'),
-			corePerformanceMonitor = await core.fn.async.memory.read('corePerformanceMonitor'),
-			display,
-			settingsDump = '',
-			uncompressed = 0;
-		await Object.keys(localStorage).sort().forEach(async (key) => {
-			settingsDump += key + '=' + (core.fn.async.memory.read('coreCompressedDump') ? window.localStorage.getItem(key) : core.fn.static.stringcompression.decompress(core.fn.async.memory.read(key))) + '\n';
-			compressed += window.localStorage.getItem(key).length;
-			uncompressed += encodeURIComponent(core.fn.static.stringcompression.decompress(core.fn.async.memory.read(key))).length;
-		});
-		display = core.fn.static.insert.checkbox('Console Performance Monitor', 'corePerformanceMonitor', (corePerformanceMonitor || 0), 'onchange="this.checked ? core.fn.async.memory.write(\'corePerformanceMonitor\', 1) : core.fn.async.memory.delete(\'corePerformanceMonitor\')"') +
-			'<br />' + core.fn.static.insert.checkbox('Console Output Monitor', 'coreOutputMonitor', (coreOutputMonitor || 0), 'onchange="this.checked ? core.fn.async.memory.write(\'coreOutputMonitor\', 1) : core.fn.async.memory.delete(\'coreOutputMonitor\')"') +
-			'<br /><br />' + core.fn.static.lang('settingDebugSpaceCaption') + (core.fn.async.memory.localStorage.maxSpace() - core.fn.async.memory.localStorage.remainingSpace()) + ' / ' + core.fn.async.memory.localStorage.maxSpace() + ' Byte<br />' +
-			core.fn.static.insert.limitBar(false, core.fn.static.lang('settingDebugSpaceCaption'), 'debugSpace') + '<br />' +
-			core.fn.static.lang('settingDebugDumpCaption') + ':<br /> ' + core.fn.static.insert.checkbox(core.fn.static.lang('settingDebugCompressedCaption') + ' @ ' + Math.round(100 * compressed / uncompressed) + '% ' + core.fn.static.lang('settingDebugCompressionRate'), 'coreCompressedDump', (core.fn.async.memory.read('coreCompressedDump') || 0), 'onchange="this.checked ? core.fn.async.memory.write(\'coreCompressedDump\', 1) : core.fn.async.memory.delete(\'coreCompressedDump\')"') +
-			'<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
-			'<br /><input type="text" placeholder="' + core.fn.static.lang('settingDeleteDistinctPlaceholder') + '" id="deleteDistinctSettings" />' +
-			core.fn.static.insert.icon('delete', 'bigger', false,
-				'title="' + core.fn.static.lang('settingDeleteDistinctPlaceholder') + '" ' +
-				'onclick="el(\'deleteDistinctSettings\').value.split(/\\W/).forEach(function(s){if (s) core.fn.async.memory.delete(s)});"') +
-			'<br />' +
-			core.fn.static.insert.icon('feedbackrequest', 'bigger', false,
-				'title="' + core.fn.static.lang('settingMailDebugDump') +
-				'" onclick="core.fn.static.dynamicMailto(core.var.eMailAddress.admin.address, \'' + core.fn.static.lang('title') + ' - Debug Settings\')"');
-		core.fn.async.stdout('settingContent', display);
-		core.fn.static.limitBar(core.fn.async.memory.localStorage.maxSpace() - core.fn.async.memory.localStorage.remainingSpace(), core.fn.async.memory.localStorage.maxSpace(), 'debugSpace');
-	},
-	main: async () => {
+	common: async () => {
 		let coreFontsize = await core.fn.async.memory.read('coreFontsize'),
 			coreFuzzySearch = await core.fn.async.memory.read('coreFuzzySearch'),
 			coreNewWindowCopy = await core.fn.async.memory.read('coreNewWindowCopy'),
@@ -723,16 +691,35 @@ core.setup = {
 			'<br /><small>' + core.fn.static.lang('settingNotificationHint') + '</small>';
 		core.fn.async.stdout('settingContent', display);
 	},
-	modules: async () => {
-		let module = {},
-			moduleSelector = '';
-		if (typeof (core.var) !== 'undefined') {
-			await Object.keys(core.var.modules).forEach(async (key) => {
-				module['core_' + key] = await core.fn.async.memory.read('core_' + key);
-				moduleSelector += core.fn.static.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'core_' + key, (module['core_' + key] ? module['core_' + key] : core.var.modules[key].enabledByDefault), 'onchange="core.var.modules[\'' + key + '\'].enabledByDefault == el(\'core_' + key + '\').checked ? core.fn.async.memory.delete(\'core_' + key + '\'): core.fn.async.memory.write(\'core_' + key + '\', Number(el(\'core_' + key + '\').checked)); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"', core.fn.static.lang('settingRestartNeccessary')) + '<br />';
-			});
-		} else moduleSelector = core.fn.static.lang('errorLoadingModules');
-		core.fn.async.stdout('settingContent', moduleSelector);
+	debug: async () => {
+		let coreOutputMonitor = await core.fn.async.memory.read('coreOutputMonitor'),
+			corePerformanceMonitor = await core.fn.async.memory.read('corePerformanceMonitor'),
+			display,
+			maxSpace = await core.fn.async.memory.maxSpace(),
+			memoryDump = await core.fn.async.memory.dump(),
+			settingsDump = '',
+			settingvalue,
+			usedSpace = await core.fn.async.memory.usedSpace();
+		for (let key of memoryDump) {
+			settingvalue = await core.fn.async.memory.read(key);
+			settingsDump += key + '=' + settingvalue + '\n';
+		}
+		display = core.fn.static.insert.checkbox('Console Performance Monitor', 'corePerformanceMonitor', (corePerformanceMonitor || 0), 'onchange="this.checked ? core.fn.async.memory.write(\'corePerformanceMonitor\', 1) : core.fn.async.memory.delete(\'corePerformanceMonitor\')"') +
+			'<br />' + core.fn.static.insert.checkbox('Console Output Monitor', 'coreOutputMonitor', (coreOutputMonitor || 0), 'onchange="this.checked ? core.fn.async.memory.write(\'coreOutputMonitor\', 1) : core.fn.async.memory.delete(\'coreOutputMonitor\')"') +
+			'<br /><br />' + core.fn.static.lang('settingDebugSpaceCaption') + usedSpace + ' / ' + maxSpace + ' Byte<br />' +
+			core.fn.static.insert.limitBar(false, core.fn.static.lang('settingDebugSpaceCaption'), 'debugSpace') + '<br />' +
+			core.fn.static.lang('settingDebugDumpCaption') +
+			'<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
+			'<br /><input type="text" placeholder="' + core.fn.static.lang('settingDeleteDistinctPlaceholder') + '" id="deleteDistinctSettings" />' +
+			core.fn.static.insert.icon('delete', 'bigger', false,
+				'title="' + core.fn.static.lang('settingDeleteDistinctPlaceholder') + '" ' +
+				'onclick="el(\'deleteDistinctSettings\').value.split(/\\W/).forEach(function(s){if (s) core.fn.async.memory.delete(s)});"') +
+			'<br />' +
+			core.fn.static.insert.icon('feedbackrequest', 'bigger', false,
+				'title="' + core.fn.static.lang('settingMailDebugDump') +
+				'" onclick="core.fn.static.dynamicMailto(core.var.eMailAddress.admin.address, \'' + core.fn.static.lang('title') + ' - Debug Settings\')"');
+		await core.fn.async.stdout('settingContent', display);
+		core.fn.static.limitBar(usedSpace, maxSpace, 'debugSpace');
 	},
 	key: async () => { //  password construction - please forgive me the ugly nested javascript creation
 		let display = '<form onsubmit="' +
@@ -748,6 +735,17 @@ core.setup = {
 			'<br /><input type="submit" value="' + core.fn.static.lang('settingKeySubmit') + '" /></form><br />' +
 			'<br /><span id="keygenresult"></span>';
 		core.fn.async.stdout('settingContent', display);
+	},
+	modules: async () => {
+		let module = {},
+			moduleSelector = '';
+		if (typeof (core.var) !== 'undefined') {
+			for (let key of Object.keys(core.var.modules)) {
+				module['core_' + key] = await core.fn.async.memory.read('core_' + key);
+				moduleSelector += core.fn.static.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'core_' + key, (module['core_' + key] ? module['core_' + key] : core.var.modules[key].enabledByDefault), 'onchange="core.var.modules[\'' + key + '\'].enabledByDefault == el(\'core_' + key + '\').checked ? core.fn.async.memory.delete(\'core_' + key + '\'): core.fn.async.memory.write(\'core_' + key + '\', Number(el(\'core_' + key + '\').checked)); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"', core.fn.static.lang('settingRestartNeccessary')) + '<br />';
+			}
+		} else moduleSelector = core.fn.static.lang('errorLoadingModules');
+		core.fn.async.stdout('settingContent', moduleSelector);
 	}
 };
 core.history = { //stores and restores last actions. since last actions can only occur after loading the modules scripts into scope

@@ -375,14 +375,6 @@ core.var = {
 			en: 'Open contents to be copied in new window',
 			de: 'Zu kopierende Inhalte in neuem Fenster öffnen'
 		},
-		settingDebugCompressedCaption: {
-			en: 'raw data',
-			de: 'Rohdaten'
-		},
-		settingDebugCompressionRate: {
-			en: 'compressed',
-			de: 'komprimiert'
-		},
 		settingDebugDumpCaption: {
 			en: 'currently stored settings',
 			de: 'aktuell gespeicherte Einstellungen'
