@@ -9,53 +9,44 @@
 //
 //////////////////////////////////////////////////////////////
 
-if (typeof correspondence === 'undefined') var correspondence = {};
-
-correspondence.api = {
-	available: async (search) => {
-		//loop through registered submodules, load them individually and let processAfterImport add smartSearch-results to globalSearch
-		Object.keys(correspondence.var.submodules).forEach(async (key) => {
-			if (correspondence.var.submodules[key][0] !== '') {
-				await core.fn.async.loadScript(core.var.moduleDataDir + correspondence.var.submodules[key][0] + '.js',
-					'correspondence.api.processAfterImport(\'' + search + '\', \'' + correspondence.var.submodules[key][0] + '\', \'' + correspondence.var.submodules[key][0] + '_data\')');
+var correspondence = {
+	var: {},
+	data: {},
+	api: {
+		available: async (search) => {
+			//loop through registered submodules, load them individually and let processAfterImport add smartSearch-results to globalSearch
+			let display,
+				found,
+				searchobject = [];
+			for (let m of Object.keys(correspondence.var.submodules)) {
+				for (let s of Object.keys(correspondence.data[m])) {
+					searchobject.push([correspondence.data[m][s]['title'], s]);
+				}
+				found = await core.fn.async.smartSearch.lookup(search, searchobject, true);
+				found.forEach(function (value) {
+					display = '<a href="javascript:correspondence.fn.init(\'' + m + '|' + searchobject[value[0]][1] + '\')">' + searchobject[value[0]][0] + '</a>';
+					//add value and relevance
+					core.globalSearch.contribute('correspondence', [display, value[1]]);
+				});
 			}
-		});
-		core.performance.stop('correspondence.api.available(\'' + search + '\')');
+			core.performance.stop('correspondence.api.available(\'' + search + '\')');
+		},
+		currentStatus: function () {
+			core.performance.stop('correspondence.api.currentStatus()');
+			return false;
+		}
 	},
-	processAfterImport: async (search, submodule, objectname) => {
-		let display,
-			found,
-			searchobject = [];
-		object = eval(objectname);
-		Object.keys(object).forEach((key) => {
-			searchobject.push([object[key]['title'], key]);
-		});
-		found = await core.fn.async.smartSearch.lookup(search, searchobject, true);
-		found.forEach(function (value) {
-			display = '<a href="javascript:core.fn.async.loadScript(\'' + core.var.moduleDir + 'correspondence.js\',\'correspondence.fn.init(\\\'' + submodule + '|' + searchobject[value[0]][1] + '\\\')\')">' + searchobject[value[0]][0] + '</a>';
-			//add value and relevance
-			core.globalSearch.contribute('correspondence', [display, value[1]]);
-		});
-		core.performance.stop('correspondence.api.processAfterImport(\'' + search + '\', \'' + submodule + '\', \'' + objectname + '\')');
-	},
-	currentStatus: function () {
-		core.performance.stop('correspondence.api.currentStatus()');
-		return false;
-	}
-};
-correspondence.fn = {
-	gen: function (query) { //create user output
-		let checkbox = [],
-			contents,
-			index = 0,
-			inputs,
-			output = '',
-			wanted = [];
-
-		if (typeof correspondence.var.selectedObject() !== 'undefined') {
+	fn: {
+		gen: function (query) { //create user output
+			let checkbox = [],
+				contents,
+				index = 0,
+				inputs,
+				output = '',
+				wanted = [];
 			//read selected checkboxes or set to default
 			query = query || el('textTheme').options[el('textTheme').selectedIndex].value;
-			contents = correspondence.var.selectedObject()[query].contents;
+			contents = correspondence.data[correspondence.var.currentModule][query].contents;
 			Object.keys(contents).forEach((value) => {
 				checkbox[value] = el('c' + value) ? (el('c' + value).checked ? 1 : 0) : 1;
 			});
@@ -80,16 +71,14 @@ correspondence.fn = {
 			//reassign variable value for mailto after actual output
 			if (output.length > core.var.directMailSize) output = core.fn.static.lang('errorMailSizeExport');
 			el('mailto').href = 'javascript:core.fn.dynamicMailto(\'\',\'\',\'' + output + '\')';
-		} else core.fn.static.popup(core.fn.static.lang('errorSelectModules', 'correspondence'));
-		core.history.write(['correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
-	},
-
-	start: function (query) {
-		let output,
-			sel = {};
-		if (typeof correspondence.var.selectedObject() !== 'undefined') {
-			Object.keys(correspondence.var.selectedObject()).forEach((key) => {
-				sel[key] = [key, correspondence.var.selectedObject()[key].title];
+			core.history.write(['correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
+		},
+		start: async (query) => {
+			let module = correspondence.data[correspondence.var.selectedModule()],
+				output,
+				sel = {};
+			Object.keys(module).forEach((key) => {
+				sel[key] = [key, module[key].title];
 			});
 			output = core.fn.static.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.fn.gen()"') +
 				'<br /><br />' +
@@ -111,27 +100,34 @@ correspondence.fn = {
 				'<br /><br /><a id="mailto" href="javascript:core.fn.static.dynamicMailto()">' + core.fn.static.insert.icon('email') + core.fn.static.lang('openMailApp', 'correspondence') + '</a>' +
 				core.fn.static.insert.limitBar('13em', core.fn.static.lang('mailtoLimitBar')) +
 				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.fn.static.insert.icon('outlook') + core.fn.static.lang('openOutlook', 'correspondence') + '</a>' : '');
-			core.fn.async.stdout('temp', output);
+			await core.fn.async.stdout('temp', output);
 			if (value(query) !== '') correspondence.fn.gen(query);
-		} else core.fn.static.popup(core.fn.static.lang('errorSelectModules', 'correspondence'));
-		core.performance.stop('correspondence.fn.start(\'' + value(query) + '\')');
-		core.history.write(['correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
-	},
-	init: async (query) => {
-		let preset;
-		correspondence.var.submodules.select[1] = core.fn.static.lang('inputLoadSubmoduleDefault', 'correspondence');
-		if (value(query) !== '') {
-			preset = query.split('|');
+			core.performance.stop('correspondence.fn.start(\'' + value(query) + '\')');
+			core.history.write(['correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
+		},
+		init: async (query) => {
+			let preset,
+				selection = {};
+			//prepare selection
+			Object.keys(correspondence.var.submodules).forEach((key) => {
+				selection[key] = [key, correspondence.var.submodules[key][core.var.selectedLanguage]];
+			});
+			if (value(query) !== '') {
+				preset = query.split('|');
+			}
+			await core.fn.async.stdout('input', core.fn.static.insert.select(selection,
+					'submodule', 'submodule', (typeof preset !== 'undefined' ? preset[0] : null), 'onchange="correspondence.var.currentModule = this.options[this.selectedIndex].value; correspondence.fn.start()"') +
+				core.fn.static.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.fn.gen()" title="' + core.fn.static.lang('buttonGenTitle', 'correspondence') + '"'));
+			correspondence.var['currentModule'] = value(query) !== '' ? preset[0] : correspondence.var.selectedModule();
+			correspondence.fn.start(value(query) !== '' ? preset[1] : false);
+			core.performance.stop('correspondence.fn.init(\'' + value(query) + '\')');
+			core.history.write(['correspondence.fn.init(\'' + value(query) + '\')']);
+		},
+		load: async () => {
+			await core.fn.async.loadScript(core.var.moduleVarDir + 'correspondence.var.js');
+			for (let m of Object.keys(correspondence.var.submodules)) {
+				await core.fn.async.loadScript(core.var.moduleDataDir + 'correspondence_' + m + '.js');
+			}
 		}
-		await core.fn.async.stdout('input', core.fn.static.insert.select(correspondence.var.submodules,
-				'submodule', 'submodule', (typeof preset !== 'undefined' ? preset[0].substring(preset[0].indexOf('_') + 1) : null), 'onchange="core.fn.async.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value + \'.js\',\'correspondence.fn.start()\')"') +
-			core.fn.static.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.fn.gen()" title="' + core.fn.static.lang('buttonGenTitle', 'correspondence') + '"'));
-		await core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'correspondence'));
-		if (value(query) !== '') {
-			correspondence.var['presetModule'] = preset[0];
-			core.fn.async.loadScript(core.var.moduleDataDir + preset[0] + '.js', 'correspondence.fn.start(\'' + preset[1] + '\')');
-		}
-		core.performance.stop('correspondence.fn.init(\'' + value(query) + '\')');
-		core.history.write(['correspondence.fn.init(\'' + value(query) + '\')']);
 	}
 };

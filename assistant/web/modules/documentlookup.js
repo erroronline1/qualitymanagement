@@ -11,116 +11,107 @@
 //
 //////////////////////////////////////////////////////////////
 
-if (typeof documentlookup === 'undefined') var documentlookup = {};
-
-documentlookup.api = {
-	available: async (search) => {
-		await Object.keys(documentlookup.var.submodules).forEach(async (key) => {
-			await core.fn.async.loadScript(core.var.moduleDataDir + key + '.js',
-				'documentlookup.api.processAfterImport(\'' + search + '\', \'' + key + '_data\')');
-		});
-		core.performance.stop('documentlookup.api.available(\'' + search + '\')');
-	},
-	processAfterImport: async (search, objectname) => {
-		let display = '',
-			found,
-			object;
-		if (typeof objectname !== 'undefined') {
-			object = eval(objectname);
-			found = await core.fn.async.smartSearch.lookup(search, object.content, true);
-			found.forEach((value) => {
-				display = documentlookup.fn.linkfile([object.content[value[0]][0], object.content[value[0]][1]], false, (object.content[value[0]][2] ? core.fn.static.lang('searchTitle', 'documentlookup') + object.content[value[0]][2] : false));
-				//add value and relevance
-				core.globalSearch.contribute('documentlookup', [display, value[1]]);
-			});
-		}
-		core.performance.stop('documentlookup.api.processAfterImport(\'' + search + '\', \'' + objectname + '\')', found);
-	},
-	currentStatus: async () => {
-		let display = await documentlookup.fn.favouriteHandler.get(),
-			selectedModule = await documentlookup.var.selectedModule();
-		await core.fn.async.loadScript(core.var.moduleDataDir + selectedModule + '.js');
-		if (display) core.globalSearch.contribute('documentlookup', [display, 1]);
-		core.performance.stop('documentlookup.api.currentStatus()');
-	}
-};
-documentlookup.fn = {
-	linkfile: (url, track, title, favourite) => {
-		let displayName = (url[1] ? url[1] : url[0].substring(url[0].lastIndexOf('/'), url[0].lastIndexOf('.')).substring(1))
-		title = value(title) !== '' ? ' title="' + title + '" ' : '';
-		if (value(favourite) !== '') return '<span class="singlefavouritehandler"><a href="' + url[0] + '" ' + title + ' onclick="documentlookup.fn.favouriteHandler.set(\'' + documentlookup.fn.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>' + core.fn.static.insert.icon('delete', false, false, 'onclick="documentlookup.fn.favouriteHandler.set(\':' + documentlookup.fn.favouriteHandler.prepare(url[0]) + '\'); return;"') + '</span>';
-		else if (track) return '<a href="' + url[0] + '" ' + title + ' onclick="documentlookup.fn.favouriteHandler.set(\'' + documentlookup.fn.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>';
-		return '<a href="' + url[0] + '" ' + title + ' target="_blank">' + displayName + '</a>';
-	},
-	favouriteHandler: {
-		prepare: (value) => {
-			return value.substring(value.lastIndexOf('/'), value.lastIndexOf('.')).substring(1).replace(/[^a-z0-9]/gi, '');
-		},
-		set: async (value) => {
-			let deleteValue = false,
-				favourites = [],
-				favOutput,
-				output = await core.fn.async.memory.read('documentlookupFav'),
-				tfav;
-			if (value.indexOf(':') == 0) { //if preceded by : the value will be deleted from the favourite list
-				deleteValue = true
-				value = value.substring(1);
-			}
-			if (output) {
-				if (output.indexOf(value) > -1) {
-					tfav = output.split(',');
-					//create two dimensional array and add sighting if neccessary
-					for (let i = 0; i < tfav.length; i += 2) {
-						if (!(deleteValue && tfav[i] === value)) favourites.push(new Array(tfav[i], parseInt(tfav[i + 1]) + (tfav[i] === value ? 1 : 0)));
-					}
-					favourites.sort(core.fn.sortBySecondColumn);
-					//reduce two dimensional array after sorting
-					for (let i = 0; i < favourites.length; i++) {
-						favourites[i] = favourites[i].join(',');
-					}
-					//reduce to flat
-					output = favourites.join(',');
-				} else output += ',' + value + ',1';
-			} else output = value + ',1';
-			core.fn.async.memory.write('documentlookupFav', output);
-			favOutput = await documentlookup.fn.favouriteHandler.get('withtools')
-			core.fn.async.stdout('favourites', favOutput);
-		},
-		get: async (tools) => {
-			let interimobject,
-				output = await core.fn.async.memory.read('documentlookupFav'),
-				tfav = [],
-				tfav2 = [];
-			if (output) {
-				//bring selected object into scope to avoid method callbacks in loops for performance reasons
-				interimobject = await documentlookup.var.selectedObject();
-				interimobject = interimobject.content;
-				//assign link to index as favourite handler
-				Object.keys(interimobject).forEach((key) => {
-					tfav[documentlookup.fn.favouriteHandler.prepare(interimobject[key][0])] = documentlookup.fn.linkfile([interimobject[key][0], interimobject[key][1]], true, interimobject[key][2], 1);
+var documentlookup = {
+	var: {},
+	data: {},
+	api: {
+		available: async (search) => {
+			let display = '',
+				found,
+				object;
+			for (let m of Object.keys(documentlookup.var.submodules)) {
+				object = documentlookup.data[m].content;
+				found = await core.fn.async.smartSearch.lookup(search, object, true);
+				found.forEach((value) => {
+					display = documentlookup.fn.linkfile([object[value[0]][0], object[value[0]][1]], false, (object[value[0]][2] ? core.fn.static.lang('searchTitle', 'documentlookup') + object[value[0]][2] : false));
+					//add value and relevance
+					core.globalSearch.contribute('documentlookup', [display, value[1]]);
 				});
-				tfav2 = output.split(',');
-				output = (tools !== undefined) ? '<br />' + core.fn.static.lang('favouriteCaption', 'documentlookup') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
-					core.fn.static.insert.icon('delete', 'bigger', false, 'title="' + core.fn.static.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="core.fn.async.memory.delete(\'documentlookupFav\'); core.fn.async.growlNotif(core.fn.static.lang(\'favouriteRestoreConfirm\', \'documentlookup\'))"') +
-					'</span><br /><br />' : '';
-				for (let i = 0; i < tfav2.length; i += 2) {
-					if (tfav[tfav2[i]] !== undefined) output += tfav[tfav2[i]] + '<br />';
-				}
 			}
-			return output || '';
+			core.performance.stop('documentlookup.api.available(\'' + search + '\')');
+		},
+		currentStatus: async () => {
+			let display = await documentlookup.fn.favouriteHandler.get();
+			if (display) core.globalSearch.contribute('documentlookup', [display, 1]);
+			core.performance.stop('documentlookup.api.currentStatus()');
 		}
 	},
-	search: async (query) => {
-		query = query || el('documentname').value;
-		core.performance.start('documentlookup.fn.search(\'' + value(query) + '\')'); //possible duplicate
-		let favourites,
-			found,
-			interimobject,
-			list = '',
-			selectedObject = await documentlookup.var.selectedObject();
-		if (typeof selectedObject === 'object') {
+	fn: {
+		linkfile: (url, track, title, favourite) => {
+			let displayName = (url[1] ? url[1] : url[0].substring(url[0].lastIndexOf('/'), url[0].lastIndexOf('.')).substring(1))
+			title = value(title) !== '' ? ' title="' + title + '" ' : '';
+			if (value(favourite) !== '') return '<span class="singlefavouritehandler"><a href="' + url[0] + '" ' + title + ' onclick="documentlookup.fn.favouriteHandler.set(\'' + documentlookup.fn.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>' + core.fn.static.insert.icon('delete', false, false, 'onclick="documentlookup.fn.favouriteHandler.set(\':' + documentlookup.fn.favouriteHandler.prepare(url[0]) + '\'); return;"') + '</span>';
+			else if (track) return '<a href="' + url[0] + '" ' + title + ' onclick="documentlookup.fn.favouriteHandler.set(\'' + documentlookup.fn.favouriteHandler.prepare(url[0]) + '\'); return;" target="_blank">' + displayName + '</a>';
+			return '<a href="' + url[0] + '" ' + title + ' target="_blank">' + displayName + '</a>';
+		},
+		favouriteHandler: {
+			prepare: (value) => {
+				return value.substring(value.lastIndexOf('/'), value.lastIndexOf('.')).substring(1).replace(/[^a-z0-9]/gi, '');
+			},
+			set: async (value) => {
+				let deleteValue = false,
+					favourites = [],
+					favOutput,
+					output = await core.fn.async.memory.read('documentlookupFav'),
+					tfav;
+				if (value.indexOf(':') == 0) { //if preceded by : the value will be deleted from the favourite list
+					deleteValue = true
+					value = value.substring(1);
+				}
+				if (output) {
+					if (output.indexOf(value) > -1) {
+						tfav = output.split(',');
+						//create two dimensional array and add sighting if neccessary
+						for (let i = 0; i < tfav.length; i += 2) {
+							if (!(deleteValue && tfav[i] === value)) favourites.push(new Array(tfav[i], parseInt(tfav[i + 1]) + (tfav[i] === value ? 1 : 0)));
+						}
+						favourites.sort(core.fn.sortBySecondColumn);
+						//reduce two dimensional array after sorting
+						for (let i = 0; i < favourites.length; i++) {
+							favourites[i] = favourites[i].join(',');
+						}
+						//reduce to flat
+						output = favourites.join(',');
+					} else output += ',' + value + ',1';
+				} else output = value + ',1';
+				core.fn.async.memory.write('documentlookupFav', output);
+				favOutput = await documentlookup.fn.favouriteHandler.get('withtools')
+				core.fn.async.stdout('favourites', favOutput);
+			},
+			get: async (tools) => {
+				let interimobject,
+					output = await core.fn.async.memory.read('documentlookupFav'),
+					tfav = [],
+					tfav2 = [];
+				if (output) {
+					//bring selected object into scope to avoid method callbacks in loops for performance reasons
+					selobj = await documentlookup.var.selectedModule();
+					interimobject = documentlookup.data[selobj].content;
+					//assign link to index as favourite handler
+					Object.keys(interimobject).forEach((key) => {
+						tfav[documentlookup.fn.favouriteHandler.prepare(interimobject[key][0])] = documentlookup.fn.linkfile([interimobject[key][0], interimobject[key][1]], true, interimobject[key][2], 1);
+					});
+					tfav2 = output.split(',');
+					output = (tools !== undefined) ? '<br />' + core.fn.static.lang('favouriteCaption', 'documentlookup') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
+						core.fn.static.insert.icon('delete', 'bigger', false, 'title="' + core.fn.static.lang('favouriteDeleteTitle', 'documentlookup') + '" onclick="core.fn.async.memory.delete(\'documentlookupFav\'); core.fn.async.growlNotif(core.fn.static.lang(\'favouriteRestoreConfirm\', \'documentlookup\'))"') +
+						'</span><br /><br />' : '';
+					for (let i = 0; i < tfav2.length; i += 2) {
+						if (tfav[tfav2[i]] !== undefined) output += tfav[tfav2[i]] + '<br />';
+					}
+				}
+				return output || '';
+			}
+		},
+		search: async (query) => {
+			query = query || el('documentname').value;
+			core.performance.start('documentlookup.fn.search(\'' + value(query) + '\')'); //possible duplicate
+			let favourites,
+				found,
+				interimobject,
+				list = '',
+				object = await documentlookup.var.selectedModule();
 			//bring selected object into scope to avoid method callbacks in loops for performance reasons
-			interimobject = selectedObject.content;
+			interimobject = documentlookup.data[object].content;
 			//list all items for overview
 			Object.keys(interimobject).forEach((key) => {
 				list += documentlookup.fn.linkfile([interimobject[key][0], interimobject[key][1]], true) + '<br />';
@@ -132,7 +123,7 @@ documentlookup.fn = {
 				// check if search matches item-list and display result
 				if (found.length > 0) {
 					list = '<span class="highlight">' + core.fn.static.lang('generalThirdTypeHint', 'documentlookup') + '</span><br /><br />';
-					await core.fn.async.smartSearch.relevance.init();
+					core.fn.async.smartSearch.relevance.init();
 					found.forEach((value) => {
 						list += core.fn.async.smartSearch.relevance.nextstep(value[1]);
 						list += documentlookup.fn.linkfile([interimobject[value[0]][0], interimobject[value[0]][1]], true, (interimobject[value[0]][2] ? core.fn.static.lang('searchTitle', 'documentlookup') + interimobject[value[0]][2] : false)) + '<br />';
@@ -143,29 +134,34 @@ documentlookup.fn = {
 				favourites = await documentlookup.fn.favouriteHandler.get('withtools');
 				core.fn.async.stdout('output', '<div id="favourites">' + (favourites || '') + '</div>');
 			}
+			core.performance.stop('documentlookup.fn.search(\'' + value(query) + '\')', found);
+			core.history.write(['documentlookup.fn.init(\'' + value(query) + '\')']);
+		},
+		init: async (query) => {
+			let documentlookupCategory,
+				selection = {};
+			//prepare selection
+			Object.keys(documentlookup.var.submodules).forEach((key) => {
+				selection[key] = [key, documentlookup.var.submodules[key][core.var.selectedLanguage]];
+			});
+			documentlookupCategory = await core.fn.async.memory.read('documentlookupCategory');
+			await core.fn.async.stdout('input',
+				'<form id="search" action="javascript:documentlookup.fn.search();">' +
+				'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.fn.static.lang('searchPlaceholder', 'documentlookup') + '" class="search" value="' + value(query).replace(/"/g, '&quot;') + '" />' +
+				'<span onclick="documentlookup.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
+				core.fn.static.insert.select(selection, 'lookup', 'lookup', (documentlookupCategory || false), 'onchange="this.selectedIndex == 0 ? core.fn.async.memory.delete(\'documentlookupCategory\') : core.fn.async.memory.write(\'documentlookupCategory\', this.options[this.selectedIndex].value); documentlookup.fn.search();"') +
+				'<input type="submit" id="submit" value="' + core.fn.static.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
+				'<a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.static.insert.icon('fileexplorer', 'bigger', false, 'title="' + core.fn.static.lang('optionThirdType', 'documentlookup') + '"') + '</a>' +
+				'</form>');
+			el('documentname').focus();
+			documentlookup.fn.search(value(query));
+			core.performance.stop('documentlookup.fn.init(\'' + value(query) + '\')');
+		},
+		load: async () => {
+			await core.fn.async.loadScript(core.var.moduleVarDir + 'documentlookup.var.js');
+			for (let m of Object.keys(documentlookup.var.submodules)) {
+				await core.fn.async.loadScript(core.var.moduleDataDir + 'documentlookup_' + m + '.js');
+			}
 		}
-		core.performance.stop('documentlookup.fn.search(\'' + value(query) + '\')', found);
-		core.history.write(['documentlookup.fn.init(\'' + value(query) + '\')']);
-	},
-	init: async (query) => {
-		let documentlookupBundle,
-			selectedModule = await documentlookup.var.selectedModule(),
-			selection = {};
-		await core.fn.async.loadScript(core.var.moduleDataDir + selectedModule + '.js', 'documentlookup.fn.search(\'' + value(query) + '\')');
-		//prepare selection
-		Object.keys(documentlookup.var.submodules).forEach((key) => {
-			selection[key] = [key, documentlookup.var.submodules[key][core.var.selectedLanguage]];
-		});
-		documentlookupBundle = await core.fn.async.memory.read('documentlookupBundle');
-		await core.fn.async.stdout('input',
-			'<form id="search" action="javascript:documentlookup.fn.search();">' +
-			'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.fn.static.lang('searchPlaceholder', 'documentlookup') + '" class="search" value="' + value(query).replace(/"/g, '&quot;') + '" />' +
-			'<span onclick="documentlookup.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
-			core.fn.static.insert.select(selection, 'lookup', 'lookup', (documentlookupBundle || false), 'onchange="this.selectedIndex == 0 ? core.fn.async.memory.delete(\'documentlookupBundle\') : core.fn.async.memory.write(\'documentlookupBundle\', this.options[this.selectedIndex].value); core.fn.async.loadScript(\'' + core.var.moduleDataDir + '\' + this.options[this.selectedIndex].value+ \'.js\',\'documentlookup.fn.search()\');"') +
-			'<input type="submit" id="submit" value="' + core.fn.static.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
-			'<a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.static.insert.icon('fileexplorer', 'bigger', false, 'title="' + core.fn.static.lang('optionThirdType', 'documentlookup') + '"') + '</a>' +
-			'</form>');
-		el('documentname').focus();
-		core.performance.stop('documentlookup.fn.init(\'' + value(query) + '\')');
-	},
+	}
 };
