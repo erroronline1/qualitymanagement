@@ -37,7 +37,6 @@ var stocklist = {
 		},
 		currentStatus: () => {
 			core.performance.stop('stocklist.api.currentStatus()');
-			return false;
 		}
 	},
 	fn: {

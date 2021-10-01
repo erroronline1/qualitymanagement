@@ -27,9 +27,8 @@ var documentbundles = {
 			});
 			core.performance.stop('documentbundles.api.available(\'' + search + '\')');
 		},
-		currentStatus: function () {
+		currentStatus: async () => {
 			core.performance.stop('documentbundles.api.currentStatus()');
-			return false;
 		}
 	},
 	fn: {

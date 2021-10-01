@@ -20,8 +20,9 @@ var timetable = {
 				termsFound;
 			if (typeof searchTerms !== 'undefined') {
 				termsFound = await core.fn.async.smartSearch.lookup(search, searchTerms, true);
-				termsFound.forEach(function (value) {
-					found = true;
+				termsFound.forEach( (value)=> {
+				// if smartsearch returns strict or fuzzy matches 
+				found = true;
 				});
 			}
 			if (found) {

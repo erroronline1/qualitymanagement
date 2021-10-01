@@ -581,7 +581,6 @@ core.init = {
 		document.body.style.fontSize = ((coreFontsize || 0) / 10 + 1) + 'em';
 		el('colortheme').href = 'core/' + ((coreTheme in core.var.themes ? coreTheme :
 			'default') || 'default') + '.css';
-		core.init.ui();
 		await updateTracker.alert();
 		for (let key of Object.keys(core.var.modules)) {
 			module['core_' + key] = await core.fn.async.memory.read('core_' + key);
@@ -595,11 +594,12 @@ core.init = {
 		}
 		menu += '<br /><br />' + core.fn.static.insert.icon('decreaseindent', 'bigger', false, ' onclick="el(\'menu\').classList.toggle(\'small\'); this.style.transform=\'scale(\' + (el(\'menu\').classList.contains(\'small\')? -1 : 1) + \', -1)\'"');
 		core.fn.async.stdout('menu', menu);
+		core.init.ui();
 	},
 	ui: async (query) => { //displays start screen
 		let eMailList = core.fn.static.lang('importantMails') + '<p>';
 		await core.fn.async.stdout('input',
-			'<form id="search" action="javascript:core.globalSearch.initsearch(el(\'globalsearch\').value);">' +
+			'<form id="search" action="javascript:core.globalSearch.search(el(\'globalsearch\').value);">' +
 			'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
 			core.fn.static.lang('globalSearchPlaceholder') + '" class="search" value="' + value(query).replace(/"/g, '&quot;') + '" />' +
 			'<span onclick="core.globalSearch.search(el(\'globalsearch\').value);" class="search">' + core.fn.static.insert.icon('search') + '</span>' +
@@ -627,7 +627,7 @@ core.init = {
 			if (el('module' + key) != 'undefined' && el('module' + key) != null) el('module' + key).checked = false;
 		});
 		document.title = core.fn.static.lang('title')
-		//////////////////////////////////////////		core.globalSearch.search(query); // api status in case query is undefined
+		core.globalSearch.search(query); // api status in case query is undefined
 		focusWithin(false);
 		core.history.write(['core.init.ui(\'' + value(query) + '\')']);
 		return true;
@@ -860,23 +860,20 @@ core.globalSearch = { //searches all modules using their api-methods from the st
 		document.body.style.cursor = 'default';
 		core.performance.stop('globalSearch', null, 'endgroup');
 	},
-	initsearch: (query) => {
-		core.globalSearch.search(query);
-	},
 	search: async (search) => {
 		core.performance.start('globalSearch', 'group');
 		document.body.style.cursor = 'progress';
 		//clear result on search initialization
 		core.globalSearch.result = {};
 		//load every module and fire api. api appends its result to the global search result because of asynchronous loading.
-		await Object.keys(core.var.modules).forEach(async (key) => {
+		for (let key of Object.keys(core.var.modules)) {
 			if (typeof core.var.modules[key] === 'object') {
 				//load every module and fire api function
 				opt = core.var.moduleDir + key + '.js';
 				if (value(search) != '') await eval(key + '.api.available(\'' + search + '\')');
 				else await eval(key + '.api.currentStatus()');
 			}
-		});
+		}
 		core.globalSearch.display(search)
 		if (value(search) != '') core.history.write(['core.fn.init(\'' + search + '\')']);
 	}

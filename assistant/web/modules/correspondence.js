@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////
 
 var correspondence = {
-	additionalOptions:{},
+	additionalOptions: {},
 	var: {},
 	data: {},
 	api: {
@@ -24,7 +24,7 @@ var correspondence = {
 					searchobject.push([correspondence.data[m][s]['title'], s]);
 				}
 				found = await core.fn.async.smartSearch.lookup(search, searchobject, true);
-				found.forEach(function (value) {
+				found.forEach((value) => {
 					display = '<a href="javascript:correspondence.fn.init(\'' + m + '|' + searchobject[value[0]][1] + '\')">' + searchobject[value[0]][0] + '</a>';
 					//add value and relevance
 					core.globalSearch.contribute('correspondence', [display, value[1]]);
@@ -32,9 +32,8 @@ var correspondence = {
 			}
 			core.performance.stop('correspondence.api.available(\'' + search + '\')');
 		},
-		currentStatus: function () {
+		currentStatus: async () => {
 			core.performance.stop('correspondence.api.currentStatus()');
-			return false;
 		}
 	},
 	fn: {

@@ -25,7 +25,6 @@ var help = {
 		},
 		currentStatus: async () => {
 			core.performance.stop('help.api.currentStatus()');
-			return false;
 		}
 	},
 	fn: {

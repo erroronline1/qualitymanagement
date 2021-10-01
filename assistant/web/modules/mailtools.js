@@ -33,7 +33,6 @@ var mailtools = {
 		},
 		currentStatus: async () => {
 			core.performance.stop('mailtools.api.currentStatus()');
-			return false;
 		}
 	},
 	fn: {

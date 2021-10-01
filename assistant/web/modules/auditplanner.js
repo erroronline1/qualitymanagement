@@ -13,13 +13,11 @@ auditplanner = {
 	var: {},
 	data: {},
 	api: {
-		available: function (search) {
+		available: async (search) => {
 			core.performance.stop('auditplanner.api.available(\'' + search + '\')');
-			return;
 		},
-		currentStatus: function () {
+		currentStatus: async () => {
 			core.performance.stop('auditplanner.api.currentStatus()');
-			return false;
 		}
 	},
 	fn: {
