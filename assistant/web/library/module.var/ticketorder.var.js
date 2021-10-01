@@ -175,10 +175,6 @@ ticketorder.var = {
 			en: ' tickets found',
 			de: ' Tickets gefunden'
 		},
-		ticketorderLimitBar: {
-			en: 'remaining space to store orders',
-			de: 'verbleibender Speicher um Bestellungen zu sammeln'
-		},
 		currentCart:{
 			en: 'items in cart: ',
 			de: 'Artikel im Einkaufswagen: '
@@ -227,6 +223,7 @@ ticketorder.var = {
 	],
 	apiTranslate: {
 		fieldCorrelation: { // index of order fields in correlation to fields in stock list
+			0: 0,
 			1: 1,
 			2: 3,
 			3: 2,
@@ -238,8 +235,8 @@ ticketorder.var = {
 		//id:[select value, select text, filter for smartsearch]
 		return {
 			nofilter: ['nofilter', core.fn.static.lang('filterNofilter', 'ticketorder'), 'true'],
-			closed: ['closed', core.fn.static.lang('filterClosed', 'ticketorder'), 'ticketorder_data.content[key][3]!=\'\''],
-			open: ['open', core.fn.static.lang('filterOpen', 'ticketorder'), 'ticketorder_data.content[key][3]==\'\''],
+			closed: ['closed', core.fn.static.lang('filterClosed', 'ticketorder'), 'ticketorder.data.content[key][3]!=\'\''],
+			open: ['open', core.fn.static.lang('filterOpen', 'ticketorder'), 'ticketorder.data.content[key][3]==\'\''],
 		};
 	},
 };

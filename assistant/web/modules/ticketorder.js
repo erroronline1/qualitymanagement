@@ -40,7 +40,7 @@ var ticketorder = {
 					lineindex = ticketorder.fn.addrow(true);
 					ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, fieldindex) {
 						if (fieldindex < 1) value = index;
-						else if (fieldindex in ticketorder.var.apiTranslate.fieldCorrelation) value = stocklist_data.content[index][ticketorder.var.apiTranslate.fieldCorrelation[fieldindex]];
+						else if (fieldindex in ticketorder.var.apiTranslate.fieldCorrelation) value = stocklist.data.content[index][ticketorder.var.apiTranslate.fieldCorrelation[fieldindex]];
 						else value = '';
 						el(field[0].replace(/\W/g, '') + lineindex).value = value;
 					});
@@ -147,8 +147,10 @@ var ticketorder = {
 				ticketorderDept = await core.fn.async.memory.read('ticketorderDept');
 
 			ticketorder.var.orderrows = -1;
-			if (!ticketorderAwaitingOrders) ticketorder.var.newTicket = ticketorder.fn.translate.newTicket();
-			core.fn.async.memory.write('ticketorderCurrentTicket', ticketorder.var.newTicket);
+			if (!ticketorderAwaitingOrders) {
+				ticketorder.var.newTicket = ticketorder.fn.translate.newTicket();
+				core.fn.async.memory.write('ticketorderCurrentTicket', ticketorder.var.newTicket);
+			}
 
 			ordererDeptList.unshift(['', core.fn.static.lang('ordererDept', 'ticketorder')]);
 			ordererCostUnitList.unshift(['', core.fn.static.lang('ordererCostUnit', 'ticketorder')]);
@@ -178,12 +180,10 @@ var ticketorder = {
 			form += '</tr></table>';
 			form += '<input type="button" value="' + core.fn.static.lang('orderAdd', 'ticketorder') + '" onclick="ticketorder.fn.addrow()" />' +
 				'<br /><br /><textarea id="orderNote" rows="5" style="width:90%" placeholder="' + core.fn.static.lang('orderNote', 'ticketorder') + '"></textarea>' +
-				'<br /><br /><input type="submit" id="submitOrder" disabled value="' + core.fn.static.lang('orderSubmit', 'ticketorder') + '" />' +
-				core.fn.static.insert.limitBar('11.6em', core.fn.static.lang('ticketorderLimitBar', 'ticketorder'));
+				'<br /><br /><input type="submit" id="submitOrder" disabled value="' + core.fn.static.lang('orderSubmit', 'ticketorder') + '" />';
 			form += '<hr /><input type="button" id="confirmOrder" value="' + core.fn.static.lang('orderConfirm', 'ticketorder') + '" onclick=\'ticketorder.fn.drm.confirmform()\' />' +
 				'<br /><br /><a id="mailto" href="javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\',\'\')">' +
 				core.fn.static.insert.icon('email') + core.fn.static.lang('openMailApp', 'ticketorder') + '</a><br /><br />';
-
 			return form;
 		},
 		addrow: function (conditionalDisabled) {
@@ -196,12 +196,12 @@ var ticketorder = {
 			ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, index) {
 				td = tr.appendChild(document.createElement('td'));
 				td.style.cssText = 'width:' + field[1];
-				if (index < 1) td.style.cssText += ';display:none'; // hide id
+				if (index < 1) td.style.cssText += '; display:none'; // hide id
 				cellContent = '<input style="width:100%;" type="text" id="' + field[0].replace(/\W/g, '') + ticketorder.var.orderrows + '" required placeholder="' + field[0] + '" ';
 				//prefill with ticket or copy from former row, disable conditional
-				disabledPreset = ticketorder.var.orderFields[core.var.selectedLanguage][index][2];
+				disabledPreset = field[2];
 				if (disabledPreset === true || (disabledPreset === 2 && conditionalDisabled)) cellContent += ' disabled'
-				if (ticketorder.var.orderrows > 0 && ticketorder.var.orderFieldsToCopy[core.var.selectedLanguage].indexOf(field[0]) > -1 && el(field[0].replace(/\W/g, '') + (ticketorder.var.orderrows - 1))) cellContent += 'value="' + el(field[0].replace(/\W/g, '') + (ticketorder.var.orderrows - 1)).value + '"';
+				if (ticketorder.var.orderrows > 0 && ticketorder.var.orderFieldsToCopy[core.var.selectedLanguage].indexOf(field[0]) > -1 && el(field[0].replace(/\W/g, '') + (ticketorder.var.orderrows - 1))) cellContent += ' value="' + el(field[0].replace(/\W/g, '') + (ticketorder.var.orderrows - 1)).value + '"';
 				cellContent += ' />';
 				td.innerHTML = cellContent
 			});
@@ -223,7 +223,8 @@ var ticketorder = {
 		currentorder: {
 			add: async () => {
 				//prepare order object, add properties according to form fields and language chunks
-				let curval,
+				let currentorder,
+					curval,
 					field,
 					id,
 					items,
@@ -231,7 +232,6 @@ var ticketorder = {
 					orderobj = {},
 					neworder,
 					wildcard = false;
-
 				orderobj.subject = core.fn.static.lang('orderMailSubject', 'ticketorder') + el('ordererDept').value + ' | ' + el('orderer').value;
 				['notcommissioned', 'commissioned', 'retour', 'service'].forEach(function (field) {
 					if (el(field).checked) orderobj.type = core.fn.static.lang(field, 'ticketorder');
@@ -241,7 +241,6 @@ var ticketorder = {
 				});
 				if (el('orderNote').value) orderobj.orderNote = el('orderNote').value;
 				orderobj.items = [];
-
 				// iterate through order form for item descriptions
 				for (var i = 0; i < ticketorder.var.orderrows + 1; i++) {
 					items = [];
@@ -264,20 +263,21 @@ var ticketorder = {
 				core.fn.async.memory.write('ticketorderDept', el('ordererDept').selectedIndex);
 				core.fn.async.memory.write('ticketorderCostUnit', el('ordererCostUnit').selectedIndex);
 				core.fn.async.memory.write('ticketorderContact', el('ordererContact').value);
-				//this is a workaround for cookies (needed by ie) can not be larger than 4kb, so i have to split up the order list to individual orders
 				ordernum = await core.fn.async.memory.read('ticketorderAwaitingOrders');
 				ordernum = eval(ordernum) + 1;
-				neworder = await core.fn.async.memory.read('ticketorderAwaitingOrder' + ordernum, JSON.stringify(orderobj), core.fn.static.lang('orderStorageError', 'ticketorder'));
+				neworder = await core.fn.async.memory.write('ticketorderAwaitingOrder' + ordernum, JSON.stringify(orderobj), core.fn.static.lang('orderStorageError', 'ticketorder'));
 				if (neworder) {
 					core.fn.async.memory.write('ticketorderAwaitingOrders', ordernum);
-					core.fn.async.stdout('output', ticketorder.fn.currentorder.get());
+					currentorder = await ticketorder.fn.currentorder.get();
+					core.fn.async.stdout('output', currentorder);
 					el('output').scrollTop = el('output').scrollHeight;
 					core.fn.async.memory.delete('ticketorderCart')
 					if (el('deleteCart')) el('deleteCart').style.display = 'none';
 				}
 			},
 			get: async () => {
-				let ordernum = await core.fn.async.memory.read('ticketorderAwaitingOrders'),
+				let currentTicket = await core.fn.async.memory.read('ticketorderCurrentTicket'),
+					ordernum = await core.fn.async.memory.read('ticketorderAwaitingOrders'),
 					orderobj,
 					orders,
 					output = '',
@@ -292,7 +292,7 @@ var ticketorder = {
 							orderobj = JSON.parse(orders);
 							output += orderobj.subject + '<br /><br />';
 							output += '<i>' + orderobj.type + '</i><br /><br />'
-							output += core.fn.static.lang('captionCheckTicket', 'ticketorder') + ': ' + ticketorder.var.newTicket + '<br />';
+							output += core.fn.static.lang('captionCheckTicket', 'ticketorder') + ': ' + currentTicket + '<br />';
 							Object.keys(orderobj).forEach(function (key) {
 								if (['subject', 'type', 'items'].indexOf(key) === -1) {
 									output += core.fn.static.lang(key, 'ticketorder') + ": " + orderobj[key] + '<br />';
@@ -301,7 +301,6 @@ var ticketorder = {
 							output += '<br /><table border=1 cellpadding=5 cellspacing=0><tr>';
 							ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, index) {
 								output += '<th';
-								if (index < 1) output += ' style="display:none"'; // hide id
 								output += '>' + field[0] + '</th>';
 							});
 							output += '</tr>';
@@ -311,19 +310,17 @@ var ticketorder = {
 								if (orderobj.items[i].length < ticketorder.var.orderFields[core.var.selectedLanguage].length) {
 									ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, fieldindex) {
 										value;
-										if (fieldindex in ticketorder.var.apiTranslate.fieldCorrelation) value = stocklist_data.content[orderobj.items[i][0]][ticketorder.var.apiTranslate.fieldCorrelation[fieldindex]];
+										if (fieldindex in ticketorder.var.apiTranslate.fieldCorrelation) value = stocklist.data.content[orderobj.items[i][0]][ticketorder.var.apiTranslate.fieldCorrelation[fieldindex]];
 										else if (fieldindex > 0) {
 											value = orderobj.items[i][pos];
 											pos++
 										}
 										output += '<td';
-										if (fieldindex < 1) output += ' style="display:none"'; // hide id
 										output += '>' + value + '</td>';
 									});
 								} else {
 									for (let index = 0; index < orderobj.items[i].length; index++) {
 										output += '<td';
-										if (index < 1) output += ' style="display:none"'; // hide id
 										output += '>' + orderobj.items[i][index] + '</td>';
 									}
 								}
@@ -333,7 +330,6 @@ var ticketorder = {
 						}
 					}
 				}
-				/////////////////////			core.fn.limitBar(core.fn.setting.localStorage.maxSpace() - core.fn.setting.localStorage.remainingSpace(), core.fn.setting.localStorage.maxSpace());
 				return output;
 			},
 			clear: async () => {
@@ -358,12 +354,14 @@ var ticketorder = {
 					'<br /><br /><span id="keyresult"></span></form>';
 				core.fn.static.popup(form);
 			},
-			check: function () {
+			check: async () => {
 				if (el('orderconfirmname').value && el('orderconfirmpassword0').value && core.fn.static.drm.searchHash(core.fn.static.drm.table('orderApproval'), core.fn.static.drm.createHash(el('orderconfirmname').value + el('orderconfirmpassword0').value))) {
-					let token = core.fn.static.drm.encryptToken(ticketorder.var.newTicket, el('orderconfirmname').value, el('orderconfirmpassword0').value) || 'unauthorized',
-						confirmedOutput = '<i>' +
-						core.fn.static.lang('orderConfirmed', 'ticketorder', [ticketorder.var.newTicket, token]) +
-						'</i><br /><br />' + ticketorder.fn.currentorder.get();
+					let confirmedOutput = await ticketorder.fn.currentorder.get(),
+					currentTicket = await core.fn.async.memory.read('ticketorderCurrentTicket'),
+					token = core.fn.static.drm.encryptToken(currentTicket, el('orderconfirmname').value, el('orderconfirmpassword0').value) || 'unauthorized';
+					confirmedOutput = '<i>' +
+						core.fn.static.lang('orderConfirmed', 'ticketorder', [currentTicket, token]) +
+						'</i><br /><br />' + confirmedOutput;
 					core.fn.async.stdout('output', confirmedOutput);
 					el('mailto').href = 'javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\',\'' + core.fn.static.lang('orderMailSubject', 'ticketorder') + el('ordererDept').value + ' | ' + el('orderer').value + '\')';
 					el('output').scrollTop = 0;
@@ -377,7 +375,7 @@ var ticketorder = {
 				let form = core.fn.static.lang('captionCheckTicket', 'ticketorder') + '<br /><input type="text" id="checkTicket" autofocus /><br /><br />' +
 					core.fn.static.lang('captionCheckCode', 'ticketorder') + '<br /><input type="text" id="checkCode" /><br /><br />' +
 					'<br /><input type="button" value="' + core.fn.static.lang('buttonVerifyToken', 'ticketorder') + '" onclick="' +
-					'var decrypted=core.fn.drm.decryptToken(core.fn.drm.table(\'orderApproval\'), el(\'checkTicket\').value.trim(), el(\'checkCode\').value.trim());' +
+					'var decrypted=core.fn.static.drm.decryptToken(core.fn.static.drm.table(\'orderApproval\'), el(\'checkTicket\').value.trim(), el(\'checkCode\').value.trim());' +
 					'if (!decrypted)' +
 					'el(\'keycheckresult\').innerHTML=\'' + core.fn.static.lang('failureCheckCode', 'ticketorder') + '\';' +
 					'else el(\'keycheckresult\').innerHTML=\'' +
