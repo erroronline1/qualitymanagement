@@ -1,17 +1,15 @@
 //extend language-model object "core.fn.languageBricks"
-
 var additionalOptions = false;
-
-var correspondence_common_data= {
+correspondence.data.common = {
 	//contents.property:{language:['first person', 'third person']}
 	null: {
 		title: "Select Topic...",
 		contents: {}
 	},
-	versandschreiben: {
+	appointment: {
 		title: "Appointment",
 		contents: {
-			anschreiben: {
+			letter: {
 				en: ["$salutation$,<br /><br />we ask $sie2$ to get in contact with us to make an appointment.<br />Sincerely<br /><br />Company XYZ",
 					"$salutation$,<br /><br />we ask $ihn$ to get in contact with us to make an appointment.<br />Sincerely<br /><br />Company XYZ"
 				],

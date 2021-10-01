@@ -1,4 +1,4 @@
-var mailtools_data = {
+mailtools.data = {
 	notavailableResponse: {
 		en: function (dates) {
 			return 'I am not available from ' +
