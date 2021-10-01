@@ -128,8 +128,8 @@ Public Sub bundleExport(var As Collection)
             If Essentials.collectionKeyExists(var, "documentlist.documentFormat") Then mformat = ThisWorkbook.Worksheets(var("documentlist.sheet")).Range(var("documentlist.documentFormat") & var("documentlist.headerRow") + 1 & ":" & var("documentlist.documentFormat") & matrixallrows)
             Dim documentFormat: documentFormat = ""
             
-            Dim finally As String: finally = "//this file was automatically created by <" & ThisWorkbook.Name & ">" & vbNewLine & vbNewLine & _
-                "var EXCEPTIONS={" & vbNewLine
+            Dim finally As String: finally = "//this file was automatically created by <" & ThisWorkbook.Name & ">" & vbNewLine & _
+                "documentbundles.data.exceptions={" & vbNewLine
             
             'assign exceptions
             With ThisWorkbook.Worksheets(var("bundles.sheet"))
@@ -230,7 +230,7 @@ Public Sub bundleExport(var As Collection)
                 End If
             Next bundle
             'process the result-dictionary to the js-object output
-            finally = finally & "var documentbundles_data={" & vbNewLine
+            finally = finally & "documentbundles.data.bundles={" & vbNewLine
             Dim res As Variant
             For Each res In resultbundles.keys
                 finally = finally & res & ":{" & vbNewLine & resultbundles(res) & vbNewLine & "}," & vbNewLine

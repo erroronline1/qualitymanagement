@@ -140,8 +140,8 @@ Public Sub basicTableToJSON(var As Collection)
         Dim intermediate As String
         Dim entry As Long
         Dim finally As String
-        finally = "//this file was automatically created by <" & ThisWorkbook.Name & ">" & vbNewLine & vbNewLine & _
-            "var " & var("export.objectName") & "={content:[" & vbNewLine
+        finally = "//this file was automatically created by <" & ThisWorkbook.Name & ">" & vbNewLine & _
+            var("export.objectName") & "={content:[" & vbNewLine
         For mrow = LBound(msheet, 1) To UBound(msheet, 1)
             'clear intermediate result for row
             entry = entry + 1
