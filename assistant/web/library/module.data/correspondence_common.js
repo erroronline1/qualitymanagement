@@ -1,5 +1,5 @@
 //extend language-model object "core.fn.languageBricks"
-var additionalOptions = false;
+correspondence.additionalOptions.common = false;
 correspondence.data.common = {
 	//contents.property:{language:['first person', 'third person']}
 	null: {

@@ -10,6 +10,7 @@
 //////////////////////////////////////////////////////////////
 
 var correspondence = {
+	additionalOptions:{},
 	var: {},
 	data: {},
 	api: {
@@ -95,7 +96,7 @@ var correspondence = {
 				core.fn.static.insert.radio(core.fn.static.lang('inputOptionFormal', 'correspondence'), 'age', 'adult', 1, 'onchange="correspondence.fn.gen()"') + '<br />' +
 				core.fn.static.insert.radio(core.fn.static.lang('inputOptionInformal', 'correspondence'), 'age', 'child', false, 'onchange="correspondence.fn.gen()"') + '' +
 				'</div>' +
-				(typeof additionalOptions !== "undefined" && additionalOptions ? '<br />' + additionalOptions : '') +
+				(typeof correspondence.additionalOptions[correspondence.var['currentModule']] !== "undefined" && correspondence.additionalOptions[correspondence.var['currentModule']] ? '<br />' + correspondence.additionalOptions[correspondence.var['currentModule']] : '') +
 				(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '" target="_blank">' + core.fn.static.insert.icon('word') + core.fn.static.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.fn.static.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
 				'<br /><br /><a id="mailto" href="javascript:core.fn.static.dynamicMailto()">' + core.fn.static.insert.icon('email') + core.fn.static.lang('openMailApp', 'correspondence') + '</a>' +
 				core.fn.static.insert.limitBar('13em', core.fn.static.lang('mailtoLimitBar')) +
