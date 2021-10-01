@@ -1,5 +1,3 @@
-if (typeof help === 'undefined') var help = {};
-
 help.var = {
 	lang: {
 		formInputPlaceholder: {

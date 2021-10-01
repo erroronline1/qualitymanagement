@@ -1,5 +1,3 @@
-if (typeof timetable === 'undefined') var timetable = {};
-
 timetable.var = {
 	lang: {
 		formInputPlaceholder: {

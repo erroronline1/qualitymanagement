@@ -1,5 +1,3 @@
-if (typeof ticketorder === 'undefined') var ticketorder = {};
-
 ticketorder.var = {
 	lang: {
 		/////////////////////////////////////////////////////

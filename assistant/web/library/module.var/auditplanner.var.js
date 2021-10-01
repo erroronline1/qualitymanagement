@@ -1,5 +1,3 @@
-if (typeof auditplanner === 'undefined') var auditplanner = {};
-
 auditplanner.var = {
 	lang: {
 		tableOfContents: {

@@ -1,5 +1,3 @@
-if (typeof mailtools === 'undefined') var mailtools = {};
-
 mailtools.var = {
 	lang: {
 		useCaseDescription: {
