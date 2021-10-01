@@ -1,13 +1,11 @@
-if (typeof stocklist === 'undefined') var stocklist = {};
-
 stocklist.var = {
 	filter: function () { //filters according to stocklist.xls
 		//id:[select value, select text, filter for smartsearch]
 		return {
 			all: ['all', core.fn.static.lang('filterAll', 'stocklist'), 'true'],
-			conf: ['conf', core.fn.static.lang('filterReadymade', 'stocklist'), 'stocklist_data.content[key][6]==\'yes\''],
-			nconf: ['nconf', core.fn.static.lang('filterNoReadymade', 'stocklist'), 'stocklist_data.content[key][6]==\'no\''],
-			store: ['store', core.fn.static.lang('filterStock', 'stocklist'), 'stocklist_data.content[key][7]!=\'no\''],
+			conf: ['conf', core.fn.static.lang('filterReadymade', 'stocklist'), 'stocklist.data.content[key][6]==\'yes\''],
+			nconf: ['nconf', core.fn.static.lang('filterNoReadymade', 'stocklist'), 'stocklist.data.content[key][6]==\'no\''],
+			store: ['store', core.fn.static.lang('filterStock', 'stocklist'), 'stocklist.data.content[key][7]!=\'no\''],
 		};
 	},
 	lang: {
@@ -18,12 +16,12 @@ stocklist.var = {
 		useCaseDescription: {
 			en: function () {
 				return (stocklist.temp.overallItems != undefined ? 'There are currently ' + stocklist.temp.overallItems + ' items listed' +
-						(stocklist_data.modified != undefined ? ' (as of ' + stocklist_data.modified + ')' : '') + '. ' : '') +
+						(stocklist.data.modified != undefined ? ' (as of ' + stocklist.data.modified + ')' : '') + '. ' : '') +
 					'These are the products that have permission to be ordered and used in production. Search for default items by &quot;manufacturer&quot and mess around with search terms.';
 			},
 			de: function () {
 				return (stocklist.temp.overallItems != undefined ? 'Aktuell hat die Artikelliste ' + stocklist.temp.overallItems + ' Einträge' +
-						(stocklist_data.modified != undefined ? ' (Stand ' + stocklist_data.modified + ')' : '') + '. ' : '') +
+						(stocklist.data.modified != undefined ? ' (Stand ' + stocklist.data.modified + ')' : '') + '. ' : '') +
 					'An dieser Stelle könne alle zugelassenen Artikel eingesehen werden. Suche nach Standardeinträgen von &quot;Manufacturer&quot; und spiel mit Suchbegriffen.';
 			}
 		},

@@ -1,5 +1,3 @@
-if (typeof documentlookup === 'undefined') var documentlookup = {};
-
 documentlookup.var = {
 	lang: {
 		optionThirdType: {
@@ -44,15 +42,15 @@ documentlookup.var = {
 		},
 	},
 	submodules: {
-		documentlookup_int: {
+		int: {
 			en: 'internal documents',
 			de: 'interne Dokumente'
 		},
-		documentlookup_ext: {
+		ext: {
 			en: 'external documents',
 			de: 'externe Dokumente'
 		},
-		documentlookup_contract: {
+		contract: {
 			en: 'contracts',
 			de: 'Verträge'
 		},
@@ -61,12 +59,8 @@ documentlookup.var = {
 	defaultFavourites: 'Protocol,10,' +
 		'AttendanceList,5,',
 	selectedModule: async () => {
-		let val = await core.fn.async.memory.read('documentlookupBundle');
-		return val || 'documentlookup_int';
-	},
-	selectedObject: async () => {
-		let val = await documentlookup.var.selectedModule();
-		return eval(val + '_data');
+		let val = await core.fn.async.memory.read('documentlookupCategory');
+		return val || 'int';
 	},
 	thirdDocumentCategoryPath: 'E:/Quality Management/TTD',
 	disableOutputSelect: true,
