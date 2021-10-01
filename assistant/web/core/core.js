@@ -354,10 +354,7 @@ core.fn = {
 						document.head.append(script)
 					})
 				};
-				ls(url).then(async () => {
-					// add module-vars to head in case of module call
-					if (scriptname in core.var.modules && url.indexOf(core.var.moduleDir) > -1) await ls(core.var.moduleVarDir + scriptname + '.var.js');
-				}).then(async () => {
+				await ls(url).then(async () => {
 					if (typeof (callback) !== 'undefined') {
 						await eval(callback);
 						//set current scope(==module name), window title and wide-input-property
@@ -571,13 +568,14 @@ core.init = {
 			coreSelectedOs = await core.fn.async.memory.read('coreSelectedOs'),
 			coreNewWindowCopy = await core.fn.async.memory.read('coreNewWindowCopy'),
 			coreFontsize = await core.fn.async.memory.read('coreFontsize'),
-			coreTheme = await core.fn.async.memory.read('coreTheme');
+			coreTheme = await core.fn.async.memory.read('coreTheme'),
+			module = {},
+			menu = '<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.static.lang('title', false) + '</span>';
 		if (coreDirectMailSize) core.var.directMailSize = coreDirectMailSize;
 		if (coreFuzzySearch) core.var.fuzzySearch = coreFuzzySearch;
 		if (coreLanguage) core.var.selectedLanguage = coreLanguage;
 		if (coreSelectedOs) core.var.selectedOS = coreSelectedOs;
 		if (coreNewWindowCopy) core.var.copyFromNewWindow = coreNewWindowCopy;
-		core.init.menu();
 		document.title = core.fn.static.lang('title');
 		//load settings or defaults
 		document.body.style.fontSize = ((coreFontsize || 0) / 10 + 1) + 'em';
@@ -585,24 +583,18 @@ core.init = {
 			'default') || 'default') + '.css';
 		core.init.ui();
 		await updateTracker.alert();
-	},
-	menu: async () => {
-		if (typeof (core.var.modules) !== 'undefined') {
-			let output = '<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.static.lang('title', false) + '</span>',
-				module = {};
-			await Object.keys(core.var.modules).forEach(async (key) => {
-				module['core_' + key] = await core.fn.async.memory.read('core_' + key);
-				if (typeof core.var.modules[key] === 'object' && (module['core_' + key] ? Boolean(Number(module['core_' + key])) : core.var.modules[key].enabledByDefault)) {
-					//create module-selector
-					opt = core.var.moduleDir + key + '.js';
-					output += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" onclick="slider.slide(\'' + key + '\'); core.fn.async.loadScript(\'' + opt + '\', \'' + key + '.fn.init(\\\'\\\')\'); return;">' + core.var.modules[key].icon + '<div>' + core.var.modules[key].display[core.var.selectedLanguage] + '</div></label>';
-					slider.modules.push(key);
-				}
-			});
-			output += '<br /><br />' + core.fn.static.insert.icon('decreaseindent', 'bigger', false, ' onclick="el(\'menu\').classList.toggle(\'small\'); this.style.transform=\'scale(\' + (el(\'menu\').classList.contains(\'small\')? -1 : 1) + \', -1)\'"');
-			core.fn.async.stdout('menu', output);
-		} else core.fn.static.popup(core.fn.static.lang('errorLoadingModules'));
-		return true;
+		for (let key of Object.keys(core.var.modules)) {
+			module['core_' + key] = await core.fn.async.memory.read('core_' + key);
+			if (typeof core.var.modules[key] === 'object' && (module['core_' + key] ? Boolean(Number(module['core_' + key])) : core.var.modules[key].enabledByDefault)) {
+				// create module-selector
+				menu += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" onclick="slider.slide(\'' + key + '\'); ' + key + '.fn.init(); return;">' + core.var.modules[key].icon + '<div>' + core.var.modules[key].display[core.var.selectedLanguage] + '</div></label>';
+				slider.modules.push(key);
+				// load module files
+				await core.fn.async.loadScript(core.var.moduleDir + key + '.js', key + '.fn.load()');
+			}
+		}
+		menu += '<br /><br />' + core.fn.static.insert.icon('decreaseindent', 'bigger', false, ' onclick="el(\'menu\').classList.toggle(\'small\'); this.style.transform=\'scale(\' + (el(\'menu\').classList.contains(\'small\')? -1 : 1) + \', -1)\'"');
+		core.fn.async.stdout('menu', menu);
 	},
 	ui: async (query) => { //displays start screen
 		let eMailList = core.fn.static.lang('importantMails') + '<p>';
@@ -645,19 +637,19 @@ core.setup = {
 	setup: async () => { //displays settings menu
 		core.fn.static.popup('<div id="popupcontent">' +
 			'<article class="home" style="border-right:1px solid; line-height:3em">' +
-			'<span onclick="core.setup.setupMain();" style="cursor:pointer">' + core.fn.static.insert.icon('generalsetting') + core.fn.static.lang('settingMainCaption') + '</span><br />' +
-			'<span onclick="core.setup.setupAdvanced();" style="cursor:pointer">' + core.fn.static.insert.icon('advancedsetting') + core.fn.static.lang('settingAdvancedCaption') + '</span><br />' +
-			'<span onclick="core.setup.setupModules();" style="cursor:pointer">' + core.fn.static.insert.icon('moduleselector') + core.fn.static.lang('settingModuleselectorCaption') + '</span><br />' +
-			'<span onclick="core.setup.setupKey();" style="cursor:pointer">' + core.fn.static.insert.icon('key') + core.fn.static.lang('settingKeyCaption') + '</span><br />' +
-			'<span onclick="core.setup.setupDebug();" style="cursor:pointer">' + core.fn.static.insert.icon('bug') + 'Debugging</span><br />' +
+			'<span onclick="core.setup.main();" style="cursor:pointer">' + core.fn.static.insert.icon('generalsetting') + core.fn.static.lang('settingMainCaption') + '</span><br />' +
+			'<span onclick="core.setup.advanced();" style="cursor:pointer">' + core.fn.static.insert.icon('advancedsetting') + core.fn.static.lang('settingAdvancedCaption') + '</span><br />' +
+			'<span onclick="core.setup.modules();" style="cursor:pointer">' + core.fn.static.insert.icon('moduleselector') + core.fn.static.lang('settingModuleselectorCaption') + '</span><br />' +
+			'<span onclick="core.setup.key();" style="cursor:pointer">' + core.fn.static.insert.icon('key') + core.fn.static.lang('settingKeyCaption') + '</span><br />' +
+			'<span onclick="core.setup.debug();" style="cursor:pointer">' + core.fn.static.insert.icon('bug') + 'Debugging</span><br />' +
 			'<span onclick="core.fn.async.stdout(\'settingContent\', updateTracker.enlist());" style="cursor:pointer">' + core.fn.static.insert.icon('update') + 'Updates</span><br />' +
 			'<span onclick="core.fn.async.stdout(\'settingContent\', aboutNotification[core.var.selectedLanguage]+\'<hr />\'+core.fn.static.lang(\'settingGeneralHint\')+\'<hr />\'+randomTip.enlist());" style="cursor:pointer">' + core.fn.static.insert.icon('info') + 'About</span><br />' +
 			'</article>' +
 			'<aside id="settingContent"></aside>' +
 			'<div>');
-		await core.setup.setupMain();
+		await core.setup.main();
 	},
-	setupAdvanced: async () => {
+	advanced: async () => {
 		let coreFuzzyThreshold = await core.fn.async.memory.read('coreFuzzyThreshold'),
 			coreDirectMailSize = await core.fn.async.memory.read('coreDirectMailSize'),
 			coregrowlNotifInterval = await core.fn.async.memory.read('coregrowlNotifInterval'),
@@ -676,7 +668,7 @@ core.setup = {
 			' <span id="currentDirectMailSize">' + ((coreDirectMailSize || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.static.maxMailSize()" value="' + core.fn.static.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.static.lang('settingMailSizeDeterminationHint') + '" />';
 		core.fn.async.stdout('settingContent', display);
 	},
-	setupDebug: async () => {
+	debug: async () => {
 		let compressed = 0,
 			coreOutputMonitor = await core.fn.async.memory.read('coreOutputMonitor'),
 			corePerformanceMonitor = await core.fn.async.memory.read('corePerformanceMonitor'),
@@ -705,7 +697,7 @@ core.setup = {
 		core.fn.async.stdout('settingContent', display);
 		core.fn.static.limitBar(core.fn.async.memory.localStorage.maxSpace() - core.fn.async.memory.localStorage.remainingSpace(), core.fn.async.memory.localStorage.maxSpace(), 'debugSpace');
 	},
-	setupMain: async () => {
+	main: async () => {
 		let coreFontsize = await core.fn.async.memory.read('coreFontsize'),
 			coreFuzzySearch = await core.fn.async.memory.read('coreFuzzySearch'),
 			coreNewWindowCopy = await core.fn.async.memory.read('coreNewWindowCopy'),
@@ -731,7 +723,7 @@ core.setup = {
 			'<br /><small>' + core.fn.static.lang('settingNotificationHint') + '</small>';
 		core.fn.async.stdout('settingContent', display);
 	},
-	setupModules: async () => {
+	modules: async () => {
 		let module = {},
 			moduleSelector = '';
 		if (typeof (core.var) !== 'undefined') {
@@ -742,7 +734,7 @@ core.setup = {
 		} else moduleSelector = core.fn.static.lang('errorLoadingModules');
 		core.fn.async.stdout('settingContent', moduleSelector);
 	},
-	setupKey: async () => { //  password construction - please forgive me the ugly nested javascript creation
+	key: async () => { //  password construction - please forgive me the ugly nested javascript creation
 		let display = '<form onsubmit="' +
 			'if (!el(\'setupkeyname\').value.trim() || !el(\'setupkeypassword0\').value.trim() || el(\'setupkeypassword0\').value != el(\'setupkeypassword1\').value)' +
 			'el(\'keygenresult\').innerHTML=\'' + core.fn.static.lang('settingKeyError') + '\';' +
@@ -881,8 +873,8 @@ core.globalSearch = { //searches all modules using their api-methods from the st
 			if (typeof core.var.modules[key] === 'object') {
 				//load every module and fire api function
 				opt = core.var.moduleDir + key + '.js';
-				if (value(search) != '') await core.fn.async.loadScript(opt, key + '.api.available(\'' + search + '\')');
-				else await core.fn.async.loadScript(opt, key + '.api.currentStatus()');
+				if (value(search) != '') await eval(key + '.api.available(\'' + search + '\')');
+				else await eval(key + '.api.currentStatus()');
 			}
 		});
 		core.globalSearch.display(search)
