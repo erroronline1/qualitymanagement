@@ -1,5 +1,3 @@
-if (typeof documentbundles === 'undefined') var documentbundles = {};
-
 documentbundles.var = {
 	serialPrintShellCommand: { //making use of core.var.selectedOs()
 		win7: {
@@ -43,10 +41,6 @@ documentbundles.var = {
 		selectEnableExceptions: {
 			en: 'additional case', //change this caption to make sense for you
 			de: 'zusätzliche Berücksichtigung'
-		},
-		errorNoActiveX: {
-			en: 'Please reload application and allow ActiveX...',
-			de: 'Bitte Oberfläche neu laden und ActiveX zulassen...'
 		},
 		additionalInfo: {
 			en: 'Additional information:' +
