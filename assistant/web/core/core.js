@@ -366,44 +366,45 @@ core.fn = {
 		},
 		memory: {
 			// async methods for eel compatibility
-			clear: async () => { //resets whole application
+			clear: async function () { //resets whole application
 				window.localStorage.clear();
 				return true;
 			},
-			delete: async (name) => {
+			delete: async function (name) {
 				window.localStorage.removeItem(name);
 				return true;
 			},
-			dump: async () => {
+			dump: async function () {
 				return Object.keys(localStorage).sort();
 			},
-			maxSpace: async () => {
+			maxSpace: async function () {
 				return 5000000;
 			},
-			usedSpace: async () => {
+			usedSpace: async function () {
 				let current = 0; //tested in compatible browsers to be slightly more than 5mb
 				Object.keys(localStorage).forEach((key) => {
 					current += key.length + localStorage.getItem(key).length;
 				});
 				return current;
 			},
-			read: async (name) => {
+			read: async function (name) {
 				let item = window.localStorage.getItem(name);
 				if (item === null) return false;
 				else return core.fn.static.string.decompress(item);
 			},
-			write: async (name, value, errormsg) => {
-				let maxSpace = await core.fn.async.memory.maxSpace(),
+			write: async function (name, value, errormsg) {
+				let maxSpace = await this.maxSpace(),
 					saved = false,
-					usedSpace = await core.fn.async.memory.usedSpace();
-				if (value || value.length) {
+					usedSpace = await this.usedSpace();
+				if (value.toString().length) {
 					value = core.fn.static.string.compress(value.toString());
-					if (maxSpace - usedSpace > name.length + toString(value).length) {
+					if (maxSpace - usedSpace > name.length + value.toString().length) {
 						window.localStorage.setItem(name, value);
 						saved = true;
 					}
 					if (!saved) core.fn.static.popup(core.fn.static.lang('errorStorageLimit') + (typeof errormsg !== 'undefined' ? '<br />' + errormsg : ''));
-				} else this.unset(name);
+				} else this.delete(name);
+				console.log(name,value);
 				return true;
 			}
 		},
