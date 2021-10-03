@@ -72,7 +72,7 @@ core.var = {
 				de: "eMail Tools"
 			},
 			enabledByDefault: true,
-			wide: false,
+			wide: true,
 		},
 		auditplanner: {
 			icon: core.fn.static.insert.icon('checklist'),
