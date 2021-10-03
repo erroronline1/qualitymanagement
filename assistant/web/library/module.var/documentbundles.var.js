@@ -44,18 +44,16 @@ documentbundles.var = {
 		},
 		additionalInfo: {
 			en: 'Additional information:' +
-				'<br /><br /><div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + 'Scans can not be inserted?<br />Serialprint issues?<br />ActiveX-error?<ul>' +
+				'<br /><br /><div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + 'Scans can not be inserted?<br />Serialprint issues?<ul>' +
 				'<li>Scans have to have the PDF- oder JPG-format.</li>' +
-				'<li>You\'ll probably have to set the correct Acrobat-Reader Version within the Setings (...) -> Advanced ({ }).</li>' +
-				'<li>You\'ll probably have to set Pop-Up permissions (for all browsers but Internet Explorer). All documents will be opened but unfortunately have to be printed manually.</li>' +
-				'<li>You\'ll probably have to set the ActiveX-Settings to <em>allow</em> or <em>ask</em> for Internet Explorer</li>' +
+				'<li>You\'ll probably have to set the correct Acrobat-Reader Version within the Settings (...) -> Advanced ({ }).</li>' +
+				'<li>You\'ll probably have to set Pop-Up permissions. All documents will be opened but unfortunately have to be printed manually.</li>' +
 				'</ul></div>',
 			de: 'Zusatzinformation:' +
-				'<br /><br /><div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + 'Scans können nicht eingefügt werden?<br />Seriendruck nicht möglich?<br />ActiveX-Fehler?<ul>' +
+				'<br /><br /><div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + 'Scans können nicht eingefügt werden?<br />Seriendruck nicht möglich?<ul>' +
 				'<li>Scans müssen im Format PDF oder JPG gemacht werden.</li>' +
 				'<li>Eventuell die Betriebsumgebung für die korrekte Acrobat-Reader-Version bei Einstellungen (...) -> Erweitert ({ }) anpassen.</li>' +
-				'<li>Eventuell die Pop-Up berechtigungen erteilen (für Browser außer Internetexplorer) einstellen. Es werden alle Dokumente geöffnet, müsen aber leider manuell gedruckt werden.</li>' +
-				'<li>Eventuell die ActiveX-Einstellungen des Internet-Explorers einstellen: Zahnrad oben rechts -> Internetoptionen -> Sicherheit -> Stufe anpassen -> ActiveX-Steuerelemente ausführen... alle aktivieren oder bestätigen</li>' +
+				'<li>Eventuell die Pop-Up berechtigungen erteilen einstellen. Es werden alle Dokumente geöffnet, müsen aber leider manuell gedruckt werden.</li>' +
 				'</ul></div>'
 		},
 	},
