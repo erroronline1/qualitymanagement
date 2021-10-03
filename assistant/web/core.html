@@ -10,10 +10,9 @@
 		//
 		//  modular software platform to handle different javascripts
 		//  for automated dataprocessing where security setting leave
-		//  no other options or buying a software were to expensive
+		//  no other options or buying another software were to expensive
 		//
-		//  unfortunately written for ie11 on purpose
-		//  tested with ie11, firefox, edge and chrome
+		//  tested with firefox and edge
 		//
 		//	add changes to the changelog in library/core/core.userDialogue.js
 		//
@@ -29,7 +28,7 @@
 	</script>
 	<script src="core/core.eel.js">
 		// note that the order of fetching scripts is crucial as this library overrides the
-		// web compatible core functions with python replacements 
+		// web compatible core functions with python-connected replacements 
 	</script>
 	<link href="core/core.css" rel="stylesheet" type="text/css" />
 	<link id="colortheme" rel="stylesheet" type="text/css" />
@@ -37,40 +36,10 @@
 </head>
 
 <body>
-	<header>
-		<script>
-			document.write('<nav class="home">' +
-				core.fn.static.insert.icon('home', 'bigger', false,
-					'title="' + core.fn.static.lang('homeMenuEntry') + '" onclick="slider.slide(\'null\'); core.init.ui()"'
-				) +
-				core.fn.static.insert.icon('back', 'bigger inactiveicon', 'titlebackbutton',
-					'title="' + core.fn.static.lang('homeMenuBack') + '" onclick="core.history.go(\'back\')"') +
-				core.fn.static.insert.icon('forth', 'bigger inactiveicon', 'titleforthbutton',
-					'title="' + core.fn.static.lang('homeMenuForth') + '" onclick="core.history.go(\'forth\')"') +
-				core.fn.static.insert.icon('refresh', 'bigger', false,
-					'title="' + core.fn.static.lang('homeMenuRestart') + '" onclick="location.href=\'core.html\'"') +
-				'</nav>');
-			document.write('<article id="input"></article>');
-			document.write('<aside class="setting">' +
-				core.fn.static.insert.icon('feedbackrequest', 'bigger', false,
-					'title="' + core.fn.static.lang('homeMenuFeedbackRequest') +
-					'" onclick="core.fn.static.dynamicMailto(core.var.eMailAddress.admin.address, document.title)"') +
-				core.fn.static.insert.icon('settings', 'bigger', false,
-					'title="' + core.fn.static.lang('settingMenuEntry') +
-					'" onclick="core.setup.setup(); return;"') +
-				'</aside>');
-		</script>
+	<header id="header">
 	</header>
 	<main>
 		<nav id="menu">
-			<span id="title">
-				<script>
-					document.write(core.var.logo + '<div style="display:inline-block">' + core.fn.static.lang('title') +
-						'&nbsp;</div>');
-				</script>
-			</span><br /><br />
-			<!-- since javascript doesn´t have access to local file system there is no automatic detection of json files available
-		hence the need to read explicit from config.js-->
 		</nav>
 		<div id="content">
 			<article id="temp">
@@ -84,7 +53,8 @@
 	</div>
 	<div id="growlNotif"></div>
 	<script>
-		core.init.application();
+		core.eel().then(
+		core.init.application().then(core.init.ui()));
 	</script>
 </body>
 
