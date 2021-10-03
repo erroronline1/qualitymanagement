@@ -48,9 +48,9 @@ var stocklist = {
 				return output;
 			},
 		},
-		search: async (query) => {
+		search: async (query = '') => {
 			query = query || el('itemname').value;
-			core.history.write('stocklist.fn.init(\'' + value(query) + '\')');
+			core.history.write('stocklist.fn.init(\'' + query + '\')');
 			let core_ticketorder = await core.fn.async.memory.read('core_ticketorder'),
 				found,
 				list = '',
@@ -59,7 +59,7 @@ var stocklist = {
 				ordered_stocklist_data,
 				tresult;
 			await stocklist.fn.order.options();
-			if (value(query) !== '') {
+			if (query) {
 				// clone data object and reset first value to undefined otherwise header terms can be displayed as results
 				ordered_stocklist_data = await stocklist.fn.order.prepare();
 				found = await core.fn.async.smartSearch.lookup(query, ordered_stocklist_data.content, stocklist.var.filter()[el('stockfilter').options[el('stockfilter').selectedIndex].value][2]);
@@ -144,12 +144,12 @@ var stocklist = {
 				return data_without_header;
 			}
 		},
-		init: async (query) => {
+		init: async (query = '') => {
 			let stocklistFilter = await core.fn.async.memory.read('stocklistFilter'),
 				stocklistOrder = await core.fn.async.memory.read('stocklistOrder');
 			await core.fn.async.stdout('input',
 				'<form id="search" action="javascript:stocklist.fn.search();">' +
-				'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g, '&quot;') + '" placeholder="' + core.fn.static.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search" />' +
+				'<input type="text" pattern=".{3,}" required value="' + query.replace(/"/g, '&quot;') + '" placeholder="' + core.fn.static.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search" />' +
 				'<span onclick="stocklist.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
 				core.fn.static.insert.select(stocklist.fn.translate.returnselect(), 'stockfilter', 'stockfilter', (stocklistFilter || 'all'), 'onchange="this.selectedIndex == 0 ? core.fn.async.memory.delete(\'stocklistFilter\') : core.fn.async.memory.write(\'stocklistFilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.fn.search();"') +
 				core.fn.static.insert.select(null, 'stocklistOrder', 'stocklistOrder', (stocklistOrder || 0), 'onchange="this.selectedIndex == 0 ? core.fn.async.memory.delete(\'stocklistOrder\') : core.fn.async.memory.write(\'stocklistOrder\',el(\'stocklistOrder\').options[el(\'stocklistOrder\').selectedIndex].value); stocklist.fn.search();"') +

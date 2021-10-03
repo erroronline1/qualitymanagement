@@ -112,7 +112,7 @@ var mailtools = {
 			core.fn.async.stdout('output', mailtools.data.notavailableResponse['de'](dates) +
 				mailtools.data.notavailableResponse['en'](dates));
 		},
-		init: async (query) => {
+		init: async (query = '') => {
 			let options = {
 				'null': ['', core.fn.static.lang('selectSubmodule', 'mailtools')]
 			};
@@ -121,7 +121,7 @@ var mailtools = {
 			});
 			await core.fn.async.stdout('input', core.fn.static.insert.select(options, 'mailtoolsselection', 'mailtoolsselection', query, ' onchange="mailtools.fn[this.options[this.selectedIndex].value+\'input\']()"') +
 				'<span class="inline" id="mailtoolgen"></span>');
-			if (value(query) !== '') eval('mailtools.fn.' + query + 'input()');
+			if (query) eval('mailtools.fn.' + query + 'input()');
 			else {
 				core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'mailtools'));
 				core.history.write('mailtools.fn.init()');

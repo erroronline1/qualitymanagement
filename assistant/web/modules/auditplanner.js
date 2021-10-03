@@ -70,7 +70,7 @@ auditplanner = {
 				core.fn.async.stdout('output', output);
 			}
 		},
-		init: async (query) => {
+		init: async (query = '') => {
 			let qnumOptions = {
 					1: [1, 'max. 1 ' + core.fn.static.lang('selectOptionQuestion', 'auditplanner')],
 				},
@@ -86,8 +86,8 @@ auditplanner = {
 				core.fn.static.insert.icon('refreshnone', 'bigger inline', false, 'onclick="auditplanner.fn.select(\'none\')" title="' + core.fn.static.lang('buttonNoneTitle', 'auditplanner') + '"') +
 				core.fn.static.insert.icon('shuffle', 'bigger inline', false, 'onclick="auditplanner.fn.select(\'random\')" title="' + core.fn.static.lang('buttonShuffleTitle', 'auditplanner') + '"')
 			);
-			auditplanner.fn.select(value(query));
-			core.history.write('auditplanner.fn.init(\'' + value(query) + '\')');
+			auditplanner.fn.select(query);
+			core.history.write('auditplanner.fn.init()');
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'auditplanner.var.js');

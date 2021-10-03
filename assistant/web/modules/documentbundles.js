@@ -87,7 +87,7 @@ var documentbundles = {
 			}
 			core.history.write('documentbundles.fn.init(\'' + treatment + '\')');
 		},
-		init: async (query) => {
+		init: async (query='') => {
 			let out;
 			out = '<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.fn.gen(sel)"><option value="">' + core.fn.static.lang('selectDefault', 'documentbundles') + '</option>';
 			Object.keys(documentbundles.data.bundles).forEach(function (key) {
@@ -95,10 +95,10 @@ var documentbundles = {
 			});
 			out += '</select>';
 			await core.fn.async.stdout('input', out + '<span class="inline" style="padding-top:.375em">' + core.fn.static.insert.checkbox(core.fn.static.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.fn.gen(sel)"') + '</span>');
-			if (value(query) !== '') documentbundles.fn.gen(query);
+			if (query) documentbundles.fn.gen(query);
 			else {
 				await core.fn.async.stdout('temp', '<br />' + core.fn.static.lang('useCaseDescription', 'documentbundles'));
-				core.history.write('documentbundles.fn.init(\'' + value(query) + '\')');
+				core.history.write('documentbundles.fn.init()');
 			}
 		},
 		load: async () => {

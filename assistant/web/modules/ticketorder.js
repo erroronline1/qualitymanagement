@@ -82,7 +82,7 @@ var ticketorder = {
 				return;
 			},
 		},
-		search: async (query) => {
+		search: async (query = '') => {
 			query = query || el('ticketorderquery').value;
 			//		var filter = el('ticketorderfilter').selectedIndex || core.fn.setting.get('ticketorderfilter')
 			let data_without_header,
@@ -90,7 +90,7 @@ var ticketorder = {
 				list = '',
 				maillanguage;
 			if (ticketorder.data !== undefined) {
-				if (value(query) !== '') {
+				if (query) {
 					//clone data object and reset first value to undefined otherwise header terms can be displayed as results
 					data_without_header = JSON.parse(JSON.stringify(ticketorder.data));
 					data_without_header.content[0] = new Array(data_without_header.content[0].length);
@@ -126,7 +126,7 @@ var ticketorder = {
 				}
 			}
 			ticketorder.var.disableOutputSelect = true;
-			core.history.write('ticketorder.fn.init(\'' + value(query) + '\')');
+			core.history.write('ticketorder.fn.init(\'' + query + '\')');
 		},
 		mkform: async () => {
 			let form = core.fn.static.lang('newOrder', 'ticketorder'),
@@ -243,8 +243,8 @@ var ticketorder = {
 					if (el(ticketorder.var.orderFields[core.var.selectedLanguage][0][0].replace(/\W/g, '') + i)) {
 						for (let index = 0; index < ticketorder.var.orderFields[core.var.selectedLanguage].length; index++) {
 							field = ticketorder.var.orderFields[core.var.selectedLanguage][index]
-							id = value(el(ticketorder.var.orderFields[core.var.selectedLanguage][0][0].replace(/\W/g, '') + i).value);
-							curval = value(el(field[0].replace(/\W/g, '') + i).value);
+							id = el(ticketorder.var.orderFields[core.var.selectedLanguage][0][0].replace(/\W/g, '') + i).value || '';
+							curval = el(field[0].replace(/\W/g, '') + i).value || '';
 							if (!id || (id && index === 0) || (id && !field[2])) items.push(curval); // if item id exists skip disabled and conditional formfields to limit data usage
 							if (ticketorder.var.apiTranslate.orderNumberWildcard && curval.indexOf(ticketorder.var.apiTranslate.orderNumberWildcard) > -1) wildcard = true;
 						}
@@ -381,12 +381,12 @@ var ticketorder = {
 				core.fn.static.popup(form);
 			}
 		},
-		init: async (query) => {
+		init: async (query = '') => {
 			let input,
 				ticketorderfilter = await core.fn.async.memory.read('ticketorderfilter');
 			if (ticketorder.data !== undefined) {
 				input = '<form id="search" action="javascript:ticketorder.fn.search();">' +
-					'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g, '&quot;') + '" placeholder="' + core.fn.static.lang('formErpInputPlaceholder', 'ticketorder') + '" id="ticketorderquery" class="search" />' +
+					'<input type="text" pattern=".{3,}" required value="' + query.replace(/"/g, '&quot;') + '" placeholder="' + core.fn.static.lang('formErpInputPlaceholder', 'ticketorder') + '" id="ticketorderquery" class="search" />' +
 					'<span onclick="ticketorder.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
 					core.fn.static.insert.select(ticketorder.fn.translate.returnselect(), 'ticketorderfilter', 'ticketorderfilter', (ticketorderfilter || 'nofilter'), 'onchange="core.fn.async.memory.write(\'ticketorderfilter\',el(\'ticketorderfilter\').options[el(\'ticketorderfilter\').selectedIndex].value); ticketorder.fn.search();"') +
 					core.fn.static.insert.icon('translate', 'bigger', false, 'title="' + core.fn.static.lang('buttonTranslate', 'ticketorder') + '" onclick="ticketorder.fn.translate.ticketDate(el(\'ticketorderquery\').value);"') +
@@ -394,16 +394,16 @@ var ticketorder = {
 					'<input type="submit" id="name" value="' + core.fn.static.lang('formSubmit', 'ticketorder') + '" hidden="hidden" /> ' +
 					'</form>';
 			} else {
-				input = '<input type="text" pattern=".{3,}" required value="' + value(query) + '" placeholder="' + core.fn.static.lang('formInputPlaceholder', 'ticketorder') + '" id="ticketorderquery" class="search"  ' + (value(query) !== '' ? 'value="' + query + '"' : '') + '  />' +
+				input = '<input type="text" pattern=".{3,}" required value="' + query + '" placeholder="' + core.fn.static.lang('formInputPlaceholder', 'ticketorder') + '" id="ticketorderquery" class="search"  ' + (query !== '' ? 'value="' + query + '"' : '') + '  />' +
 					'<span class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
 					core.fn.static.insert.icon('translate', 'bigger', false, 'title="' + core.fn.static.lang('buttonTranslate', 'ticketorder') + '" onclick="ticketorder.fn.translate.ticketDate(el(\'ticketorderquery\').value);"');
 			}
 			core.fn.async.stdout('input', input);
 			core.fn.async.stdout('temp', await ticketorder.fn.mkform());
 			ticketorder.api.getShoppingCart();
-			if (value(query) !== '') ticketorder.fn.search(value(query));
+			if (query) ticketorder.fn.search(query);
 			else core.fn.async.stdout('output', await ticketorder.fn.currentorder.get());
-			core.history.write('ticketorder.fn.init(\'' + value(query) + '\')');
+			core.history.write('ticketorder.fn.init(\'' + query + '\')');
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'ticketorder.var.js');

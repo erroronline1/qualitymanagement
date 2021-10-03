@@ -2,11 +2,6 @@ function el(v) {
 	return document.getElementById(v);
 }
 
-function value(v) { //handles even unset parameters when in doubt
-	if (typeof v === 'undefined') return '';
-	else return v;
-}
-
 var svgClassList = { //classList.add and *.remove not supported for svg in ie, this works as a polyfill
 	add: function (element, classname) {
 		if (element.classList) element.classList.add(classname);
@@ -63,12 +58,11 @@ core.fn = {
 				return found;
 			}
 		},
-		dynamicMailto: async (address, subject, body) => {
+		dynamicMailto: async (address = '', subject = '', body = '') => {
 			let content,
 				mail;
-			body = value(body);
 			if (core.fn.static.escapeHTML(body, true).length > core.var.directMailSize) body = core.fn.static.lang('errorMailSizeExport');
-			content = 'mailto:' + value(address) + '?' + (value(subject).length ? 'subject=' + core.fn.static.escapeHTML(value(subject), true) : '') + (value(subject).length && body.length ? '&' : '') + (body.length ? 'body=' + core.fn.static.escapeHTML(body, true) : '');
+			content = 'mailto:' + address + '?' + (subject.length ? 'subject=' + core.fn.static.escapeHTML(subject, true) : '') + (subject.length && body.length ? '&' : '') + (body.length ? 'body=' + core.fn.static.escapeHTML(body, true) : '');
 			mail = document.createElement('a');
 			mail.href = content;
 			mail.click();
@@ -85,7 +79,7 @@ core.fn = {
 			expand: () => {
 				return '<span class="itemresize" title="' + core.fn.static.lang('itemResizeTitle') + '"></span>';
 			},
-			icon: (icon, addclass, id, attributes) => { //easy icon handler for inline svg
+			icon: (icon, addclass, id = '', attributes = '') => { //easy icon handler for inline svg
 				let rtrn,
 					title;
 				//key[viewbox, transform scale, d-path]
@@ -136,12 +130,12 @@ core.fn = {
 				};
 				addclass = addclass || '';
 				try {
-					rtrn = '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + asset[icon][0] + '\" style=\"transform: scale(' + asset[icon][1] + ');\" class=\"icon ' + addclass + '\" ' + (value(id) != '' ? ' id=\"' + id + '\" ' : '') + (value(attributes) != '' ? ' ' + attributes : '') + '><path d=\"' + asset[icon][2] + '\"></path></svg>';
+					rtrn = '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + asset[icon][0] + '\" style=\"transform: scale(' + asset[icon][1] + ');\" class=\"icon ' + addclass + '\" ' + (id ? ' id=\"' + id + '\" ' : '') + attributes + '><path d=\"' + asset[icon][2] + '\"></path></svg>';
 				} catch (error) {
-					rtrn = '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + asset.construction[0] + '\" style=\"transform: scale(' + asset.construction[1] + ');\" class=\"icon ' + addclass + '\" ' + (value(id) != '' ? ' id=\"' + id + '\" ' : '') + (value(attributes) != '' ? ' ' + attributes : '') + '><path d=\"' + asset.construction[2] + '\"></path></svg>';
+					rtrn = '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + asset.construction[0] + '\" style=\"transform: scale(' + asset.construction[1] + ');\" class=\"icon ' + addclass + '\" ' + (id ? ' id=\"' + id + '\" ' : '') + attributes + '><path d=\"' + asset.construction[2] + '\"></path></svg>';
 				}
 				//weird hack: svg seem not to support the title attribute. so there has to be a wrapper if attributes contain title
-				title = value(attributes).match(/title="(.*?)"/g);
+				title = attributes.match(/title="(.*?)"/g);
 				if (title) return ['<span ' + title + '>', rtrn, '</span>'].join('');
 				else return rtrn;
 			},
@@ -557,7 +551,7 @@ core.init = {
 		callback = callback || module + '.fn.init()';
 		eval(callback);
 	},
-	ui: async (query) => { //displays start screen
+	ui: async (query = '') => { //displays start screen
 		let coreFontsize = await core.fn.async.memory.read('coreFontsize'),
 			coreTheme = await core.fn.async.memory.read('coreTheme'),
 			eMailList = core.fn.static.lang('importantMails') + '<p>',
@@ -587,7 +581,7 @@ core.init = {
 		await core.fn.async.stdout('input',
 			'<form id="search" action="javascript:core.globalSearch.search(el(\'globalsearch\').value);">' +
 			'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
-			core.fn.static.lang('globalSearchPlaceholder') + '" class="search" value="' + value(query).replace(/"/g, '&quot;') + '" />' +
+			core.fn.static.lang('globalSearchPlaceholder') + '" class="search" value="' + query.replace(/"/g, '&quot;') + '" />' +
 			'<span onclick="core.globalSearch.search(el(\'globalsearch\').value);" class="search">' + core.fn.static.insert.icon('search') + '</span>' +
 			'<input type="submit" id="submit" value="' + core.fn.static.lang('formSubmit') + '" hidden="hidden" /> ' +
 			'</form>');
@@ -614,7 +608,7 @@ core.init = {
 		});
 		core.globalSearch.search(query); // api status in case query is undefined
 		el('temp').classList.remove('contentWide');
-		core.history.write('core.init.ui(\'' + value(query) + '\')');
+		core.history.write('core.init.ui(\'' + query + '\')');
 		return true;
 	},
 };
@@ -784,7 +778,7 @@ core.globalSearch = { //searches all modules using their api-methods from the st
 		if (typeof core.globalSearch.result[property] === 'undefined') core.globalSearch.result[property] = [value];
 		else core.globalSearch.result[property].push(value);
 	},
-	display: (search) => {
+	display: (search = '') => {
 		let displayResult = '';
 		if (Object.keys(core.globalSearch.result).length) {
 			displayResult = '<br />';
@@ -800,11 +794,11 @@ core.globalSearch = { //searches all modules using their api-methods from the st
 					displayResult += '</div>';
 				}
 			});
-		} else if (value(search) != '') displayResult = core.fn.static.lang('errorNothingFound', null, el('globalsearch').value);
+		} else if (search) displayResult = core.fn.static.lang('errorNothingFound', null, el('globalsearch').value);
 		if (core.var.currentScope === null) core.fn.async.stdout('output', displayResult);
 		document.body.style.cursor = 'default';
 	},
-	search: async (search) => {
+	search: async (search = '') => {
 		document.body.style.cursor = 'progress';
 		//clear result on search initialization
 		core.globalSearch.result = {};
@@ -813,12 +807,12 @@ core.globalSearch = { //searches all modules using their api-methods from the st
 			if (typeof core.var.modules[key] === 'object') {
 				//load every module and fire api function
 				opt = core.var.moduleDir + key + '.js';
-				if (value(search) != '') await eval(key + '.api.available(\'' + search + '\')');
+				if (search) await eval(key + '.api.available(\'' + search + '\')');
 				else await eval(key + '.api.currentStatus()');
 			}
 		}
 		core.globalSearch.display(search);
-		if (value(search) != '') core.history.write('core.init.ui(\'' + search + '\')');
+		if (search) core.history.write('core.init.ui(\'' + search + '\')');
 	}
 };
 

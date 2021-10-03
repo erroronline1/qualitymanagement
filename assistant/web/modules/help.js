@@ -27,7 +27,7 @@ var help = {
 		}
 	},
 	fn: {
-		search: async (query) => {
+		search: async (query = '') => {
 			query = query || el('helpquery').value;
 			let found,
 				list = '',
@@ -37,7 +37,7 @@ var help = {
 				else list += '<br />';
 			});
 			core.fn.async.stdout('temp', '<span class="highlight">' + core.fn.static.lang('tableOfContents', 'help') + ':</span><br />' + list);
-			if (value(query) !== '') {
+			if (query) {
 				found = await core.fn.async.smartSearch.lookup(query, help.data.content, true);
 				// check if search matches item-list
 				if (found.length > 0) {
@@ -53,17 +53,17 @@ var help = {
 				} else list = core.fn.static.lang('errorNothingFound', 'help', query);
 				core.fn.async.stdout('output', list);
 			}
-			core.history.write('help.fn.init(\'' + value(query) + '\')');
+			core.history.write('help.fn.init(\'' + query + '\')');
 		},
-		init: async (query) => {
+		init: async (query = '') => {
 			await core.fn.async.stdout('input',
 				'<form id="search" action="javascript:help.fn.search();">' +
-				'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g, '&quot;') + '" placeholder="' + core.fn.static.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search" />' +
+				'<input type="text" pattern=".{3,}" required value="' + query.replace(/"/g, '&quot;') + '" placeholder="' + core.fn.static.lang('formInputPlaceholder', 'help') + '" id="helpquery" class="search" />' +
 				'<span onclick="help.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
 				'<input type="submit" id="artikelsuche" value="' + core.fn.static.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
 				'</form>');
 			el('helpquery').focus();
-			help.fn.search(value(query));
+			help.fn.search(query);
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'help.var.js');

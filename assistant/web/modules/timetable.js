@@ -53,15 +53,15 @@ var timetable = {
 					linkfile.replace(/"/g, '&quot;').replace(/\'/g, "\\\'") +
 					core.fn.static.insert.checkbox(core.fn.static.lang('favouriteAdd', 'timetable'), 'favouriteAdd', favouriteNameStored, false, core.fn.static.lang('favouriteAdd', 'timetable')).replace(/"/g, '&quot;').replace(/\'/g, "\\\'");
 		},
-		search: async (query) => {
+		search: async (query = '') => {
 			query = query || el('timetablequery').value;
 			let open;
-			if (value(query) !== '') {
+			if (query) {
 				open = await timetable.fn.open(query);
 				core.fn.static.popup(open);
 			}
 		},
-		linkfile: async (name, favourite) => {
+		linkfile: async (name, favourite = '') => {
 			let link,
 				withtools;
 			name = name.split(' '); //split to array
@@ -70,7 +70,7 @@ var timetable = {
 			} //ucfirst
 			name = name.join(' '); //rejoin to string
 			link = '<a href="' + timetable.var.path + name.toLowerCase() + '.xlsm" onclick="timetable.fn.favouriteHandler.set(\'' + name + '\'); return;" target="_blank">' + core.fn.static.lang('linkTitle', 'timetable') + name + '</a> ';
-			if (value(favourite) !== '') {
+			if (favourite) {
 				withtools = await timetable.fn.open(name, true);
 				link = '<span class="singlefavouritehandler"><a href="javascript:core.fn.static.popup(\'' + withtools + '\')">' + name + '</a> ' + core.fn.static.insert.icon('delete', false, false, 'onclick="timetable.fn.favouriteHandler.set(\':' + name + '\'); return;"') + '</span>';
 			}
@@ -114,7 +114,7 @@ var timetable = {
 				if (output) {
 					tfav2 = output.split(',');
 					output = tools !== undefined ? '<br />' + core.fn.static.lang('favouriteCaption', 'timetable') + ':<span class="inline" style="vertical-align:middle; float:right;">' +
-						core.fn.static.insert.icon('delete', 'bigger', false, 'title="' + core.fn.static.lang('favouriteDeleteTitle', 'timetable') + '" onclick="timetable.fn.favouriteHandler.reset(\'\')"') +
+						core.fn.static.insert.icon('delete', 'bigger', false, 'title="' + core.fn.static.lang('favouriteDeleteTitle', 'timetable') + '" onclick="timetable.fn.favouriteHandler.reset()"') +
 						'</span><br /><br />' : '';
 					for (let person = 0; person < tfav2.length; person += 2) {
 						favName = tfav2[person];
@@ -133,23 +133,23 @@ var timetable = {
 				if (timetableFav) return timetableFav.indexOf(name) > -1;
 				else return false;
 			},
-			reset: async (output) => {
+			reset: async (output='') => {
 				await core.fn.async.memory.write('timetableFav', output);
 				core.fn.async.growlNotif(core.fn.static.lang('favouriteResetConfirm', 'timetable'));
 			},
 		},
-		init: async (query) => {
+		init: async (query = '') => {
 			await core.fn.async.stdout('input',
 				'<form id="search" action="javascript:timetable.fn.search();">' +
-				'<input type="text" pattern=".{3,}" required value="' + value(query).replace(/"/g, '&quot;') + '" placeholder="' + core.fn.static.lang('formInputPlaceholder', 'timetable') + '" id="timetablequery" class="search" />' +
+				'<input type="text" pattern=".{3,}" required value="' + query.replace(/"/g, '&quot;') + '" placeholder="' + core.fn.static.lang('formInputPlaceholder', 'timetable') + '" id="timetablequery" class="search" />' +
 				'<span onclick="timetable.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
 				'<input type="submit" id="name" value="' + core.fn.static.lang('formSubmit', 'timetable') + '" hidden="hidden" /> ' +
 				'</form>');
 			el('timetablequery').focus();
 			core.fn.async.stdout('temp', core.fn.static.lang('explanation', 'timetable') + '<br />');
 			core.fn.async.stdout('output', '<div id="favourites">' + await timetable.fn.favouriteHandler.get('withtools') + '</div>');
-			if (value(query) !== '') timetable.fn.search(value(query));
-			core.history.write('timetable.fn.init(\'\')');
+			if (query) timetable.fn.search(query);
+			core.history.write('timetable.fn.init()');
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'timetable.var.js');
