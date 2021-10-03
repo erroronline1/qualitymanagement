@@ -39,10 +39,10 @@ var mailtools = {
 			core.fn.async.stdout('mailtoolgen', core.fn.static.insert.icon('refresh', 'bigger', false,
 				'onclick="mailtools.fn.serialmailgen()" title="' + core.fn.static.lang('buttonGenTitle', 'mailtools') + '"'));
 			core.fn.async.stdout('temp', '<input type="button" value="' + core.fn.static.lang('buttonTestCaption', 'mailtools') + '" title="' + core.fn.static.lang('buttonTestTitle', 'mailtools') + '" onclick="mailtools.fn.serialtest()" /><br /><br />' +
-				core.fn.static.lang('formRecipientListCaption', 'mailtools') + ':<br /><textarea id="names" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.fn.static.lang('formRecipientListPlaceholder', 'mailtools') + '"></textarea> ' +
-				'<textarea id="adresses" rows="10" style="width:calc(49% - .5em);" wrap="soft" placeholder="' + core.fn.static.lang('formRecipientMailPlaceholder', 'mailtools') + '"></textarea><br />' +
+				core.fn.static.lang('formRecipientListCaption', 'mailtools') + ':<br /><textarea id="names" rows="10" style="width:calc(50% - .25em);" wrap="soft" placeholder="' + core.fn.static.lang('formRecipientListPlaceholder', 'mailtools') + '"></textarea> ' +
+				'<textarea id="adresses" rows="10" style="width:calc(50% - .25em);" wrap="soft" placeholder="' + core.fn.static.lang('formRecipientMailPlaceholder', 'mailtools') + '"></textarea><br />' +
 				core.fn.static.lang('formContentCaption', 'mailtools') + ':<br /><input type="text" style="width:98%" id="subject" placeholder="' + core.fn.static.lang('formSubjectPlaceholder', 'mailtools') + '"><br />' +
-				'<textarea id="body" rows="10" style="width:98%;" placeholder="' + core.fn.static.lang('formBodyPlaceholder', 'mailtools') + '" onkeydown="core.fn.static.limitBar(core.fn.static.escapeHTML(this.value, true).length, core.var.directMailSize)"></textarea>' +
+				'<textarea id="body" rows="10" style="width:100%;" placeholder="' + core.fn.static.lang('formBodyPlaceholder', 'mailtools') + '" onkeydown="core.fn.static.limitBar(core.fn.static.escapeHTML(this.value, true).length, core.var.directMailSize)"></textarea>' +
 				core.fn.static.insert.limitBar(false, core.fn.static.lang('mailtoLimitBar')));
 			core.fn.async.stdout('output', '');
 			core.history.write('mailtools.fn.init(\'serialmail\')');

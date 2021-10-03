@@ -3,8 +3,7 @@ font/foreground colors
 /////////////////////////////////////////////*/
 
 body,
-input,
-textarea {
+input {
 	color: rgb(46, 52, 64);
 }
 
@@ -19,7 +18,6 @@ select optgroup {
 #popuptext,
 #popuptext label,
 #popuptext svg,
-#popuptext textarea,
 #growlNotif,
 ::selection,
 #menu.small>label:hover div {
@@ -36,9 +34,12 @@ select optgroup {
 }
 
 input[type='text'],
+input[type='date'],
+input[type='password'],
 select,
 span.search,
-span.search .icon {
+span.search .icon,
+textarea {
 	color: #666;
 	fill: #666;
 }
@@ -127,7 +128,8 @@ body {
 
 input,
 select,
-span.search {
+span.search,
+textarea {
 	background-color: #fff;
 }
 
@@ -152,8 +154,7 @@ span.search {
 
 svg,
 input[type='range'],
-.checkmark,
-textarea {
+.checkmark {
 	background-color: transparent
 }
 
