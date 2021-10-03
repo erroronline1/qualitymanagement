@@ -208,6 +208,7 @@ core.fn = {
 		},
 		limitBar: (actual, max, id) => {
 			if (id === undefined) id = 'limitBar'
+			if (typeof max === NaN) return false;
 			el(id + 'Indicator').style.width = Math.min(actual / max, 1) * 100 + "%";
 			if (actual > max) {
 				el(id + 'Indicator').classList.remove('green', 'orange');
@@ -374,11 +375,16 @@ core.fn = {
 				window.localStorage.removeItem(name);
 				return true;
 			},
-			dump: async function () {
+			keyDump: async function () {
 				return Object.keys(localStorage).sort();
 			},
 			maxSpace: async function () {
 				return 5000000;
+			},
+			read: async function (name) {
+				let item = window.localStorage.getItem(name);
+				if (item === null) return false;
+				else return core.fn.static.string.decompress(item);
 			},
 			usedSpace: async function () {
 				let current = 0; //tested in compatible browsers to be slightly more than 5mb
@@ -386,11 +392,6 @@ core.fn = {
 					current += key.length + localStorage.getItem(key).length;
 				});
 				return current;
-			},
-			read: async function (name) {
-				let item = window.localStorage.getItem(name);
-				if (item === null) return false;
-				else return core.fn.static.string.decompress(item);
 			},
 			write: async function (name, value, errormsg) {
 				let maxSpace = await this.maxSpace(),
@@ -404,7 +405,6 @@ core.fn = {
 					}
 					if (!saved) core.fn.static.popup(core.fn.static.lang('errorStorageLimit') + (typeof errormsg !== 'undefined' ? '<br />' + errormsg : ''));
 				} else this.delete(name);
-				console.log(name,value);
 				return true;
 			}
 		},
@@ -564,21 +564,26 @@ core.init = {
 			coreFuzzySearch = await core.fn.async.memory.read('coreFuzzySearch'),
 			coreLanguage = await core.fn.async.memory.read('coreLanguage'),
 			coreSelectedOs = await core.fn.async.memory.read('coreSelectedOs'),
-			coreNewWindowCopy = await core.fn.async.memory.read('coreNewWindowCopy'),
-			coreFontsize = await core.fn.async.memory.read('coreFontsize'),
-			coreTheme = await core.fn.async.memory.read('coreTheme'),
-			module = {},
-			menu = '<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.static.lang('title', false) + '</span>';
+			coreNewWindowCopy = await core.fn.async.memory.read('coreNewWindowCopy');
 		if (coreDirectMailSize) core.var.directMailSize = coreDirectMailSize;
 		if (coreFuzzySearch) core.var.fuzzySearch = coreFuzzySearch;
 		if (coreLanguage) core.var.selectedLanguage = coreLanguage;
 		if (coreSelectedOs) core.var.selectedOs = coreSelectedOs;
 		if (coreNewWindowCopy) core.var.copyFromNewWindow = coreNewWindowCopy;
+	},
+	ui: async (query) => { //displays start screen
+		let coreFontsize = await core.fn.async.memory.read('coreFontsize'),
+			coreTheme = await core.fn.async.memory.read('coreTheme'),
+			eMailList = core.fn.static.lang('importantMails') + '<p>',
+			menu = '<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.static.lang('title', false) + '</span>',
+			module = {};
+
 		document.title = core.fn.static.lang('title');
 		//load settings or defaults
 		document.body.style.fontSize = ((coreFontsize || 0) / 10 + 1) + 'em';
 		el('colortheme').href = 'core/' + ((coreTheme in core.var.themes ? coreTheme :
 			'default') || 'default') + '.css';
+
 		await updateTracker.alert();
 		for (let key of Object.keys(core.var.modules)) {
 			module['core_' + key] = await core.fn.async.memory.read('core_' + key);
@@ -592,10 +597,7 @@ core.init = {
 		}
 		menu += '<br /><br />' + core.fn.static.insert.icon('decreaseindent', 'bigger', false, ' onclick="el(\'menu\').classList.toggle(\'small\'); this.style.transform=\'scale(\' + (el(\'menu\').classList.contains(\'small\')? -1 : 1) + \', -1)\'"');
 		core.fn.async.stdout('menu', menu);
-		core.init.ui();
-	},
-	ui: async (query) => { //displays start screen
-		let eMailList = core.fn.static.lang('importantMails') + '<p>';
+
 		await core.fn.async.stdout('input',
 			'<form id="search" action="javascript:core.globalSearch.search(el(\'globalsearch\').value);">' +
 			'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
@@ -624,7 +626,6 @@ core.init = {
 		Object.keys(core.var.modules).forEach((key) => {
 			if (el('module' + key) != 'undefined' && el('module' + key) != null) el('module' + key).checked = false;
 		});
-		document.title = core.fn.static.lang('title')
 		core.globalSearch.search(query); // api status in case query is undefined
 		focusWithin(false);
 		core.history.write(['core.init.ui(\'' + value(query) + '\')']);
@@ -697,11 +698,11 @@ core.setup = {
 			corePerformanceMonitor = await core.fn.async.memory.read('corePerformanceMonitor'),
 			display,
 			maxSpace = await core.fn.async.memory.maxSpace(),
-			memoryDump = await core.fn.async.memory.dump(),
+			memoryKeys = await core.fn.async.memory.keyDump(),
 			settingsDump = '',
 			settingvalue,
 			usedSpace = await core.fn.async.memory.usedSpace();
-		for (let key of memoryDump) {
+		for (let key of memoryKeys) {
 			settingvalue = await core.fn.async.memory.read(key);
 			settingsDump += key + '=' + settingvalue + '\n';
 		}
