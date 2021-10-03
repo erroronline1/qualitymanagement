@@ -2,17 +2,6 @@ function el(v) {
 	return document.getElementById(v);
 }
 
-var svgClassList = { //classList.add and *.remove not supported for svg in ie, this works as a polyfill
-	add: function (element, classname) {
-		if (element.classList) element.classList.add(classname);
-		else if (element.getAttribute('class').indexOf(classname) < 0) element.setAttribute('class', element.getAttribute('class') + ' ' + classname);
-	},
-	remove: function (element, classname) {
-		if (element.classList) element.classList.remove(classname);
-		else if (element.getAttribute('class').indexOf(classname) > -1) element.setAttribute('class', element.getAttribute('class').replace(classname, ' '));
-	},
-};
-
 if (typeof core === 'undefined') var core = {};
 
 core.fn = {
@@ -736,13 +725,10 @@ core.history = {
 	storage: [],
 	currentStep: 1,
 	buttoncolor: function () {
-		//classList.add and *.remove not supported for svg in ie
-		if (core.history.currentStep < 2)
-			svgClassList.add(el('titleforthbutton'), 'inactiveicon');
-		else svgClassList.remove(el('titleforthbutton'), 'inactiveicon');
-		if (core.history.currentStep === core.history.storage.length)
-			svgClassList.add(el('titlebackbutton'), 'inactiveicon');
-		else svgClassList.remove(el('titlebackbutton'), 'inactiveicon');
+		if (core.history.currentStep < 2) el('titleforthbutton').classList.add('inactiveicon');
+		else el('titleforthbutton').classList.remove('inactiveicon');
+		if (core.history.currentStep === core.history.storage.length) el('titlebackbutton').classList.add('inactiveicon');
+		else el('titlebackbutton').classList.remove('inactiveicon');
 	},
 	go: function (dir) {
 		if (dir === 'back') core.history.currentStep = ++core.history.currentStep <= core.history.storage.length ? core.history.currentStep : core.history.storage.length;
