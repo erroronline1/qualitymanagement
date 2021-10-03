@@ -514,16 +514,43 @@ core.fn = {
 };
 core.init = {
 	application: async () => {
-		let coreDirectMailSize = await core.fn.async.memory.read('coreDirectMailSize'),
+		const coreDirectMailSize = await core.fn.async.memory.read('coreDirectMailSize'),
 			coreFuzzySearch = await core.fn.async.memory.read('coreFuzzySearch'),
 			coreLanguage = await core.fn.async.memory.read('coreLanguage'),
 			coreSelectedOs = await core.fn.async.memory.read('coreSelectedOs'),
 			coreNewWindowCopy = await core.fn.async.memory.read('coreNewWindowCopy');
+
 		if (coreDirectMailSize) core.var.directMailSize = coreDirectMailSize;
 		if (coreFuzzySearch) core.var.fuzzySearch = coreFuzzySearch;
 		if (coreLanguage) core.var.selectedLanguage = coreLanguage;
 		if (coreSelectedOs) core.var.selectedOs = coreSelectedOs;
 		if (coreNewWindowCopy) core.var.copyFromNewWindow = coreNewWindowCopy;
+
+		const header = '<nav class="home">' +
+			core.fn.static.insert.icon('home', 'bigger', false,
+				'title="' + core.fn.static.lang('homeMenuEntry') +
+				'" onclick="slider.slide(\'null\'); core.init.ui()"'
+			) +
+			core.fn.static.insert.icon('back', 'bigger inactiveicon', 'titlebackbutton',
+				'title="' + core.fn.static.lang('homeMenuBack') + '" onclick="core.history.go(\'back\')"') +
+			core.fn.static.insert.icon('forth', 'bigger inactiveicon', 'titleforthbutton',
+				'title="' + core.fn.static.lang('homeMenuForth') + '" onclick="core.history.go(\'forth\')"'
+			) +
+			core.fn.static.insert.icon('refresh', 'bigger', false,
+				'title="' + core.fn.static.lang('homeMenuRestart') +
+				'" onclick="location.href=\'core.html\'"') +
+			'</nav>' +
+			'<article id="input"></article>' +
+			'<aside class="setting">' +
+			core.fn.static.insert.icon('feedbackrequest', 'bigger', false,
+				'title="' + core.fn.static.lang('homeMenuFeedbackRequest') +
+				'" onclick="core.fn.static.dynamicMailto(core.var.eMailAddress.admin.address, document.title)"'
+			) +
+			core.fn.static.insert.icon('settings', 'bigger', false,
+				'title="' + core.fn.static.lang('settingMenuEntry') +
+				'" onclick="core.setup.setup(); return;"') +
+			'</aside>';
+		core.fn.async.stdout('header', header);
 	},
 	module: (module, callback = false) => {
 		//set current scope(==module name), window title and wide-input-property
@@ -678,7 +705,7 @@ core.setup = {
 			'<br /><br />' + core.fn.static.lang('settingDebugSpaceCaption') + usedSpace + ' / ' + maxSpace + ' Byte<br />' +
 			core.fn.static.insert.limitBar(false, core.fn.static.lang('settingDebugSpaceCaption'), 'debugSpace') + '<br />' +
 			core.fn.static.lang('settingDebugDumpCaption') +
-			'<br /><textarea readonly onfocus="this.select()" style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
+			'<br /><textarea readonly style="width:100%; height:15em;">' + settingsDump + '</textarea>' +
 			'<br /><input type="text" placeholder="' + core.fn.static.lang('settingDeleteDistinctPlaceholder') + '" id="deleteDistinctSettings" />' +
 			core.fn.static.insert.icon('delete', 'bigger', false,
 				'title="' + core.fn.static.lang('settingDeleteDistinctPlaceholder') + '" ' +
