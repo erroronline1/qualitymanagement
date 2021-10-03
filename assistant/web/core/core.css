@@ -224,7 +224,7 @@ content box-items
 	border: 1px solid transparent;
 }
 
-.contentWide {
+.contentWide:focus-within {
 	flex-grow: 3.8;
 }
 
