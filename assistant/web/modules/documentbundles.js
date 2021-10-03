@@ -25,10 +25,9 @@ var documentbundles = {
 				//add value and relevance
 				core.globalSearch.contribute('documentbundles', [display, value[1]]);
 			});
-			core.performance.stop('documentbundles.api.available(\'' + search + '\')');
 		},
 		currentStatus: async () => {
-			core.performance.stop('documentbundles.api.currentStatus()');
+			return;
 		}
 	},
 	fn: {
@@ -86,25 +85,21 @@ var documentbundles = {
 				core.fn.async.stdout('temp', '<span class="highlight">' + core.fn.static.lang('primaryCaption', 'documentbundles') + '</span><br />' + primary);
 				core.fn.async.stdout('output', '<span class="highlight">' + core.fn.static.lang('secondaryCaption', 'documentbundles') + '</span><br />' + secondary);
 			}
-			core.history.write(['documentbundles.fn.init(\'' + treatment + '\')']);
+			core.history.write('documentbundles.fn.init(\'' + treatment + '\')');
 		},
-		input: (query) => {
-			core.performance.start('documentbundles.fn.input(\'' + value(query) + '\')'); //possible duplicate
+		init: async (query) => {
 			let out;
 			out = '<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.fn.gen(sel)"><option value="">' + core.fn.static.lang('selectDefault', 'documentbundles') + '</option>';
 			Object.keys(documentbundles.data.bundles).forEach(function (key) {
 				out += '<option id="' + key + '" value="' + key + '" ' + (query === key ? 'selected' : '') + '>' + key.replace(/_/g, " ") + '</option>';
 			});
 			out += '</select>';
-			core.fn.async.stdout('input', out + '<span class="inline" style="padding-top:.375em">' + core.fn.static.insert.checkbox(core.fn.static.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.fn.gen(sel)"') + '</span>');
+			await core.fn.async.stdout('input', out + '<span class="inline" style="padding-top:.375em">' + core.fn.static.insert.checkbox(core.fn.static.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.fn.gen(sel)"') + '</span>');
 			if (value(query) !== '') documentbundles.fn.gen(query);
-			core.performance.stop('documentbundles.fn.input(\'' + value(query) + '\')');
-			core.history.write(['documentbundles.fn.init(\'' + value(query) + '\')']);
-		},
-		init: async (query) => {
-			documentbundles.fn.input(value(query));
-			await core.fn.async.stdout('temp', '<br />' + core.fn.static.lang('useCaseDescription', 'documentbundles'));
-			core.performance.stop('documentbundles.fn.init(\'' + value(query) + '\')');
+			else {
+				await core.fn.async.stdout('temp', '<br />' + core.fn.static.lang('useCaseDescription', 'documentbundles'));
+				core.history.write('documentbundles.fn.init(\'' + value(query) + '\')');
+			}
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'documentbundles.var.js');

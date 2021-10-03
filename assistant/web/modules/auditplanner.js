@@ -14,16 +14,15 @@ auditplanner = {
 	data: {},
 	api: {
 		available: async (search) => {
-			core.performance.stop('auditplanner.api.available(\'' + search + '\')');
+			return;
 		},
 		currentStatus: async () => {
-			core.performance.stop('auditplanner.api.currentStatus()');
+			return;
 		}
 	},
 	fn: {
 		select: async (query) => {
 			//query = query || el('auditplannerquery').value;
-			core.performance.start('auditplanner.fn.select(\'' + value(query) + '\')'); //possible duplicate
 			let checked,
 				list = '';
 			if (auditplanner.data !== undefined) {
@@ -35,11 +34,9 @@ auditplanner = {
 				});
 				await core.fn.async.stdout('temp', '<span class="highlight">' + core.fn.static.lang('tableOfContents', 'auditplanner') + ':</span><br />' + list);
 			}
-			core.performance.stop('auditplanner.fn.select(\'' + value(query) + '\')');
 			auditplanner.fn.output();
 		},
 		output: function () {
-			core.performance.start('auditplanner.fn.output()'); //possible duplicate
 			let loops,
 				output = '',
 				question,
@@ -72,9 +69,8 @@ auditplanner = {
 				});
 				core.fn.async.stdout('output', output);
 			}
-			core.performance.stop('auditplanner.fn.output()');
 		},
-		start: async (query) => {
+		init: async (query) => {
 			let qnumOptions = {
 					1: [1, 'max. 1 ' + core.fn.static.lang('selectOptionQuestion', 'auditplanner')],
 				},
@@ -91,11 +87,7 @@ auditplanner = {
 				core.fn.static.insert.icon('shuffle', 'bigger inline', false, 'onclick="auditplanner.fn.select(\'random\')" title="' + core.fn.static.lang('buttonShuffleTitle', 'auditplanner') + '"')
 			);
 			auditplanner.fn.select(value(query));
-		},
-		init: async (query) => {
-			auditplanner.fn.start(value(query));
-			core.history.write(['auditplanner.fn.init(\'' + value(query) + '\')']);
-			core.performance.stop('auditplanner.fn.init(\'' + value(query) + '\')');
+			core.history.write('auditplanner.fn.init(\'' + value(query) + '\')');
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'auditplanner.var.js');

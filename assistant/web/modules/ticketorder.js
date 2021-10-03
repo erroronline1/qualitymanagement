@@ -27,7 +27,6 @@ var ticketorder = {
 				//add value and relevance
 				core.globalSearch.contribute('ticketorder', [display, 1]);
 			}
-			core.performance.stop('ticketorder.api.available(\'' + search + '\')');
 		},
 		getShoppingCart: async () => {
 			let cart = await core.fn.async.memory.read('ticketorderCart'),
@@ -60,7 +59,6 @@ var ticketorder = {
 				(orders ? core.fn.static.lang('currentOrders', 'ticketorder') + orders + '<br />' : '');
 			//add value and relevance
 			if (display) core.globalSearch.contribute('ticketorder', [display, 1]);
-			core.performance.stop('ticketorder.api.currentStatus()');
 		},
 	},
 	fn: {
@@ -87,7 +85,6 @@ var ticketorder = {
 		search: async (query) => {
 			query = query || el('ticketorderquery').value;
 			//		var filter = el('ticketorderfilter').selectedIndex || core.fn.setting.get('ticketorderfilter')
-			core.performance.start('ticketorder.fn.input(\'' + value(query) + '\')'); //possible duplicate
 			let data_without_header,
 				found,
 				list = '',
@@ -129,8 +126,7 @@ var ticketorder = {
 				}
 			}
 			ticketorder.var.disableOutputSelect = true;
-			core.performance.stop('ticketorder.fn.input(\'' + value(query) + '\')');
-			core.history.write(['ticketorder.fn.init(\'' + value(query) + '\')']);
+			core.history.write('ticketorder.fn.init(\'' + value(query) + '\')');
 		},
 		mkform: async () => {
 			let form = core.fn.static.lang('newOrder', 'ticketorder'),
@@ -357,8 +353,8 @@ var ticketorder = {
 			check: async () => {
 				if (el('orderconfirmname').value && el('orderconfirmpassword0').value && core.fn.static.drm.searchHash(core.fn.static.drm.table('orderApproval'), core.fn.static.drm.createHash(el('orderconfirmname').value + el('orderconfirmpassword0').value))) {
 					let confirmedOutput = await ticketorder.fn.currentorder.get(),
-					currentTicket = await core.fn.async.memory.read('ticketorderCurrentTicket'),
-					token = core.fn.static.drm.encryptToken(currentTicket, el('orderconfirmname').value, el('orderconfirmpassword0').value) || 'unauthorized';
+						currentTicket = await core.fn.async.memory.read('ticketorderCurrentTicket'),
+						token = core.fn.static.drm.encryptToken(currentTicket, el('orderconfirmname').value, el('orderconfirmpassword0').value) || 'unauthorized';
 					confirmedOutput = '<i>' +
 						core.fn.static.lang('orderConfirmed', 'ticketorder', [currentTicket, token]) +
 						'</i><br /><br />' + confirmedOutput;
@@ -385,7 +381,7 @@ var ticketorder = {
 				core.fn.static.popup(form);
 			}
 		},
-		start: async (query) => {
+		init: async (query) => {
 			let input,
 				ticketorderfilter = await core.fn.async.memory.read('ticketorderfilter');
 			if (ticketorder.data !== undefined) {
@@ -405,13 +401,9 @@ var ticketorder = {
 			core.fn.async.stdout('input', input);
 			core.fn.async.stdout('temp', await ticketorder.fn.mkform());
 			ticketorder.api.getShoppingCart();
-			core.fn.async.stdout('output', await ticketorder.fn.currentorder.get());
 			if (value(query) !== '') ticketorder.fn.search(value(query));
-		},
-		init: async (query) => {
-			ticketorder.fn.start(value(query));
-			core.history.write(['ticketorder.fn.init(\'' + value(query) + '\')']);
-			core.performance.stop('ticketorder.fn.init(\'' + value(query) + '\')');
+			else core.fn.async.stdout('output', await ticketorder.fn.currentorder.get());
+			core.history.write('ticketorder.fn.init(\'' + value(query) + '\')');
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'ticketorder.var.js');

@@ -30,10 +30,9 @@ var correspondence = {
 					core.globalSearch.contribute('correspondence', [display, value[1]]);
 				});
 			}
-			core.performance.stop('correspondence.api.available(\'' + search + '\')');
 		},
 		currentStatus: async () => {
-			core.performance.stop('correspondence.api.currentStatus()');
+			return;
 		}
 	},
 	fn: {
@@ -71,7 +70,7 @@ var correspondence = {
 			//reassign variable value for mailto after actual output
 			if (output.length > core.var.directMailSize) output = core.fn.static.lang('errorMailSizeExport');
 			el('mailto').href = 'javascript:core.fn.dynamicMailto(\'\',\'\',\'' + output + '\')';
-			core.history.write(['correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
+			core.history.write('correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')');
 		},
 		start: async (query) => {
 			let module = correspondence.data[correspondence.var.selectedModule()],
@@ -95,15 +94,14 @@ var correspondence = {
 				core.fn.static.insert.radio(core.fn.static.lang('inputOptionFormal', 'correspondence'), 'age', 'adult', 1, 'onchange="correspondence.fn.gen()"') + '<br />' +
 				core.fn.static.insert.radio(core.fn.static.lang('inputOptionInformal', 'correspondence'), 'age', 'child', false, 'onchange="correspondence.fn.gen()"') + '' +
 				'</div>' +
-				(typeof correspondence.additionalOptions[correspondence.var['currentModule']] !== "undefined" && correspondence.additionalOptions[correspondence.var['currentModule']] ? '<br />' + correspondence.additionalOptions[correspondence.var['currentModule']] : '') +
+				(typeof correspondence.additionalOptions[correspondence.var.currentModule] !== "undefined" && correspondence.additionalOptions[correspondence.var.currentModule] ? '<br />' + correspondence.additionalOptions[correspondence.var.currentModule] : '') +
 				(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '" target="_blank">' + core.fn.static.insert.icon('word') + core.fn.static.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.fn.static.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
 				'<br /><br /><a id="mailto" href="javascript:core.fn.static.dynamicMailto()">' + core.fn.static.insert.icon('email') + core.fn.static.lang('openMailApp', 'correspondence') + '</a>' +
 				core.fn.static.insert.limitBar('13em', core.fn.static.lang('mailtoLimitBar')) +
 				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.fn.static.insert.icon('outlook') + core.fn.static.lang('openOutlook', 'correspondence') + '</a>' : '');
 			await core.fn.async.stdout('temp', output);
 			if (value(query) !== '') correspondence.fn.gen(query);
-			core.performance.stop('correspondence.fn.start(\'' + value(query) + '\')');
-			core.history.write(['correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')']);
+			core.history.write('correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + value(query) + '\')');
 		},
 		init: async (query) => {
 			let preset,
@@ -118,10 +116,9 @@ var correspondence = {
 			await core.fn.async.stdout('input', core.fn.static.insert.select(selection,
 					'submodule', 'submodule', (typeof preset !== 'undefined' ? preset[0] : null), 'onchange="correspondence.var.currentModule = this.options[this.selectedIndex].value; correspondence.fn.start()"') +
 				core.fn.static.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.fn.gen()" title="' + core.fn.static.lang('buttonGenTitle', 'correspondence') + '"'));
-			correspondence.var['currentModule'] = value(query) !== '' ? preset[0] : correspondence.var.selectedModule();
-			correspondence.fn.start(value(query) !== '' ? preset[1] : false);
-			core.performance.stop('correspondence.fn.init(\'' + value(query) + '\')');
-			core.history.write(['correspondence.fn.init(\'' + value(query) + '\')']);
+			correspondence.var.currentModule = value(query) !== '' ? preset[0] : correspondence.var.selectedModule();
+			correspondence.fn.start(value(query) !== '' ? preset[1] : '');
+			core.history.write('correspondence.fn.init(\'' + value(query) + '\')');
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'correspondence.var.js');

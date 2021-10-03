@@ -21,16 +21,14 @@ var help = {
 				//add value and relevance
 				core.globalSearch.contribute('help', [display, value[1]]);
 			});
-			core.performance.stop('help.api.available(\'' + search + '\')');
 		},
 		currentStatus: async () => {
-			core.performance.stop('help.api.currentStatus()');
+			return;
 		}
 	},
 	fn: {
 		search: async (query) => {
 			query = query || el('helpquery').value;
-			core.performance.start('help.fn.input(\'' + value(query) + '\')'); //possible duplicate
 			let found,
 				list = '',
 				tresult;
@@ -55,8 +53,7 @@ var help = {
 				} else list = core.fn.static.lang('errorNothingFound', 'help', query);
 				core.fn.async.stdout('output', list);
 			}
-			core.performance.stop('help.fn.input(\'' + value(query) + '\')');
-			core.history.write(['help.fn.init(\'' + value(query) + '\')']);
+			core.history.write('help.fn.init(\'' + value(query) + '\')');
 		},
 		init: async (query) => {
 			await core.fn.async.stdout('input',
@@ -67,7 +64,6 @@ var help = {
 				'</form>');
 			el('helpquery').focus();
 			help.fn.search(value(query));
-			core.performance.stop('help.fn.init(\'' + value(query) + '\')');
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'help.var.js');

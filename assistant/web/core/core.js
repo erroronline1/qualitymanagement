@@ -7,26 +7,6 @@ function value(v) { //handles even unset parameters when in doubt
 	else return v;
 }
 
-function focusWithin(activate) {
-	//would be neat if ie supported this selector...
-	if (activate) {
-		el('temp').addEventListener('click', function () {
-			el('temp').classList.add('contentWide');
-		})
-		el('output').addEventListener('click', function () {
-			el('temp').classList.remove('contentWide');
-		})
-	} else {
-		el('temp').removeEventListener('click', function () {
-			el('temp').classList.add('contentWide');
-		})
-		el('output').removeEventListener('click', function () {
-			el('temp').classList.remove('contentWide');
-		})
-		el('temp').classList.remove('contentWide')
-	}
-}
-
 var svgClassList = { //classList.add and *.remove not supported for svg in ie, this works as a polyfill
 	add: function (element, classname) {
 		if (element.classList) element.classList.add(classname);
@@ -336,7 +316,6 @@ core.fn = {
 		loadScript: async (url, callback) => { //load given script-files into scope, e.g. load desired modules and data-files
 			let scriptname;
 			if (url != '') {
-				if (typeof (callback) !== 'undefined') core.performance.start(callback);
 				scriptname = url.match(/\/(.*?)\./).pop();
 				const ls = (src) => {
 					return new Promise((resolve, reject) => {
@@ -351,14 +330,6 @@ core.fn = {
 				await ls(url).then(async () => {
 					if (typeof (callback) !== 'undefined') {
 						await eval(callback);
-						//set current scope(==module name), window title and wide-input-property
-						if (callback.indexOf('init') > -1 && scriptname in core.var.modules) {
-							core.var.currentScope = scriptname;
-							document.title = core.fn.static.lang('title') + ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage];
-							if (core.var.modules[core.var.currentScope].wide) focusWithin(true);
-							else focusWithin(false);
-							el('module' + scriptname).checked = true; // highlight menu icon
-						}
 					}
 				}).catch((e) => {
 					console.log("error loading script(s):", url, callback, e);
@@ -571,6 +542,21 @@ core.init = {
 		if (coreSelectedOs) core.var.selectedOs = coreSelectedOs;
 		if (coreNewWindowCopy) core.var.copyFromNewWindow = coreNewWindowCopy;
 	},
+	module: (module, callback = false) => {
+		//set current scope(==module name), window title and wide-input-property
+		core.var.currentScope = module;
+		document.title = core.fn.static.lang('title') + (module ? ' - ' + core.var.modules[module].display[core.var.selectedLanguage] : '');
+		if (module != null && core.var.modules[module].wide) el('temp').classList.add('contentWide');
+		else el('temp').classList.remove('contentWide');
+		Object.keys(core.var.modules).forEach((key) => { // unhighlight all menu icons
+			if (el('module' + key) != 'undefined') el('module' + key).checked = false;
+		});
+		if (module) el('module' + module).checked = true; // highlight called menu icon
+		slider.slide(module);
+		if (!module && !callback) callback = 'core.init.ui()';
+		callback = callback || module + '.fn.init()';
+		eval(callback);
+	},
 	ui: async (query) => { //displays start screen
 		let coreFontsize = await core.fn.async.memory.read('coreFontsize'),
 			coreTheme = await core.fn.async.memory.read('coreTheme'),
@@ -589,7 +575,7 @@ core.init = {
 			module['core_' + key] = await core.fn.async.memory.read('core_' + key);
 			if (typeof core.var.modules[key] === 'object' && (module['core_' + key] ? Boolean(Number(module['core_' + key])) : core.var.modules[key].enabledByDefault)) {
 				// create module-selector
-				menu += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" onclick="slider.slide(\'' + key + '\'); ' + key + '.fn.init(); return;">' + core.var.modules[key].icon + '<div>' + core.var.modules[key].display[core.var.selectedLanguage] + '</div></label>';
+				menu += '<input type="radio" name="modulemenu" id="module' + key + '" /><label for="module' + key + '" onclick="core.init.module(\'' + key + '\'); return;">' + core.var.modules[key].icon + '<div>' + core.var.modules[key].display[core.var.selectedLanguage] + '</div></label>';
 				slider.modules.push(key);
 				// load module files
 				await core.fn.async.loadScript(core.var.moduleDir + key + '.js', key + '.fn.load()');
@@ -627,8 +613,8 @@ core.init = {
 			if (el('module' + key) != 'undefined' && el('module' + key) != null) el('module' + key).checked = false;
 		});
 		core.globalSearch.search(query); // api status in case query is undefined
-		focusWithin(false);
-		core.history.write(['core.init.ui(\'' + value(query) + '\')']);
+		el('temp').classList.remove('contentWide');
+		core.history.write('core.init.ui(\'' + value(query) + '\')');
 		return true;
 	},
 };
@@ -695,7 +681,6 @@ core.setup = {
 	},
 	debug: async () => {
 		let coreOutputMonitor = await core.fn.async.memory.read('coreOutputMonitor'),
-			corePerformanceMonitor = await core.fn.async.memory.read('corePerformanceMonitor'),
 			display,
 			maxSpace = await core.fn.async.memory.maxSpace(),
 			memoryKeys = await core.fn.async.memory.keyDump(),
@@ -706,8 +691,7 @@ core.setup = {
 			settingvalue = await core.fn.async.memory.read(key);
 			settingsDump += key + '=' + settingvalue + '\n';
 		}
-		display = core.fn.static.insert.checkbox('Console Performance Monitor', 'corePerformanceMonitor', (corePerformanceMonitor || 0), 'onchange="this.checked ? core.fn.async.memory.write(\'corePerformanceMonitor\', 1) : core.fn.async.memory.delete(\'corePerformanceMonitor\')"') +
-			'<br />' + core.fn.static.insert.checkbox('Console Output Monitor', 'coreOutputMonitor', (coreOutputMonitor || 0), 'onchange="this.checked ? core.fn.async.memory.write(\'coreOutputMonitor\', 1) : core.fn.async.memory.delete(\'coreOutputMonitor\')"') +
+		display = core.fn.static.insert.checkbox('Console Output Monitor', 'coreOutputMonitor', (coreOutputMonitor || 0), 'onchange="this.checked ? core.fn.async.memory.write(\'coreOutputMonitor\', 1) : core.fn.async.memory.delete(\'coreOutputMonitor\')"') +
 			'<br /><br />' + core.fn.static.lang('settingDebugSpaceCaption') + usedSpace + ' / ' + maxSpace + ' Byte<br />' +
 			core.fn.static.insert.limitBar(false, core.fn.static.lang('settingDebugSpaceCaption'), 'debugSpace') + '<br />' +
 			core.fn.static.lang('settingDebugDumpCaption') +
@@ -750,15 +734,10 @@ core.setup = {
 		core.fn.async.stdout('settingContent', moduleSelector);
 	}
 };
-core.history = { //stores and restores last actions. since last actions can only occur after loading the modules scripts into scope
-	// there is no need to recall these, just call the modules functions. however not all settings within the module can
+core.history = {
+	// stores and restores last actions. just call the modules functions. however not all settings within the module can
 	// be accessed through history. slidersettings are either stored as global setting or not at all.
-	// history will only store last modules, submodules and queries. store an array as a sequence of necessary function calls
-	// to come back to the desired point e.g.
-	// core.history.write(['core.init.ui()',''globalSearch(\'' + search + '\')'']);
-	// or use api-like callbacks within the modules
-	// this was implemented after performance monitor. you will see the parameters looking similar but since history
-	// will handle sequential callbacks as opposed to performance tracking this was not combined on purpose
+	// history will only store last modules, submodules and queries.
 	// initialize history as array
 	storage: [],
 	currentStep: 1,
@@ -775,15 +754,9 @@ core.history = { //stores and restores last actions. since last actions can only
 		if (dir === 'back') core.history.currentStep = ++core.history.currentStep <= core.history.storage.length ? core.history.currentStep : core.history.storage.length;
 		else core.history.currentStep = --core.history.currentStep > 0 ? core.history.currentStep : 1;
 		if (typeof core.history.storage[core.history.storage.length - core.history.currentStep] !== 'undefined') {
-			core.history.storage[core.history.storage.length - core.history.currentStep].forEach(function (key) {
-				core.var.currentScope = key.substring(0, key.indexOf('.')) != 'core' ? key.substring(0, key.indexOf('.')) : null;
-				document.title = core.fn.static.lang('title') + (core.var.currentScope ? ' - ' + core.var.modules[core.var.currentScope].display[core.var.selectedLanguage] : '');
-				slider.slide(core.var.currentScope);
-				if (core.var.currentScope != null && core.var.modules[core.var.currentScope].wide) focusWithin(true);
-				else focusWithin(false);
-				core.performance.start(key);
-				eval(key);
-			});
+			callback = core.history.storage[core.history.storage.length - core.history.currentStep];
+			core.var.currentScope = callback.substring(0, callback.indexOf('.')) != 'core' ? callback.substring(0, callback.indexOf('.')) : null;
+			core.init.module(core.var.currentScope, callback);
 		}
 		core.history.buttoncolor();
 	},
@@ -803,34 +776,6 @@ core.history = { //stores and restores last actions. since last actions can only
 			core.history.currentStep = 1;
 			core.history.buttoncolor();
 		}
-	}
-};
-core.performance = { //starts and displays timers to console, assigned with function calls and can display additional results
-	start: async (track, group) => {
-		let corePerformanceMonitor = await core.fn.async.memory.read('corePerformanceMonitor');
-		if (corePerformanceMonitor) {
-			if (typeof group !== 'undefined') console.group(track);
-			console.time(track);
-		}
-		return false
-	},
-	stop: async (track, info, group) => {
-		let corePerformanceMonitor = await core.fn.async.memory.read('corePerformanceMonitor');
-		if (corePerformanceMonitor) {
-			console.groupCollapsed(track);
-			console.timeEnd(track);
-			console.trace();
-			if (typeof info !== 'undefined' && info) {
-				if (typeof info === 'object') {
-					console.groupCollapsed('\u2b91 additional info:');
-					console.table(info);
-					console.groupEnd();
-				} else console.log('\u2b91 ' + info);
-			}
-			console.groupEnd();
-			if (typeof group !== 'undefined') console.groupEnd();
-		}
-		return false
 	}
 };
 core.globalSearch = { //searches all modules using their api-methods from the start page
@@ -858,10 +803,8 @@ core.globalSearch = { //searches all modules using their api-methods from the st
 		} else if (value(search) != '') displayResult = core.fn.static.lang('errorNothingFound', null, el('globalsearch').value);
 		if (core.var.currentScope === null) core.fn.async.stdout('output', displayResult);
 		document.body.style.cursor = 'default';
-		core.performance.stop('globalSearch', null, 'endgroup');
 	},
 	search: async (search) => {
-		core.performance.start('globalSearch', 'group');
 		document.body.style.cursor = 'progress';
 		//clear result on search initialization
 		core.globalSearch.result = {};
@@ -874,21 +817,21 @@ core.globalSearch = { //searches all modules using their api-methods from the st
 				else await eval(key + '.api.currentStatus()');
 			}
 		}
-		core.globalSearch.display(search)
-		if (value(search) != '') core.history.write(['core.fn.init(\'' + search + '\')']);
+		core.globalSearch.display(search);
+		if (value(search) != '') core.history.write('core.init.ui(\'' + search + '\')');
 	}
 };
 
 var slider = { //just fancy animation of content on module change
-	modules: new Array(null),
+	modules: [null],
 	recent: 0,
-	slide: function (mod) {
+	slide: function (module) {
 		el('content').classList.remove('slideup', 'slidedown');
 		var newone = el('content').cloneNode(true);
 		el('content').parentNode.replaceChild(newone, el('content'));
 		core.fn.async.stdout(['input', 'temp', 'output'], '');
-		if (slider.modules.indexOf(mod) > slider.recent) el('content').classList.add('slideup')
-		if (slider.modules.indexOf(mod) < slider.recent) el('content').classList.add('slidedown')
-		slider.recent = slider.modules.indexOf(mod)
+		if (slider.modules.indexOf(module) > slider.recent) el('content').classList.add('slideup')
+		if (slider.modules.indexOf(module) < slider.recent) el('content').classList.add('slidedown')
+		slider.recent = slider.modules.indexOf(module)
 	}
 };

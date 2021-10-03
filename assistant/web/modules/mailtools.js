@@ -29,10 +29,9 @@ var mailtools = {
 				//add value and relevance
 				core.globalSearch.contribute('mailtools', [display, value[1]]);
 			});
-			core.performance.stop('mailtools.api.available(\'' + search + '\')');
 		},
 		currentStatus: async () => {
-			core.performance.stop('mailtools.api.currentStatus()');
+			return;
 		}
 	},
 	fn: {
@@ -46,7 +45,7 @@ var mailtools = {
 				'<textarea id="body" rows="10" style="width:98%;" placeholder="' + core.fn.static.lang('formBodyPlaceholder', 'mailtools') + '" onkeydown="core.fn.static.limitBar(core.fn.static.escapeHTML(this.value, true).length, core.var.directMailSize)"></textarea>' +
 				core.fn.static.insert.limitBar(false, core.fn.static.lang('mailtoLimitBar')));
 			core.fn.async.stdout('output', '');
-			core.history.write(['mailtools.fn.init(\'serialmail\')']);
+			core.history.write('mailtools.fn.init(\'serialmail\')');
 		},
 		serialtest: function () {
 			el('names').value = core.fn.static.lang('sampleNameValue', 'mailtools');
@@ -86,7 +85,7 @@ var mailtools = {
 				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.fn.static.insert.icon('outlook') + core.fn.static.lang('openOutlook', 'mailtools') + '</a>' : ''));
 			core.fn.async.stdout('output', '');
 			mailtools.var.disableOutputSelect = false;
-			core.history.write(['mailtools.fn.init(\'signature\')']);
+			core.history.write('mailtools.fn.init(\'signature\')');
 		},
 		notavailableinput: function () {
 			core.fn.async.stdout('mailtoolgen', core.fn.static.insert.icon('refresh', 'bigger', false,
@@ -95,7 +94,7 @@ var mailtools = {
 				core.fn.static.lang('notavailableTo', 'mailtools') + ':<br /><input type="date" id="notto" placeholder="DD.MM.YYYY" />' +
 				(core.var.outlookWebUrl ? '<br /><br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.fn.static.insert.icon('outlook') + core.fn.static.lang('openOutlook', 'mailtools') + '</a>' : ''));
 			core.fn.async.stdout('output', '');
-			core.history.write(['mailtools.fn.init(\'notavailable\')']);
+			core.history.write('mailtools.fn.init(\'notavailable\')');
 		},
 		notavailablegen: function () {
 			//gets date inputs and sorts them to dd.mm.yyyy
@@ -123,9 +122,10 @@ var mailtools = {
 			await core.fn.async.stdout('input', core.fn.static.insert.select(options, 'mailtoolsselection', 'mailtoolsselection', query, ' onchange="mailtools.fn[this.options[this.selectedIndex].value+\'input\']()"') +
 				'<span class="inline" id="mailtoolgen"></span>');
 			if (value(query) !== '') eval('mailtools.fn.' + query + 'input()');
-			else core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'mailtools'));
-			core.performance.stop('mailtools.fn.init(\'' + value(query) + '\')');
-			core.history.write(['mailtools.fn.init(\'' + value(query) + '\')']);
+			else {
+				core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'mailtools'));
+				core.history.write('mailtools.fn.init()');
+			}
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'mailtools.var.js');

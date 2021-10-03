@@ -28,12 +28,10 @@ var documentlookup = {
 					core.globalSearch.contribute('documentlookup', [display, value[1]]);
 				});
 			}
-			core.performance.stop('documentlookup.api.available(\'' + search + '\')');
 		},
 		currentStatus: async () => {
 			let display = await documentlookup.fn.favouriteHandler.get();
 			if (display) core.globalSearch.contribute('documentlookup', [display, 1]);
-			core.performance.stop('documentlookup.api.currentStatus()');
 		}
 	},
 	fn: {
@@ -104,7 +102,6 @@ var documentlookup = {
 		},
 		search: async (query) => {
 			query = query || el('documentname').value;
-			core.performance.start('documentlookup.fn.search(\'' + value(query) + '\')'); //possible duplicate
 			let favourites,
 				found,
 				interimobject,
@@ -134,8 +131,7 @@ var documentlookup = {
 				favourites = await documentlookup.fn.favouriteHandler.get('withtools');
 				core.fn.async.stdout('output', '<div id="favourites">' + (favourites || '') + '</div>');
 			}
-			core.performance.stop('documentlookup.fn.search(\'' + value(query) + '\')', found);
-			core.history.write(['documentlookup.fn.init(\'' + value(query) + '\')']);
+			core.history.write('documentlookup.fn.init(\'' + value(query) + '\')');
 		},
 		init: async (query) => {
 			let documentlookupCategory,
@@ -155,7 +151,6 @@ var documentlookup = {
 				'</form>');
 			el('documentname').focus();
 			documentlookup.fn.search(value(query));
-			core.performance.stop('documentlookup.fn.init(\'' + value(query) + '\')');
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'documentlookup.var.js');

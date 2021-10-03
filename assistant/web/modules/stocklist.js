@@ -28,7 +28,6 @@ var stocklist = {
 				//add value and relevance
 				core.globalSearch.contribute('stocklist', [display, 1]);
 			}
-			core.performance.stop('stocklist.api.available(\'' + search + '\')');
 		},
 		addToCart: async (index) => {
 			// this only makes sense in case of using the ticketorder-module
@@ -36,7 +35,7 @@ var stocklist = {
 			core.fn.async.memory.write('ticketorderCart', ticketorderCart + index + ",");
 		},
 		currentStatus: () => {
-			core.performance.stop('stocklist.api.currentStatus()');
+			return;
 		}
 	},
 	fn: {
@@ -51,7 +50,7 @@ var stocklist = {
 		},
 		search: async (query) => {
 			query = query || el('itemname').value;
-			core.performance.start('stocklist.fn.input(\'' + value(query) + '\')'); //possible duplicate
+			core.history.write('stocklist.fn.init(\'' + value(query) + '\')');
 			let core_ticketorder = await core.fn.async.memory.read('core_ticketorder'),
 				found,
 				list = '',
@@ -108,8 +107,6 @@ var stocklist = {
 			} else {
 				return stocklist.data.content.length - 1;
 			}
-			core.performance.stop('stocklist.fn.input(\'' + value(query) + '\')');
-			core.history.write(['stocklist.fn.init(\'' + value(query) + '\')']);
 		},
 		order: {
 			options: async () => {
@@ -163,7 +160,6 @@ var stocklist = {
 			el('itemname').focus();
 			stocklist.temp.overallItems = await stocklist.fn.search();
 			core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'stocklist'));
-			core.performance.stop('stocklist.fn.init(\'' + value(query) + '\')');
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'stocklist.var.js');

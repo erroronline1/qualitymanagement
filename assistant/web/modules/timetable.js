@@ -20,9 +20,9 @@ var timetable = {
 				termsFound;
 			if (typeof searchTerms !== 'undefined') {
 				termsFound = await core.fn.async.smartSearch.lookup(search, searchTerms, true);
-				termsFound.forEach( (value)=> {
-				// if smartsearch returns strict or fuzzy matches 
-				found = true;
+				termsFound.forEach((value) => {
+					// if smartsearch returns strict or fuzzy matches 
+					found = true;
 				});
 			}
 			if (found) {
@@ -34,12 +34,10 @@ var timetable = {
 				//add value and relevance
 				core.globalSearch.contribute('timetable', [display, 1]);
 			}
-			core.performance.stop('timetable.api.available(\'' + search + '\')');
 		},
 		currentStatus: async () => {
 			let display = await timetable.fn.favouriteHandler.get();
 			if (display) core.globalSearch.contribute('timetable', [display, 1]);
-			core.performance.stop('timetable.api.currentStatus()');
 		}
 	},
 	fn: {
@@ -57,14 +55,11 @@ var timetable = {
 		},
 		search: async (query) => {
 			query = query || el('timetablequery').value;
-			core.performance.start('timetable.fn.input(\'' + value(query) + '\')'); //possible duplicate
 			let open;
 			if (value(query) !== '') {
 				open = await timetable.fn.open(query);
 				core.fn.static.popup(open);
 			}
-			core.performance.stop('timetable.fn.input(\'' + value(query) + '\')');
-			core.history.write(['timetable.fn.init(\'\')']);
 		},
 		linkfile: async (name, favourite) => {
 			let link,
@@ -154,7 +149,7 @@ var timetable = {
 			core.fn.async.stdout('temp', core.fn.static.lang('explanation', 'timetable') + '<br />');
 			core.fn.async.stdout('output', '<div id="favourites">' + await timetable.fn.favouriteHandler.get('withtools') + '</div>');
 			if (value(query) !== '') timetable.fn.search(value(query));
-			core.performance.stop('timetable.fn.init(\'' + value(query) + '\')');
+			core.history.write('timetable.fn.init(\'\')');
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'timetable.var.js');
