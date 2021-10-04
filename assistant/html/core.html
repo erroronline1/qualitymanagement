@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script>
+		//////////////////////////////////////////////////////////////
+		//  2020-2021 by error on line 1 (erroronline.one)
+		//
+		//  modular software platform to handle different javascripts
+		//  for automated dataprocessing where security setting leave
+		//  no other options or buying another software were to expensive
+		//
+		//  tested with firefox and edge
+		//
+		//	add changes to the changelog in library/core/core.userDialogue.js
+		//
+		//////////////////////////////////////////////////////////////
+
+		const rootScriptImport = (src) => {
+				return new Promise((resolve, reject) => {
+					let script = document.createElement('script')
+					script.type = 'text/javascript'
+					script.onload = resolve
+					script.onerror = reject
+					script.src = src
+					document.head.append(script)
+				});
+			},
+			scripts = ["core/core.js",
+				"core/lz-string.min.js",
+				"library/core/core.var.js",
+				"library/core/core.fn.languageSynthesis.js",
+				"library/core/core.userDialogue.js",
+				"library/core/core.drm.js",
+				// this has to be loaded afterwards in this particular order
+				// for it is supposed to override core-functions with python implementations
+				"core/core.eel.js"
+			],
+			imports = async (files) => {
+					for (let s of files) {
+						await rootScriptImport(ROOT + s);
+					}
+				},
+				initApp = async () => {
+					// import eel if available and set ROOT. if != "../" eel is likely present
+					try {
+						ROOT = await eel.webroot()();
+						ROOT = ROOT.trim();
+					} catch {
+						/* idgaf */
+					}
+					document.getElementById('corestyle').href = ROOT + 'core/core.css';
+					// import all the scripts
+					await imports(scripts);
+					// override core-functions if applicable
+					await core.eel();
+					// set up encironment variables
+					await core.init.application();
+					// launch ui
+					await core.init.ui();
+				};
+		let ROOT = "../";
+	</script>
+	<script src="/eel.js"></script>
+	<link rel="shortcut icon" href="./favicon.ico">
+	<link id="corestyle" rel="stylesheet" type="text/css" />
+	<link id="colortheme" rel="stylesheet" type="text/css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+	<header id="header">
+	</header>
+	<main>
+		<nav id="menu">
+		</nav>
+		<div id="content">
+			<article id="temp">
+			</article>
+			<aside id="output" onclick="core.fn.static.selectText('output')">
+			</aside>
+		</div>
+	</main>
+	<div id="popup">
+		<div id="popuptext"></div>
+	</div>
+	<div id="growlNotif"></div>
+	<script>
+		initApp();
+	</script>
+</body>
+
+</html>
