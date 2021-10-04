@@ -1,0 +1,12 @@
+run:
+	python -m venv .venv
+	.venv/Scripts/activate
+	pip install -r requirements.txt
+
+launch:
+	python assistant.py --webfolder: "{local directory}"
+
+or:
+	python -m eel assistant.py html --onefile --noconsole --icon html/favicon.ico
+	assistant --webfolder: "{local directory}"
+

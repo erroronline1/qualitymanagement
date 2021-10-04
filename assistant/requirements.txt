@@ -1,0 +1,2 @@
+eel==0.14.0
+PyInstaller==4.5.1
