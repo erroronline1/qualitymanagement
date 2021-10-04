@@ -1,6 +1,8 @@
 import eel
-import sqlite3
 from pathlib import Path
+import re
+import sqlite3
+import sys
 
 class db_handler:
 	def __init__(self, db):
@@ -61,10 +63,23 @@ class db_handler:
 
 _database = db_handler(str(Path.home()) +'/qmassistant.db')
 
-@eel.expose # expose function to javascript
-# if this is not answering, frontend core functions will not be overridden
-def available():
-	return True
+WEBFOLDER = False
+# argument handler
+sys.argv.pop(0)
+options = {
+	'w':'((?:--webfolder|-w)[:\s]+)(.+)(?:\s|$)'}
+params = ' '.join(sys.argv) + ' '
+for opt in options:
+	arg = re.findall(options[opt], params, re.IGNORECASE)
+	if opt == 'w' and bool(arg):
+		WEBFOLDER = str(arg[0][1])
+		params = params.replace(''.join(arg[0]), '')
+	else:
+		pass
+
+@eel.expose
+def webroot():
+	return WEBFOLDER
 
 @eel.expose
 def	core_memory_clear():
@@ -91,7 +106,10 @@ def core_memory_write(name, value):
 	_database.write(name, value)
 	return True
 
-eel.init('web') #fldr name for web content
+if WEBFOLDER:
+	eel.init('html') #fldr name for web content
+	eel.start('core.html', port=11235, mode='edge')
+else:
+	print('please specify webfolder from command line with --webfolder "{ path }"')
 
-eel.start('core.html', port=11235, mode='edge')
 del _database

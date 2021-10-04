@@ -1,8 +1,7 @@
 // override webcompatible core-functions with python eel functions
-core.eel = async () => {
-	try {
-		await eel.available()();
-		if (eel_available) {
+core.eel = () => {
+	if (ROOT != "../") {
+		try {
 			core.fn.async.memory = {
 				clear: async function () {
 					eel.core_memory_clear()();
@@ -37,8 +36,8 @@ core.eel = async () => {
 					} else eel.core_memory_delete(name.toString())();
 				}
 			};
+		} catch {
+			/* because eel might be undefined */
 		}
-	} catch (error) {
-		console.warn("this application was not started from python eel. default use from browser. functions may be limited.")
-	}
+	} else console.warn("this application was not started from python eel. default use from browser. functions may be limited.")
 };
