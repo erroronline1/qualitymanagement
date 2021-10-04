@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script src="core/core.js">
+		//////////////////////////////////////////////////////////////
+		//  2020-2021 by error on line 1 (erroronline.one)
+		//
+		//  modular software platform to handle different javascripts
+		//  for automated dataprocessing where security setting leave
+		//  no other options or buying another software were to expensive
+		//
+		//  tested with firefox and edge
+		//
+		//	add changes to the changelog in library/core/core.userDialogue.js
+		//
+		//////////////////////////////////////////////////////////////
+	</script>
+	<script src="core/lz-string.min.js"></script>
+	<script src="library/core/core.var.js"></script>
+	<script src="library/core/core.fn.languageSynthesis.js"></script>
+	<script src="library/core/core.userDialogue.js"></script>
+	<script src="library/core/core.drm.js"></script>
+	<script src="/eel.js">
+		// import python implementation
+	</script>
+	<script src="core/core.eel.js">
+		// note that the order of fetching scripts is crucial as this library overrides the
+		// web compatible core functions with python-connected replacements 
+	</script>
+	<link href="core/core.css" rel="stylesheet" type="text/css" />
+	<link id="colortheme" rel="stylesheet" type="text/css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+	<header id="header">
+	</header>
+	<main>
+		<nav id="menu">
+		</nav>
+		<div id="content">
+			<article id="temp">
+			</article>
+			<aside id="output" onclick="core.fn.static.selectText('output')">
+			</aside>
+		</div>
+	</main>
+	<div id="popup">
+		<div id="popuptext"></div>
+	</div>
+	<div id="growlNotif"></div>
+	<script>
+		core.eel().then(
+		core.init.application().then(core.init.ui()));
+	</script>
+</body>
+
+</html>
