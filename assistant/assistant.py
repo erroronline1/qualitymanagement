@@ -1,3 +1,4 @@
+import cchardet
 import eel
 from pathlib import Path
 import re
@@ -80,6 +81,15 @@ for opt in options:
 @eel.expose
 def webroot():
 	return WEBFOLDER
+
+@eel.expose
+def rootResourcesImport(file):
+    # https://dev.to/bowmanjd/character-encodings-and-detection-with-python-chardet-and-cchardet-4hj7
+    blob = Path(file).read_bytes()
+    detection = cchardet.detect(blob)
+    encoding = detection["encoding"]
+    text = blob.decode(encoding)
+    return text
 
 @eel.expose
 def	core_memory_clear():
