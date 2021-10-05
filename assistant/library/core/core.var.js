@@ -128,14 +128,12 @@ core.var = {
 			de: 'Rosé'
 		},
 	},
-	//	rootdir in case different handling of source files is necessary over developement and production sites
-	coreRootDir: location.pathname.substring(1, location.pathname.lastIndexOf('/')).replace(/%20/g, " ") + '/',
 	// moduleDir path to modules
-	moduleDir: ROOT + 'modules/',
+	moduleDir: root.dir + 'modules/',
 	// moduleDataDir path to modules data files according to xlsm-files
-	moduleDataDir: ROOT + 'library/module.data/',
+	moduleDataDir: root.dir + 'library/module.data/',
 	// moduleVarDir path to modules config files
-	moduleVarDir: ROOT + 'library/module.var/',
+	moduleVarDir: root.dir + 'library/module.var/',
 	// this will be automatically set to the last loaded module
 	currentScope: null,
 	//	logo as shown in upper left corner

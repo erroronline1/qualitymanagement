@@ -1,6 +1,6 @@
 // override webcompatible core-functions with python eel functions
 core.eel = () => {
-	if (ROOT != "../") {
+	if (root.dir != "../") {
 		try {
 			core.fn.async.memory = {
 				clear: async function () {
@@ -12,7 +12,6 @@ core.eel = () => {
 				},
 				keyDump: async function () {
 					let keys = await eel.core_memory_keyDump()();
-					console.log(keys);
 					return keys.sort();
 				},
 				maxSpace: async function () {
@@ -20,7 +19,6 @@ core.eel = () => {
 				},
 				read: async function (name) {
 					let value = await eel.core_memory_read(name.toString())();
-					console.log(name, value);
 					if (value == null) return false;
 					else return value;
 				},

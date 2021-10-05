@@ -310,7 +310,11 @@ core.fn = {
 						document.head.append(script)
 					})
 				};
-				await rootScriptImport(url).then(async () => {
+				await root.resourcesImport(url, {
+					create: 'script',
+					type: 'text/javascript',
+					id: null
+				}).then(async () => {
 					if (typeof (callback) !== 'undefined') {
 						await eval(callback);
 					}
@@ -577,8 +581,10 @@ core.init = {
 		document.title = core.fn.static.lang('title');
 		//load settings or defaults
 		document.body.style.fontSize = ((coreFontsize || 0) / 10 + 1) + 'em';
-		el('colortheme').href = ROOT + 'core/' + ((coreTheme in core.var.themes ? coreTheme :
-			'default') || 'default') + '.css';
+		await root.resourcesImport(root.dir + 'core/' + ((coreTheme in core.var.themes ? coreTheme :
+			'default') || 'default') + '.css', {
+			id: 'coretheme'
+		});
 
 		await updateTracker.alert();
 		for (let key of Object.keys(core.var.modules)) {
@@ -678,7 +684,7 @@ core.setup = {
 			});
 		}
 		module[latestNotif] = await core.fn.async.memory.read(latestNotif);
-		display = core.fn.static.lang('settingThemeCaption') + ':<br />' + core.fn.static.insert.select(themeSelector, 'coreTheme', 'coreTheme', (coreTheme || null), 'onchange="el(\'colortheme\').href = ROOT + \'core/\' + this.value + \'.css\'; core.fn.async.memory.write(\'coreTheme\', this.value)"') +
+		display = core.fn.static.lang('settingThemeCaption') + ':<br />' + core.fn.static.insert.select(themeSelector, 'coreTheme', 'coreTheme', (coreTheme || null), 'onchange="root.resourcesImport(root.dir + \'core/\' + this.value + \'.css\', {id: \'coretheme\'}); core.fn.async.memory.write(\'coreTheme\', this.value)"') +
 			'<br /><br />' + core.fn.static.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (coreFontsize || 0) + '" onchange="document.body.style.fontSize = (this.value / 10 + 1) + \'em\'; core.fn.async.memory.write(\'coreFontsize\', this.value)" />' +
 			'<br />' + core.fn.static.lang('settingLanguageCaption') + ':<br />' + core.fn.static.insert.select(core.var.registeredLanguages, 'coreLanguage', 'coreLanguage', (core.var.selectedLanguage || null), 'title="' + core.fn.static.lang('settingRestartNeccessary') + '" onchange="core.fn.async.memory.write(\'coreLanguage\', this.value); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"') +
 			'<br /><br />' + core.fn.static.insert.checkbox(core.fn.static.lang('settingSearchOptionFuzzy'), 'coreFuzzySearch', (coreFuzzySearch || 0), 'onchange="this.checked ? core.fn.async.memory.write(\'coreFuzzySearch\', 1) : core.fn.async.memory.delete(\'coreFuzzySearch\');  core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"') +

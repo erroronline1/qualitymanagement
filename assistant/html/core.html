@@ -18,55 +18,96 @@
 		//
 		//////////////////////////////////////////////////////////////
 
-		const rootScriptImport = (src) => {
-				return new Promise((resolve, reject) => {
-					let script = document.createElement('script')
-					script.type = 'text/javascript'
-					script.onload = resolve
-					script.onerror = reject
-					script.src = src
-					document.head.append(script)
+		let root = {
+			dir: "../",
+			imports: async function (files) {
+				for (let s of files) {
+					await this.resourcesImport(this.dir + s, {
+						create: 'script',
+						type: 'text/javascript',
+						id: null
+					});
+				}
+			},
+			initApp: async function () {
+				// import eel if available and set ROOT. if != '../' eel is likely present
+				try {
+					this.dir = await eel.webroot()();
+					this.dir = this.dir.trim();
+				} catch {
+					/* idgaf */
+				}
+				// create style container as either link or id'd style area
+				let styleContainer = ['corelayout', 'coretheme'];
+				styleContainer.forEach((container) => {
+					let resource;
+					if (this.dir == '../') {
+						resource = document.createElement('link');
+						resource.rel = 'stylesheet';
+						resource.type = 'text/css';
+					} else {
+						resource = document.createElement('style');
+					}
+					resource.id = container;
+					document.head.append(resource);
+				});
+
+				await this.resourcesImport(this.dir + 'core/core.css', {
+					id: 'corelayout'
+				});
+				// import all the scripts
+				await this.imports(this.scripts);
+				// override core-functions if applicable
+				await core.eel();
+				// set up encironment variables
+				await core.init.application();
+				// launch ui
+				await core.init.ui();
+			},
+			resourcesImport: function (src, dest) {
+				return new Promise(async (resolve, reject) => {
+					let resource;
+					if (dest.id) {
+						resource = document.getElementById(dest.id);
+					} else {
+						resource = document.createElement(dest.create);
+						resource.type = dest.type;
+						resource.onload = resolve;
+						resource.onerror = reject;
+					}
+					if (this.dir != '../') {
+						try {
+							// no access to absolute local files from html side for browsers security reasons
+							// eel reads filecontent to be written into resource
+							resource.innerHTML = await eel.rootResourcesImport(src)();
+							resolve();
+						} catch {
+							reject();
+						}
+					} else {
+						// because ids are for css links only in this scenario
+						if (dest.id) resource.href = src;
+						else resource.src = src;
+						resource.onload = resolve;
+						resource.onerror = reject;
+					}
+					if (!dest.id) document.head.append(resource);
 				});
 			},
-			scripts = ["core/core.js",
-				"core/lz-string.min.js",
-				"library/core/core.var.js",
-				"library/core/core.fn.languageSynthesis.js",
-				"library/core/core.userDialogue.js",
-				"library/core/core.drm.js",
+			scripts: ['core/core.js',
+				'core/lz-string.min.js',
+				'library/core/core.var.js',
+				'library/core/core.fn.languageSynthesis.js',
+				'library/core/core.userDialogue.js',
+				'library/core/core.drm.js',
 				// this has to be loaded afterwards in this particular order
 				// for it is supposed to override core-functions with python implementations
-				"core/core.eel.js"
-			],
-			imports = async (files) => {
-					for (let s of files) {
-						await rootScriptImport(ROOT + s);
-					}
-				},
-				initApp = async () => {
-					// import eel if available and set ROOT. if != "../" eel is likely present
-					try {
-						ROOT = await eel.webroot()();
-						ROOT = ROOT.trim();
-					} catch {
-						/* idgaf */
-					}
-					document.getElementById('corestyle').href = ROOT + 'core/core.css';
-					// import all the scripts
-					await imports(scripts);
-					// override core-functions if applicable
-					await core.eel();
-					// set up encironment variables
-					await core.init.application();
-					// launch ui
-					await core.init.ui();
-				};
-		let ROOT = "../";
+				'core/core.eel.js'
+			]
+		};
 	</script>
 	<script src="/eel.js"></script>
 	<link rel="shortcut icon" href="./favicon.ico">
-	<link id="corestyle" rel="stylesheet" type="text/css" />
-	<link id="colortheme" rel="stylesheet" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -88,7 +129,7 @@
 	</div>
 	<div id="growlNotif"></div>
 	<script>
-		initApp();
+		root.initApp();
 	</script>
 </body>
 
