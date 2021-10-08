@@ -41,6 +41,6 @@ timetable.var = {
 		en: ['timetable', 'timesheet'],
 		de: ['Arbeitszeittabelle', 'Arbeitszeitblatt']
 	},
-	path: '../timetables/',
+	path: '../../timetables/',
 	disableOutputSelect: true,
 };
