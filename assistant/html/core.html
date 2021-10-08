@@ -20,6 +20,7 @@
 
 		let root = {
 			dir: "../",
+			eel: false,
 			imports: async function (files) {
 				for (let s of files) {
 					await this.resourcesImport(this.dir + s, {
@@ -34,6 +35,7 @@
 				try {
 					this.dir = await eel.webroot()();
 					this.dir = this.dir.trim();
+					this.eel = (this.dir !== '../');
 				} catch {
 					/* idgaf */
 				}
@@ -41,7 +43,7 @@
 				let styleContainer = ['corelayout', 'coretheme'];
 				styleContainer.forEach((container) => {
 					let resource;
-					if (this.dir == '../') {
+					if (!this.eel) {
 						resource = document.createElement('link');
 						resource.rel = 'stylesheet';
 						resource.type = 'text/css';
@@ -63,6 +65,10 @@
 				await core.init.application();
 				// launch ui
 				await core.init.ui();
+				if (this.eel) el('environment').innerHTML = core.fn.static.insert.icon('python', null, null,
+					'title="nice! python support <3"');
+				else el('environment').innerHTML = core.fn.static.insert.icon('web', null, null,
+					'title="plain web view"');
 			},
 			resourcesImport: function (src, dest) {
 				return new Promise(async (resolve, reject) => {
@@ -75,7 +81,7 @@
 						resource.onload = resolve;
 						resource.onerror = reject;
 					}
-					if (this.dir != '../') {
+					if (this.eel) {
 						try {
 							// no access to absolute local files from html side for browsers security reasons
 							// eel reads filecontent to be written into resource
@@ -128,6 +134,7 @@
 		<div id="popuptext"></div>
 	</div>
 	<div id="growlNotif"></div>
+	<div id="environment"></div>
 	<script>
 		root.initApp();
 	</script>

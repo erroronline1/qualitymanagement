@@ -1,6 +1,6 @@
 // override webcompatible core-functions with python eel functions
 core.eel = () => {
-	if (root.dir != "../") {
+	if (root.eel) {
 		try {
 			core.fn.async.memory = {
 				clear: async function () {
@@ -35,7 +35,7 @@ core.eel = () => {
 				}
 			};
 		} catch {
-			/* because eel might be undefined */
+			/* because if not started from eel, this resource is loaded anyway and eel-object stops rendering with undefined-error */
 		}
 	} else console.warn("this application was not started from python eel. default use from browser. functions may be limited.")
 };

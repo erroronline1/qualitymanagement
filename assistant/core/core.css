@@ -115,17 +115,8 @@ aside {
 	display: inline
 }
 
-/* small menu like responsive version by user demand */
 #menu.small {
 	flex: 0 0 4em;
-}
-
-/* browser switch for ie */
-@media screen and (-ms-high-contrast: active),
-(-ms-high-contrast: none) {
-	#menu.small {
-		flex: 0 0 2em;
-	}	
 }
 
 #menu.small div {
@@ -399,6 +390,24 @@ hr {
 
 .singlefavouritehandler:hover svg {
 	animation: singlefavouritehandler .25s 1.5s normal forwards;
+}
+
+#environment {
+	padding:1em;
+	width: 3em;
+	height: 3em;
+	position: absolute;
+	right: -1.5em;
+	top: -1.5em;
+	transform:rotate(45deg);
+	background-color:rgba(0, 164, 201, 1);
+}
+
+#environment svg {
+	transform: rotate(-45deg);
+	margin-top:.8em;
+	width: 100%;
+	height: 100%;
 }
 
 @keyframes singlefavouritehandler {
