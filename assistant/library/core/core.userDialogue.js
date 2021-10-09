@@ -98,7 +98,7 @@ let randomTip = {
 			en: 'In case you are entitled to a password for some parts of the assistant you can cipher it from the settings menu and let yourself be registered in the data rights management list by mail.',
 			de: 'Wenn du die Berechtigung für ein Zugangskennwort für manche Bereiche des Assistenten hast kannst du dieses bei den Einstellungen chiffrieren und per eMail in die Berechtigungsliste eintragen lassen.'
 		},
-		//	module specific tips
+		//	(module-) specific tips
 		{
 			en: 'Remember pointing our errors to the inventory control via email.',
 			de: 'Vergiss nicht dem Einkauf per eMail bescheid zu sagen, falls dir Fehler auffallen.'
@@ -110,8 +110,11 @@ let randomTip = {
 		{
 			en: 'Favourite entries can be deleted as a whole and individual. The latter can be achieved by hovering about two seconds above the link.',
 			de: 'Favoriten können gleichzeitig und einzeln gelöscht werden. Letzteres kann erreicht werden indem du mit dem Mauszeiger ungefähr zwei Sekunden über dem Link bleibst.'
+		},
+		{
+			en: 'Edge 94 is known to download files instead of opening them with the systems default application. This could be true for other browsers and lead to a weird behavior and cluttered storage.',
+			de: 'Von Edge 94 ist bekannt, dass Dateien heruntergeladen, statt mit der Standard-Anwendung geöffnet zu werden. Das könnte auch auf andere Browser zutreffen und zu einem seltsamen Verhalten und einem überfüllten Speicherplatz führen.'
 		}
-
 	],
 };
 

@@ -31,63 +31,63 @@ var documentbundles = {
 		}
 	},
 	fn: {
-		linkfile: function (url) {
+		linkfile: async function (url) {
 			// bad filename or dynamic url
 			if (typeof (url) === 'object') {
-				return '<a href="' + url[0] + '" target="_blank">' + url[1] + '</a><br />';
+				return '<a ' + await core.fn.async.file.link(url[0]) + '>' + url[1] + '</a><br />';
 			}
 			// url with quality filename
-			else return '<a href="' + url + '" target="_blank">' + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.')).substring(1) + '</a><br />';
+			else return '<a ' + await core.fn.async.file.link(url) + '>' + url.substring(url.lastIndexOf('/'), url.lastIndexOf('.')).substring(1) + '</a><br />';
 		},
-		serialPrint: function (files) {
-			files = files.substring(1).replace(/\//g, '\\').split(',');
-			let
-				index = 0,
-				print;
-			// ok, i added this here, but due to cors-issues this won't print - even with relative paths; currently opening all files instead; popup-blocking might have to be set
-			print = setInterval(function () {
-				if (index < files.length) {
-					this['print' + index] = window.open('file:///' + files[index], 'print' + index);
-					index++;
-				} else clearInterval(print);
-			}, 100);
+		serialPrint: (treatment) => {
+			let pack = documentbundles.data.bundles[treatment],
+				serialList = [];
+			Object.keys(pack.primary).forEach(function (index) {
+				if (documentbundles.data.exceptions.noserialprint.indexOf(pack.primary[index]) < 0) serialList.push(pack.primary[index]);
+			});
+			//add exceptive documents according to additional data (inputs in form)
+			if (el('enableexceptions').checked) {
+				Object.keys(documentbundles.data.exceptions.addtobundle).forEach(function (index) {
+					if (pack.primary.indexOf(documentbundles.data.exceptions.addtobundle[index]) < 0) {
+						serialList.push(documentbundles.data.exceptions.addtobundle[index]);
+					}
+				});
+			}
+			return serialList;
 		},
-		gen: (treatment) => {
+		gen: async (treatment) => {
 			let pack = documentbundles.data.bundles[treatment],
 				primary = '',
 				secondary = '',
-				serialPDFlist = '',
 				serialPrintExceptions;
-			// regular documents
 			if (typeof pack !== 'undefined') {
-				Object.keys(pack.primary).forEach(function (index) {
-					primary += documentbundles.fn.linkfile(pack.primary[index]);
-					if (documentbundles.data.exceptions.noserialprint.indexOf(pack.primary[index]) < 0) serialPDFlist += ',' + pack.primary[index];
-				});
+				// regular documents
+				for (let index of Object.keys(pack.primary)) {
+					primary += await documentbundles.fn.linkfile(pack.primary[index]);
+				};
 				serialPrintExceptions = '';
 				documentbundles.data.exceptions.noserialprint.forEach(function (el) {
 					serialPrintExceptions += ', ' + el.substring(el.lastIndexOf('/'), el.lastIndexOf('.')).substring(1);
 				});
 				//add exceptive documents according to additional data (inputs in form)
 				if (el('enableexceptions').checked) {
-					Object.keys(documentbundles.data.exceptions.addtobundle).forEach(function (index) {
+					for (let index of Object.keys(documentbundles.data.exceptions.addtobundle)) {
 						if (pack.primary.indexOf(documentbundles.data.exceptions.addtobundle[index]) < 0) {
-							primary += documentbundles.fn.linkfile(documentbundles.data.exceptions.addtobundle[index]);
-							serialPDFlist += ',' + documentbundles.data.exceptions.addtobundle[index];
+							primary += await documentbundles.fn.linkfile(documentbundles.data.exceptions.addtobundle[index]);
 						}
-					});
+					};
 				}
-				primary += '<hr /><a href="javascript:documentbundles.fn.serialPrint(\'' + serialPDFlist + '\')">' + core.fn.static.lang('serialPrintLink', 'documentbundles', serialPrintExceptions.substring(2)) + '</a>';
+				primary += '<hr /><a href="javascript:core.fn.async.file.batch(documentbundles.fn.serialPrint(\'' + treatment + '\'))">' + core.fn.static.lang('serialPrintLink', 'documentbundles', serialPrintExceptions.substring(2)) + '</a>';
 				primary += '<br /><br />' + core.fn.static.lang('additionalInfo', 'documentbundles');
-				Object.keys(pack.secondary).forEach(function (index) {
-					secondary += documentbundles.fn.linkfile(pack.secondary[index]);
-				});
+				for (let index of Object.keys(pack.secondary)) {
+					secondary += await documentbundles.fn.linkfile(pack.secondary[index]);
+				};
 				core.fn.async.stdout('temp', '<span class="highlight">' + core.fn.static.lang('primaryCaption', 'documentbundles') + '</span><br />' + primary);
 				core.fn.async.stdout('output', '<span class="highlight">' + core.fn.static.lang('secondaryCaption', 'documentbundles') + '</span><br />' + secondary);
 			}
 			core.history.write('documentbundles.fn.init(\'' + treatment + '\')');
 		},
-		init: async (query='') => {
+		init: async (query = '') => {
 			let out;
 			out = '<select id="packages" onchange="var sel=this.options[this.selectedIndex].value; if (sel) documentbundles.fn.gen(sel)"><option value="">' + core.fn.static.lang('selectDefault', 'documentbundles') + '</option>';
 			Object.keys(documentbundles.data.bundles).forEach(function (key) {

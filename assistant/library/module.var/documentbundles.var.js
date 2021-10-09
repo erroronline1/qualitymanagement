@@ -1,18 +1,4 @@
 documentbundles.var = {
-	serialPrintShellCommand: { //making use of core.var.selectedOs()
-		win7: {
-			pdf: '"' + 'C:/Program Files/Adobe/Reader 11.0/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t',
-			docm: ''
-		},
-		win10: {
-			pdf: '"' + 'C:/Program Files (x86)/Adobe/Reader 11.0/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t',
-			docm: '"' + 'C:/Program Files (x86)/Microsoft Office/root/Office16/WINWORD.EXE'.replace(/\//g, '\\') + '" /q /n /mFilePrintDefault /mFileExit'
-		},
-		win10k: {
-			pdf: '"' + 'C:/Program Files (x86)/Adobe/Acrobat Reader DC/Reader/AcroRd32.exe'.replace(/\//g, '\\') + '" /s /h /t',
-			docm: '"' + 'C:/Program Files (x86)/Microsoft Office/root/Office16/WINWORD.EXE'.replace(/\//g, '\\') + '" /q /n /mFilePrintDefault /mFileExit'
-		}
-	},
 	lang: {
 		useCaseDescription: {
 			en: 'Shown are all required documents. Process descriptions are applicable.',
@@ -46,15 +32,17 @@ documentbundles.var = {
 			en: 'Additional information:' +
 				'<br /><br /><div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + 'Scans can not be inserted?<br />Serialprint issues?<ul>' +
 				'<li>Scans have to have the PDF- oder JPG-format.</li>' +
-				'<li>You\'ll probably have to set the correct Acrobat-Reader Version within the Settings (...) -> Advanced ({ }).</li>' +
+				'<li>You\'ll probably have to set your environment within the Settings (...) -> Advanced ({ }).</li>' +
 				'<li>You\'ll probably have to set Pop-Up permissions. All documents will be opened but unfortunately have to be printed manually.</li>' +
+				'<li>Word might open files in read mode by default disabling automated print command. This behaviour has to be set within word itself.</li>' +
 				'</ul></div>',
 			de: 'Zusatzinformation:' +
 				'<br /><br /><div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + 'Scans können nicht eingefügt werden?<br />Seriendruck nicht möglich?<ul>' +
 				'<li>Scans müssen im Format PDF oder JPG gemacht werden.</li>' +
 				'<li>Eventuell die Betriebsumgebung für die korrekte Acrobat-Reader-Version bei Einstellungen (...) -> Erweitert ({ }) anpassen.</li>' +
 				'<li>Eventuell die Pop-Up berechtigungen erteilen einstellen. Es werden alle Dokumente geöffnet, müsen aber leider manuell gedruckt werden.</li>' +
-				'</ul></div>'
+				'<li>Word öffnet Datein möglicherweise im Lese-Modus wodurch die automatische Druckfunktion nicht funktioniert. Diese Einstellung muss in Word selbst angepasst werden.</li>' +
+		'</ul></div>'
 		},
 	},
 	disableOutputSelect: true,

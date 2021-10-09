@@ -95,7 +95,7 @@ var correspondence = {
 				core.fn.static.insert.radio(core.fn.static.lang('inputOptionInformal', 'correspondence'), 'age', 'child', false, 'onchange="correspondence.fn.gen()"') + '' +
 				'</div>' +
 				(typeof correspondence.additionalOptions[correspondence.var.currentModule] !== "undefined" && correspondence.additionalOptions[correspondence.var.currentModule] ? '<br />' + correspondence.additionalOptions[correspondence.var.currentModule] : '') +
-				(core.var.letterTemplate ? '<br /><br /><a href="' + core.var.letterTemplate + '" target="_blank">' + core.fn.static.insert.icon('word') + core.fn.static.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.fn.static.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
+				(core.var.letterTemplate ? '<br /><br /><a ' + await core.fn.async.file.link(core.var.letterTemplate) + '>' + core.fn.static.insert.icon('word') + core.fn.static.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.fn.static.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
 				'<br /><br /><a id="mailto" href="javascript:core.fn.static.dynamicMailto()">' + core.fn.static.insert.icon('email') + core.fn.static.lang('openMailApp', 'correspondence') + '</a>' +
 				core.fn.static.insert.limitBar('13em', core.fn.static.lang('mailtoLimitBar')) +
 				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.fn.static.insert.icon('outlook') + core.fn.static.lang('openOutlook', 'correspondence') + '</a>' : '');

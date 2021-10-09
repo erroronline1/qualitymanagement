@@ -58,12 +58,8 @@ a:hover::after {
 	color: rgb(191, 97, 106);
 }
 
-a:link {
+a:link, a[onclick] {
 	color: rgb(94, 129, 172);
-}
-
-a:visited {
-	color: rgb(208, 135, 112);
 }
 
 /*///////////////////////////////////////////// 

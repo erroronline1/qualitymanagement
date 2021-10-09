@@ -1,7 +1,9 @@
 import cchardet
 import eel
+import os
 from pathlib import Path
 import re
+import subprocess
 import sqlite3
 import sys
 
@@ -78,6 +80,12 @@ for opt in options:
 	else:
 		pass
 
+#   _     _ _
+#  |_|___|_| |_
+#  | |   | |  _|
+#  |_|_|_|_|_|
+#
+
 @eel.expose
 def webroot():
 	return WEBFOLDER
@@ -90,6 +98,12 @@ def rootResourcesImport(file):
     encoding = detection["encoding"]
     text = blob.decode(encoding)
     return text
+
+#                                 _             _ _ _
+#   _____ ___ _____ ___ ___ _ _  | |_ ___ ___ _| | |_|___ ___
+#  |     | -_|     | . |  _| | | |   | .'|   | . | | |   | . |
+#  |_|_|_|___|_|_|_|___|_| |_  | |_|_|__,|_|_|___|_|_|_|_|_  |
+#                          |___|                         |___|
 
 @eel.expose
 def	core_memory_clear():
@@ -116,10 +130,29 @@ def core_memory_write(name, value):
 	_database.write(name, value)
 	return True
 
+#   ___ _ _       _             _ _ _
+#  |  _|_| |___  | |_ ___ ___ _| | |_|___ ___
+#  |  _| | | -_| |   | .'|   | . | | |   | . |
+#  |_| |_|_|___| |_|_|__,|_|_|___|_|_|_|_|_  |
+#                                        |___|
+
+@eel.expose
+def file_handler(call):
+	escaped=[]
+	for arg in call:
+		escaped.append(os.path.normpath(arg) if re.search('./', arg) else arg)
+	subprocess.run(escaped)
+
+#       _           _
+#   ___| |_ ___ ___| |_
+#  |_ -|  _| .'|  _|  _|
+#  |___|_| |__,|_| |_|
+#
+
 if WEBFOLDER:
 	eel.init('html') #fldr name for web content
-	eel.start('core.html', port=11235, mode='edge')
+	eel.start('core.html', port = 11235, mode='edge')
 else:
-	print('please specify webfolder from command line with --webfolder "{ path }"')
+	print('please specify webfolder from command line with --webfolder "{ path with trailing /}"')
 
 del _database

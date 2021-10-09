@@ -157,7 +157,7 @@ core.var = {
 	//	corporate design considerations for font. used for copied content. has to be installed on local machine
 	corporateFontFace: 'Calibri',
 	corporateFontSize: '10pt',
-	letterTemplate: 'file:///E:/Quality Management/published/letter_template.docx', // if you want to use, else null
+	letterTemplate: 'E:/Quality Management/published/letter_template.docx', // if you want to use, else null
 	outlookWebUrl: 'https://exc20/owa/auth/logon.aspx', //if you have it installed else null
 	publishedFolder: 'file:///E:/Quality Management/published',
 
@@ -206,13 +206,68 @@ core.var = {
 		}
 	},
 
-	//supported OSs
-	oss: {
-		win10k: 'Windows 10 Adobe Reader DC',
-		win10: 'Windows 10 Adobe Reader XI',
-		win7: 'Windows 7'
+	// environments, primarily used for eel but declared here for being displayed within the settings
+	// also you'll never know if it comes in handy later for upcoming properties
+	// currently specifying behaviour of opening files according to extension
+	// maybe more specific as it has to be, but therefore customizable and more flexible
+	// eel executes using subprocess.call
+	// see https://docs.python.org/3/library/subprocess.html and https://stackoverflow.com/a/1585848/6087758
+	// open and batch have to be objects of args and occasionally executables. filepath will be added to args by default
+	environment: {
+		"Standard": {
+			acrobat: {
+				extensions: ['pdf'],
+				open: ['cmd', '/c', 'start', ''],
+				batch: ['cmd', '/c', 'start', '', 'C:/Program Files (x86)/Adobe/Acrobat 2017/Acrobat/Acrobat.exe', '/t', '/s', '/h']
+			},
+			excel: {
+				extensions: ['xls', 'xlsx', 'xlsm'],
+				open: ['cmd', '/c', 'start', ''],
+				batch: ['cmd', '/c', 'start', '', 'C:/Program Files/Microsoft Office 15/root/office15/EXCEL.EXE', '/q', '/n', '/mFilePrintDefault', '/mFileExit']
+			},
+			word: {
+				extensions: ['doc', 'docx', 'docm'],
+				open: ['cmd', '/c', 'start', ''],
+				batch: ['cmd', '/c', 'start', '', 'C:/Program Files/Microsoft Office 15/root/office15/WINWORD.EXE', '/q', '/n', '/mFilePrintDefault', '/mFileExit']
+			},
+		},
+		"Jane Doe, John Doe": {
+			acrobat: {
+				extensions: ['pdf'],
+				open: ['cmd', '/c', 'start', ''],
+				batch: ['cmd', '/c', 'start', '', 'C:/Program Files (x86)/Adobe/Reader 11.0/Reader/AcroRd32.exe', '/t', '/s', '/h']
+			},
+			excel: {
+				extensions: ['xls', 'xlsx', 'xlsm'],
+				open: ['cmd', '/c', 'start', ''],
+				batch: ['cmd', '/c', 'start', '', 'C:/Program Files (x86)/Microsoft Office/root/Office16/EXCEL.EXE', '/q', '/n', '/mFilePrintDefault', '/mFileExit']
+			},
+			word: {
+				extensions: ['doc', 'docx', 'docm'],
+				open: ['cmd', '/c', 'start', ''],
+				batch: ['cmd', '/c', 'start', '', 'C:/Program Files (x86)/Microsoft Office/root/Office16/WINWORD.EXE', '/q', '/n', '/mFilePrintDefault', '/mFileExit']
+			},
+		},
+		"Monika Mustermann, Max Mustermann": {
+			acrobat: {
+				extensions: ['pdf'],
+				open: ['cmd', '/c', 'start', ''],
+				batch: ['cmd', '/c', 'start', '', 'C:/Program Files (x86)/Adobe/Acrobat Reader DC/Reader/AcroRd32.exe', '/t', '/s', '/h']
+			},
+			excel: {
+				extensions: ['xls', 'xlsx', 'xlsm'],
+				open: ['cmd', '/c', 'start', ''],
+				batch: ['cmd', '/c', 'start', '', 'C:/Program Files (x86)/Microsoft Office/root/Office16/EXCEL.EXE', '/q', '/n', '/mFilePrintDefault', '/mFileExit']
+			},
+			word: {
+				extensions: ['doc', 'docx', 'docm'],
+				open: ['cmd', '/c', 'start', ''],
+				batch: ['cmd', '/c', 'start', '', 'C:/Program Files (x86)/Microsoft Office/root/Office16/WINWORD.EXE', '/q', '/n', '/mFilePrintDefault', '/mFileExit']
+			},
+
+		}
 	},
-	selectedOs: 'win10k',
+	selectedEnv: 'Standard',
 
 	// permissions and data rights managament
 	drm: {
@@ -493,7 +548,7 @@ core.var = {
 			en: 'Includes possible typos, but gets a bigger sample size.',
 			de: 'Berücksichtigt auch mögliche Tippfehler, führt aber zu größeren Ergebnismengen.'
 		},
-		settingSelectedOsCaption: {
+		settingSelectedEnvCaption: {
 			en: 'used environment',
 			de: 'genutzte Betriebsumgebung'
 		},

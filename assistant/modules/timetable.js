@@ -69,7 +69,7 @@ var timetable = {
 				name[i] = name[i][0].toUpperCase() + name[i].slice(1);
 			} //ucfirst
 			name = name.join(' '); //rejoin to string
-			link = '<a href="' + timetable.var.path + name.toLowerCase() + '.xlsm" onclick="timetable.fn.favouriteHandler.set(\'' + name + '\'); return;" target="_blank">' + core.fn.static.lang('linkTitle', 'timetable') + name + '</a> ';
+			link = '<a ' + await core.fn.async.file.link(timetable.var.path + name.toLowerCase() + '.xlsm', 'timetable.fn.favouriteHandler.set(\'' + name + '\'); return;') + '>' + core.fn.static.lang('linkTitle', 'timetable') + name + '</a> ';
 			if (favourite) {
 				withtools = await timetable.fn.open(name, true);
 				link = '<span class="singlefavouritehandler"><a href="javascript:core.fn.static.popup(\'' + withtools + '\')">' + name + '</a> ' + core.fn.static.insert.icon('delete', false, false, 'onclick="timetable.fn.favouriteHandler.set(\':' + name + '\'); return;"') + '</span>';
@@ -133,7 +133,7 @@ var timetable = {
 				if (timetableFav) return timetableFav.indexOf(name) > -1;
 				else return false;
 			},
-			reset: async (output='') => {
+			reset: async (output = '') => {
 				await core.fn.async.memory.write('timetableFav', output);
 				core.fn.async.growlNotif(core.fn.static.lang('favouriteResetConfirm', 'timetable'));
 			},

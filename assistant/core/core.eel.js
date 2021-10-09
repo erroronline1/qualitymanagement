@@ -34,6 +34,25 @@ core.eel = () => {
 					} else eel.core_memory_delete(name.toString())();
 				}
 			};
+			core.fn.async.file = {
+				type: function (file) {
+					let environment = core.var.environment[core.var.selectedEnv],
+						extension = file.substring(file.lastIndexOf('.') + 1);
+					for (var type of Object.keys(environment)) {
+						if (environment[type].extensions.indexOf(extension) > -1) {
+							return type;
+						}
+					}
+				},
+				link: async function (file, onclick = '') {
+					return 'href="#" onclick="eel.file_handler(core.var.environment[core.var.selectedEnv][\'' + this.type(file) + '\'].open.concat([\'' + file + '\']))(); ' + onclick + '"';
+				},
+				batch: async function (files) {
+					for (var file of files) {
+						await eel.file_handler(core.var.environment[core.var.selectedEnv][this.type(file)].batch.concat([file]))();
+					}
+				}
+			};
 		} catch {
 			/* because if not started from eel, this resource is loaded anyway and eel-object stops rendering with undefined-error */
 		}
