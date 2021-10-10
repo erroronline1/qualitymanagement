@@ -55,9 +55,6 @@ documentlookup.var = {
 			de: 'Verträge'
 		},
 	},
-	//set default document titles without whitespaces and special characters, predefined clicks for higher postion 
-	defaultFavourites: 'Protocol,10,' +
-		'AttendanceList,5,',
 	selectedModule: async () => {
 		let val = await core.fn.async.memory.read('documentlookupCategory');
 		return val || 'int';
