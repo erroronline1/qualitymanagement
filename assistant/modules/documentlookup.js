@@ -102,6 +102,9 @@ var documentlookup = {
 		},
 		search: async (query = '') => {
 			query = query || el('documentname').value;
+			// set lookup category. once in the calling onclick, but problematic being async 
+			if (el('lookup').selectedIndex == 0) await core.fn.async.memory.delete('documentlookupCategory')
+			else await core.fn.async.memory.write('documentlookupCategory', el('lookup').options[el('lookup').selectedIndex].value);
 			let favourites,
 				found,
 				interimobject,
@@ -145,7 +148,7 @@ var documentlookup = {
 				'<form id="search" action="javascript:documentlookup.fn.search();">' +
 				'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.fn.static.lang('searchPlaceholder', 'documentlookup') + '" class="search" value="' + query.replace(/"/g, '&quot;') + '" />' +
 				'<span onclick="documentlookup.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
-				core.fn.static.insert.select(selection, 'lookup', 'lookup', (documentlookupCategory || false), 'onchange="this.selectedIndex == 0 ? core.fn.async.memory.delete(\'documentlookupCategory\') : core.fn.async.memory.write(\'documentlookupCategory\', this.options[this.selectedIndex].value); documentlookup.fn.search();"') +
+				core.fn.static.insert.select(selection, 'lookup', 'lookup', (documentlookupCategory || false), 'onchange="documentlookup.fn.search();"') +
 				'<input type="submit" id="submit" value="' + core.fn.static.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
 				'<a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.static.insert.icon('fileexplorer', 'bigger', false, 'title="' + core.fn.static.lang('optionThirdType', 'documentlookup') + '"') + '</a>' +
 				'</form>');
