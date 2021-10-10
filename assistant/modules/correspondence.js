@@ -118,7 +118,6 @@ var correspondence = {
 				core.fn.static.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.fn.gen()" title="' + core.fn.static.lang('buttonGenTitle', 'correspondence') + '"'));
 			correspondence.var.currentModule = query ? preset[0] : correspondence.var.selectedModule();
 			correspondence.fn.start(query ? preset[1] : '');
-			core.history.write('correspondence.fn.init(\'' + query + '\')');
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'correspondence.var.js');
