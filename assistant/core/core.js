@@ -550,6 +550,11 @@ core.init = {
 		if (coreSelectedEnv) core.var.selectedEnv = coreSelectedEnv;
 		if (coreNewWindowCopy) core.var.copyFromNewWindow = coreNewWindowCopy;
 
+		let coreFontsize = await core.fn.async.memory.read('coreFontsize'),
+			coreTheme = await core.fn.async.memory.read('coreTheme'),
+			menu = '<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.static.lang('title', false) + '</span>',
+			module = {};
+
 		const header = '<nav class="home">' +
 			core.fn.static.insert.icon('home', 'bigger', false,
 				'title="' + core.fn.static.lang('homeMenuEntry') +
@@ -575,28 +580,6 @@ core.init = {
 				'" onclick="core.setup.setup(); return;"') +
 			'</aside>';
 		core.fn.async.stdout('header', header);
-	},
-	module: (module, callback = false) => {
-		//set current scope(==module name), window title and wide-input-property
-		core.var.currentScope = module;
-		document.title = core.fn.static.lang('title') + (module ? ' - ' + core.var.modules[module].display[core.var.selectedLanguage] : '');
-		if (module != null && core.var.modules[module].wide) el('temp').classList.add('contentWide');
-		else el('temp').classList.remove('contentWide');
-		Object.keys(core.var.modules).forEach((key) => { // unhighlight all menu icons
-			if (el('module' + key) != 'undefined') el('module' + key).checked = false;
-		});
-		if (module) el('module' + module).checked = true; // highlight called menu icon
-		slider.slide(module);
-		if (!module && !callback) callback = 'core.init.ui()';
-		callback = callback || module + '.fn.init()';
-		eval(callback);
-	},
-	ui: async (query = '') => { //displays start screen
-		let coreFontsize = await core.fn.async.memory.read('coreFontsize'),
-			coreTheme = await core.fn.async.memory.read('coreTheme'),
-			eMailList = core.fn.static.lang('importantMails') + '<p>',
-			menu = '<span style="font-size:200%; line-height:200%">' + core.var.logo + core.fn.static.lang('title', false) + '</span>',
-			module = {};
 
 		document.title = core.fn.static.lang('title');
 		//load settings or defaults
@@ -619,7 +602,24 @@ core.init = {
 		}
 		menu += '<br /><br />' + core.fn.static.insert.icon('decreaseindent', 'bigger', false, ' onclick="el(\'menu\').classList.toggle(\'small\'); this.style.transform=\'scale(\' + (el(\'menu\').classList.contains(\'small\')? -1 : 1) + \', -1)\'"');
 		core.fn.async.stdout('menu', menu);
-
+	},
+	module: (module, callback = false) => {
+		//set current scope(==module name), window title and wide-input-property
+		core.var.currentScope = module;
+		document.title = core.fn.static.lang('title') + (module ? ' - ' + core.var.modules[module].display[core.var.selectedLanguage] : '');
+		if (module != null && core.var.modules[module].wide) el('temp').classList.add('contentWide');
+		else el('temp').classList.remove('contentWide');
+		Object.keys(core.var.modules).forEach((key) => { // unhighlight all menu icons
+			if (el('module' + key) != 'undefined') el('module' + key).checked = false;
+		});
+		if (module) el('module' + module).checked = true; // highlight called menu icon
+		slider.slide(module);
+		if (!module && !callback) callback = 'core.init.ui()';
+		callback = callback || module + '.fn.init()';
+		eval(callback);
+	},
+	ui: async (query = '') => { //displays start screen
+		let eMailList = core.fn.static.lang('importantMails') + '<p>';
 		await core.fn.async.stdout('input',
 			'<form id="search" action="javascript:core.globalSearch.search(el(\'globalsearch\').value);">' +
 			'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
