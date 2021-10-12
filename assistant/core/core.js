@@ -47,7 +47,7 @@ core.fn = {
 				return found;
 			}
 		},
-		dynamicMailto: async (address = '', subject = '', body = '') => {
+		dynamicMailto: (address = '', subject = '', body = '') => { // open a mail with given content right from the assistant
 			let content,
 				mail;
 			if (core.fn.static.escapeHTML(body, true).length > core.var.directMailSize) body = core.fn.static.lang('errorMailSizeExport');
@@ -65,7 +65,7 @@ core.fn = {
 			checkbox: (label, id, checked, additionalProperty, title) => {
 				return '<label class="custominput"' + (title ? ' title="' + title + '"' : '') + '>' + label + '<input type="checkbox" id="' + id + '" ' + (eval(checked) ? 'checked="checked" ' : '') + (additionalProperty ? additionalProperty : '') + ' /><span class="checkmark"></span></label>';
 			},
-			expand: () => {
+			expand: () => { // in case i change design or behaviour another time
 				return '<span class="itemresize" title="' + core.fn.static.lang('itemResizeTitle') + '"></span>';
 			},
 			icon: (icon, addclass, id = '', attributes = '') => { //easy icon handler for inline svg
@@ -164,14 +164,14 @@ core.fn = {
 			console.log('error language block:', block, module, args);
 			return undefined;
 		},
-		languageSelection: (event) => { //returns an array of radio inputs based on registered langages
+		languageSelection: (event) => { // returns an array of radio inputs based on registered languages
 			let sel = [];
 			Object.keys(core.var.registeredLanguages).forEach((key) => {
 				sel.push(core.fn.static.insert.radio(core.var.registeredLanguages[key][1], 'lang', core.var.registeredLanguages[key][0], core.var.registeredLanguages[key][0] === core.var.selectedLanguage, event));
 			});
 			return sel;
 		},
-		limitBar: (actual, max, id) => {
+		limitBar: (actual, max, id) => { // update indicator and set warning colours
 			if (id === undefined) id = 'limitBar'
 			if (typeof max === NaN) return false;
 			el(id + 'Indicator').style.width = Math.min(actual / max, 1) * 100 + "%";
@@ -186,7 +186,7 @@ core.fn = {
 				el(id + 'Indicator').classList.add('green');
 			}
 		},
-		maxMailSize: () => {
+		maxMailSize: () => { // try to create a mail with so much characters to determine maximum possible amount of passable content
 			let good,
 				num;
 			if (confirm(core.fn.static.lang('settingMailSizeDeterminationHint'))) {
@@ -353,19 +353,19 @@ core.fn = {
 				window.localStorage.removeItem(name);
 				return true;
 			},
-			keyDump: async function () {
+			keyDump: async function () { // used for settings debug-option
 				return Object.keys(localStorage).sort();
 			},
 			maxSpace: async function () {
-				return 5000000;
+				return 5000000; //tested in compatible browsers to be slightly more than 5mb
 			},
 			read: async function (name) {
 				let item = window.localStorage.getItem(name);
 				if (item === null) return false;
 				else return core.fn.static.string.decompress(item);
 			},
-			usedSpace: async function () {
-				let current = 0; //tested in compatible browsers to be slightly more than 5mb
+			usedSpace: async function () { // used for settings debug-option
+				let current = 0; 
 				Object.keys(localStorage).forEach((key) => {
 					current += key.length + localStorage.getItem(key).length;
 				});
@@ -538,6 +538,8 @@ core.fn = {
 };
 core.init = {
 	application: async () => {
+		// override already imported default settings according to stored values,
+		// write head, import modules and create navigation
 		const coreDirectMailSize = await core.fn.async.memory.read('coreDirectMailSize'),
 			coreFuzzySearch = await core.fn.async.memory.read('coreFuzzySearch'),
 			coreLanguage = await core.fn.async.memory.read('coreLanguage'),
