@@ -634,6 +634,7 @@ the audit planner can be filled with a question set for internal audits. by expo
 [back to top](#table-of-contents)
 
 ## stocklist.py
+![python stocklist translator](assets/py_stocklist.png)
 the script translates a dump from the erp-software and makes it accessible and searchable for all employees using the assistant hence optimizing dialogue with inventory control. you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
 
 also this script has a function to split the data by given column values. this might help e.g. in case of annual stocktaking. this is not related to quality management in the first place but can come in handy and since the same source has to be processed by the same rules, why the heck not?
