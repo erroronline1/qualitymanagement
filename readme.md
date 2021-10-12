@@ -1,4 +1,4 @@
-# bottle light quality management software
+# bottle light quality management software - discontinued branch compatible with internet explorer 11
 
 ```
       m
