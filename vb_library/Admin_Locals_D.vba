@@ -35,25 +35,6 @@ Public Function monitorAuditPlanner() As Collection
 End Function
 
 
-Public Function setupStocklist() As Collection
-    Set setupStocklist = New Collection
-    setupStocklist.Add Item:="ARTICLEMANAGER", Key:="matrix.sheet" 'select sheet to process content
-    setupStocklist.Add "A", "matrix.startColumn" 'customize content column, starting point for matrix
-    setupStocklist.Add 1, "matrix.headerRow" 'customize header row, starting point for matrix
-    setupStocklist.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
-    setupStocklist.Add "E:\Quality Management\assistant\library\module.data\stocklist.data.js", "export.defaultFile" 'default path to export file
-    setupStocklist.Add "Liste für Assistenten bereitstellen?", "export.prompt" 'save dialogue header, customize to your language
-    setupStocklist.Add "stocklist.data", "export.objectName" 'name of json-object
-    setupStocklist.Add True, "export.dontSkipEmpty"'whether to skip empty cells or not depending on structure of assistants processing algorithm
-    setupStocklist.Add "3", "m.contentcolumn" 'customize query column (numbered), output only if content is set
-End Function
-Public Function monitorStocklist() As Collection
-    Set monitorStocklist = New Collection
-    monitorStocklist.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
-    monitorStocklist.Add Array(False, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
-End Function
-
-
 Public Function setupTransferSchedule() As Collection
     Set setupTransferSchedule = New Collection
     setupTransferSchedule.Add "Legende", "matrix.maxRow"
