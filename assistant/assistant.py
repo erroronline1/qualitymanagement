@@ -151,7 +151,7 @@ def file_handler(call):
 
 if WEBFOLDER:
 	eel.init('html') #fldr name for web content
-	eel.start('core.html', port = 11235, mode='edge')
+	eel.start('core.html', port = 11235)
 else:
 	print('please specify webfolder from command line with --webfolder "{ path with trailing /}"')
 
