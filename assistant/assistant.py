@@ -7,6 +7,28 @@ import subprocess
 import sqlite3
 import sys
 
+print('''
+             _     _           _
+ ___ ___ ___|_|___| |_ ___ ___| |_   _ _ _ ___ ___ ___ ___ ___ ___
+| .'|_ -|_ -| |_ -|  _| .'|   |  _| | | | |  _| .'| . | . | -_|  _|
+|__,|___|___|_|___|_| |__,|_|_|_|   |_____|_| |__,|  _|  _|___|_|
+                                                  |_| |_|          built 20211012
+
+by error on line 1 (erroronline.one)
+
+$ assistant --help    for overview
+''')
+
+HELP = '''
+start this application with options:
+
+[ -h | --help ]       this message
+[ -w | --webfolder ]  "D:/path/to/application/" mandatory. with trailing /
+[ -b | --browser ]    optional if issues arise (chrome, firefox, edge)
+[ -p | --port ]       optional if issues arise
+
+'''
+
 class db_handler:
 	def __init__(self, db):
 		self.connection = sqlite3.connect(db)
@@ -66,19 +88,34 @@ class db_handler:
 
 _database = db_handler(str(Path.home()) +'/qmassistant.db')
 
-WEBFOLDER = False
+WEBFOLDER = None
+BROWSER = None
+PORT =11235
 # argument handler
 sys.argv.pop(0)
 options = {
-	'w':'((?:--webfolder|-w)[:\s]+)(.+)(?:\s|$)'}
-params = ' '.join(sys.argv) + ' '
-for opt in options:
-	arg = re.findall(options[opt], params, re.IGNORECASE)
-	if opt == 'w' and bool(arg):
-		WEBFOLDER = str(arg[0][1])
-		params = params.replace(''.join(arg[0]), '')
-	else:
-		pass
+	'h':['--help|-h', None],
+	'w':['--webfolder|-w', '.+'],
+	'b':['--browser|-b', '.+'],
+	'p':['--port|-p', '\d+']
+	}
+for i in range(0, len(sys.argv)-1):
+	for opt in options:
+		arg = re.findall(options[opt][0], sys.argv[i], re.IGNORECASE)
+		arg2 = re.findall(options[opt][1], sys.argv[i+1], re.IGNORECASE) if options[opt][1] and i + 1 < len(sys.argv) else None
+		if bool(arg2):
+			i += 1
+		if opt == 'h' and arg:
+			print(HELP)
+			exit()
+		elif opt == 'w' and bool(arg) and bool(arg2):
+			WEBFOLDER = str(arg2[0])
+		elif opt == 'b' and bool(arg) and bool(arg2):
+			BROWSER = str(arg2[0]).lower()
+		elif opt == 'p' and bool(arg) and bool(arg2):
+			PORT = str(arg2[0])
+		else:
+			pass
 
 #   _     _ _
 #  |_|___|_| |_
@@ -151,8 +188,8 @@ def file_handler(call):
 
 if WEBFOLDER:
 	eel.init('html') #fldr name for web content
-	eel.start('core.html', port = 11235)
+	eel.start('core.html', port = PORT, mode = BROWSER)
 else:
-	print('please specify webfolder from command line with --webfolder "{ path with trailing /}"')
+	print(HELP)
 
 del _database
