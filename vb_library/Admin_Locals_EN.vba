@@ -22,7 +22,7 @@ Public Function setupAuditPlanner() As Collection
     setupAuditPlanner.Add "A", "matrix.startColumn" 'customize content column, starting point for matrix
     setupAuditPlanner.Add 2, "matrix.headerRow" 'customize header row, starting point for matrix
     setupAuditPlanner.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
-    setupAuditPlanner.Add "E:\Quality Management\assistant\library\module.data\auditplanner.data.js", "export.defaultFile" 'default path to export file
+    setupAuditPlanner.Add "D:\Quality Management\assistant\library\module.data\auditplanner.data.js", "export.defaultFile" 'default path to export file
     setupAuditPlanner.Add "Export list to the assistant?", "export.prompt" 'save dialogue header, customize to your language
     setupAuditPlanner.Add "auditplanner.data", "export.objectName" 'name of json-object
     setupAuditPlanner.Add False, "export.dontSkipEmpty" 'whether to skip empty cells or not depending on structure of assistants processing algorithm
@@ -42,7 +42,7 @@ Public Function setupTransferSchedule() As Collection
     setupTransferSchedule.Add "Export PDF?", "initiate.Title"
     setupTransferSchedule.Add "Publish plan?" & vbNewLine & "CAUTION! If destination file is already opened Excel will crash.", "initiate.Confirm"
     setupTransferSchedule.Add "Publish PDF of transfer schedule?", "export.xlsPrompt"
-    setupTransferSchedule.Add "E:\Quality Managment\thirdType\Transferschedule.pdf", "export.xlsDefaultFile"
+    setupTransferSchedule.Add "D:\Quality Managment\thirdType\Transferschedule.pdf", "export.xlsDefaultFile"
 End Function
 Public Function monitorTransferSchedule() As Collection
     Set monitorTransferSchedule = New Collection
@@ -57,7 +57,7 @@ Public Function setupTicketSystem() As Collection
     setupTicketSystem.Add "A", "matrix.startColumn" 'customize content column, starting point for matrix
     setupTicketSystem.Add 1, "matrix.headerRow" 'customize header row, starting point for matrix
     setupTicketSystem.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
-    setupTicketSystem.Add "E:\Quality Management\assistant\library\module.data\ticketorder.data.js", "export.defaultFile" 'default path to export file
+    setupTicketSystem.Add "D:\Quality Management\assistant\library\module.data\ticketorder.data.js", "export.defaultFile" 'default path to export file
     setupTicketSystem.Add "Export List to the assistant?", "export.prompt" 'save dialogue header, customize to your language
     setupTicketSystem.Add "ticketorder.data", "export.objectName" 'name of json-object
     setupTicketSystem.Add false, "export.dontSkipEmpty"'whether to skip empty cells or not depending on structure of assistants processing algorithm
@@ -106,7 +106,7 @@ Public Function setupExternalExport() As Collection
     setupExternalExport.Add Item:="Export lists to the assistant?", Key:="initiate.Confirm" 'query to export
     setupExternalExport.Add "Export lists to the assistant?", "initiate.Title" 'title for query to export
     setupExternalExport.Add "Publish a copy of the list without code?", "export.xlsPrompt"
-    setupExternalExport.Add "E:\Quality Management\published\list of external documents.xlsx", "export.xlsDefaultFile"
+    setupExternalExport.Add "D:\Quality Management\published\list of external documents.xlsx", "export.xlsDefaultFile"
 End Function
 Public Function setupExternalDocuments() As Collection
     Set setupExternalDocuments = New Collection
@@ -118,7 +118,7 @@ Public Function setupExternalDocuments() As Collection
     setupExternalDocuments.Add 3, "matrix.headerRow" 'customize header row, starting point for matrix
     setupExternalDocuments.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
     'export variables
-    setupExternalDocuments.Add "E:\Quality Management\assistant\library\module.data\documentlookup_ext.data.js", "export.defaultFile"
+    setupExternalDocuments.Add "D:\Quality Management\assistant\library\module.data\documentlookup_ext.data.js", "export.defaultFile"
     setupExternalDocuments.Add "documentlookup.data.ext", "export.objectName"
     setupExternalDocuments.Add "Export list of external documents to the assistant?", "export.prompt"
     setupExternalDocuments.Add "Aborting export as there was no location selected!", "export.ErrorMsg"
@@ -133,7 +133,7 @@ Public Function setupExternalContracts() As Collection
     setupExternalContracts.Add 3, "matrix.headerRow" 'customize header row, starting point for matrix
     setupExternalContracts.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns   
     'export variables
-    setupExternalContracts.Add "E:\Quality Management\published\assistant\library\module.data\documentlookup_contract.data.js", "export.defaultFile"
+    setupExternalContracts.Add "D:\Quality Management\published\assistant\library\module.data\documentlookup_contract.data.js", "export.defaultFile"
     setupExternalContracts.Add "documentlookup.data.contract", "export.objectName"
     setupExternalContracts.Add "Export list of external contracts to the assistant?", "export.prompt"
     setupExternalContracts.Add "Aborting export as there was no location selected!", "export.ErrorMsg"
@@ -184,22 +184,21 @@ Public Function setupInternalDocuments() As Collection
             "export list of documents to the assistant," & vbNewLine & _
             "export document bundles to the assistant?", "initiate.Confirm"
     'document list
-    setupInternalDocuments.Add "E:\Quality Management\assistant\library\module.data\documentlookup_int.data.js", "export.listdefaultFile"
+    setupInternalDocuments.Add "D:\Quality Management\assistant\library\module.data\documentlookup_int.data.js", "export.listdefaultFile"
     setupInternalDocuments.Add "Export list to the assistant?", "export.listPrompt"
     setupInternalDocuments.Add "Input path of docm-files...", "export.replaceFromTitle"
     setupInternalDocuments.Add "Please input path of docm-files that will be replaced with the next input.", "export.replaceFromPrompt"
-    setupInternalDocuments.Add "E:\Quality Management\documents", "export.replaceFromDefaultPath"
+    setupInternalDocuments.Add "D:\Quality Management\documents", "export.replaceFromDefaultPath"
     setupInternalDocuments.Add "Input path of pdf-files...", "export.replaceToTitle"
     setupInternalDocuments.Add "Please input path of docm-files that will replace the path of the docm-files.", "export.replaceToPrompt"
-    setupInternalDocuments.Add "E:\Quality Management\published", "export.replaceToDefaultPath"
+    setupInternalDocuments.Add "D:\Quality Management\published", "export.replaceToDefaultPath"
     setupInternalDocuments.Add "Aborting export as there was no location selected!", "export.ErrorMsg"
     'document bundles
     setupInternalDocuments.Add "Export bundles to the assistant?", "export.bundlePrompt"
-    setupInternalDocuments.Add "E:\Quality Management\assistant\library\module.data\documentbundles..datajs", "export.bundleDefaultFile"
-    setupInternalDocuments.Add "E:\Quality Management\assistant\library\module.data\", "export.bundleDefaultFolder"
+    setupInternalDocuments.Add "D:\Quality Management\assistant\library\module.data\documentbundles.data.js", "export.bundleDefaultFile"
     'export without code
     setupInternalDocuments.Add "Publish a copy of the list without code?", "export.xlsPrompt"
-    setupInternalDocuments.Add "E:\Quality Management\published\list of documents.xlsx", "export.xlsDefaultFile"
+    setupInternalDocuments.Add "D:\Quality Management\published\list of documents.xlsx", "export.xlsDefaultFile"
     setupInternalDocuments.Add "New document versions", "export.notificationSubject"
     setupInternalDocuments.Add "Hello everyone,<br><br>following documents have a new version as of today:<br><br>{list}<br>Please cease to use old versions and destroy printouts!", "export.notificationBody"
 End Function
@@ -221,7 +220,7 @@ Public Function setupDRM() As Collection
     'export variables
     setupDRM.Add "Export permissions to the assistant?", "initiate.Title"
     setupDRM.Add "Export password tables?", "initiate.Confirm"
-    setupDRM.Add "E:\Quality Management\assistant\library\core\core.drm.js", "export.defaultFile"
+    setupDRM.Add "D:\Quality Management\assistant\library\core\core.drm.js", "export.defaultFile"
     setupDRM.Add "Export permissions to the assistant?", "export.prompt"
     setupDRM.Add "Aborting export as there was no location selected!", "export.ErrorMsg"
 End Function
@@ -238,7 +237,7 @@ Public Function setupVendorList() As Collection
     setupVendorList.Add "Export of vendor list?", "export.confirmTitle" 'title for query to export
     setupVendorList.Add "Publish a copy of the vendor list?", "export.confirm" 'query to export
     setupVendorList.Add "Publish a copy of the list without code?", "export.xlsPrompt"
-    setupVendorList.Add "E:\Quality Management\published\vendor list.xlsx", "export.xlsDefaultFile"
+    setupVendorList.Add "D:\Quality Management\published\vendor list.xlsx", "export.xlsDefaultFile"
     'runtime values
     setupVendorList.Add "A double click on the documents to demand automatically creates an email with a fitting request to the vendor. " & vbNewLine & _
             "The date of the request will be inserted on sent-confirmation." & vbNewLine & vbNewLine & _

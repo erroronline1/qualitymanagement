@@ -157,9 +157,9 @@ core.var = {
 	//	corporate design considerations for font. used for copied content. has to be installed on local machine
 	corporateFontFace: 'Calibri',
 	corporateFontSize: '10pt',
-	letterTemplate: 'E:/Quality Management/published/letter_template.docx', // if you want to use, else null
+	letterTemplate: 'D:/Quality Management/published/letter_template.docx', // if you want to use, else null
 	outlookWebUrl: 'https://exc20/owa/auth/logon.aspx', //if you have it installed else null
-	publishedFolder: 'file:///E:/Quality Management/published',
+	publishedFolder: 'file:///D:/Quality Management/published',
 
 	eMailAddress: {
 		inventorycontrol: {
