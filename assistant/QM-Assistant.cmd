@@ -1,6 +1,6 @@
 @echo off
-call assistant --webfolder: "D:\Quality Management\assistant\"
-rem py assistant.py --webfolder: "D:\Quality Management\assistant\"
+call assistant --webfolder: "D:/Quality Management/assistant/"
+rem py assistant.py --webfolder: "D:/Quality Management/assistant/"
 
 if %errorlevel% == 1 (
     echo.
