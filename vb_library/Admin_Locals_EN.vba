@@ -133,7 +133,7 @@ Public Function setupExternalContracts() As Collection
     setupExternalContracts.Add 3, "matrix.headerRow" 'customize header row, starting point for matrix
     setupExternalContracts.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns   
     'export variables
-    setupExternalContracts.Add "D:\Quality Management\published\assistant\library\module.data\documentlookup_contract.data.js", "export.defaultFile"
+    setupExternalContracts.Add "D:\Quality Management\assistant\library\module.data\documentlookup_contract.data.js", "export.defaultFile"
     setupExternalContracts.Add "documentlookup.data.contract", "export.objectName"
     setupExternalContracts.Add "Export list of external contracts to the assistant?", "export.prompt"
     setupExternalContracts.Add "Aborting export as there was no location selected!", "export.ErrorMsg"
