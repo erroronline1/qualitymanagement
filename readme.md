@@ -11,106 +11,61 @@
 
 [![last-commit](https://img.shields.io/github/last-commit/erroronline1/qualitymanagement.svg?style=flat-square)](https://github.com/erroronline1/qualitymanagement/commits/master)
 ![license](https://img.shields.io/github/license/erroronline1/qualitymanagement.svg?style=flat-square)
-[![demo](https://img.shields.io/website?style=flat-square&down_message=demo%20unavailable&up_message=demo%20available&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
 
-compatible with
+tested with
 
 ![word](https://img.shields.io/badge/office%20word-2013,%202019-blue?style=flat-square&logo=microsoft-word)
 ![excel](https://img.shields.io/badge/office%20excel-2013,%202019-brightgreen?style=flat-square&logo=microsoft-excel)
 ![outlook](https://img.shields.io/badge/office%20outlook-2019-blue?style=flat-square&logo=microsoft-outlook)
-![ie11](https://img.shields.io/badge/internet%20explorer-11-blue?style=flat-square&logo=internet-explorer)
 ![browsers](https://img.shields.io/badge/real%20browsers-firefox,%20chrome,%20edge-orange?style=flat-square)
 
 ## table of contents
 
 ### general
-* [use case](#use-case)
 * [about bottle light qms](#about-bottle-light-qms)
-* [key features](#key-features)
-* [document management](#document-management-1)
-	* [use case](#use-case-1)
-	* [what the documents do](#what-the-documents-do)
+	* [key features](#key-features)
 	* [requirements](#requirements)
-* [the assistant](#the-assistant)
-	* [use case](#use-case-2)
-	* [what this tool does](#what-this-tool-does)
-	* [requirements](#requirements-1)
-* [tools](#tools-1)
-	* [use case](#use-case-3)
-	* [what the tools do](#what-the-tools-do)
-	* [requirements](#requirements-2)
-* [interfaces](#interfaces)
 * [installation](#installation)
-* [but i am no programmer!](#but-i-am-no-programmer)
-
-### document management
-* [details on the document management](#details-on-the-document-management)
+	* [but i am no programmer!](#but-i-am-no-programmer)
+* [document management](#document-management)
 	* [template files](#template-files)
 	* [internal documents in force.xlsm](#internal-documents-in-forcexlsm)
 	* [external documents in force.xlsm](#external-documents-in-forcexlsm)
-
-### vba
-* [vb_libraries](#vb_libraries)
-	* [document_-modules](#document_-modules)
-	* [admin_-modules](#admin_-modules)
-* [thoughts and considerations](#thoughts-and-considerations)
-
-### assistant
-* [details on the assistant](#details-on-the-assistant)
-	* [the access to your qm-system](#the-access-to-your-qm-system)
+	* [vb_libraries](#vb_libraries)
+	* [thoughts and considerations](#thoughts-and-considerations)
+* [document access - the assistant](#the-assistant)
 	* [provided modules within open-source distribution](#provided-modules-within-open-source-distribution)
-		* [document lookup](#document-lookup)
-		* [predefined document bundles](#predefined-document-bundles)
-		* [inventory or stock list](#inventory-or-stock-list)
-		* [orders](#orders)
-		* [timetable](#timetable)
-		* [default texts for correspondence](#default-texts-for-correspondence)
-		* [mail tools](#mail-tools)
-		* [audit planner](#audit-planner)
-		* [help](#help)
-	* [module structure](#module-structure)
-	* [module functions](#module-functions)
-	* [registering and loading of modules](#registering-and-loading-of-modules)
-	* [module initialization](#module-initialization)
-	* [multi-language support](#multi-language-support)
-	* [smart search with fuzzy search](#smart-search-with-fuzzy-search)
-	* [output usage](#output-usage)
-	* [inter-module communication](#inter-module-communication)
-	* [api](#api)
+	* [structure](#structure)
+	* [core functions](#core-functions)
 	* [core overview](#core-overview)
-
-### tools
-* [details on the tools](#details-on-the-tools)
+	* [python wrapper](#python-wrapper)
+* [tools](#tools)
 	* [vendorlist.xlsm](#vendorlistxlsm)
 	* [audit planner.xlsm](#audit-plannerxlsm)
-	* [stocklist](#stocklist)
+	* [stocklist.py](#stocklistpy)
 	* [ticketorder.xlsm](#ticketorderxlsm)
 	* [data rights management.xlsm](#data-rights-managementxlsm)
 	* [transfer schedule.xlsm](#transfer-schedulexlsm)
 	* [timetables](#timetables)
 	* [filter.py](#filterpy)
 	* [leech.py](#leechpy)
-	
 * [thoughts and considerations](#thoughts-and-considerations-1)
 * [changes and updates](#changes-and-updates)
 * [disclaimer](#disclaimer)
 * [license](#license)
 
-## use case
-while it makes way more sense to automate quality management using assistive technology and digitalizing everything, this is not always possible. therefore bottle light quality management software possibly supports you if
+# about bottle light qms
+while it makes way more sense to automate quality management using assistive technology and digitalizing everything, this is not always easy being put into practice. therefore bottle light quality management software possibly supports you if
 
 * your quality managment and documentation is still mainly paper-based
 * employees have access to the it-infrastructure and printers, e.g. via network and group-accounts
 * your company relies on microsoft office
 * there is at least one tech-savvy employee interested in getting things done
 
-and you do not plan to change this within the near future.
+and you are not able to change this in the near future.
 
 this system has been in use in context to [iso 13485:2015](https://www.iso.org/search.html?q=13485%3A2015) and was approved by the certification authority.
 
-[back to top](#table-of-contents)
-
-# about bottle light qms
 if your company does not have the ressources to test out different expensive qm-software-solutions until you find one to suit your needs and you somehow make use of the simple tools you have access to, bottle light qms might be a good start for you.
 by using quite basic ressources like microsoft office word and excel and standard browsers it also is able to bypass weird system restrictions. editing (if necessary) can be done via any given text editor.
 still this system support you with version control, archiving and publishing quality management related documents and ressources.
@@ -134,16 +89,55 @@ and yes, whether or not i should use ascii to do a logo, i most certainly can.
 * popular coding languages, amateur friendly 
 * scalable
 * strictly local, no internet connection necessary
-* no external dependecies, frameworks, libraries
+* limited external dependecies, frameworks, libraries
 * minimal system requirements
 
 [back to top](#table-of-contents)
 
+## requirements
+* microsoft office (developed and tested with office 2013 and 2019 professional, word, excel and outlook, lower versions probably work as well, at some point company dropped office 2010 so i can not test it any longer)
+* network access for every employee to access the assistant only from one source
+* one somewhat experienced office user to customize the document-blueprints and vba-codes
+* one webdeveloper to customize the application for your companies needs and optionally provide you with desired additional modules
+* at best a python-developer for provided scripts, capable of json and regex
+* patience with coworkers blaming 'your' assistant for every network failure, printer settings and their inability to read the literal hints and descriptions
+* provided python-scripts probably will have to be compiled (unless you have python installed - [3.6 for the moment](https://www.python.org/downloads/release/python-3612/)). i recommend [pyinstaller](http://www.pyinstaller.org/) for this usecase - at least for windows environments.
+
+[back to top](#table-of-contents)
+
+# installation
+* place files from the repository in your desired accessible network-folders.
+* customize *.var.js and *_Locals\_\*.vba by hand.
+* create or recreate your documents with the provided template_file.docm and let the workflow guide you through the registration.
+
+adjustments within the office trust center might be necessary by trusting access to the VBA project object model. it might be necessary to disable read mode for attachments in ms word.
+
+in case you use the python wrapper for the assistant i recommend creating a virtual environment within the assistants folder and compiling it from there for public use. customize the provided batch-file.
+
+* python -m venv .venv
+* .venv/Scripts/activate
+* pip install -r requirements.txt
+* python -m eel assistant.py html --onefile --icon html/favicon.ico
+
+![sample folder structure](assets/folderstructure.png)
+* the provided folder structure might not be neccessarily your first choice and serves just as a sample. you have to change at least the default paths within the vba-code and the assistant anyway.
+* even if you don't want to use the assistant, the documents semiautomated version control still might be useful for you. on the other hand the assistant is hardly possible to populate without the documents unless you write your own routines for that.
+* i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to published pdfs or docms, timetables and the assistant application should be granted for everyone.
+
+[back to top](#table-of-contents)
+
+## bUt I aM nO pRoGrAmMeR!
+to customize this software to your needs it is definitely neccessary to have someone change values at least within the vba-code- and the javascript-configuration files. you might know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
+i was hoping to have done enough documentation and commenting, so maybe you might as well get a grasp on changing the setting-files yourself. 
+**on the bright side everything is open source and can be maintained by any programmer/programming agency that does javascript, vba and python!**
+
+if you are a programmer i can recommend [notepad++ portable](https://notepad-plus-plus.org/download/) out of personal experience in case you have restricted access to your it. also [git portable](https://sourceforge.net/projects/gitportable/).
+
+[back to top](#table-of-contents)
+
 # document management
-## use case
 the office documents come with built-in vba-code to handle document version control, ressource overview and export-handling. employees use mainly unchangeable pdf-files or docm-files to fill out during workflow. each document registers and manages itself (kind of).
 
-## what the documents do
 style the blueprints according to your desired corporate design whatever you like and however word allows you to. just make sure you don't delete the document variables.
 customize the general variables within the locals-vba-code.
 
@@ -157,86 +151,8 @@ in general this system
 
 it coincidentally but fortunately matches most of the [requirements for document control software noted here](https://13485store.com/resources/iso-13485-document-control-software/), except some recommended automations that still make sense being done manually for my companies usecase. 
 
-## requirements
-* one somewhat experienced office user to customize the document-blueprints and vba-codes
-* microsoft office (developed and tested with office 2013 and 2019 professional, word, excel and outlook, lower versions probably work as well, at some point company dropped office 2010 so i can not test it any longer)
-
 ![sample registration](assets/registration.gif)
 
-[details on the document management](#details-on-the-document-management)
-
-[back to top](#table-of-contents)
-
-# the assistant
-## use case
-the digital assistent serves as an assistive layer to access your companies documents in form of a web-app with read-only-properties.
-
-## what this tool does
-the digital assistant provides your company with an application to have an easier access to your quality management system. if you provide your employees with access via this assistant it might be way more easy to have them use only the latest documentation version. it does access files that could be reached by file-explorer as well, but avoiding the latter way prevents the employees to make copies that may become obsolete, at least to some degree.
-
-* global access to qm-related ressources for every employee
-* easy lookup methods for finding documents, materials and orders regardless of storage path or restricted erp-access, in case alternative search terms are provided it is even more easy to find these
-* easy content updates directly from the provided vba-interfaces
-* compatible to ms ie11 because it was built for it, tested successfully with firefox, chrome and edge as well
-* easily extendable with modules for various custom data automation
-
-## requirements
-* one webdeveloper to customize the application for your companies needs and optionally provide you with desired additional modules
-* network access for every employee to access the assistant only from one source
-* serial print of document packages requires active-x which is only available in ie11. this option will not be shown if not accessible. edge with chromium engine is said to be [supporting an ie11 mode](https://docs.microsoft.com/en-us/lifecycle/faq/internet-explorer-microsoft-edge#what-if-my-enterprise-line-of-business-lob-application-has-a-dependency-on-a-version-of-internet-explorer-that-reached-end-of-support), but it might be somewhat cumbersome to achive this if you don't have a decent access to company settings. actually i am not able to test it. also you might have to decide either for serial print or more storage space (active-x and cookies vs none but localstorage).
-* patience with coworkers blaming 'your' assistant for every network failure, printer settings and their inability to read the literal hints and descriptions
-
-[![visit demo](https://img.shields.io/website?style=flat-square&down_message=demo%20currently%20unavailable&up_message=visit%20working%20demo&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
-
-![assistant](assets/assistant.gif)
-
-[details on the assistant](#details-on-the-assistant)
-
-[back to top](#table-of-contents)
-
-# tools
-## use case
-this bundle provides you with reasonable tools to support your quality management system. the framework enables some useful applications to keep track of regulatory requirements more easy. occasionally there are some hacks to support your shitty erp-software. some provided office-files act as interfaces between your tracing and the digital assistant.
-
-## what the tools do
-keep track of declarations of conformity, certificates and other documents from your vendors, make preparing of internal audits an bit easier, keep track of your stock items, plan transfer schedules, use digital time tracking for your employees and handle huge datasets from csv-dumps and populate and update the digital assistant.
-
-## requirements
-* one somewhat experienced office user to customize the document-blueprints and vba-codes
-* microsoft office (developed and tested with office 2013 and 2019 professional, word, excel and outlook, lower versions probably work as well, at some point company dropped office 2010 so i can not test it any longer)
-* at best a python-developer for provided scripts, capable of json and regex
-
-[details on the tools](#details-on-the-tools)
-
-[back to top](#table-of-contents)
-
-# interfaces
-some core documents contain vba-code to translate their content to a javascript object to be accessed by the assistant. there might pop up some python scripts occasionally to fulfill the same task for one or the other use case. these scripts will likely be configurable via a json-setup-file even after compiling. so there might be another dependency of a json- and regex-enabled python-developer.
-
-[back to top](#table-of-contents)
-
-# installation
-there is no installation routine. place the files to your desired accessible network-folders and customize them by hand. create or recreate your documents with the provided template_file.docm and let the workflow guide you through the registration. adjustments within the office trust center might be necessary by trusting access to the VBA project object model.
-
-![sample folder structure](assets/folderstructure.png)
-* the provided folder structure might not be neccessarily your first choice and serves just as a sample. you have to change at least the default paths within the vba-code and the assistant anyway.
-* even if you don't want to use the assistant, the documents semiautomated version control still might be useful for you. on the other hand the assistant is hardly possible to populate without the documents unless you write your own routines for that.
-* i'd recommend an educated access-management. it may be a good idea to store docm-templates in a folder with restricted access to qm-managers, deputies and ceo, while access to published pdfs or docms, timetables and the assistant application should be granted for everyone.
-* provided python-scripts probably will have to be compiled (unless you have python installed - [3.6 for the moment](https://www.python.org/downloads/release/python-3612/)). i recommend [pyinstaller](http://www.pyinstaller.org/) for this usecase - at least for windows environments.
-
-[back to top](#table-of-contents)
-
-# bUt I aM nO pRoGrAmMeR!
-to customize this software to your needs it is definitely neccessary to have someone change values within the vba-code- and the javascript-configuration files. you might at least know someone who does this as a hobby and is happy to do that for you for a couple of drinks. or after these...
-i was hoping to have done enough documentation and commenting, so maybe you might as well get a grasp on changing the setting-files yourself. 
-**on the bright side everything is open source and can be maintained by any programmer/webdeveloper/webdeveloping agency that does javascript and knows how to access the visual basic editor via the office developer tab!**
-
-if you are a programmer i can recommend [notepad++ portable](https://notepad-plus-plus.org/download/) out of personal experience in case you have restricted access to your it. also [git portable](https://sourceforge.net/projects/gitportable/).
-
-[back to top](#table-of-contents)
-
-# details on the document management
-## summary
 the vba-code can be customized quite easily for i tried to have all important parts split to functions and modules to be able to enable/disable these on demand as well as using variables to customize easily. in the best case all you have to do is to change the variables within the locals-modules. office-documents contain basically just functions to import outsourced modules and event handler. set up language and location of modules and you are almost ready to go. 
 
 * customize the variables for prompts to your language
@@ -322,7 +238,7 @@ this list contains external documents in force and can contain other file lists.
 
 [back to top](#table-of-contents)
 
-# vb_libraries
+## vb_libraries
 ![vba variables](assets/xlsm_vba.png)
 
 the tables and documents will retrieve their vba code from these folders as they intrinsically contain not much more than import functions and basic settings of language and relative path to the vb_library folders.
@@ -353,27 +269,28 @@ on export of docm-files the file dialogue does not show pdf- or docm-options. yo
 
 [back to top](#table-of-contents)
 
-# details on the assistant
-## summary
-there is a main html-file in the root folder, a core folder with the core function framework, a config-file and themes. further on there are module- and data-folders where you can define modules with any desired javascript-functionality to automate things. everyone has access to these and can make use of them. therefore any employee has the same ressources and hopefully outputs. note that the current version makes excessive use of the [vanillaJS-library](http://vanilla-js.com).
+# the assistant
+the digital assistant provides your company with an application to have an easier access to your quality management system. if you provide your employees with access via this assistant it might be way more easy to have them use only the latest documentation version. it does access files that could be reached by file-explorer as well, but avoiding the latter way prevents the employees to make copies that may become obsolete, at least to some degree.
 
-[![visit demo](https://img.shields.io/website?style=flat-square&down_message=demo%20currently%20unavailable&up_message=visit%20working%20demo&url=https%3A%2F%2Ferroronline.one%2Fcolumn3%2Faqms%2Fassistant%2Fcore.html)](http://erroronline.one/column3/aqms/assistant/QM-Assistant.html)
+* global access to qm-related ressources for every employee
+* easy lookup methods for finding documents, materials and orders regardless of storage path or restricted erp-access, in case alternative search terms are provided it is even more easy to find these
+* easy content updates directly from the provided vba-interfaces
+* easily extendable with modules for various custom data automation
 
-* the assistant is built using js-ecmascript 5 on purpose because of required compatibility to ms ie11. unfortunately this still is the default browser to date in many companies. the css is not compatible to previous versions of ie. there might be browserhacks and polyfills.
+![assistant](assets/assistant.gif)
+
+the assistant was initially created as a web-application run on internet explorer (still being the defacto standard in the beginning). in the meantime ie-support is finally ditched and the assistant comes with a python wrapper to compensate for rigid company policies regarding the deletion of browser history on closing.
+
+you can start the assistant by opening the html-file, or using the (compiled or raw) python wrapper with passed --webfolder argument. use a bash/batch-file for convenience.  
+
+* the current version makes excessive use of the [vanillaJS-library](http://vanilla-js.com).
 * the assistant is designed to handle multiple language support, comes with english and german and can be extended as desired. extend the lang-objects in every module, the config-file and register the languages in this config-file to make them available.
-* the core-object provides (hopefully) readable function-calls and globally usable variables. general configuration takes place in library/core/core.var.js. this file contains a variable that extents the core-object with global variables and commonly used language-bricks.
-* built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, local-storage- or cookie-handler, repetitive design pattern implementation (icons, inputs, etc.), history handling and some more. get access or extend these functions with `core.fn.FUNCTIONNAME`, global variables with `core.var.VARNAME`. i recommend this pattern to modules as well, defining a module-object with `{moduleFileName}.fn.FUNCTIONNAME` and `{moduleFileName}.var.VARNAME`. the handler for multi-language-support of the application  (`core.fn.lang()`) makes built-in automated use of this pattern.
-* data files are stored in a different folder hoping that changes to the backend don't mess up data that might be accessed through different persons than the maintainer of the application. these are separated in module-variables that define the modules behaviour and module data that will be processed according to the modules task. the latter are optional.
+* the core-object provides (hopefully) comprehensible function-calls and globally usable variables. general configuration takes place in library/core/core.var.js. this file contains a variable that extents the core-object with global variables and commonly used language-bricks.
+* built-in core-functions provide a search-function that has multi-word and fuzzy-search handling, language-handler, script-import, local-storage- or cookie-handler, repetitive design pattern implementation (icons, inputs, etc.), history handling and some more.
 * users can be informed about changes using the changelog in library/core/core.userDialogue.js. add your own changes and the information will popup automatically on start.
-* since most of my colleagues don't mind messing around to learn something, there is a short-tip function whose entries can be extended in accordance to your modules.
-* settings will be stored in local storage or cookies (depending on browser support) so everything depends on the local machine in addition to user login. in case everything is stored with cookies, if the browsers history is cleaned on exit all setting will be gone as well. the storage method handles local-storage support with cookies as a fallback. this means there is support for chrome having an issue with cookie storage of local sites as well as ie11 not having local storage for local sites. cookie storage is somewhat inconvenient small, but this is due to browser dependent handling of local sites. unfortunately edge as well can be set to delete everything on exit using a company policy that can may be not be customizable by the user.
-* you can monitor the performance (currently implemented for tracking asynchronous loading and processing) in the console if you enable it in the settings.
+* settings will be stored in local storage or a userpath database (depending on pure or wrapper use) so everything depends on the local machine in addition to user login.
 
 *be aware that there are dependencies between the assistants datafiles, their objects and handling, and the documents vba and table-structure. it might become neccessary to change things on both sides.*
-
-## the access to your qm-system
-
-![assistant home screen](assets/assistant_home.png)
 
 [back to top](#table-of-contents)
 
@@ -406,7 +323,7 @@ globalSearch api: returns documents from all categories/datalists that fit searc
 ### predefined document bundles
 ![assistant document bundles](assets/assistant_documentbundles.png)
 
-if you have recurring sets of documents it might come in handy if you define packages that can be selected, displayed and (using ie11) printed on the fly.
+if you have recurring sets of documents it might come in handy if you define packages that can be selected, displayed and occasionally printed on the fly.
 
 dependencies are: datalist for packages. this can be generated by the [excel-file of documents in force](#internal-documents-in-forcexlsm). if you mess around with exceptions there might be changes within the macro neccessary as well.
 
@@ -432,10 +349,8 @@ this form supports all employees to create decent orders and send the resulting 
 
 since ordering things can be expensive for the company, orders can be registered by everyone but have to be verified by persons with respective permissions as managed in the core-drm methods. the same module serves to decrypt the generated verification code for central purchase.
 
-in theory orders can be piled up and verified en bloc. in practice this is one of the biggest issues using ie11 due to restricted storage space on cookies (10 kb) as opposed to decent browsers with 5 mb localstorage. if your shitty company policy deletes everything on leaving the browser this also is obviously disturbing the workflow.
+orders can be piled up and verified en bloc. using pure web view the storage space is restricted to 5 mb of localstorage. if your shitty company policy deletes everything on leaving the browser this is obviously disturbing the workflow.
 to be honest this system is yet to be implemented properly.
-recently the stored data structure has been overhauled to minimize necessary characters. items added to cart from the stocklist need minimal storage due to referencing the id and allowed editable fields only. this led to an increased efficiency up to 400%. now you can pile up e.g. 20 orders using internet explorer instead of just 5. which is nice.
-orrders are stored in base64 which still needs more space than the plain json-object but is considered safer regarding special chars.
 
 dependencies are: the datalist of inventory regarding the shopping cart, optional [datalist of current order status](#ticketorderxlsm)
 
@@ -505,63 +420,49 @@ globalSearch api: returns entries that match search terms.
 
 [back to top](#table-of-contents)
 
-## module structure
-each module consists of an object with properties and methods. the initiating method should be the callback function of module loading with `core.fn.loadScript('modules/modulename.js','modulename.fn.init()')`. the overall structure of the modules data processing looks like this:
+## structure
+please adhere to the modules structure. each module consists of an object with properties and methods.
 
+somemodule.js
 ```Javascript
-if (typeof modulename == 'undefined') var modulename={};
-
-modulename.api= { //for globl search
-	available: function(search){
-		//stop performance monitoring that has been started by module calling
-		core.performance.stop('modulename.api.available(\''+search+'\')');
-		return somethingBasedOn(search);
+var somemodule = {
+	var: {}, // will be overwritten by the imported *.var.js-file
+	data: {}, // will be overwritten by the imported *.data.js-file
+	/* other module specific properties may apply */
+	api: {
+		available: async (search) => {
+			// return applicable values to global search - in case of active search
+			core.globalSearch.contribute('somemodule', [somecontent, relevance]);
+		},
+		currentStatus: async () => {
+			// return applicable values to global search - in case of passive start screen status
+		}
 	},
-	processAfterImport: function(){
-		//if you have to load something first this might be the callback function.
-	},
-	currentStatus: function(){
-		//stop performance monitoring that has been started by module calling
-		core.performance.stop('modulename.api.currentStatud()');
-		return someDraftOrRegularyUsed();
-	},
-};
-modulename.function= { //module behaviour
-	init: function(query){
-		//highlight menu icon
-		el('module{modulename}').checked=true; 
-			el('module{modulename}').checked=true; 
-		el('module{modulename}').checked=true; 
-		//import data file if applicable, return initial module content, process query from inter-module communication or global search
-		core.fn.loadScript(core.var.moduleDataDir + 'modulename.js', 'modulename.fn.someFunction(\'' + value(query) + '\')');
-		//prepare your modules interface
-		core.fn.stdout('input', 'your menu');
-		core.fn.stdout('temp', 'your temporary output or additional forms');
-		core.fn.stdout('output', 'your output');
-		//stop performance monitoring that has been started by module calling and write history
-		core.performance.stop('modulename.fn.init(\'' + value(query) + '\')');
-		core.history.write(['modulename.fn.init(\'' + value(query) + '\')']);
-	},
-	someFunction: function(query){
-		//optinal performance monitoring for each function
-		core.performance.start('modulename.fn.someFunction(\'' + value(query) + '\')');
-		
-		//////////////////////////////////////////////////////
-		//do your magic here
-		//////////////////////////////////////////////////////
-
-		core.performance.stop('modulename.fn.someFunction(\'' + value(query) + '\')');
-		core.history.write(['modulename.fn.init(\'' + value(query) + '\')']);
+	fn: {
+		search: async (query = '') => {
+			// return applicable values to stdout
+		},
+		/* ...
+		other module specific functions may apply
+		... */
+		init: async (query = '') => {
+			// create modules start screen
+			await core.fn.async.stdout('input', somecontent);
+			await core.fn.async.stdout('temp', somedifferentcontent);
+			await core.fn.async.stdout('output', someothercontent);
+		},
+		load: async () => {
+			// load vars and data 
+			await core.fn.async.loadScript(core.var.moduleVarDir + 'somemodule.var.js');
+			await core.fn.async.loadScript(core.var.moduleDataDir + 'somemodule.data.js');
+		}
 	}
 };
 ```
 
-the folder data has to contain a variable-file for the module, that will be called automatically on module load.
-
+somemodule.var.js
 ```Javascript
-if (typeof modulename == 'undefined') var modulename={};
-
-modulename.var= { //module variables
+somemodule.var= { //module variables
 	someProperty: 'Pi is exactly 3',
 	lang: {
 		inputPlaceholder: {
@@ -578,16 +479,26 @@ modulename.var= { //module variables
 };
 ```
 
-thus algorithms and values are separated and changes on one don´t necessarily affect the other. or copying new content between my companies and this open source version don't overwrite something (that happend way to often). since both parts of module are loaded asynchronously the initialization of the modules object in both files might be reasonable.
+somemodule.data.js
+```Javascript
+somemodule.data= { content: [
+	'strings',
+	['array', 'values'],
+	'whatever your module wants to process'
+]};
+
+```
+
+algorithms and values are separated and changes on one don´t necessarily affect the other. or copying new content between my companies and this open source version don't overwrite something (that happend way to often). since both parts of module are loaded asynchronously the initialization of the modules object in both files might be reasonable.
 
 please inspect the sample files for further information. while distributing this piece of software there happen to be some differencies between the open source version and the actual software used in my company. the main differencies can be found in the {modulename}.var-properties. maybe you find this suitable for you as well so changes to your sourcecode are way more easy to implement.
 
 [back to top](#table-of-contents)
 
-## module functions
+## core functions
 modules must contain functions to generate the modules output. some functions are in the main or dependent scripts like language synthesis, shortened document.getElementByID() or loading remote scripts. make use of the core-object, some things are fairly prepared:
 
-* data handling for inter module communication and storing settings
+* data handling for inter module communication and storing values
 * html-escaping for urls and dynamic mailto:-method
 * search algorithm
 * language selection
@@ -600,21 +511,18 @@ all modules are depentent on the main module, only some may have dependencies of
 
 [back to top](#table-of-contents)
 
-## output containers
-container for output are named 'input', 'temp' and 'output' and can be accessed preferably via `core.fn.stdout('input', content)` or `el('input').innerHTML` or whatever.
+### output containers
+container for output are named 'input', 'temp' and 'output' and can be accessed preferably via `core.fn.async.stdout('input', content)` or `el('input').innerHTML` or whatever.
 
-## registering and loading of modules
-register and deregister modules in ROOT/core/config.js so they are accessible and listed on initial start. import js-files or other subscripts with `core.fn.loadScript(url, callback);` files to be imported always have to be hardcoded (e.g. dropdown-list) because javascript having no indirect access to local file system (directory-listing etc.). this has to be done within modules as well. data-objects should be stored in `core.var.moduleDataDir`-folder prefixed with modulename_. therefore these can remain untouched if any changes occur for the main module-file and won't be affected during file-transfers in reviews.
-
-## module initialization
-initialization of module will be achieved by the callback functions of the core.fn.loadScript-method. initialization should contain a default output for input (forms or explanatory text), might contain module information in temp and should clear output. even if the module-object is reinitialized on every module-call there is no way of initializing with the same function name because of some asynchronous variable handling or scope unknown to me resulting in calling the previous init-function and giving a lot of errors.
+### registering and loading of modules
+register and deregister modules in ROOT/core/config.js so they are accessible and listed and imported on initial start. files to be imported (preferably from the modules load-method) always have to be hardcoded (e.g. dropdown-list) because javascript having no indirect access to local file system (directory-listing etc.). data-objects should be stored in `core.var.moduleDataDir`-folder prefixed with modulename_. therefore these can remain untouched if any changes occur for the main module-file and won't be affected during file-transfers in reviews. modules will be loaded on startup with the load-method as callback.
 
 [back to top](#table-of-contents)
 
-## multi-language support
-the language bricks within the modules are to be defined. i recommend the same nesting and pattern than the core language model for easier source reading. within every module the language-blocks have to be filled up according to registered languages to avoid errors of undefined objects. the bricks can be called with `core.fn.lang('brickName','modulename')` and will return the block in the selected language.
+### multi-language support
+the language bricks within the modules are to be defined. i recommend the same nesting and pattern than the core language model for easier source reading. within every module the language-blocks have to be filled up according to registered languages to avoid errors of undefined objects. the bricks can be called with `core.fn.static.lang('brickName','modulename')` and will return the block in the selected language.
 
-## language synthesis
+### language synthesis
 the root language model core.fn.languageSynthesis within the file library/core/core.fn.languageSynthesis.js can be extended through assigning an additional property within the module-file for example:
 
 ```Javascript
@@ -622,12 +530,7 @@ core.fn.languageSynthesis.property={
 	registeredlanguage_1:['child male form', 'child female form', 'adult male form', 'adult female form'],
 	registeredlanguage_2:['child male form', 'child female form', 'adult male form', 'adult female form']
 	};
-```
-
-or
-
-```javascript
-core.fn.languageSynthesis.property={
+core.fn.languageSynthesis.anotherproperty={
 	registeredlanguage_1:function(){/*todo*/ return value;},
 	registeredlanguage_2:function(){/*todo*/ return value;},
 	);
@@ -643,122 +546,75 @@ the method handles the decision over values or functions on its own.
 
 [back to top](#table-of-contents)
 
-## smart search with fuzzy search
-i have to admit i am a bit proud of this one. this method has to be handed over the raw query string and an object containing the searchable data. it then splits the query into whitespace separated terms, divides -filters and adds a concatenated query to an array of query options. fuzzy search is optional and can be enabled from the settings. if the query bits are set up the dataset will be checked for occurences of every bit. the results is a multidimensional array that can be displayed first in order of occurrences of different terms (if there are more than one) then of the data object. + will make mathing of all search terms mandatory, ? and * will override disabled fuzzy setting, so not really serving as wildcards but giving most probably more relevant results to users that are used to working with these. quoted terms will be looked for in this particular order strictly adding relevance.
+### smart search with fuzzy search
+this method has to be handed over the raw query string and an object containing the searchable data. it then splits the query into whitespace separated terms, divides -filters and adds a concatenated query to an array of query options. fuzzy search is optional and can be enabled from the settings. if the query bits are set up the dataset will be checked for occurences of every bit. the results is a multidimensional array that can be displayed first in order of occurrences of different terms (if there are more than one) then of the data object. + will make mathing of all search terms mandatory, ? and * will override disabled fuzzy setting, so not really serving as wildcards but giving most probably more relevant results to users that are used to working with these. quoted terms will be looked for in this particular order strictly adding relevance.
 
 [back to top](#table-of-contents)
 
-## output usage
+### output usage
 output text is selected on click by default. to avoid this add a property `disableOutputSelect = true;` to module.var. this is considered not to be implemented global through registered-modules for being dynamically mutable if desired within the module itself (e.g. see mailtools).
 
-## inter-module communication
-communication between modules is possible with use of localstorage or cookies. this has to be observed strictly, because of possible failures and dependencies of js-data-files. there might be spaghetti! use the `core.fn.setting` method and always make sure to have proper default and error handling in case of missing data. initiating functions of submodules partially accept queries to handle preselections.
+### inter-module communication
+communication between modules is possible with use of `core.fn.async.memory`-methods. this has to be observed strictly, because of possible failures and dependencies of js-data-files. there might be spaghetti! always make sure to have proper default and error handling in case of missing data. initiating functions of submodules partially accept queries to handle preselections.
 
-## api
+### api
 every module has to contain an api-method that returns some value (at least a `return;`). the api-module is called by the global search from the start site. lack of the api will result in errors. every registered module will be called even if the user has deselected it in the settings (so the user might get a feeling of content and meaning of modules and has a guaranteed meaningful access).
 
 [back to top](#table-of-contents)
 
 ## core overview
-a shortened overview of recuring used core-functions that can be made use of in future modules (not the complete list though).
+a shortened overview of recuring used core-functions that can be made use of in future modules (not the complete list though). these are ordered by being static or asynchronous for easier comprehension of structures within any given function, method, whatever. 
 
 ### core.js
 `el(v)` returns document.getElementById(v)
 
-`isIE()` returns boolean for browserhacks
+`core.fn.static`
+* `.drm` methods for hash- and token-creation and translation given special rights within modules
+* `.dynamicMailto(address, subject, body)` prefills mailto:-actions, opens mail-client and handles browser dependent maximum body size
+* `.escapeHTML(text, br2nl)` returns a string with escaped special chars for mailto anchors
+* `.insert` methods for recurring design and content patterns including `.checkbox(...)`, `.expand()`, `.icon(...)`, `.limitBar(...)`, `radio(...)` and `.select(...)`
+* `.lang(block, args)` looks for properties oder property-functions within core or loaded module to return dependent on the chosen language. block is the property name of the to be displayed text block, args is optional for functions. module properties come before core properties.
+* `.languageSelection(event)` returns a set of radio inputs based on registered languages. event is optional and can be e.g. an onchange property of the radio button
+* `.limitBar(actual, max, id)` updates given limitBar with actual amount and handles colour style
+* `.maxMailSize()` tests whether the browser can handle the maximum body size for maito according to advanced settings
+* `.popup(text)` shows or updates a popup box if text is provided, hides it if function called with undefined value
+* `.selectText(element)` selection of content in element if not disabled. opens in new window if set so
+* `.sortBySecondColumn(a, b)` sorts two dimensional arrays as parameter for sort()
+* `.string` with `compress(...)` and `decompess(...)` returns an lzh-compressed or reverted string to occasionally save some bytes for storage of long strings. this uses [the magnificent library by pieroxy](https://github.com/pieroxy/lz-string).
+* `.toggleHeight(toggleel)` toggles the class list of given element to expand or shrink it
 
-`value(v)` returns value of v or '' even if v is undefined. useful for function parameters.
+async functions rely on other async functions at some time. mostly by reading or writing data.
 
-`svgClassList()` polyfill for adding/removing classes to svg classList
+`core.fn.async`
+* `.growlNotif(text)` shows a short notification that hides after a set time if text is provided, hides it if function called with undefined value
+* `.file` with `link(...)`and `batch(...)` returns or handles external files
+* `.loadscript(url, callback)` appends url-file to the header and calls the callback function. used for importing / loading modules and data-files
+* `.memory` handles everything storage-related including reading, writing, deleting and some more.
+* `.smartSearch` compares raw user input to objects values and returns an array with matches ordered by relevance/multi matches on multiple query terms. handles optional fuzzy search based on overall application setting. has an included relevance tracker.
+* `.stdout(where, what)` serves as a wrapper for output to innerHTML, but can be used for debugging easily by setting/adding 'console' to *where*
 
-`core.fn.drm.table(table)` returns a translated table according to data rights management excel sheet
-
-`core.fn.drm.createHash(string)` returns a hash based on argument string, consider concatenation of name and password to make the hash unique regarding data rights management
-
-`core.fn.drm.searchHash()` returns true if hash is found in given hash table
-
-`core.fn.drm.encryptToken(base36Timestamp, name, password)` returns an encrypted token
-
-`core.fn.drm.decryptToken(hashTable, base36Timestamp, token)` returns true if decrypted hash is found in given hash table
-
-`core.fn.dynamicMailto(address, subject, body)` prefills mailto:-actions, opens mail-client and handles browser dependent maximum body size
-
-`core.fn.escapeHTML(text, br2nl)` returns a string with escaped special chars for mailto anchors
-
-`core.fn.growlNotif(text)` shows a short notification that hides after a set time if text is provided, hides it if function called with undefined value
-
-`core.fn.insert.checkbox(label, id, checked, additionalProperty, title)` returns a html checkbox that can be prechecked, event can be an onchange property or similar
-
-`core.fn.insert.expand()` returns a html span that indicates whether an box is expanded or shrunken
-
-`core.fn.insert.icon(icon, addclass, id, attributes)` returns an inline svg according to the declared properties within contained asset-object. addclass, id, and attributes are optional
-
-`core.fn.insert.limitBar(width, title, id)` returns a html div containing the indicator for a given size/limit
-
-`core.fn.insert.radio(label, name, id, checked, additionalProperty, title)` returns a html radio button that can be prechecked, event can be an onchange property or similar
-
-`core.fn.insert.select(options, name, id, selected, additionalProperty)` returns a html select element that can be preselected, event can me an onchange property or similar. options have to be an object with optionId:[value,label]
-
-`core.fn.lang(block, args)` looks for properties oder property-functions within core or loaded module to return dependent on the chosen language. block is the property name of the to be displayed text block, args is optional for functions. module properties come before core properties.
-
-`core.fn.languageSelection(event)` returns a set of radio inputs based on registered languages. event is optional and can be e.g. an onchange property of the radio button
-
-`core.fn.loadscript(url, callback)` appends url-file to the header and calls the callback function. used for importing / loading modules and data-files
-
-`core.fn.limitBar(actual, max, id)` updates given limitBar with actual amount and handles colour style
-
-`core.fn.maxMailSize()` tests whether the browser can handle the maximum body size for maito according to advanced settings
-
-`core.fn.popup(text)` shows or updates a popup box if text is provided, hides it if function called with undefined value
-
-`core.fn.selectText(element)` selection of content in element if not disabled. opens in new window if set so
-
-`core.fn.setting.get(name)` returns the value of localstorage.item or cookie-*name* or false
-
-`core.fn.setting.isset(name)` returns boolean of existence of localstorage.item or cookie *name*. the getter might not be sufficient in case of actual 0 or false values
-
-`core.fn.setting.localStorage.maxSpace()` maximum storage space depending on supported storage method
-
-`core.fn.setting.localStorage.remainingSpace()` returns the amount of remaining bytes for storing settings or whatever
-
-`core.fn.setting.set(name, value, errormsg)` stores data in localstorage or cookie. in the latter case for about one year, errormsg is optional and customizable for the usecase in case storage limit is exceeded
-
-`core.fn.setting.switch(name)` toggles a setting to true in terms of off/false by default
-
-`core.fn.setting.unset(name)` unsets localstorage.item or cookie *name*
-
-`core.fn.smartSearch.lookup(userInput, dataBaseObject, additionalCondition)` compares raw user input to objects values and returns an array with matches ordered by relevance/multi matches on multiple query terms. handles optional fuzzy search based on overall application setting
-
-`core.fn.smartSearch.relevance.init` initiates a property in case you want the search results to be separated by relevance
-
-`core.fn.smartSearch.relevance.nextstep` inserts a line between steps of relvance and should be concatenated to the output
-
-`core.fn.sortBySecondColumn(a, b)` sorts two dimensional arrays as paramter for sort()
-
-`core.fn.stdout(where, what)` serves as a wrapper for output to innerHTML, but can be used for debugging easily by setting/adding 'console' to *where*
-
-`core.fn.stringcompression.compress()` returns an lzh-compressed and encoded string to occasionally save some bytes for storage of long strings. this uses [the magnificent library by pieroxy](https://github.com/pieroxy/lz-string). still not every information can be efficiently compressed, so it will always be checked if the compression really saves the amount data
-
-`core.fn.stringcompression.decompress()` reverts the occasionally compressed string
-
-`core.fn.toggleHeight(toggleel)` toggles the class list of given element to expand or shrink it
-
-`core.history.go('back'||'forth')` yields through the history and processes the stored callbacks
-
-`core.history.write(point)` adds an array of callbacks to the history storage if the parameter differs from last entry. removes entries if new entry is added while havinge gone back
-
-`core.performance.start(track, group)` does start a console timer. starting a group is optional. this is called on every loadScript and should be ended within all callback functions.
-
-`core.performance.stop(track, info, group)` does stop a console timer. info can be some desired result. ending group is optional. 
+other core-functions are 
+* `core.init` intitializing the whole application, every module on call and the start-screen
+* `core.setup` with relevant settings and creation of different setup-screens
+* `core.history` handling back- and forth-navigation during the use of the application
+* `core.globalsearch` calling the modules api-methods to retrieve relevant data searched from the home-screen
 
 ### ../library/core/core.fn.languageSynthesis.js
 extends the core-object with the language synthesis. here you define textblocks that can be switched for $keyword$ within continuous text using the function `core.fn.languageSynthesis.output(block)` called by `'string'.replace(/\$(\w+?)\$/ig,function(match,group1){return core.fn.languageSynthesis.output(group1)})`
 
 [back to top](#table-of-contents)
 
-# details on the tools
-## summary
-much of the code that is used by the document management happens to be useful for other purposes as well. therefore it is implemented into other excel-files that support your quality management system, planning product and personnel ressources. especially the scripts hopefully make data filtering and selection a bit easier.
+## python wrapper
+the python wrapper uses [the eel-framework](https://github.com/ChrisKnott/Eel#building-distributable-binary-with-pyinstaller) to start a server and display the assistant tunneling everything through a python backend. this extends some capabilities like storage or is able to fix browser behaviours like opening files instead of storing them like edge 94.
+core.eel.js checks for the availability of the wrapper and overrides applicable core methods to use eel-functions instead.
+
+because of the architecture of the framework the core.html file is placed in its own folder and has a cumbersome import-procedure for scripts and styles. on the other hand everything else of the assistant remains accessible and changeable without the need of recompiling the wrapper. this is only necessary on changes on the core.html file itself. 
+
+[back to top](#table-of-contents)
+
+# tools
+much of the code that is used by the document management happens to be useful for other purposes as well. therefore it is implemented into other excel-files that support your quality management system, planning product and personnel ressources. especially the scripts hopefully make data filtering and selection a bit easier. keep track of declarations of conformity, certificates and other documents from your vendors, make preparing of internal audits an bit easier, keep track of your stock items, plan transfer schedules, use digital time tracking for your employees and handle huge datasets from csv-dumps and populate and update the digital assistant.
+occasionally there are some hacks to support your shitty erp-software. some provided office-files act as interfaces between your tracing and the digital assistant.
 
 ## vendorlist.xlsm
 ![vendor list](assets/xlsm_vendorlist.png)
@@ -777,18 +633,8 @@ the audit planner can be filled with a question set for internal audits. by expo
 
 [back to top](#table-of-contents)
 
-## stocklist
-*deprecated but still available excel solution*
-
-![excel stocklist](assets/xlsm_stocklist.png)
-
-the stocklist might contain all products and materials that have permission from the companies head. i am aware there are better solutions for stock administration but by time of writing my own companies software is worse than using excel for that. so this *is* an advance. the export function on save makes the list accessible and searchable for all employees using the assistant hence optimizing dialogue with inventory control. excel might freeze on export if the list contains 6k+ items, but it just takes some time, so no worries.
-
-*newer approach with python filtering csv*
-
-![python stocklist translator](assets/py_stocklist.png)
-
-having two databases to maintain is admittedly not be the best solution. fortunately i found a solution to translate the dump from the erp-software to the assistant. in this scenario you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
+## stocklist.py
+the script translates a dump from the erp-software and makes it accessible and searchable for all employees using the assistant hence optimizing dialogue with inventory control. you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
 
 also this script has a function to split the data by given column values. this might help e.g. in case of annual stocktaking. this is not related to quality management in the first place but can come in handy and since the same source has to be processed by the same rules, why the heck not?
 
@@ -830,7 +676,6 @@ if you have efficient electronic supported methods for time tracking of the empl
 [back to top](#table-of-contents)
 
 ## filter.py
-
 ![python csv-filter](assets/py_filter.png)
 
 there might be a reccuring need to filter huge data-sets. some erp-software can create csv-dumps of data that can be used for statistics or post market surveillance. it can be way easier to filter these dumps and create a serial letter from the output, than adjust the erps database for an example. with the python filter you can describe filter-patterns with regex for different usecases. you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
