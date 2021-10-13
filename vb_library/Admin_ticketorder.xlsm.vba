@@ -45,7 +45,7 @@ Public Sub closeRoutine(ByVal SaveAsUI As Boolean, Cancel As Boolean)
 
         Dim finally As String
         finally = "//this file was automatically created by <" & ThisWorkbook.Name & ">" & vbNewLine & vbNewLine & _
-            "var " & setup("export.objectName") & "={content:[" & vbNewLine
+            setup("export.objectName") & "={content:[" & vbNewLine
 
         'header descriptions
         finally = finally & "[" & _
