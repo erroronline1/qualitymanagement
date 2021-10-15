@@ -43,13 +43,15 @@ core.eel = () => {
 							return type;
 						}
 					}
+					return 'default';
 				},
 				link: async function (file, onclick = '') {
 					return 'href="#" onclick="eel.file_handler(core.var.environment[core.var.selectedEnv][\'' + this.type(file) + '\'].open.concat([\'' + file + '\']))(); ' + onclick + '"';
 				},
 				batch: async function (files) {
 					for (var file of files) {
-						await eel.file_handler(core.var.environment[core.var.selectedEnv][this.type(file)].batch.concat([file]))();
+						if (this.type(file) != 'default')
+							await eel.file_handler(core.var.environment[core.var.selectedEnv][this.type(file)].batch.concat([file]))();
 					}
 				}
 			};
