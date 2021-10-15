@@ -8,8 +8,7 @@ const heart = [style, 'color: #bf616a'].join(';');
 const link = [style, 'color: #a3be8c'].join(';');
 console.log('%c      coded with %c♥️ %cby error on line 1 - %c http://erroronline.one      ', main, heart, main, link);
 let developerAlert = 'Welcome to the console output of the ' + core.fn.static.lang('title') + '!\n' +
-	'Please be aware that displaying the console results in a significant decrease of speed.\n' +
-	'Operations that batch-load ressources might fail (e.g globalSearch).';
+	'Please be aware that displaying the console might result in a significant decrease of speed.';
 console.warn(developerAlert);
 
 let randomTip = {
@@ -35,7 +34,7 @@ let randomTip = {
 		},
 		//	general functionality tips			
 		{
-			en: 'If you don\'t like the color, you can change the theme within the settings',
+			en: 'If you don\'t like the color, you can change the theme within the settings.',
 			de: 'Falls dir die Farbe nicht gefällt kannst du ein anderes Theme bei den Einstellungen auswählen.'
 		},
 		{
@@ -43,8 +42,8 @@ let randomTip = {
 			de: 'Wenn du Schwierigkeiten hat etwas zu erkennen, stelle in den Einstellungen die Schrift- und Darstellungsgröße ein.'
 		},
 		{
-			en: 'You can set up the menu bar to be always small to have more space for the content in case you have a bad screen resolution ',
-			de: 'Bei niedriger Auflösung kannst du das Menü dauerhaft bei den Einstellungen auf schmal einstellen, damit mehr Platz für die Inhalte ist.'
+			en: 'You can set up the menu bar to be smaller to have more space for the content in case you have a bad screen resolution.',
+			de: 'Bei niedriger Auflösung kannst du das Menü schmal einstellen, damit mehr Platz für die Inhalte ist.'
 		},
 		{
 			en: 'Enabling fuzzy search can help you finding the desired content in case of typos. Set up the sensitivity in the advanced settings.',
@@ -56,7 +55,7 @@ let randomTip = {
 		},
 		{
 			en: 'Filter your search results by preceding a -, like &quot;find everything -but&quot;. If at least one term is preceded by a + only results with all terms will be shown.',
-			de: 'Du kannst bei deiner Suche filtern wenn du ein - voranstellst, wie in &quot;finde alles -außer&quot;. Wenn einem Begriff ein + voransteht werden nur Ergebnisse angezeigt, die alle begriffe beinhalten.'
+			de: 'Du kannst bei deiner Suche filtern wenn du ein - voranstellst, wie in &quot;finde alles -außer&quot;. Wenn einem Begriff ein + voransteht werden nur Ergebnisse angezeigt, die alle Begriffe beinhalten.'
 		},
 		{
 			en: 'Search terms with less than three characters will be dropped as a precaution, unless you embed these in quotes. This may lead to a larger result, thus making sense with applied filters only.',
@@ -91,8 +90,8 @@ let randomTip = {
 			de: 'Generierter Text wird unter Umständen direkt in die eMail eingefügt. Das hängt vom Browserimplementierung ab. Die Länge des Textes kann bei den erweiterten Einstellungen angepasst werden. '
 		},
 		{
-			en: 'Some functions need operating system specific settings. The used operating system can be set in the advanced settings.',
-			de: 'Manche Funktionen benötigen betriebssystem-spezifische Einstellungen. Das genutzte Betriebsystem kann bei den erweiterten Einstellungen gewählt werden.'
+			en: 'Some functions need environment specific settings. The used environment can be set in the advanced settings.',
+			de: 'Manche Funktionen benötigen umgebungsspezifische Einstellungen. Die genutze Betriebsumgebung kann bei den erweiterten Einstellungen gewählt werden.'
 		},
 		{
 			en: 'In case you are entitled to a password for some parts of the assistant you can cipher it from the settings menu and let yourself be registered in the data rights management list by mail.',
@@ -104,8 +103,8 @@ let randomTip = {
 			de: 'Vergiss nicht dem Einkauf per eMail bescheid zu sagen, falls dir Fehler auffallen.'
 		},
 		{
-			en: 'Search and access module content right from the entry page. In accordance to the computers speed the time to deliver results can be set.',
-			de: 'Suche und nutze die Inhalte direkt von der Startseite aus. Je nach Geschwindigkeit des Computers kann die Zeit für die Bereitstellung der Ergebnisse eingestellt werden.'
+			en: 'Search and access module content right from the entry page.',
+			de: 'Suche und nutze die Inhalte direkt von der Startseite aus.'
 		},
 		{
 			en: 'Favourite entries can be deleted as a whole and individual. The latter can be achieved by hovering about two seconds above the link.',
@@ -159,7 +158,8 @@ let updateTracker = {
 		['Major', '16.08.2019: Welcome to the assistant. This is the next version. Search less, find more...'],
 		['Major', '06.09.2019: Welcome to the assistant. This is the next version with clear and tidy separation between algorithms and customized data.'],
 		['Major', '19.06.2020: Welcome to the assistant. As from today it is possible to handle permissions to modules or functions.'],
-		['Minor', '24.08.2021: Implemented an efficient compression for data storage. If you came back, something unpredictable might have happened and you should reset the application.']
+		['Minor', '24.08.2021: Implemented an efficient compression for data storage. If you came back, something unpredictable might have happened and you should reset the application.'],
+		['Major', '16.10.2021: Refactored to ECMAScript6+'],
 		//['',''], // adding an empty set disables the popup of the latestMajorUpdate(). get a bit annoying after a while without updates
 	],
 };
