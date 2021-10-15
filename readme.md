@@ -12,13 +12,6 @@
 [![last-commit](https://img.shields.io/github/last-commit/erroronline1/qualitymanagement.svg?style=flat-square)](https://github.com/erroronline1/qualitymanagement/commits/master)
 ![license](https://img.shields.io/github/license/erroronline1/qualitymanagement.svg?style=flat-square)
 
-tested with
-
-![word](https://img.shields.io/badge/office%20word-2013,%202019-blue?style=flat-square&logo=microsoft-word)
-![excel](https://img.shields.io/badge/office%20excel-2013,%202019-brightgreen?style=flat-square&logo=microsoft-excel)
-![outlook](https://img.shields.io/badge/office%20outlook-2019-blue?style=flat-square&logo=microsoft-outlook)
-![browsers](https://img.shields.io/badge/real%20browsers-firefox,%20chrome,%20edge-orange?style=flat-square)
-
 ## table of contents
 
 ### general
@@ -50,8 +43,8 @@ tested with
 	* [filter.py](#filterpy)
 	* [leech.py](#leechpy)
 * [thoughts and considerations](#thoughts-and-considerations-1)
-* [changes and updates](#changes-and-updates)
-* [disclaimer](#disclaimer)
+	* [changes and updates](#changes-and-updates)
+	* [disclaimer](#disclaimer)
 * [license](#license)
 
 # about bottle light qms
@@ -99,9 +92,9 @@ and yes, whether or not i should use ascii to do a logo, i most certainly can.
 * network access for every employee to access the assistant only from one source
 * one somewhat experienced office user to customize the document-blueprints and vba-codes
 * one webdeveloper to customize the application for your companies needs and optionally provide you with desired additional modules
-* at best a python-developer for provided scripts, capable of json and regex
+* at best a python-developer for provided scripts, having heard of json and knowing how to regex
 * patience with coworkers blaming 'your' assistant for every network failure, printer settings and their inability to read the literal hints and descriptions
-* provided python-scripts probably will have to be compiled (unless you have python installed - [3.6 for the moment](https://www.python.org/downloads/release/python-3612/)). i recommend [pyinstaller](http://www.pyinstaller.org/) for this usecase - at least for windows environments.
+* provided python-scripts probably will have to be compiled (unless you have python installed - [3.6 for the moment](https://www.python.org/downloads/release/python-3612/)). i recommend [pyinstaller](http://www.pyinstaller.org/) for this usecase - at least for windows environments - i just don't know about others.
 
 [back to top](#table-of-contents)
 
@@ -118,6 +111,8 @@ in case you use the python wrapper for the assistant i recommend creating a virt
 * .venv/Scripts/activate
 * pip install -r requirements.txt
 * python -m eel assistant.py html --onefile --icon html/favicon.ico
+
+*it appears the compiling process evaluates javascript as well. i don't know for sure but during compiling word occasionally pops up for docm-files contained in data-lists. it may help to create these only after compiling.*
 
 ![sample folder structure](assets/folderstructure.png)
 * the provided folder structure might not be neccessarily your first choice and serves just as a sample. you have to change at least the default paths within the vba-code and the assistant anyway.
@@ -136,6 +131,12 @@ if you are a programmer i can recommend [notepad++ portable](https://notepad-plu
 [back to top](#table-of-contents)
 
 # document management
+tested with
+
+![word](https://img.shields.io/badge/office%20word-2013,%202019-blue?style=flat-square&logo=microsoft-word)
+![excel](https://img.shields.io/badge/office%20excel-2013,%202019-brightgreen?style=flat-square&logo=microsoft-excel)
+![outlook](https://img.shields.io/badge/office%20outlook-2019-blue?style=flat-square&logo=microsoft-outlook)
+
 the office documents come with built-in vba-code to handle document version control, ressource overview and export-handling. employees use mainly unchangeable pdf-files or docm-files to fill out during workflow. each document registers and manages itself (kind of).
 
 style the blueprints according to your desired corporate design whatever you like and however word allows you to. just make sure you don't delete the document variables.
@@ -211,7 +212,7 @@ published docm-files import a macro-module handling the checkbox-hiding-text-top
 [back to top](#table-of-contents)
 
 ## internal documents in force.xlsm
-tl;dr: docm-files as working draft will register and update their version in this table. assign checkpoints to have a regulatory context. this list serves as the interface for the [documents module for the assistant](#document-lookup) too. export will be executed on save. the list of norm-chapters should contain all relevant considerable chapters. on save documents will be assigned back to the list to clarify if every chapter is met. assign documents to regulary common used bundles. this also serves as the interface for [the assistants bundles module](#predefined-document-bundles).
+docm-files as working draft will register and update their version in this table. assign checkpoints to have a regulatory context. this list serves as the interface for the [documents module for the assistant](#document-lookup) too. export will be executed on save. the list of norm-chapters should contain all relevant considerable chapters. on save documents will be assigned back to the list to clarify if every chapter is met. assign documents to regulary common used bundles. this also serves as the interface for [the assistants bundles module](#predefined-document-bundles).
 
 ![documents in force](assets/xlsm_documentsinforce.png)
 this file contains all documents in force, a link to the documents and the possiblity to assign their special task in fullfilling regulatory requirements. the docm-documents will register themselves in the first sheet on their individual save. you can assign alternate search terms and checkpoints to the document. the second sheet contains these checkpoints and all the assigned documents. in this way you can see directly if you match all checkpoints.
@@ -231,8 +232,6 @@ afterwards you can export the list of documents as well as the document bundles 
 
 ## external documents in force.xlsm
 ![external documents in force](assets/xlsm_externaldocuments.png)
-
-tl;dr: this list serves as an overview of acknowledged external documents in use as well as the interface for the assistants document module on save.
 
 this list contains external documents in force and can contain other file lists. beside having them registered you can export these as well to [the assistant](#document-lookup) on saving. while inserting links as registration there might be relative paths. this can be tweaked within the code where you can assign replacements to tidy things up. adding another sheet of file categories is easily done by adding another collection within the code, alter the sheet name and pass the collection to the export sub. remember to register the data-export to the assistants module as well. you can define alternative search terms as well as descriptions to filenames or urls to be displayed in the assistant in case the original files and urls lack a meaningful name.
 
@@ -270,6 +269,12 @@ on export of docm-files the file dialogue does not show pdf- or docm-options. yo
 [back to top](#table-of-contents)
 
 # the assistant
+tested with
+
+![firefox](https://img.shields.io/badge/%20-firefox-grey?style=flat-square&logo=firefox-browser)
+![edge](https://img.shields.io/badge/%20-edge-grey?style=flat-square&logo=microsoft-edge)
+![chrome](https://img.shields.io/badge/%20-chrome-grey?style=flat-square&logo=google-chrome)
+
 the digital assistant provides your company with an application to have an easier access to your quality management system. if you provide your employees with access via this assistant it might be way more easy to have them use only the latest documentation version. it does access files that could be reached by file-explorer as well, but avoiding the latter way prevents the employees to make copies that may become obsolete, at least to some degree.
 
 * global access to qm-related ressources for every employee
@@ -294,13 +299,13 @@ you can start the assistant by opening the html-file, or using the (compiled or 
 
 [back to top](#table-of-contents)
 
-## comes with different themes
+### comes with different themes
 ![assistant themes](assets/assistant_themes.png)
 
-## search less, find more directly from the home screen
+### search less, find more directly from the home screen
 ![assistant global search](assets/assistant_globalsearch.png)
 
-## customize the assistants behaviour
+### customize the assistants behaviour
 ![assistant settings](assets/assistant_settings.png)
 
 [back to top](#table-of-contents)
@@ -311,8 +316,8 @@ the provided modules are filled with dummies. the general multi-language support
 ### document lookup
 ![assistant document lookup](assets/assistant_documentlookup.png)
 
-you can search for documents by name, switch between your own and foreign or other documents. there is a third category of record documents that might not neccessarily have to be in version control. these are not searchable but still reachable from the application, given the respective folder.
-every click on a document will be counted. from the second call of this module on the last used documents will be displayed. frequent called documents will appear on the top of the list. you can define default documents, users will be able to define their own default list, delete and recall lists. if you define default lists within the module, set up the documents filename only without non-word characters.
+you can search for documents by name, filter looking for your own and foreign or other document categories. content created by the office files has to be registered as lists. provided directories will be searchable using the python wrapper, albeit not with alternative search terms.
+every click on a document will be counted. from the second call of this module on the last used documents will be displayed. frequent called documents will appear on the top of the list.
 
 dependencies are: datalists for internal and external an other documents. these are generated by the [excel-files of documents in force](#internal-documents-in-forcexlsm).
 
@@ -481,12 +486,14 @@ somemodule.var= { //module variables
 
 somemodule.data.js
 ```Javascript
-somemodule.data= { content: [
-	'strings',
-	['array', 'values'],
-	'whatever your module wants to process'
-]};
-
+somemodule.data= {
+	content: [
+		'strings',
+		['array', 'values'],
+		'whatever your module wants to process'
+	],
+	someOtherProperty: 'whateverIsNeeded'
+};
 ```
 
 algorithms and values are separated and changes on one don´t necessarily affect the other. or copying new content between my companies and this open source version don't overwrite something (that happend way to often). since both parts of module are loaded asynchronously the initialization of the modules object in both files might be reasonable.
@@ -607,8 +614,11 @@ extends the core-object with the language synthesis. here you define textblocks 
 ## python wrapper
 the python wrapper uses [the eel-framework](https://github.com/ChrisKnott/Eel#building-distributable-binary-with-pyinstaller) to start a server and display the assistant tunneling everything through a python backend. this extends some capabilities like storage or is able to fix browser behaviours like opening files instead of storing them like edge 94.
 core.eel.js checks for the availability of the wrapper and overrides applicable core methods to use eel-functions instead.
+not yet implemented, but if one day there appear random python specific modules, these could be appended to the core.var.modules-list from core.eel.js and will not mess up plain browser usage.
 
-because of the architecture of the framework the core.html file is placed in its own folder and has a cumbersome import-procedure for scripts and styles. on the other hand everything else of the assistant remains accessible and changeable without the need of recompiling the wrapper. this is only necessary on changes on the core.html file itself. 
+modules have to handle conditional behaviour on their own, respective python implementations require adding to and recompiling assistant.py.
+
+because of the architecture of the framework the core.html file is placed in its own folder and has a cumbersome import-procedure for scripts and styles. on the other hand everything else of the assistant remains accessible and changeable without the need of recompiling the wrapper. this is only necessary on changes on the core.html file itself.
 
 [back to top](#table-of-contents)
 
@@ -711,7 +721,7 @@ i maintain this open template as well as the official version in my company. whi
 
 [back to top](#table-of-contents)
 
-# disclaimer
+## disclaimer
 use at your own responsibility. as this system is or has been in real use with me being responsible, i did my best to make everything flawless. i also tried to make the documentation and comments as meaningful as i could. als always there might be parts that once seemed to be self-explanatory so a little bit of advanced javascript and vba skills might come in handy.
 
 this system does neither provide you with the content of your quality management system nor the necessary structure. you will have to set this one up for yourself. but this system might be flexible enough to match your needs in regards of version control, publishing and company wide access. of course i sewed everything to fit my own companies needs and quality management system. if your company decides for more fields you might have to take a deeper look into vba programming to customize that.
