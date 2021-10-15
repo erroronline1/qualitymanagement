@@ -366,7 +366,7 @@ Public Sub DOCMPublish()
 
             ' docvar-field in textboxes seem to be unaffected by the unlinking procedure above _
             and i am not able to figure out why. so ffs the most relevant variables will be passed as well
-            newDoc.Variables("version").Value = ThisDocument.Variables("version").Value
+            newDoc.Variables("version").Value = currentDocumentVersion
             newDoc.Variables("releasedate").Value = ThisDocument.Variables("releasedate").Value
             newDoc.Variables("title").Value = ThisDocument.Variables("title").Value
 
