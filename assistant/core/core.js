@@ -641,7 +641,7 @@ core.init = {
 			(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' +
 				core.fn.static.insert.icon('outlook') + core.fn.static.lang('openOutlook') + '</a><br />' : '') +
 			(core.var.publishedFolder ? '<br /><a href="' + core.var.publishedFolder + '" target="_blank">' +
-				core.fn.static.insert.icon('pdf') + core.fn.static.lang('openPublishedFolder') + '</a><br />' : '') +
+				core.fn.static.insert.icon('fileexplorer') + core.fn.static.lang('openPublishedFolder') + '</a><br />' : '') +
 			'<br /><br /><div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + eMailList + '</div>' +
 			'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>'
 		);
