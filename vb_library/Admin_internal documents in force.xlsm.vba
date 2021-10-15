@@ -129,7 +129,7 @@ Public Sub bundleExport(var As Collection)
             Dim documentFormat: documentFormat = ""
             
             Dim finally As String: finally = "//this file was automatically created by <" & ThisWorkbook.Name & ">" & vbNewLine & _
-                "documentbundles.data.exceptions={" & vbNewLine
+                var("export.objectExceptions")(0) & vbNewLine
             
             'assign exceptions
             With ThisWorkbook.Worksheets(var("bundles.sheet"))
@@ -173,7 +173,7 @@ Public Sub bundleExport(var As Collection)
                     finally = finally & intermediate & "]," & vbNewLine
                 End If
             Next bundle
-            finally = finally & "};" & vbNewLine
+            finally = finally & var("export.objectExceptions")(1) & vbNewLine
             
             'reset collection
             Set assignment = New Collection
@@ -230,12 +230,12 @@ Public Sub bundleExport(var As Collection)
                 End If
             Next bundle
             'process the result-dictionary to the js-object output
-            finally = finally & "documentbundles.data.bundles={" & vbNewLine
+            finally = finally & var("export.objectBundles")(0) & vbNewLine
             Dim res As Variant
             For Each res In resultbundles.keys
                 finally = finally & res & ":{" & vbNewLine & resultbundles(res) & vbNewLine & "}," & vbNewLine
             Next res
-            finally = finally & "};" & vbNewLine
+            finally = finally & var("export.objectBundles")(1)
             
             Essentials.WriteFile fileSaveName, finally, False
         Else

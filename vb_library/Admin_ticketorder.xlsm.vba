@@ -45,7 +45,7 @@ Public Sub closeRoutine(ByVal SaveAsUI As Boolean, Cancel As Boolean)
 
         Dim finally As String
         finally = "//this file was automatically created by <" & ThisWorkbook.Name & ">" & vbNewLine & vbNewLine & _
-            setup("export.objectName") & "={content:[" & vbNewLine
+            setup("export.object")(0) & vbNewLine
 
         'header descriptions
         finally = finally & "[" & _
@@ -82,7 +82,7 @@ Public Sub closeRoutine(ByVal SaveAsUI As Boolean, Cancel As Boolean)
                 finally = finally & intermediate & "]," & vbNewLine
             End If
         Next mrow
-        finally = finally & "]};"
+        finally = finally & setup("export.object")(1)
         Essentials.WriteFile fileSaveName, finally, False   
 
         'clear table and set focus to make insertion easier next time

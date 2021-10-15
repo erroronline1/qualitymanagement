@@ -119,7 +119,7 @@ Public Sub basicTableToJSON(var As Collection)
             null if all, integer if non comparable columns are on the right side to the matrix _
     export.defaultFile - default file name with path _
     export.prompt - language dependent file selector title _
-    export.objectName - json object name _
+    export.object - json object name and wrapper _
     export.dontSkipEmpty - add empty cells or not _
     m.contentColumn - depending on former setting, skips if cell in row of this column is empty
     
@@ -141,7 +141,7 @@ Public Sub basicTableToJSON(var As Collection)
         Dim entry As Long
         Dim finally As String
         finally = "//this file was automatically created by <" & ThisWorkbook.Name & ">" & vbNewLine & _
-            var("export.objectName") & "={content:[" & vbNewLine
+            var("export.object")(0) & vbNewLine
         For mrow = LBound(msheet, 1) To UBound(msheet, 1)
             'clear intermediate result for row
             entry = entry + 1
@@ -153,7 +153,7 @@ Public Sub basicTableToJSON(var As Collection)
                 finally = finally & intermediate & "]," & vbNewLine
             End If
         Next mrow
-        finally = finally & "]};"
+        finally = finally & var("export.object")(1)
         WriteFile fileSaveName, finally, False
     End If
 End Sub
@@ -193,7 +193,7 @@ Public Sub doclistExport(var As Collection, ByVal replacePath As Boolean, ByVal 
         If Not replacePath Or (replacePath And Not (pdfFolder = vbNullString And docFolder = vbNullString)) Then
             Dim content As String
             content = "//this file was automatically created by <" & ThisWorkbook.Name & ">" & vbNewLine & vbNewLine & _
-                var("export.objectName") & "={content:[" & vbNewLine
+                var("export.object")(0) & vbNewLine
             Dim mrow As Long
             For mrow = LBound(mexp, 1) To UBound(mexp, 1)
                 If mexp(mrow, 1) <> "" Then
@@ -206,7 +206,7 @@ Public Sub doclistExport(var As Collection, ByVal replacePath As Boolean, ByVal 
                     content = content & "[" & Chr(34) & Path2Link(mexp(mrow, 1), replacePath, documentFormat) & Chr(34) & "," & Chr(34) & maltvalue & Chr(34) & "," & Chr(34) & SanitizeString(msearch(mrow, 1)) & Chr(34) & "]," & vbNewLine
                 End If
             Next mrow
-            content = content + "]};"
+            content = content + var("export.object")(1)
             WriteFile fileSaveName, content, False
         Else
             MsgBox var("export.ErrorMsg")
@@ -234,8 +234,8 @@ Public Sub exportXLS2PDF(var As Variant)
     Dim fileSaveName As Variant
     fileSaveName = Application.GetSaveAsFilename(InitialFileName:=var("export.xlsDefaultFile"), FileFilter:="PDF (*.pdf), *.pdf", Title:=var("export.xlsPrompt"))
     If fileSaveName <> False Then
-                ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:=fileSaveName
-        End If
+        ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:=fileSaveName
+    End If
 End Sub
 
 Public Sub createMail(ByVal rcpt As String, ByVal subject As String, ByVal mailtext As String)
