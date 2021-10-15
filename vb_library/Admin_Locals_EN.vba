@@ -24,7 +24,7 @@ Public Function setupAuditPlanner() As Collection
     setupAuditPlanner.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
     setupAuditPlanner.Add "D:\Quality Management\assistant\library\module.data\auditplanner.data.js", "export.defaultFile" 'default path to export file
     setupAuditPlanner.Add "Export list to the assistant?", "export.prompt" 'save dialogue header, customize to your language
-    setupAuditPlanner.Add "auditplanner.data", "export.objectName" 'name of json-object
+    setupAuditPlanner.Add array("auditplanner.data={content:[", "]};"), "export.object" 'name and wrapper of json-object
     setupAuditPlanner.Add False, "export.dontSkipEmpty" 'whether to skip empty cells or not depending on structure of assistants processing algorithm
     setupAuditPlanner.Add "3", "m.contentcolumn" 'customize query column (numbered), output only if content is set
 End Function
@@ -59,7 +59,7 @@ Public Function setupTicketSystem() As Collection
     setupTicketSystem.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
     setupTicketSystem.Add "D:\Quality Management\assistant\library\module.data\ticketorder.data.js", "export.defaultFile" 'default path to export file
     setupTicketSystem.Add "Export List to the assistant?", "export.prompt" 'save dialogue header, customize to your language
-    setupTicketSystem.Add "ticketorder.data", "export.objectName" 'name of json-object
+    setupTicketSystem.Add array("ticketorder.data={content:[", "]};"), "export.object" 'name and wrapper of json-object
     setupTicketSystem.Add false, "export.dontSkipEmpty"'whether to skip empty cells or not depending on structure of assistants processing algorithm
     setupTicketSystem.Add "1", "m.contentcolumn" 'customize query column (numbered), output only if content is set
     setupTicketSystem.Add "Data successfully exported. The table has been cleared for next use.", "export.success" 'success message
@@ -118,8 +118,10 @@ Public Function setupExternalDocuments() As Collection
     setupExternalDocuments.Add 3, "matrix.headerRow" 'customize header row, starting point for matrix
     setupExternalDocuments.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
     'export variables
-    setupExternalDocuments.Add "D:\Quality Management\assistant\library\module.data\documentlookup_ext.data.js", "export.defaultFile"
-    setupExternalDocuments.Add "documentlookup.data.ext", "export.objectName"
+    setupExternalDocuments.Add "D:\Quality Management\assistant\library\module.data\documentlookup.data.ext.js", "export.defaultFile"
+    Dim quote As String: quote = Chr(34)
+    setupExternalDocuments.Add array("documentlookup.data.ext={name:" & quote & "external documents" & quote & ", " & _
+        "type:" & quote & "list" & quote & ", content:[", "]};"), "export.object" 'name and wrapper of json-object with displayed filter and content type
     setupExternalDocuments.Add "Export list of external documents to the assistant?", "export.prompt"
     setupExternalDocuments.Add "Aborting export as there was no location selected!", "export.ErrorMsg"
 End Function
@@ -133,8 +135,10 @@ Public Function setupExternalContracts() As Collection
     setupExternalContracts.Add 3, "matrix.headerRow" 'customize header row, starting point for matrix
     setupExternalContracts.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns   
     'export variables
-    setupExternalContracts.Add "D:\Quality Management\assistant\library\module.data\documentlookup_contract.data.js", "export.defaultFile"
-    setupExternalContracts.Add "documentlookup.data.contract", "export.objectName"
+    setupExternalContracts.Add "D:\Quality Management\assistant\library\module.data\documentlookup.data.contract.js", "export.defaultFile"
+    Dim quote As String: quote = Chr(34)
+    setupExternalContracts.Add array("documentlookup.data.contract={name:" & quote & "contracts" & quote & ", " & _
+        "type:" & quote & "list" & quote & ", content:[", "]};"), "export.object" 'name and wrapper of json-object with displayed filter and content type
     setupExternalContracts.Add "Export list of external contracts to the assistant?", "export.prompt"
     setupExternalContracts.Add "Aborting export as there was no location selected!", "export.ErrorMsg"
 End Function
@@ -178,13 +182,15 @@ Public Function setupInternalDocuments() As Collection
     setupInternalDocuments.Add Null, "bundles.maxRows" 'customize last row, ending point for matrix, null value considers all rows output columns
         
     'export variables
-    setupInternalDocuments.Add "documentlookup.data.int", "export.objectName" 'name of json-object
+    Dim quote As String: quote = Chr(34)
+    setupInternalDocuments.Add array("documentlookup.data.int={name:" & quote & "internal documents" & quote & ", " & _
+        "type:" & quote & "list" & quote & ", content:[", "]};"), "export.object" 'name and wrapper of json-object with displayed filter and content type
     setupInternalDocuments.Add "Provide content to external view?", "initiate.Title"
     setupInternalDocuments.Add "Save copy without code," & vbNewLine & _
             "export list of documents to the assistant," & vbNewLine & _
             "export document bundles to the assistant?", "initiate.Confirm"
     'document list
-    setupInternalDocuments.Add "D:\Quality Management\assistant\library\module.data\documentlookup_int.data.js", "export.listdefaultFile"
+    setupInternalDocuments.Add "D:\Quality Management\assistant\library\module.data\documentlookup.data.int.js", "export.listdefaultFile"
     setupInternalDocuments.Add "Export list to the assistant?", "export.listPrompt"
     setupInternalDocuments.Add "Input path of docm-files...", "export.replaceFromTitle"
     setupInternalDocuments.Add "Please input path of docm-files that will be replaced with the next input.", "export.replaceFromPrompt"
@@ -196,6 +202,8 @@ Public Function setupInternalDocuments() As Collection
     'document bundles
     setupInternalDocuments.Add "Export bundles to the assistant?", "export.bundlePrompt"
     setupInternalDocuments.Add "D:\Quality Management\assistant\library\module.data\documentbundles.data.js", "export.bundleDefaultFile"
+    setupInternalDocuments.Add array("documentbundles.data.exceptions={", "};"), "export.objectExceptions" 'name and wrapper of json-object
+    setupInternalDocuments.Add array("documentbundles.data.bundles={", "};"), "export.objectBundles" 'name and wrapper of json-object
     'export without code
     setupInternalDocuments.Add "Publish a copy of the list without code?", "export.xlsPrompt"
     setupInternalDocuments.Add "D:\Quality Management\published\list of documents.xlsx", "export.xlsDefaultFile"
