@@ -180,6 +180,14 @@ def file_handler(call):
 		escaped.append(os.path.normpath(arg) if re.search('./', arg) else arg)
 	subprocess.run(escaped)
 
+@eel.expose
+def file_readdir(path):
+	files = []
+	for (dirpath, dirnames, filenames) in os.walk(path):
+		for filename in filenames:
+			files.append([os.path.join(dirpath, filename).replace('\\', '/'),'',''])
+	return files
+
 #       _           _
 #   ___| |_ ___ ___| |_
 #  |_ -|  _| .'|  _|  _|
@@ -187,6 +195,7 @@ def file_handler(call):
 #
 
 if WEBFOLDER:
+	print ('Do not close this window, otherwise the browserview will stop working.')
 	eel.init('html') #fldr name for web content
 	eel.start('core.html', port = PORT, mode = BROWSER)
 else:

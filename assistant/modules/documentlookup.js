@@ -18,16 +18,16 @@ var documentlookup = {
 		available: async (search) => {
 			let display = '',
 				found,
-				object;
-			for (let m of Object.keys(documentlookup.var.submodules)) {
-				object = documentlookup.data[m].content;
-				found = await core.fn.async.smartSearch.lookup(search, object, true);
-				for (let value of found) {
-					display = await documentlookup.fn.linkfile([object[value[0]][0], object[value[0]][1]], false, (object[value[0]][2] ? core.fn.static.lang('searchTitle', 'documentlookup') + object[value[0]][2] : false));
-					//add value and relevance
-					core.globalSearch.contribute('documentlookup', [display, value[1]]);
-				};
-			}
+				object = [];
+			for (let key of Object.keys(documentlookup.data)) {
+				if (documentlookup.data[key].type == 'list') object = object.concat(documentlookup.data[key].content);
+			};
+			found = await core.fn.async.smartSearch.lookup(search, object, true);
+			for (let value of found) {
+				display = await documentlookup.fn.linkfile([object[value[0]][0], object[value[0]][1]], false, (object[value[0]][2] ? core.fn.static.lang('searchTitle', 'documentlookup') + object[value[0]][2] : false));
+				//add value and relevance
+				core.globalSearch.contribute('documentlookup', [display, value[1]]);
+			};
 		},
 		currentStatus: async () => {
 			let display = await documentlookup.fn.favouriteHandler.get();
@@ -77,14 +77,18 @@ var documentlookup = {
 				core.fn.async.stdout('favourites', favOutput);
 			},
 			get: async (tools) => {
-				let interimobject,
+				let interimobject = [],
+					filter,
 					output = await core.fn.async.memory.read('documentlookupFav'),
 					tfav = [],
 					tfav2 = [];
+
 				if (output) {
-					//bring selected object into scope to avoid method callbacks in loops for performance reasons
-					selobj = await documentlookup.var.selectedModule();
-					interimobject = documentlookup.data[selobj].content;
+					Object.keys(documentlookup.data).forEach((key) => {
+						if (documentlookup.data[key].type == 'list') {
+							interimobject = interimobject.concat(documentlookup.data[key].content);
+						}
+					});
 					//assign link to index as favourite handler
 					for (let key of Object.keys(interimobject)) {
 						tfav[documentlookup.fn.favouriteHandler.prepare(interimobject[key][0])] = await documentlookup.fn.linkfile([interimobject[key][0], interimobject[key][1]], true, interimobject[key][2], 1);
@@ -102,63 +106,91 @@ var documentlookup = {
 		},
 		search: async (query = '') => {
 			query = query || el('documentname').value;
-			// set lookup category. once in the calling onclick, but problematic being async 
-			if (el('lookup').selectedIndex == 0) await core.fn.async.memory.delete('documentlookupCategory')
-			else await core.fn.async.memory.write('documentlookupCategory', el('lookup').options[el('lookup').selectedIndex].value);
+			// set filter for next use
+			if (el('filter').selectedIndex == 0) await core.fn.async.memory.delete('documentlookupFilter');
+			else await core.fn.async.memory.write('documentlookupFilter', el('filter').options[el('filter').selectedIndex].value);
 			let favourites,
 				found,
-				interimobject,
+				interimobject = [],
 				list = '',
-				object = await documentlookup.var.selectedModule();
-			//bring selected object into scope to avoid method callbacks in loops for performance reasons
-			interimobject = documentlookup.data[object].content;
-			//list all items for overview
-			for (let key of Object.keys(interimobject)) {
-				list += await documentlookup.fn.linkfile([interimobject[key][0], interimobject[key][1]], true) + '<br />';
-			};
-			core.fn.async.stdout('temp', list);
-			if (query) {
-				found = await core.fn.async.smartSearch.lookup(query, interimobject, true);
+				filter = await core.fn.async.memory.read('documentlookupFilter');
+			if (!filter) {
+				for (let key of Object.keys(documentlookup.data)) {
+					if (documentlookup.data[key].type == 'list') interimobject = interimobject.concat(documentlookup.data[key].content);
+				};
+			} else if (documentlookup.data[filter].type == 'list') interimobject = documentlookup.data[filter].content;
 
-				// check if search matches item-list and display result
-				if (found.length > 0) {
-					list = '<span class="highlight">' + core.fn.static.lang('generalThirdTypeHint', 'documentlookup') + '</span><br /><br />';
-					core.fn.async.smartSearch.relevance.init();
-					for (let value of found) {
-						list += core.fn.async.smartSearch.relevance.nextstep(value[1]);
-						list += await documentlookup.fn.linkfile([interimobject[value[0]][0], interimobject[value[0]][1]], true, (interimobject[value[0]][2] ? core.fn.static.lang('searchTitle', 'documentlookup') + interimobject[value[0]][2] : false)) + '<br />';
-					};
-					await core.fn.async.stdout('output', list);
-				} else core.fn.async.stdout('output', core.fn.static.lang('errorNothingFound', 'documentlookup', query));
+			if (interimobject.length) {
+				//list all items for overview
+				for (let key of Object.keys(interimobject)) {
+					list += await documentlookup.fn.linkfile([interimobject[key][0], interimobject[key][1]], true) + '<br />';
+				};
+				core.fn.async.stdout('temp', list);
+				if (query) {
+					found = await core.fn.async.smartSearch.lookup(query, interimobject, true);
+
+					// check if search matches item-list and display result
+					if (found.length > 0) {
+						list = '';
+						core.fn.async.smartSearch.relevance.init();
+						for (let value of found) {
+							list += core.fn.async.smartSearch.relevance.nextstep(value[1]);
+							list += await documentlookup.fn.linkfile([interimobject[value[0]][0], interimobject[value[0]][1]], true, (interimobject[value[0]][2] ? core.fn.static.lang('searchTitle', 'documentlookup') + interimobject[value[0]][2] : false)) + '<br />';
+						};
+						await core.fn.async.stdout('output', list);
+					} else core.fn.async.stdout('output', core.fn.static.lang('errorNothingFound', 'documentlookup', query));
+				} else {
+					favourites = await documentlookup.fn.favouriteHandler.get('withtools');
+					core.fn.async.stdout('output', '<div id="favourites">' + (favourites || '') + '</div>');
+				}
 			} else {
-				favourites = await documentlookup.fn.favouriteHandler.get('withtools');
-				core.fn.async.stdout('output', '<div id="favourites">' + (favourites || '') + '</div>');
+				// must be dir...
+				core.fn.async.stdout('temp', '<a href="file://' + documentlookup.data[filter].content + '" target="documentDir">' + core.fn.static.lang('openDir', 'documentlookup') + documentlookup.data[filter].name + '</a>');
 			}
 			core.history.write('documentlookup.fn.init(\'' + query + '\')');
 		},
 		init: async (query = '') => {
-			let documentlookupCategory,
-				selection = {};
-			//prepare selection
-			Object.keys(documentlookup.var.submodules).forEach((key) => {
-				selection[key] = [key, documentlookup.var.submodules[key][core.var.selectedLanguage]];
+			let documentlookupFilter,
+				filter = {
+					all: [false, core.fn.static.lang('filterNone', 'documentlookup')]
+				};
+			//prepare filter
+			Object.keys(documentlookup.data).forEach((key) => {
+				filter[key] = [key, documentlookup.data[key].name];
 			});
-			documentlookupCategory = await core.fn.async.memory.read('documentlookupCategory');
+			documentlookupFilter = await core.fn.async.memory.read('documentlookupFilter');
 			await core.fn.async.stdout('input',
 				'<form id="search" action="javascript:documentlookup.fn.search();">' +
 				'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.fn.static.lang('searchPlaceholder', 'documentlookup') + '" class="search" value="' + query.replace(/"/g, '&quot;') + '" />' +
 				'<span onclick="documentlookup.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
-				core.fn.static.insert.select(selection, 'lookup', 'lookup', (documentlookupCategory || false), 'onchange="documentlookup.fn.search();"') +
+				core.fn.static.insert.select(filter, 'filter', 'filter', (documentlookupFilter || false), 'onchange="documentlookup.fn.search();"') +
 				'<input type="submit" id="submit" value="' + core.fn.static.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
-				'<a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.static.insert.icon('fileexplorer', 'bigger', false, 'title="' + core.fn.static.lang('optionThirdType', 'documentlookup') + '"') + '</a>' +
 				'</form>');
 			el('documentname').focus();
 			documentlookup.fn.search(query);
 		},
 		load: async () => {
+			let list;
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'documentlookup.var.js');
-			for (let m of Object.keys(documentlookup.var.submodules)) {
-				await core.fn.async.loadScript(core.var.moduleDataDir + 'documentlookup_' + m + '.data.js');
+			for (let m of documentlookup.var.lists) {
+				await core.fn.async.loadScript(m);
+			}
+			for (let m of documentlookup.var.dirs) {
+				try {
+					list = await eel.file_readdir(m.path)();
+					documentlookup.data[m.id] = {
+						name: m[core.var.selectedLanguage],
+						type: 'list',
+						content: list
+					};
+				} catch {
+					/* eel-object undefined */
+					documentlookup.data[m.id] = {
+						name: m[core.var.selectedLanguage],
+						type: 'dir',
+						content: m.path
+					};
+				}
 			}
 		}
 	}

@@ -1,16 +1,12 @@
 documentlookup.var = {
 	lang: {
-		optionThirdType: {
-			en: 'record documents',
-			de: 'Nachweisdokumente'
-		},
-		searchPlaceholder: {
-			en: 'search documents',
-			de: 'Dokumente durchsuchen'
-		},
-		searchTitle: {
-			en: 'alternative terms: ',
-			de: 'alternative Suchbegriffe: '
+		errorNothingFound: {
+			en: function (query) {
+				return 'Query for document searched by <span class="highlight">' + query + '</span> returned no results. Check spelling' + (core.var.fuzzySearch ? '' : ' or Fuzzy-Search-setting ') + ', look for parts of query or in another document group. Please adhere to mimimum 3 character length.'
+			},
+			de: function (query) {
+				return 'Es konnte kein Dokument mit dem Begriff <span class="highlight">' + query + '</span> gefunden werden. Bitte eventuell Schreibweise' + (core.var.fuzzySearch ? '' : ' oder Tippfehler-Toleranz-Einstellung') + ' überprüfen, nach Wortteilen oder in einer anderen Dokumentengruppe suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
+			},
 		},
 		favouriteCaption: {
 			en: 'last used documents',
@@ -24,41 +20,33 @@ documentlookup.var = {
 			en: 'Favourites deleted / reset. Reload module to refresh...',
 			de: 'Favoriten wurden gelöscht / zurückgesetzt. Um die Anzeige zu aktualisieren bitte Modul neu starten...'
 		},
-		errorNothingFound: {
-			en: function (query) {
-				return 'Query for document searched by <span class="highlight">' + query + '</span> returned no results. Check spelling' + (core.var.fuzzySearch ? '' : ' or Fuzzy-Search-setting ') + ', look for parts of query, in another document group or within <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.static.lang('optionThirdType', 'documentlookup') + '</a>. Please adhere to mimimum 3 character length.'
-			},
-			de: function (query) {
-				return 'Es konnte kein Dokument mit dem Begriff <span class="highlight">' + query + '</span> gefunden werden. Bitte eventuell Schreibweise' + (core.var.fuzzySearch ? '' : ' oder Tippfehler-Toleranz-Einstellung') + ' überprüfen, nach Wortteilen, in einer anderen Dokumentengruppe oder bei den <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.static.lang('optionThirdType', 'documentlookup') + 'n</a> suchen. Bitte auch eine Mindestzeichenlänge von 3 Buchstaben bei der Suche beachten.'
-			},
+		filterNone: {
+			en: 'all documents',
+			de: 'alle Dokumente'
 		},
-		generalThirdTypeHint: {
-			en: function () {
-				return 'Of course the requested document could be within the <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.static.lang('optionThirdType', 'documentlookup') + '</a>.'
-			},
-			de: function () {
-				return 'Das gesuchte Dokument könnte natürlich auch bei den <a href="file://' + documentlookup.var.thirdDocumentCategoryPath + '" target="thirdDocumentCategory">' + core.fn.static.lang('optionThirdType', 'documentlookup') + 'n</a> sein.'
-			}
+		openDir: {
+			en: 'open directory for ',
+			de: 'Dateispeicherort öffnen für ',
 		},
-	},
-	submodules: {
-		int: {
-			en: 'internal documents',
-			de: 'interne Dokumente'
+		searchPlaceholder: {
+			en: 'search documents',
+			de: 'Dokumente durchsuchen'
 		},
-		ext: {
-			en: 'external documents',
-			de: 'externe Dokumente'
-		},
-		contract: {
-			en: 'contracts',
-			de: 'Verträge'
+		searchTitle: {
+			en: 'alternative terms: ',
+			de: 'alternative Suchbegriffe: '
 		},
 	},
-	selectedModule: async () => {
-		let val = await core.fn.async.memory.read('documentlookupCategory');
-		return val || 'int';
-	},
-	thirdDocumentCategoryPath: 'E:/Quality Management/TTD',
+	lists: [
+		core.var.moduleDataDir + 'documentlookup.data.int.js',
+		core.var.moduleDataDir + 'documentlookup.data.ext.js',
+		core.var.moduleDataDir + 'documentlookup.data.contract.js'
+	],
+	dirs: [{
+		id: 'dir1',
+		path: 'E:/Quality Management/someRandomDirectory',
+		en: 'record documents',
+		de: 'Nachweisdokumente'
+	}],
 	disableOutputSelect: true,
 };
