@@ -40,7 +40,7 @@ documentbundles.var = {
 				'<br /><br /><div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + 'Scans können nicht eingefügt werden?<br />Seriendruck nicht möglich?<ul>' +
 				'<li>Scans müssen im Format PDF oder JPG gemacht werden.</li>' +
 				'<li>Eventuell die Betriebsumgebung für die korrekte Acrobat-Reader-Version bei Einstellungen (...) -> Erweitert ({ }) anpassen.</li>' +
-				'<li>Eventuell die Pop-Up berechtigungen erteilen einstellen. Es werden alle Dokumente geöffnet, müsen aber leider manuell gedruckt werden.</li>' +
+				'<li>Eventuell die Pop-Up berechtigungen erteilen einstellen. Es werden alle Dokumente geöffnet, müssen aber leider manuell gedruckt werden.</li>' +
 				'<li>Word öffnet Datein möglicherweise im Lese-Modus wodurch die automatische Druckfunktion nicht funktioniert. Diese Einstellung muss in Word selbst angepasst werden.</li>' +
 		'</ul></div>'
 		},
