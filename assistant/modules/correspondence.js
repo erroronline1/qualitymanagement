@@ -10,7 +10,6 @@
 //////////////////////////////////////////////////////////////
 
 var correspondence = {
-	additionalOptions: {},
 	var: {},
 	data: {},
 	api: {
@@ -36,71 +35,80 @@ var correspondence = {
 		}
 	},
 	fn: {
-		gen: function (query) { //create user output
-			let checkbox = [],
-				contents,
-				index = 0,
+		controls: function () {
+			let contents,
+				itemcount = 0,
+				linebreak = '',
+				query,
+				selectBlocks;
+			query = el('textTheme').options[el('textTheme').selectedIndex].value;
+			contents = correspondence.data[correspondence.var.currentModule][query].contents;
+			selectBlocks = correspondence.data[correspondence.var.currentModule][query].controls+"<div>";
+			Object.keys(contents).forEach(function (key) {
+				if (typeof contents[key] === 'object') {
+					itemcount++;
+					if (linebreak !== contents[key][core.var.selectedLanguage][0]) {
+						if (itemcount > 2) selectBlocks += core.fn.static.insert.expand();
+						selectBlocks += '</div><div class="items items23 expand" onclick="core.fn.static.toggleHeight(this)">';
+						linebreak = contents[key][core.var.selectedLanguage][0];
+						itemcount = 0;
+					}
+					selectBlocks += (itemcount > 1 && itemcount % 2 == 0 ? '<br />' : '') + '<label class="custominput itemalign" title="' + contents[key][core.var.selectedLanguage][1] + '">' + contents[key][core.var.selectedLanguage][1] + '<input type="checkbox" name="' + contents[key][core.var.selectedLanguage][0] + '" id="' + key + '" value="' + key + '" ' + (contents[key][core.var.selectedLanguage][2] ? 'checked="checked"' : '') + ' onchange="correspondence.fn.gen()" /><span class="checkmark"></span></label>';
+				}
+			});
+			el('selectBlocks').innerHTML = selectBlocks;
+		},
+		gen: function (query='') { //create user output
+			let contents,
+				index = 3,
 				inputs,
 				output = '',
 				wanted = [];
 			//read selected checkboxes or set to default
 			query = query || el('textTheme').options[el('textTheme').selectedIndex].value;
 			contents = correspondence.data[correspondence.var.currentModule][query].contents;
-			Object.keys(contents).forEach((value) => {
-				checkbox[value] = el('c' + value) ? (el('c' + value).checked ? 1 : 0) : 1;
-			});
+
 			//limit output to selected topics
 			inputs = document.getElementsByTagName('input');
 			for (let i = 0; i < inputs.length; i++) {
 				if (inputs[i].checked) wanted[i] = inputs[i].value;
 			}
 			//output
-			if (el('thirdperson').checked) index = 1;
+			if (el('thirdperson') && el('thirdperson').checked) index = 4;
 			Object.keys(contents).forEach((value) => {
-				output += contents[value][core.fn.languageSynthesis.outputLanguage()][index].replace(/\$(\w+?)\$/ig, function (match, group1) {
-					return core.fn.languageSynthesis.output(group1)
-				});
-				//legacy code for opt-out of output-blocks
-				//el('temp').innerHTML+=core.fn.static.insert.checkbox(output.replace(/<br \/>/g,''), 'c'+value, checkbox[value]);
-				//el('output').innerHTML+=(checkbox[value]==1?output+'<br />':'');
-				output += '<br />';
+				if (wanted.indexOf(value) >= 0){
+					output += contents[value][core.fn.languageSynthesis.outputLanguage()][index].replace(/\$(\w+?)\$/ig, function (match, group1) {
+						return core.fn.languageSynthesis.output(group1)
+					});
+				output += '<br />';}
 			});
 			core.fn.async.stdout('output', output);
 			core.fn.static.limitBar(core.fn.static.escapeHTML(output, true).length, core.var.directMailSize);
 			//reassign variable value for mailto after actual output
 			if (output.length > core.var.directMailSize) output = core.fn.static.lang('errorMailSizeExport');
-			el('mailto').href = 'javascript:core.fn.dynamicMailto(\'\',\'\',\'' + output + '\')';
+			el('mailto').href = 'javascript:core.fn.static.dynamicMailto(\'\',\'\',\'' + output + '\')';
 			core.history.write('correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + query + '\')');
 		},
 		start: async (query = '') => {
-			let module = correspondence.data[correspondence.var.selectedModule()],
+			module = correspondence.data[correspondence.var.selectedModule()],
 				output,
 				sel = {};
 			Object.keys(module).forEach((key) => {
 				sel[key] = [key, module[key].title];
 			});
-			output = core.fn.static.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.fn.gen()"') +
+			output = core.fn.static.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.fn.controls(); correspondence.fn.gen()"') +
 				'<br /><br />' +
-				'<input type="text" placeholder="' + core.fn.static.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.fn.gen()" /> ' + core.fn.static.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.ecosia.org/search?q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.fn.static.lang('webSearchTitle', 'correspondence') + '"') + '<br /><br />' +
-				'<div class="inline">' +
-				core.fn.static.insert.radio(core.fn.static.lang('inputOptionMale', 'correspondence'), 'sex', 'male', 1, 'onchange="correspondence.fn.gen()"') + '<br />' +
-				core.fn.static.insert.radio(core.fn.static.lang('inputOptionFemale', 'correspondence'), 'sex', 'female', false, 'onchange="correspondence.fn.gen()"') + ' ' +
-				'</div><div class="inline">' +
-				core.fn.static.insert.radio(core.fn.static.lang('inputOptionFirstperson', 'correspondence'), 'person', 'firstperson', 1, 'onchange="correspondence.fn.gen()"') + '<br />' +
-				core.fn.static.insert.radio(core.fn.static.lang('inputOptionThirdperson', 'correspondence'), 'person', 'thirdperson', false, 'onchange="correspondence.fn.gen()"') + ' ' +
-				'</div><div class="inline">' +
-				core.fn.static.languageSelection('onchange="correspondence.fn.gen()"').join('<br />') +
-				'</div><div class="inline">' +
-				core.fn.static.insert.radio(core.fn.static.lang('inputOptionFormal', 'correspondence'), 'age', 'adult', 1, 'onchange="correspondence.fn.gen()"') + '<br />' +
-				core.fn.static.insert.radio(core.fn.static.lang('inputOptionInformal', 'correspondence'), 'age', 'child', false, 'onchange="correspondence.fn.gen()"') + '' +
-				'</div>' +
-				(typeof correspondence.additionalOptions[correspondence.var.currentModule] !== "undefined" && correspondence.additionalOptions[correspondence.var.currentModule] ? '<br />' + correspondence.additionalOptions[correspondence.var.currentModule] : '') +
-				(core.var.letterTemplate ? '<br /><br /><a ' + await core.fn.async.file.link(core.var.letterTemplate) + '>' + core.fn.static.insert.icon('word') + core.fn.static.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.fn.static.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
+				'<input type="text" placeholder="' + core.fn.static.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.fn.gen()" /> ' + core.fn.static.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.ecosia.org/search?q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.fn.static.lang('webSearchTitle', 'correspondence') + '"') + '<br /><br />';
+
+			output += '<div id="selectBlocks"></div>';
+
+			output += (core.var.letterTemplate ? '<br /><br /><a ' + await core.fn.async.file.link(core.var.letterTemplate) + '>' + core.fn.static.insert.icon('word') + core.fn.static.lang('openLetterTemplate', 'correspondence') + '</a><br /><small>' + core.fn.static.lang('openLetterTemplateHint', 'correspondence') + '</small>' : '') +
 				'<br /><br /><a id="mailto" href="javascript:core.fn.static.dynamicMailto()">' + core.fn.static.insert.icon('email') + core.fn.static.lang('openMailApp', 'correspondence') + '</a>' +
 				core.fn.static.insert.limitBar('13em', core.fn.static.lang('mailtoLimitBar')) +
 				(core.var.outlookWebUrl ? '<br /><a href="' + core.var.outlookWebUrl + '" target="_blank">' + core.fn.static.insert.icon('outlook') + core.fn.static.lang('openOutlook', 'correspondence') + '</a>' : '');
 			await core.fn.async.stdout('temp', output);
 			if (query) correspondence.fn.gen(query);
+			correspondence.fn.controls();
 			core.history.write('correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + query + '\')');
 		},
 		init: async (query = '') => {

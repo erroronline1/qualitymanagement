@@ -75,10 +75,8 @@ core.fn.languageSynthesis = {
 		if (withname.indexOf(block) > -1) {
 			if (el('name').value) {
 				var namen = el('name').value.trim().split(' ');
-				if (el('adult'))
-					if (el('adult').checked) name = namen[namen.length - 1];
-				if (el('child'))
-					if (el('child').checked) name = namen[0];
+				if (!el('adult') || (el('adult')&&el('adult').checked)) name = namen[namen.length - 1];
+				if (el('child')&&el('child').checked) name = namen[0];
 
 				return this[block][this.outputLanguage()][index] + name
 			}
