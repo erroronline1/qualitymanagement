@@ -843,9 +843,11 @@ core.globalSearch = { //searches all modules using their api-methods from the st
 		document.body.style.cursor = 'progress';
 		//clear result on search initialization
 		core.globalSearch.result = {};
+		let module={};
 		//load every module and fire api. api appends its result to the global search result because of asynchronous loading.
 		for (let key of Object.keys(core.var.modules)) {
-			if (typeof core.var.modules[key] === 'object') {
+			module['core_' + key] = await core.fn.async.memory.read('core_' + key);
+			if (typeof core.var.modules[key] === 'object' && (module['core_' + key] ? Boolean(Number(module['core_' + key])) : core.var.modules[key].enabledByDefault)) {
 				//load every module and fire api function
 				if (search) await eval(key + '.api.available(\'' + search + '\')');
 				else await eval(key + '.api.currentStatus()');
