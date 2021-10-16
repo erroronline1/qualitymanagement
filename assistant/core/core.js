@@ -612,7 +612,7 @@ core.init = {
 		if (module != null && core.var.modules[module].wide) el('temp').classList.add('contentWide');
 		else el('temp').classList.remove('contentWide');
 		Object.keys(core.var.modules).forEach((key) => { // unhighlight all menu icons
-			if (el('module' + key) != 'undefined') el('module' + key).checked = false;
+			if (el('module' + key) !== null) el('module' + key).checked = false;
 		});
 		if (module) el('module' + module).checked = true; // highlight called menu icon
 		slider.slide(module);
