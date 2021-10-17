@@ -20,7 +20,7 @@ var correspondence = {
 				searchobject = [];
 			for (let m of Object.keys(correspondence.var.submodules)) {
 				for (let s of Object.keys(correspondence.data[m])) {
-					searchobject.push([correspondence.data[m][s]['title'], s]);
+					searchobject.push([correspondence.data[m][s]['title'][core.var.selectedLanguage], s]);
 				}
 				found = await core.fn.async.smartSearch.lookup(search, searchobject, true);
 				found.forEach((value) => {
@@ -94,7 +94,7 @@ var correspondence = {
 				output,
 				sel = {};
 			Object.keys(module).forEach((key) => {
-				sel[key] = [key, module[key].title];
+				sel[key] = [key, module[key].title[core.var.selectedLanguage]];
 			});
 			output = core.fn.static.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.fn.controls(); correspondence.fn.gen()"') +
 				'<br /><br />' +

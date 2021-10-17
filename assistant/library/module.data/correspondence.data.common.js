@@ -1,7 +1,7 @@
 //extend language-model object "core.fn.languageBricks"
 correspondence.data.common = {
 	/* topic:{
-		title: "for dropdown-selection",
+		title: {langage: "for dropdown-selection"},
 		controls:'',
 		contents:{
 			chunk:{
@@ -13,12 +13,18 @@ correspondence.data.common = {
 		}
 	}*/
 	null: {
-		title: "Select Topic...",
+		title: {
+			en: 'Select Topic...',
+			de: 'Thema wählen...'
+		},
 		controls: "",
 		contents: {}
 	},
 	appointment: {
-		title: "Appointment",
+		title: {
+			en: 'Appointment',
+			de: 'Terminvereinbarung'
+		},
 		controls: '<div class="inline">' +
 			core.fn.static.insert.radio(core.fn.static.lang('inputOptionMale', 'correspondence'), 'sex', 'male', 1, 'onchange="correspondence.fn.gen()"') + '<br />' +
 			core.fn.static.insert.radio(core.fn.static.lang('inputOptionFemale', 'correspondence'), 'sex', 'female', false, 'onchange="correspondence.fn.gen()"') + ' ' +
