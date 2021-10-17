@@ -16,9 +16,9 @@ var correspondence = {
 		available: async (search) => {
 			//loop through registered submodules, load them individually and let processAfterImport add smartSearch-results to globalSearch
 			let display,
-				found,
-				searchobject = [];
+				found;
 			for (let m of Object.keys(correspondence.var.submodules)) {
+				let searchobject = [];
 				for (let s of Object.keys(correspondence.data[m])) {
 					searchobject.push([correspondence.data[m][s]['title'][core.var.selectedLanguage], s]);
 				}
@@ -43,7 +43,7 @@ var correspondence = {
 				selectBlocks;
 			query = el('textTheme').options[el('textTheme').selectedIndex].value;
 			contents = correspondence.data[correspondence.var.currentModule][query].contents;
-			selectBlocks = correspondence.data[correspondence.var.currentModule][query].controls+"<div>";
+			selectBlocks = correspondence.data[correspondence.var.currentModule][query].controls + "<div>";
 			Object.keys(contents).forEach(function (key) {
 				if (typeof contents[key] === 'object') {
 					itemcount++;
@@ -58,7 +58,7 @@ var correspondence = {
 			});
 			el('selectBlocks').innerHTML = selectBlocks;
 		},
-		gen: function (query='') { //create user output
+		gen: function (query = '') { //create user output
 			let contents,
 				index = 3,
 				inputs,
@@ -76,11 +76,12 @@ var correspondence = {
 			//output
 			if (el('thirdperson') && el('thirdperson').checked) index = 4;
 			Object.keys(contents).forEach((value) => {
-				if (wanted.indexOf(value) >= 0){
+				if (wanted.indexOf(value) >= 0) {
 					output += contents[value][core.fn.languageSynthesis.outputLanguage()][index].replace(/\$(\w+?)\$/ig, function (match, group1) {
 						return core.fn.languageSynthesis.output(group1)
 					});
-				output += '<br />';}
+					output += '<br />';
+				}
 			});
 			core.fn.async.stdout('output', output);
 			core.fn.static.limitBar(core.fn.static.escapeHTML(output, true).length, core.var.directMailSize);
