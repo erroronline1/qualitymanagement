@@ -1,6 +1,6 @@
 @echo off
-call assistant --webfolder: "D:/Quality Management/assistant/" --browser: Edge
-rem py assistant.py --webfolder: "D:/Quality Management/assistant/"
+call assistant --webfolder "D:/Quality Management/assistant/" --browser Edge
+rem py assistant.py --webfolder "D:/Quality Management/assistant/"
 
 if %errorlevel% GTR 0 (
     echo.
