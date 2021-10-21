@@ -235,7 +235,7 @@ core.fn = {
 					win = window.open("", "win");
 					doc = win.document;
 					doc.open("text/html", "replace");
-					doc.write('<html><head><title>' + core.fn.static.lang('copycontentNewWindowCaption') + '</title><style>body {font-family:\'' + core.var.corporateFontFace + '\'; font-size:' + core.var.corporateFontSize + '; background-color:' + window.getComputedStyle(document.body, "").getPropertyValue("background-color") + '; font-color:' + window.getComputedStyle(document.body, "").getPropertyValue("color") + ';}</style></head><body onclick="window.self.close()"><div id="text">' + el(element).innerHTML + '</div></body></html>');
+					doc.write('<html><head><title>' + core.fn.static.lang('copycontentNewWindowCaption') + '</title><style>body {font-family:\'' + core.var.corporateFontFace + '\'; font-size:' + core.var.corporateFontSize + ';}</style></head><body onclick="window.self.close()"><div id="text">' + el(element).innerHTML + '</div></body></html>');
 					doc.close();
 					text = doc.getElementById('text');
 				} else {
@@ -365,7 +365,7 @@ core.fn = {
 				else return core.fn.static.string.decompress(item);
 			},
 			usedSpace: async function () { // used for settings debug-option
-				let current = 0; 
+				let current = 0;
 				Object.keys(localStorage).forEach((key) => {
 					current += key.length + localStorage.getItem(key).length;
 				});
@@ -843,7 +843,7 @@ core.globalSearch = { //searches all modules using their api-methods from the st
 		document.body.style.cursor = 'progress';
 		//clear result on search initialization
 		core.globalSearch.result = {};
-		let module={};
+		let module = {};
 		//load every module and fire api. api appends its result to the global search result because of asynchronous loading.
 		for (let key of Object.keys(core.var.modules)) {
 			module['core_' + key] = await core.fn.async.memory.read('core_' + key);
