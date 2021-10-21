@@ -159,7 +159,7 @@ core.var = {
 	corporateFontSize: '10pt',
 	letterTemplate: 'D:/Quality Management/published/letter_template.docx', // if you want to use, else null
 	outlookWebUrl: 'https://exc20/owa/auth/logon.aspx', //if you have it installed else null
-	publishedFolder: 'file:///D:/Quality Management/published',
+	publishedFolder: 'D:/Quality Management/published',
 
 	eMailAddress: {
 		inventorycontrol: {
