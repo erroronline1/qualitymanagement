@@ -1,4 +1,14 @@
 //extend language-model object "core.fn.languageBricks"
+
+core.fn.languageSynthesis.cCom_switch = {
+	en: function () {
+		return el('switch').checked ? 'has been selected' : 'has not been selected';
+	},
+	de: function () {
+		return el('switch').checked ? 'wurde gewählt' : 'wurde nicht gewählt';
+	}
+};
+
 correspondence.data.common = {
 	/* topic:{
 		title: {langage: "for dropdown-selection"},
@@ -46,6 +56,28 @@ correspondence.data.common = {
 				de: ["text", "Text", 1,
 					"$salutation$,<br /><br />wir bitten $sie2$ darum $sich$ mit uns zur Terminvereinbarung in Verbindung zu setzen.<br />Mit freundlichen Grüßen<br /><br />Firma XYZ.",
 					"$salutation$,<br /><br />wir bitten $ihn$ darum sich mit uns zut Terminvereinbarung in Verbindung zu setzen.<br />Mit freundlichen Grüßen<br /><br />Firma XYZ."
+				]
+
+			}
+		}
+	},
+	example: {
+		title: {
+			en: 'Example',
+			de: 'Beispiel'
+		},
+		controls: '<div class="inline">' +
+			core.fn.static.insert.checkbox('Button', 'switch', false,'onchange="correspondence.fn.gen()"') + '<br />' +
+			'</div>',
+		contents: {
+			letter: {
+				en: ["text", "Text", 1,
+					"The switch with extended language model $cCom_switch$.",
+					"The switch with extended language model $cCom_switch$."
+				],
+				de: ["text", "Text", 1,
+					"Der Schalter mit erweitertem Sprachmodell $cCom_switch$.",
+					"Der Schalter mit erweitertem Sprachmodell $cCom_switch$."
 				]
 
 			}
