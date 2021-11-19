@@ -410,6 +410,10 @@ hr {
 	height: 100%;
 }
 
+#environment svg:active:focus{
+	transform: rotate(-45deg);
+}
+
 @keyframes singlefavouritehandler {
 	from {
 		width: 0;
@@ -424,6 +428,21 @@ hr {
 add a little fancyness
 //////////////////////////////////////////////////////////////////////////////////*/
 
+#environment svg:hover{
+	animation-name: environmentspinner;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+}
+
+@keyframes environmentspinner{
+	from {
+		transform:rotate(-45deg);
+	}
+	to {
+		transform:rotate(315deg);
+	}
+}
+
 #content.slidedown {
 	animation-name: contentslidedown;
 	animation-duration: .35s;
@@ -433,7 +452,6 @@ add a little fancyness
 	from {
 		transform: translateY(-100vh)
 	}
-
 	to {
 		transform: translateY(0vh)
 	}
@@ -448,7 +466,6 @@ add a little fancyness
 	from {
 		transform: translateY(100vh)
 	}
-
 	to {
 		transform: translateY(0vh)
 	}
