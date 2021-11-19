@@ -612,9 +612,16 @@ extends the core-object with the language synthesis. here you define textblocks 
 [back to top](#table-of-contents)
 
 ## python wrapper
+![python wrapper](assets/assistant_wrapper.png)
 the python wrapper uses [the eel-framework](https://github.com/ChrisKnott/Eel#building-distributable-binary-with-pyinstaller) to start a server and display the assistant tunneling everything through a python backend. this extends some capabilities like storage or is able to fix browser behaviours like opening files instead of storing them like edge 94.
 core.eel.js checks for the availability of the wrapper and overrides applicable core methods to use eel-functions instead.
 not yet implemented, but if one day there appear random python specific modules, these could be appended to the core.var.modules-list from core.eel.js and will not mess up plain browser usage.
+
+![enabled eel](assets/assistant_eel.png)
+this indicates whether the assistant was lauched using the wrapper
+
+![plain web view](assets/assistant_web.png)
+this indicates whether the assistant is launched in plain web wiew
 
 modules have to handle conditional behaviour on their own, respective python implementations require adding to and recompiling assistant.py.
 
