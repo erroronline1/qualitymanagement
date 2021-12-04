@@ -89,7 +89,7 @@ var stocklist = {
 						list += core.fn.async.smartSearch.relevance.nextstep(value[1]);
 						tresult = '<div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand();
 						mailbody = '';
-						for (let h = 1; h < stocklist.data.content[0].length; h++) { // start from 1 because of assigned id on position 0
+						for (let h = 1; h < stocklist.data.content[0].length + 1; h++) { // start from 1 because of assigned id on position 0, add one to length because of offset shift
 							if (ordered_stocklist_data.content[value[0]][h] != '') {
 								tresult += '<p><span class="highlight">' + stocklist.data.content[0][h - 1] + ':</span> ' + mklink(ordered_stocklist_data.content[value[0]][h]) + '</p>';
 								mailbody += stocklist.data.content[0][h - 1] + ': ' + ordered_stocklist_data.content[value[0]][h] + "<br />";
