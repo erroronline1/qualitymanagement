@@ -583,7 +583,6 @@ core.init = {
 			'</aside>';
 		core.fn.async.stdout('header', header);
 
-		document.title = core.fn.static.lang('title');
 		//load settings or defaults
 		document.body.style.fontSize = ((coreFontsize || 0) / 10 + 1) + 'em';
 		await root.resourcesImport(root.dir + 'core/' + ((coreTheme in core.var.themes ? coreTheme :
@@ -607,6 +606,7 @@ core.init = {
 	},
 	module: (module, callback = false) => {
 		//set current scope(==module name), window title and wide-input-property
+		let modules = {}
 		core.var.currentScope = module;
 		document.title = core.fn.static.lang('title') + (module ? ' - ' + core.var.modules[module].display[core.var.selectedLanguage] : '');
 		if (module != null && core.var.modules[module].wide) el('temp').classList.add('contentWide');
@@ -647,6 +647,7 @@ core.init = {
 		);
 		core.fn.async.stdout('output', '');
 		core.var.currentScope = null;
+		document.title = core.fn.static.lang('title');
 		Object.keys(core.var.modules).forEach((key) => {
 			if (el('module' + key) != 'undefined' && el('module' + key) != null) el('module' + key).checked = false;
 		});
