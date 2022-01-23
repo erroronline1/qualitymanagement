@@ -109,17 +109,30 @@ var documentlookup = {
 			// set filter for next use
 			if (el('filter').selectedIndex == 0) await core.fn.async.memory.delete('documentlookupFilter');
 			else await core.fn.async.memory.write('documentlookupFilter', el('filter').options[el('filter').selectedIndex].value);
-			let favourites,
+			let drop,
+				e,
+				favourites,
 				found,
+				fullobject = [],
+				i,
 				interimobject = [],
 				list = '',
 				filter = await core.fn.async.memory.read('documentlookupFilter');
 			if (!filter) {
 				for (let key of Object.keys(documentlookup.data)) {
-					if (documentlookup.data[key].type == 'list') interimobject = interimobject.concat(documentlookup.data[key].content);
+					if (documentlookup.data[key].type == 'list') fullobject = fullobject.concat(documentlookup.data[key].content);
 				};
-			} else if (documentlookup.data[filter].type == 'list') interimobject = documentlookup.data[filter].content;
+			} else if (documentlookup.data[filter].type == 'list') fullobject = documentlookup.data[filter].content;
 
+			for (i = 0; i < fullobject.length; i++){
+				drop = false;
+				for (e = 0; e < documentlookup.var.filter.length; e++){
+					if (RegExp(documentlookup.var.filter[e]).test(fullobject[i][0])) drop = true;
+				}
+				if (!drop) interimobject.push(fullobject[i]);
+			}
+		
+			
 			if (interimobject.length) {
 				//list all items for overview
 				for (let key of Object.keys(interimobject)) {

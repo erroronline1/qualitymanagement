@@ -1,4 +1,7 @@
 documentlookup.var = {
+	filter: [ //regex filter for unwanted files, e.g. system files provided by eel
+		'Thumbs.db',
+	],
 	lang: {
 		errorNothingFound: {
 			en: function (query) {
