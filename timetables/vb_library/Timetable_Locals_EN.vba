@@ -11,6 +11,9 @@ Attribute VB_Name = "Locals"
 ' be sure to handle this file with iso-8859-1 charset
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
+Option Explicit
+Public holidays As Object
+
 Public Function Language() As Collection
     Set Language = New Collection
     
@@ -75,34 +78,42 @@ End Function
 ' set public holidays according to your area
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
+Public Function setHolidays(ByVal year As String) As Collection
+    Set setHolidays = New Collection
+    setHolidays.Add Item:=year, Key:="year"
+    Dim eastersunday: eastersunday = CDate(IIf(year = 2079, 7, 0) + (Fix(Format$(CDbl(DateSerial(year, 4, day((CDbl(Minute(year / 38)) / 2) + 1516)) / 7), "0")) * 7) - 6)
+    Dim hDays As Object
+    Set hDays = CreateObject("Scripting.Dictionary")
+			hDays.Add "New Year", "1.1"
+			hDays.Add "Epiphany", "1.6"
+			hDays.Add "May Day", "5.1"
+			hDays.Add "German Unification", "10.3"
+			hDays.Add "Hallowmas", "11.1"
+			hDays.Add "Christmas Eve", "12.24"
+			hDays.Add "1st Christmas Day", "12.25"
+			hDays.Add "2nd Christmas Day", "12.26"
+			hDays.Add "New Years Eve", "12.31"
+			hDays.Add "Good Friday", Format(DateAdd("d",-2,eastersunday),"m.d")
+			hDays.Add "Easter Monday", Format(DateAdd("d",1,eastersunday),"m.d")
+			hDays.Add "Ascension Day", Format(DateAdd("d",39,eastersunday),"m.d")
+			hDays.Add "Pentecost", Format(DateAdd("d",50,eastersunday),"m.d")
+			hDays.Add "Corpus Christ", Format(DateAdd("d",60,eastersunday),"m.d")
+    setHolidays.Add hDays, "days"
+End Function
+
 Public Function publicHolidays(ByVal givenDate) As String
-	publicHolidays=""
-	If VBA.VarType(givenDate) = "7" Then
-		Dim year: year = DatePart("yyyy", givenDate)
-		Dim eastersunday: eastersunday = CDate(IIf(year = 2079, 7, 0) + (Fix(Format$(CDbl(DateSerial(year, 4, day((CDbl(Minute(year / 38)) / 2) + 1516)) / 7), "0")) * 7) - 6)
-
-		Dim holidays As Object
-		Set holidays = CreateObject("Scripting.Dictionary")
-			holidays.Add "New Year", "1.1"
-			holidays.Add "Epiphany", "1.6"
-			holidays.Add "May Day", "5.1"
-			holidays.Add "German Unification", "10.3"
-			holidays.Add "Hallowmas", "11.1"
-			holidays.Add "Christmas Eve", "12.24"
-			holidays.Add "1st Christmas Day", "12.25"
-			holidays.Add "2nd Christmas Day", "12.26"
-			holidays.Add "New Years Eve", "12.31"
-			holidays.Add "Good Friday", Format(DateAdd("d",-2,eastersunday),"m.d")
-			holidays.Add "Easter Monday", Format(DateAdd("d",1,eastersunday),"m.d")
-			holidays.Add "Ascension Day", Format(DateAdd("d",39,eastersunday),"m.d")
-			holidays.Add "Pentecost", Format(DateAdd("d",50,eastersunday),"m.d")
-			holidays.Add "Corpus Christ", Format(DateAdd("d",60,eastersunday),"m.d")
-
-		Dim hDay
-		For Each hDay in holidays
-			if Format(givenDate,"m.d")= holidays(hDay) then publicHolidays=hDay: Exit For
-		Next hDay
-	End If
+    publicHolidays = ""
+    If VBA.VarType(givenDate) = 7 Then
+        If holidays Is Nothing Then
+            Set holidays = setHolidays(DatePart("yyyy", givenDate))
+        ElseIf holidays("year") <> DatePart("yyyy", givenDate) Then
+            Set holidays = setHolidays(DatePart("yyyy", givenDate))
+        End If
+        Dim hDay
+        For Each hDay In holidays("days")
+            If Format(givenDate, "m.d") = holidays("days")(hDay) Then publicHolidays = hDay: Exit For
+        Next hDay
+    End If
 End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -172,8 +183,8 @@ Public Sub updateXLSfunctions(ByVal cSheet As Variant)
     Next row
 
     'update countDays
-    Range("D8").FormulaLocal= "=countDays(D5; " & Chr(34) & "workdays" & Chr(34) & "; TEIL(ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1);FINDEN(" & Chr(34) & "]" & Chr(34) & ";ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1))+1;31))"
-    Range("D45").FormulaLocal= "=countDays(D5; " & Chr(34) & "vacation" & Chr(34) & "; TEIL(ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1);FINDEN(" & Chr(34) & "]" & Chr(34) & ";ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1))+1;31))"
+    Range("D8").FormulaLocal = "=countDays(D5; " & Chr(34) & "workdays" & Chr(34) & "; TEIL(ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1);FINDEN(" & Chr(34) & "]" & Chr(34) & ";ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1))+1;31))"
+    Range("D45").FormulaLocal = "=countDays(D5; " & Chr(34) & "vacation" & Chr(34) & "; TEIL(ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1);FINDEN(" & Chr(34) & "]" & Chr(34) & ";ZELLE(" & Chr(34) & "Dateiname" & Chr(34) & ";$A$1))+1;31))"
     
     'sum monthly worktime
     Range("H43").FormulaLocal = "=SUMME(H11:H41)*24"
