@@ -106,6 +106,8 @@ Public Sub publish()
             AutoVersioning
         Case setup("initiate.options")(1)
             ManualVersioning
+        Case setup("initiate.options")(2)
+            UpdateAndExport False
     End Select
     ' show all bookmarks
     hideBookmarks "text", False
@@ -146,7 +148,7 @@ Public Sub ManualVersioning()
     End If
 End Sub
 
-Public Sub UpdateAndExport()
+Public Sub UpdateAndExport(Optional ByVal completeProcedure = True)
     UpdateDocumentFields
     
     Dim formatquery As New Collection
@@ -165,7 +167,7 @@ Public Sub UpdateAndExport()
     ' variable loss after calling customUserInput
     currentDocumentVersion = ThisDocument.Variables("version").Value
     Archive
-    If currentDocumentVersion Then
+    If currentDocumentVersion And completeProcedure Then
         UpdateListOfDocuments
     End If
 End Sub
