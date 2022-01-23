@@ -302,12 +302,12 @@ var ticketorder = {
 							output += '</tr>';
 							for (let i = 0; i < orderobj.items.length; i++) {
 								output += '<tr>';
-								pos = 1;
+								pos = 0;
 								if (orderobj.items[i].length < ticketorder.var.orderFields[core.var.selectedLanguage].length) {
 									ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, fieldindex) {
 										value;
 										if (fieldindex in ticketorder.var.apiTranslate.fieldCorrelation) value = stocklist.data.content[orderobj.items[i][0]][ticketorder.var.apiTranslate.fieldCorrelation[fieldindex]];
-										else if (fieldindex > 0) {
+										else {
 											value = orderobj.items[i][pos];
 											pos++
 										}
