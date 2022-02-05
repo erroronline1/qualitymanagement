@@ -37,7 +37,8 @@ Public Function Language() As Collection
     'language chunks for input verification
     Language.Add "unerlaubte Eingabe", "invalidInputTitle"
     Language.Add "Es dürfen nicht gleichzeitig Arbeitsfreistellungen und Uhrzeiten eingetragen werden!", "invalidInputText"
-
+    Language.Add "Unerlaubtes Format. Die Eingabe darf nur als HH:MM erfolgen.", "invalidInputFormat"
+    
     'language chunks for initialization and holiday reminder
     Language.Add "Du kommst aus der geschützten Ansicht. Damit alles funktioniert bitte die Datei schließen und nochmals öffnen. Grund dafür ist ein Fehler in Excel. Danach sollte alles funktionieren.", "restartFromProtectedView"
 

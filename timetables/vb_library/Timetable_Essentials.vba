@@ -50,10 +50,23 @@ Public Sub CloseRoutine()
     If persistent("newSheet", "get", True) Then holidayReminder
 End Sub 
 
-Public Sub ChangeRoutine(ByVal Sheet as String, ByVal Target As Range)
+Public Sub ChangeRoutine(ByVal Sheet As String, ByVal Target As Range)
     If Not verificationOverride Then
         Secure.Protection Sheet
-        If Target.Row>=11 And Target.Row<=41 Then absenceHandler Sheet, Target
+        ' if input in time editing range and displayed text not empty - especially to avoid errors on dumping multiple cells
+        If Not Intersect(Target, Range("D11:E41")) Is Nothing And Target.Text <> "" Then
+            ' check for valid time format, if vartype not single (float) or time value not in 0-1
+            If (VarType(Target.value) <> 5) Or _
+                (VarType(Target.value) = 5 And (Target.value < 0 Or Target.value > 1)) _
+            Then
+                Dim mprompt As New Collection
+                Set mprompt = Locals.Language()
+                MsgBox mprompt("invalidInputFormat"), vbCritical, mprompt("invalidInputTitle")
+                undo
+            End If
+            ' check for valid input regarding permission
+            absenceHandler Sheet, Target
+        End If
         'recalculate
         ActiveSheet.EnableCalculation = False
         ActiveSheet.EnableCalculation = True

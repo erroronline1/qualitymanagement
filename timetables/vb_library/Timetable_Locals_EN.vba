@@ -37,7 +37,8 @@ Public Function Language() As Collection
     'language chunks for input verification
     Language.Add "Forbidden Input", "invalidInputTitle"
     Language.Add "You are not allowed to enter absence and time at once!", "invalidInputText"
-
+    Language.Add "Invalid format. The input is allowed as HH:MM only.", "invalidInputFormat"
+    
     'language chunks for initialization and holiday reminder
     Language.Add "You just switched from protected view. For everything to work properly please reopen the file. This is because of an Excel bug. Afterwards everything should work flawless.", "restartFromProtectedView"
 
