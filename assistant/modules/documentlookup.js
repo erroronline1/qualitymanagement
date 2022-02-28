@@ -107,8 +107,9 @@ var documentlookup = {
 		search: async (query = '') => {
 			query = query || el('documentname').value;
 			// set filter for next use
-			if (el('filter').selectedIndex == 0) await core.fn.async.memory.delete('documentlookupFilter');
-			else await core.fn.async.memory.write('documentlookupFilter', el('filter').options[el('filter').selectedIndex].value);
+			let selectedFilter = core.fn.static.getTab('filter');
+			if (!selectedFilter) await core.fn.async.memory.delete('documentlookupFilter');
+			else await core.fn.async.memory.write('documentlookupFilter', selectedFilter);
 			let drop,
 				e,
 				favourites,
@@ -124,15 +125,14 @@ var documentlookup = {
 				};
 			} else if (documentlookup.data[filter].type == 'list') fullobject = documentlookup.data[filter].content;
 
-			for (i = 0; i < fullobject.length; i++){
+			for (i = 0; i < fullobject.length; i++) {
 				drop = false;
-				for (e = 0; e < documentlookup.var.filter.length; e++){
+				for (e = 0; e < documentlookup.var.filter.length; e++) {
 					if (RegExp(documentlookup.var.filter[e]).test(fullobject[i][0])) drop = true;
 				}
 				if (!drop) interimobject.push(fullobject[i]);
 			}
-		
-			
+
 			if (interimobject.length) {
 				//list all items for overview
 				for (let key of Object.keys(interimobject)) {
@@ -176,7 +176,7 @@ var documentlookup = {
 				'<form id="search" action="javascript:documentlookup.fn.search();">' +
 				'<input type="text" pattern=".{3,}" required id="documentname" placeholder="' + core.fn.static.lang('searchPlaceholder', 'documentlookup') + '" class="search" value="' + query.replace(/"/g, '&quot;') + '" />' +
 				'<span onclick="documentlookup.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
-				core.fn.static.insert.select(filter, 'filter', 'filter', (documentlookupFilter || false), 'onchange="documentlookup.fn.search();"') +
+				core.fn.static.insert.tabs(filter, 'filter', (documentlookupFilter || false), 'onchange="documentlookup.fn.search();"') +
 				'<input type="submit" id="submit" value="' + core.fn.static.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
 				'</form>');
 			el('documentname').focus();

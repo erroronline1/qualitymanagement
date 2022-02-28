@@ -24,8 +24,8 @@ documentlookup.var = {
 			de: 'Favoriten wurden gelöscht / zurückgesetzt. Um die Anzeige zu aktualisieren bitte Modul neu starten...'
 		},
 		filterNone: {
-			en: 'all documents',
-			de: 'alle Dokumente'
+			en: 'all',
+			de: 'alle'
 		},
 		openDir: {
 			en: 'open directory for ',
@@ -48,8 +48,8 @@ documentlookup.var = {
 	dirs: [{
 		id: 'dir1',
 		path: 'E:/Quality Management/someRandomDirectory',
-		en: 'record documents',
-		de: 'Nachweisdokumente'
+		en: 'records',
+		de: 'Nachweise'
 	}],
 	disableOutputSelect: true,
 };

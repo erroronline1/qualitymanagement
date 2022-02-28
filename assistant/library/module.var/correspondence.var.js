@@ -40,7 +40,7 @@ correspondence.var = {
 		},
 	},
 	selectedModule: function () {
-		return el('submodule').options[el('submodule').selectedIndex].value || 'common';
+		return core.fn.static.getTab('submodule') || 'common';
 	},
 	disableOutputSelect: false,
 };

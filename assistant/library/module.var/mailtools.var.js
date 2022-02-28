@@ -4,10 +4,6 @@ mailtools.var = {
 			en: 'Select function from above.',
 			de: 'Bitte oben die gewünschte Funktion wählen'
 		},
-		selectSubmodule: {
-			en: 'Please select Submodule',
-			de: 'Bitte Funktion wählen'
-		},
 		errorMatchingRows: {
 			en: 'The numbers of names and email-adresses don\'t match.',
 			de: 'Die Anzahl der Namen und der eMailadressen stimmt nicht überein!'
@@ -106,17 +102,17 @@ mailtools.var = {
 		},
 	},
 	submodules: {
-		serialmail: {
-			en: 'Serialmail',
-			de: 'Serienmail'
+		notavailable: {
+			en: 'Not Available Message',
+			de: 'Abwesenheitsnotiz'
 		},
 		signature: {
 			en: 'Signature Composer',
 			de: 'Signaturgenerator'
 		},
-		notavailable: {
-			en: 'Not Available Message',
-			de: 'Abwesenheitsnotiz'
+		serialmail: {
+			en: 'Serialmail',
+			de: 'Serienmail'
 		},
 	},
 	disableOutputSelect: true,

@@ -122,9 +122,10 @@ var correspondence = {
 			if (query) {
 				preset = query.split('|');
 			}
-			await core.fn.async.stdout('input', core.fn.static.insert.select(selection,
-					'submodule', 'submodule', (typeof preset !== 'undefined' ? preset[0] : null), 'onchange="correspondence.var.currentModule = this.options[this.selectedIndex].value; correspondence.fn.start()"') +
-				core.fn.static.insert.icon('refresh', 'bigger', false, 'onclick="correspondence.fn.gen()" title="' + core.fn.static.lang('buttonGenTitle', 'correspondence') + '"'));
+			await core.fn.async.stdout('input',
+				core.fn.static.insert.tabs(selection, 'submodule', (typeof preset !== 'undefined' ? preset[0] : correspondence.var.selectedModule()), 'onchange="correspondence.var.currentModule = core.fn.static.getTab(\'submodule\'); correspondence.fn.start()"')
+			);
+
 			correspondence.var.currentModule = query ? preset[0] : correspondence.var.selectedModule();
 			correspondence.fn.start(query ? preset[1] : '');
 		},
