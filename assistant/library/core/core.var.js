@@ -112,12 +112,12 @@ core.var = {
 			de: 'Aurora'
 		},
 		dark: {
-			en: 'Deep Black',
-			de: 'Tiefschwarz'
+			en: 'Charcoal',
+			de: 'Holzkohle'
 		},
 		rose: {
-			en: 'Rose',
-			de: 'Rosé'
+			en: 'Linnaea Borealis',
+			de: 'Linnaea Borealis'
 		},
 	},
 	// moduleDir path to modules
