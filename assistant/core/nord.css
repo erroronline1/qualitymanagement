@@ -1,197 +1,32 @@
-/*///////////////////////////////////////////// 
-font/foreground colors
-/////////////////////////////////////////////*/
+/*//////////////////////////////////////////////
+color definitions
+//////////////////////////////////////////////*/
 
-body,
-input {
-	color: rgb(236, 239, 244);
+:root {
+	--text: rgba(236, 239, 244, 1);
+	--inactive: rgba(236, 239, 244, .3);
+	--interact: rgba(94, 129, 172, 1);
+	--interactbg: rgba(94, 129, 172, .4);
+	--background: rgba(46, 52, 64, 1);
+	--highlight: rgba(191, 97, 106, 1);
+	--menu: rgba(46, 52, 64, 0);
+	--popup: rgba(46, 52, 64, 1);
+	--contrast: rgba(236, 239, 244, 1);
+	--lighter: rgba(236, 239, 244, .035);
+	--darker: rgba(236, 239, 244, .035);
+	--bitdarker: rgba(46, 52, 64, .3);
+	--muchdarker: rgba(46, 52, 64, .5);
+	--inputs: rgba(236, 239, 244, .8);
+	--inputcolor: rgba(46, 52, 64, 1);
+	--green: #a3be8c;
+	--orange: #d08770;
+	--red: #bf616a;
 }
-
-select option,
-select optgroup {
-	color: #333
-}
-
-#menu,
-#menu label,
-#menu .icon,
-#popuptext,
-#popuptext label,
-#popuptext svg,
-#growlNotif,
-::selection,
-#menu.small>label:hover div {
-	color: rgb(236, 239, 244);
-	fill: rgb(236, 239, 244)
-}
-
-.icon {
-	fill: rgb(236, 239, 244);
-}
-
-.inactiveicon {
-	fill: rgba(255, 255, 255, .3);
-}
-
-input[type='text'],
-input[type='date'],
-input[type='password'],
-select,
-span.search,
-span.search .icon,
-textarea {
-	color: #666;
-	fill: #666;
-}
-
-input[type='button'],
-#popuptext input[type='button'],
-input[type='submit'],
-#popuptext input[type='submit'],
-.button {
-	fill: rgb(236, 239, 244);
-	color: rgb(236, 239, 244);
-}
-
-.highlight,
-a:hover::after {
-	color: rgb(191, 97, 106);
-}
-
-a, a[onclick] {
-	color: rgb(136, 192, 208);
-}
-
-/*///////////////////////////////////////////// 
-borders
-/////////////////////////////////////////////*/
-
-.bigger:hover {
-	border: 1px solid rgba(255, 255, 255, .2);
-}
-
-input,
-select,
-span.search,
-textarea {
-	border-width: 1px;
-	border-style: solid;
-	border-color: rgb(216, 222, 233);
-}
-
-input.search {
-	border-right: none
-}
-
-span.search {
-	border-left: none
-}
-
-input[type='range'] {
-	border: none;
-}
-
-.checkmark,
-.limitBar {
-	border-color: rgb(236, 239, 244);
-}
-
-#popuptext .checkmark,
-#menu.small>label:hover div {
-	border-color: rgb(236, 239, 244);
-}
-
-#popuptext {
-	box-shadow: 0 0 1em .125em rgba(0, 0, 0, .5)
-}
-
-/*///////////////////////////////////////////// 
-background colors
-/////////////////////////////////////////////*/
 
 body {
-	background-color: rgb(46, 52, 64);
-}
-
-::selection {
-	background: rgb(0, 164, 201);
-}
-
-input,
-select,
-span.search,
-textarea {
-	background-color: rgb(236, 239, 244);
-}
-
-#temp {
-	background-color: rgb(59, 66, 82);
-}
-
-#output {
-	background-color: rgb(67, 76, 94);
-}
-
-.items {
-	background-color: rgba(0, 0, 0, .03);
-}
-
-#menu,
-#popuptext,
-#growlNotif,
-#menu.small>label:hover div {
-	background-color: rgba(46, 52, 64, .9);
-}
-
-svg,
-input[type='range'],
-.checkmark {
-	background-color: transparent
-}
-
-.bigger:hover {
-	background-color: rgba(255, 255, 255, .2);
-}
-
-input[type='button'],
-#popuptext input[type='button'],
-input[type='submit'],
-#popuptext input[type='submit'],
-.button,
-hr {
-	background-color: rgb(191, 97, 106);
-}
-
-.checkmark::after,
-.custominput input:checked~.checkmark {
-	background-color: rgba(255, 255, 255, .8);
-}
-
-.custominput input:checked~.checkmark::after {
-	background-color: #445057;
-}
-
-#popuptext .checkmark::after,
-#popuptext .custominput input:checked~.checkmark {
-	background-color: rgba(255, 255, 255, .8);
-}
-
-#popuptext .custominput input:checked~.checkmark::after {
-	background-color: #445057;
-}
-
-#popup {
-	background-color: rgba(0, 0, 0, .5);
-}
-
-.green {
-	background-color: #a3be8c;
-}
-
-.orange {
-	background-color: #d08770;
-}
-
-.red {
-	background-color: #bf616a;
+	background: radial-gradient(farthest-corner at top left, var(--background), transparent),
+		radial-gradient(farthest-corner at top right, var(--interactbg), transparent),
+		radial-gradient(farthest-corner at bottom left, var(--bitdarker), transparent),
+		radial-gradient(farthest-corner at bottom right, var(--bitdarker), transparent),
+		linear-gradient(var(--background), var(--background));
 }
