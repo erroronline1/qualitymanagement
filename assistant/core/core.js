@@ -61,6 +61,20 @@ core.fn = {
 			if (br2nl !== "undefined" || br2nl) text = text.replace(/<br \/>|<br>/g, "\n");
 			return encodeURIComponent(text);
 		},
+		getTab: (name) => {
+			let element,
+				elements = document.getElementsByName(name);
+			Array.prototype.slice.call(elements).forEach(e => {
+				e.parentNode.classList.remove('activetab')
+			});
+			element = Array.prototype.slice.call(elements).filter(e => e.checked);
+			if (element.length) {
+				element[0].parentNode.classList.add('activetab');
+				element[0].value = element[0].value == 'false' ? '' : element[0].value;
+				return element[0].value;
+			}
+			return false;
+		},
 		insert: { //handle repetitive design patterns
 			checkbox: (label, id, checked, additionalProperty, title) => {
 				return '<label class="custominput"' + (title ? ' title="' + title + '"' : '') + '>' + label + '<input type="checkbox" id="' + id + '" ' + (eval(checked) ? 'checked="checked" ' : '') + (additionalProperty ? additionalProperty : '') + ' /><span class="checkmark"></span></label>';
@@ -146,6 +160,14 @@ core.fn = {
 					});
 				output += '</select>';
 				return output;
+			},
+			tabs: (options, name, selected, additionalProperty) => {
+				let output = '';
+				if (options != null)
+					Object.keys(options).forEach((key) => {
+						output += '<label class="tab">' + options[key][1] + '<input type="radio" name="' + name + '" id="' + name + options[key][0] + '" value="' + options[key][0] + '" ' + (selected === options[key][0] ? 'checked="checked"' : '') + (additionalProperty ? additionalProperty : '') + ' /></label>';
+					});
+				return output;
 			}
 		},
 		lang: (block, module, args) => { // returns module language bricks first
@@ -211,6 +233,7 @@ core.fn = {
 			if (el('popup').style.opacity == '1' && typeof text === 'undefined') {
 				el('popup').style.opacity = '0';
 				el('popuptext').style.right = '-100vw';
+				document.getElementsByTagName('main')[0].style.filter = document.getElementsByTagName('header')[0].style.filter = 'none';
 				setTimeout(() => {
 					el('popup').style.display = 'none';
 					core.fn.async.stdout('popuptext', otext);
@@ -219,6 +242,7 @@ core.fn = {
 				core.fn.async.stdout('popuptext', otext);
 				el('popup').style.display = 'block';
 				el('popup').style.opacity = '1';
+				document.getElementsByTagName('main')[0].style.filter = document.getElementsByTagName('header')[0].style.filter = 'blur(2px)';
 				setTimeout(() => {
 					el('popuptext').style.right = '0vw';
 				}, 100);
@@ -573,10 +597,6 @@ core.init = {
 			'</nav>' +
 			'<article id="input"></article>' +
 			'<aside class="setting">' +
-			core.fn.static.insert.icon('feedbackrequest', 'bigger', false,
-				'title="' + core.fn.static.lang('homeMenuFeedbackRequest') +
-				'" onclick="core.fn.static.dynamicMailto(core.var.eMailAddress.admin.address, document.title)"'
-			) +
 			core.fn.static.insert.icon('settings', 'bigger', false,
 				'title="' + core.fn.static.lang('settingMenuEntry') +
 				'" onclick="core.setup.setup(); return;"') +
@@ -668,6 +688,7 @@ core.setup = {
 			'<span onclick="core.setup.debug();" style="cursor:pointer">' + core.fn.static.insert.icon('bug') + 'Debugging</span><br />' +
 			'<span onclick="core.fn.async.stdout(\'settingContent\', updateTracker.enlist());" style="cursor:pointer">' + core.fn.static.insert.icon('update') + 'Updates</span><br />' +
 			'<span onclick="core.fn.async.stdout(\'settingContent\', aboutNotification[core.var.selectedLanguage]+\'<hr />\'+core.fn.static.lang(\'settingGeneralHint\')+\'<hr />\'+randomTip.enlist());" style="cursor:pointer">' + core.fn.static.insert.icon('info') + 'About</span><br />' +
+			'<span onclick="core.fn.static.dynamicMailto(core.var.eMailAddress.admin.address, document.title)" style="cursor:pointer">'+core.fn.static.insert.icon('feedbackrequest') + 'Support</span><br />'+
 			'</article>' +
 			'<aside id="settingContent"></aside>' +
 			'<div>');
