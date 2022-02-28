@@ -181,7 +181,7 @@ aside {
 }
 
 #growlNotif.growlNotifshow {
-	right: 0em;
+	transform: translateX(-22em);
 }
 
 /* /////////////////////////////////////////////////////////////////////////////////
@@ -324,7 +324,7 @@ elements
 }
 
 .custominput input:checked~.checkmark::after {
-	left: 65%;
+	transform: translateX(calc(2em * .6));
 }
 
 input[type='text'],
@@ -408,7 +408,7 @@ hr {
 	right: -1.5em;
 	top: -1.5em;
 	transform: rotate(45deg);
-	background-color: rgba(0, 164, 201, 1);
+	background-color: var(--red);
 }
 
 #environment svg {
@@ -416,6 +416,7 @@ hr {
 	margin-top: .8em;
 	width: 100%;
 	height: 100%;
+	fill: white;
 }
 
 #environment svg:active:focus {
@@ -440,6 +441,7 @@ add a little fancyness
 	animation-name: environmentspinner;
 	animation-duration: 1s;
 	animation-iteration-count: infinite;
+	animation-timing-function: linear;
 }
 
 @keyframes environmentspinner {
@@ -533,6 +535,7 @@ input[type='submit'],
 }
 
 a:link,
+a:visited,
 a[onclick] {
 	color: var(--interact);
 }
@@ -597,7 +600,8 @@ background colors
 	scrollbar-color: var(--darker) transparent;
 }
 
-*::-webkit-scrollbar {
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-corner {
 	background-color: transparent;
 }
 
