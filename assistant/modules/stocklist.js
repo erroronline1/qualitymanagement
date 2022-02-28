@@ -49,6 +49,10 @@ var stocklist = {
 			},
 		},
 		search: async (query = '') => {
+			let selectedFilter = core.fn.static.getTab('stocklistFilter');
+			if (!selectedFilter) await core.fn.async.memory.delete('stocklistFilter');
+			else await core.fn.async.memory.write('stocklistFilter', selectedFilter);
+
 			query = query || el('itemname').value;
 			core.history.write('stocklist.fn.init(\'' + query + '\')');
 			let core_ticketorder = await core.fn.async.memory.read('core_ticketorder'),
@@ -62,7 +66,7 @@ var stocklist = {
 			if (query) {
 				// clone data object and reset first value to undefined otherwise header terms can be displayed as results
 				ordered_stocklist_data = await stocklist.fn.order.prepare();
-				found = await core.fn.async.smartSearch.lookup(query, ordered_stocklist_data.content, stocklist.var.filter()[el('stockfilter').options[el('stockfilter').selectedIndex].value][2]);
+				found = await core.fn.async.smartSearch.lookup(query, ordered_stocklist_data.content, stocklist.var.filter()[core.fn.static.getTab('stocklistFilter')][2]);
 				// check if search matches item-list
 				if (found.length > 0) {
 					core.fn.async.smartSearch.relevance.init();
@@ -113,12 +117,13 @@ var stocklist = {
 				let option,
 					stocklistOrder = await core.fn.async.memory.read('stocklistOrder');
 				try {
-					if (el('stocklistorderoption0') == null)
+					if (el('stocklistorderoption1') == null)
 						Object.keys(stocklist.data.content[0]).forEach(function (key) {
+							keynum=parseInt(key)+1;
 							option = document.createElement('option');
-							option.setAttribute('value', key);
-							option.setAttribute('id', 'stocklistorderoption' + key);
-							if (stocklistOrder == key)
+							option.setAttribute('value', keynum);
+							option.setAttribute('id', 'stocklistorderoption' + keynum);
+							if (stocklistOrder == keynum)
 								option.setAttribute('selected', 'selected');
 							var optiontext = document.createTextNode(core.fn.static.lang('orderBy', 'stocklist') + stocklist.data.content[0][key]);
 							option.appendChild(optiontext);
@@ -151,10 +156,9 @@ var stocklist = {
 				'<form id="search" action="javascript:stocklist.fn.search();">' +
 				'<input type="text" pattern=".{3,}" required value="' + query.replace(/"/g, '&quot;') + '" placeholder="' + core.fn.static.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search" />' +
 				'<span onclick="stocklist.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
-				core.fn.static.insert.select(stocklist.fn.translate.returnselect(), 'stockfilter', 'stockfilter', (stocklistFilter || 'all'), 'onchange="this.selectedIndex == 0 ? core.fn.async.memory.delete(\'stocklistFilter\') : core.fn.async.memory.write(\'stocklistFilter\',el(\'stockfilter\').options[el(\'stockfilter\').selectedIndex].value); stocklist.fn.search();"') +
 				core.fn.static.insert.select(null, 'stocklistOrder', 'stocklistOrder', (stocklistOrder || 0), 'onchange="this.selectedIndex == 0 ? core.fn.async.memory.delete(\'stocklistOrder\') : core.fn.async.memory.write(\'stocklistOrder\',el(\'stocklistOrder\').options[el(\'stocklistOrder\').selectedIndex].value); stocklist.fn.search();"') +
+				core.fn.static.insert.tabs(stocklist.fn.translate.returnselect(), 'stocklistFilter', (stocklistFilter || 'all'), 'onchange="stocklist.fn.search();"') +
 				'<input type="submit" id="submit" value="' + core.fn.static.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
-				core.fn.static.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.ecosia.org/search?q=\'+el(\'itemname\').value,\'_blank\');" title="' + core.fn.static.lang('webSearchTitle', 'stocklist') + '"') +
 				'</form>');
 			await stocklist.fn.order.options();
 			el('itemname').focus();
