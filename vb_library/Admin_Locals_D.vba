@@ -120,7 +120,7 @@ Public Function setupExternalDocuments() As Collection
     'export variables
     setupExternalDocuments.Add "D:\Quality Management\assistant\library\module.data\documentlookup.data.ext.js", "export.defaultFile"
     Dim quote As String: quote = Chr(34)
-    setupExternalDocuments.Add array("documentlookup.data.ext={name:" & quote & "externe Dokumente" & quote & ", " & _
+    setupExternalDocuments.Add array("documentlookup.data.ext={name:" & quote & "extern" & quote & ", " & _
         "type:" & quote & "list" & quote & ", content:[", "]};"), "export.object" 'name and wrapper of json-object with displayed filter and content type
     setupExternalDocuments.Add "Liste der externen Dokumente für den Assistenten bereitstellen?", "export.prompt"
     setupExternalDocuments.Add "Export abgebrochen, es wurde keine Zieldatei gewählt.", "export.ErrorMsg"
@@ -183,7 +183,7 @@ Public Function setupInternalDocuments() As Collection
         
     'export variables
     Dim quote As String: quote = Chr(34)
-    setupInternalDocuments.Add array("documentlookup.data.int={name:" & quote & "interne Dokumente" & quote & ", " & _ 
+    setupInternalDocuments.Add array("documentlookup.data.int={name:" & quote & "intern" & quote & ", " & _ 
         "type:" & quote & "list" & quote & ", content:[", "]};"), "export.object" 'name and wrapper of json-object with displayed filter and content type
     setupInternalDocuments.Add "Inhalte veröffentlichen?", "initiate.Title"
     setupInternalDocuments.Add "Kopie der Liste ohne Code bereitstellen," & vbNewLine & _
