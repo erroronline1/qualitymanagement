@@ -57,10 +57,10 @@ core.var = {
 			wide: false,
 		},
 		correspondence: {
-			icon: core.fn.static.insert.icon('mail'),
+			icon: core.fn.static.insert.icon('argument'),
 			display: {
-				en: "Recommendation for Correspondence",
-				de: "Textvorschläge für Korrespondenz"
+				en: "Correspondence / Reasoning",
+				de: "Textvorschläge / Argumentation"
 			},
 			enabledByDefault: true,
 			wide: false,
@@ -72,7 +72,7 @@ core.var = {
 				de: "eMail Tools"
 			},
 			enabledByDefault: true,
-			wide: true,
+			wide: false,
 		},
 		auditplanner: {
 			icon: core.fn.static.insert.icon('checklist'),
@@ -107,17 +107,9 @@ core.var = {
 			en: 'Polar Night',
 			de: 'Polarnacht'
 		},
-		green: {
-			en: 'Greenland',
-			de: 'Grönland'
-		},
 		aurora: {
 			en: 'Aurora',
 			de: 'Aurora'
-		},
-		orange: {
-			en: 'Reindeer',
-			de: 'Rentier'
 		},
 		dark: {
 			en: 'Deep Black',
@@ -376,10 +368,6 @@ core.var = {
 			en: 'Home',
 			de: 'Start'
 		},
-		homeMenuFeedbackRequest: {
-			en: 'feedback / request / support',
-			de: 'Rückmeldung / Anfrage / Unterstützung'
-		},
 		homeMenuForth: {
 			en: 'forward',
 			de: 'vor'
@@ -533,8 +521,8 @@ core.var = {
 			de: 'angezeigte Module'
 		},
 		settingNotificationHint: {
-			en: 'New hints are shown on startup automatically. <a href="javascript:core.fn.popup(updateTracker.enlist());">Show all hints</a>',
-			de: 'Neue Hinweise werden immer automatisch beim Start angezeigt. <a href="javascript:core.fn.popup(updateTracker.enlist());">Alle Hinweise anzeigen</a>'
+			en: 'New hints are shown on startup automatically. <a href="javascript:core.fn.static.popup(updateTracker.enlist());">Show all hints</a>',
+			de: 'Neue Hinweise werden immer automatisch beim Start angezeigt. <a href="javascript:core.fn.static.popup(updateTracker.enlist());">Alle Hinweise anzeigen</a>'
 		},
 		settingNotificationSelector: {
 			en: function () {
