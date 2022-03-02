@@ -6,6 +6,7 @@ color definitions
 	--text: rgba(51, 51, 51, 1);
 	--inactive: rgba(0, 0, 0, .3);
 	--interact: rgba(0, 114, 198, 1);
+	--popupinteract: #a3be8c;
 	--interactbg: rgba(0, 114, 198, .2);
 	--background: rgba(255, 255, 255, 1);
 	--highlight: rgba(181, 99, 107, 1);

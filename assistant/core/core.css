@@ -90,7 +90,7 @@ aside {
 }
 
 #input .tab {	flex:none;
-	width:max-content
+	width: max-content;
 }
 .setting {
 	flex: 0 0 4em;
@@ -115,7 +115,7 @@ aside {
 }
 
 #menu div {
-	display: inline
+	display: inline;
 }
 
 #menu.small {
@@ -263,11 +263,11 @@ content box-items
 	margin: .2em;
 	transition: all .3s ease-in-out;
 	transform: rotate(45deg);
-	box-shadow: .1em .1em
+	box-shadow: .1em .1em;
 }
 
 .items.expand .itemresize {
-	box-shadow: -.1em -.1em
+	box-shadow: -.1em -.1em;
 }
 
 
@@ -461,11 +461,11 @@ add a little fancyness
 
 @keyframes contentslidedown {
 	from {
-		transform: translateY(-100vh)
+		transform: translateY(-100vh);
 	}
 
 	to {
-		transform: translateY(0vh)
+		transform: translateY(0vh);
 	}
 }
 
@@ -476,11 +476,11 @@ add a little fancyness
 
 @keyframes contentslideup {
 	from {
-		transform: translateY(100vh)
+		transform: translateY(100vh);
 	}
 
 	to {
-		transform: translateY(0vh)
+		transform: translateY(0vh);
 	}
 }
 
@@ -531,13 +531,19 @@ input[type='submit'],
 }
 
 .highlight {
-	color: var(--highlight)
+	color: var(--highlight);
 }
 
 a:link,
 a:visited,
 a[onclick] {
 	color: var(--interact);
+}
+
+#popuptext a:link,
+#popuptext a:visited,
+#popuptext a[onclick] {
+	color: var(--popupinteract);
 }
 
 /*///////////////////////////////////////////// 
@@ -555,11 +561,11 @@ textarea,
 }
 
 input.search {
-	border-right: none
+	border-right: none;
 }
 
 span.search {
-	border-left: none
+	border-left: none;
 }
 
 input[type='range'] {
@@ -567,7 +573,7 @@ input[type='range'] {
 }
 
 .checkmark {
-	border-color: var(--text)
+	border-color: var(--text);
 }
 
 .limitBar {
@@ -647,7 +653,7 @@ aside>textarea {
 svg,
 input[type='range'],
 .checkmark {
-	background-color: transparent
+	background-color: transparent;
 }
 
 .bigger:hover,

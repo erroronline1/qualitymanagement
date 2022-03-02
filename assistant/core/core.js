@@ -232,6 +232,7 @@ core.fn = {
 			let otext = '<span style="display:block; width:100%; text-align:right;">' + core.fn.static.insert.icon('closepopup', 'bigger', false, 'title="' + core.fn.static.lang('popupCloseButton') + '" onclick="core.fn.static.popup()"') + '</span>' + text;
 			if (el('popup').style.opacity == '1' && typeof text === 'undefined') {
 				el('popup').style.opacity = '0';
+				//el('popuptext').style.right = '-100vw';
 				el('popuptext').style.transform = 'translateX(0)';
 				document.getElementsByTagName('main')[0].style.filter = document.getElementsByTagName('header')[0].style.filter = 'none';
 				setTimeout(() => {
@@ -244,6 +245,7 @@ core.fn = {
 				el('popup').style.opacity = '1';
 				document.getElementsByTagName('main')[0].style.filter = document.getElementsByTagName('header')[0].style.filter = 'blur(2px)';
 				setTimeout(() => {
+					//el('popuptext').style.right = '0vw';
 					el('popuptext').style.transform = 'translateX(-100vw)';
 				}, 100);
 			}
