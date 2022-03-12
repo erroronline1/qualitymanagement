@@ -36,7 +36,7 @@ core.var = {
 				de: "Lager- und Artikelliste"
 			},
 			enabledByDefault: true,
-			wide: false,
+			wide: true,
 		},
 		ticketorder: {
 			icon: core.fn.static.insert.icon('shoppingcart'),
@@ -207,8 +207,8 @@ core.var = {
 	// open and batch have to be objects of args and occasionally executables. filepath will be added to args by default
 	environment: {
 		"Standard": {
-			default:{
-				extensions:[],
+			default: {
+				extensions: [],
 				open: ['cmd', '/c', 'start', ''],
 			},
 			acrobat: {
@@ -228,8 +228,8 @@ core.var = {
 			},
 		},
 		"Jane Doe, John Doe": {
-			default:{
-				extensions:[],
+			default: {
+				extensions: [],
 				open: ['cmd', '/c', 'start', ''],
 			},
 			acrobat: {
@@ -249,8 +249,8 @@ core.var = {
 			},
 		},
 		"Monika Mustermann, Max Mustermann": {
-			default:{
-				extensions:[],
+			default: {
+				extensions: [],
 				open: ['cmd', '/c', 'start', ''],
 			},
 			acrobat: {

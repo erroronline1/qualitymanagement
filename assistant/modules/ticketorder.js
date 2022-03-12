@@ -28,18 +28,18 @@ var ticketorder = {
 				core.globalSearch.contribute('ticketorder', [display, 1]);
 			}
 		},
-		getShoppingCart: async () => {
+		getShoppingCart: async (updateLast = false) => {
 			let cart = await core.fn.async.memory.read('ticketorderCart'),
 				lineindex,
 				value;
 			if (cart) {
 				cart = cart.split(',');
-				cart.pop();
+				cart.pop(); // remove last empty element
+				if (updateLast) cart = [cart.pop()]; // select only last element
 				cart.forEach(function (index) {
 					lineindex = ticketorder.fn.addrow(true);
 					ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, fieldindex) {
-						if (fieldindex < 1) value = index;
-						else if (fieldindex in ticketorder.var.apiTranslate.fieldCorrelation) value = stocklist.data.content[index][ticketorder.var.apiTranslate.fieldCorrelation[fieldindex]];
+						if (fieldindex in ticketorder.var.apiTranslate.fieldCorrelation) value = stocklist.data.content[index][ticketorder.var.apiTranslate.fieldCorrelation[fieldindex]];
 						else value = '';
 						el(field[0].replace(/\W/g, '') + lineindex).value = value;
 					});
@@ -140,47 +140,79 @@ var ticketorder = {
 				ticketorderCart = await core.fn.async.memory.read('ticketorderCart'),
 				ticketorderContact = await core.fn.async.memory.read('ticketorderContact'),
 				ticketorderCostUnit = await core.fn.async.memory.read('ticketorderCostUnit'),
-				ticketorderDept = await core.fn.async.memory.read('ticketorderDept');
+				ticketorderDept = await core.fn.async.memory.read('ticketorderDept'),
+				ticketorderModule = (core.var.modules.ticketorder.enabledByDefault || await core.fn.async.memory.read('core_ticketorder')) && await core.fn.async.memory.read('core_ticketorder') !== '0';
 
 			ticketorder.var.orderrows = -1;
-			if (!ticketorderAwaitingOrders) {
-				ticketorder.var.newTicket = ticketorder.fn.translate.newTicket();
-				core.fn.async.memory.write('ticketorderCurrentTicket', ticketorder.var.newTicket);
-			}
 
 			ordererDeptList.unshift(['', core.fn.static.lang('ordererDept', 'ticketorder')]);
 			ordererCostUnitList.unshift(['', core.fn.static.lang('ordererCostUnit', 'ticketorder')]);
-			if (ticketorderCart) form += '<input type="button" id="deleteCart" style="float:right; margin:0 .25em" value="' + core.fn.static.lang('deleteCart', 'ticketorder') + '" onclick="core.fn.async.memory.delete(\'ticketorderCart\'); this.value=\'' + core.fn.static.lang('deleteCartDeleted', 'ticketorder') + '\'; this.disabled=true; core.fn.async.growlNotif(\'' + core.fn.static.lang('deleteCartDeleted', 'ticketorder') + '\');" />';
-			if (ticketorderAwaitingOrders) form += '<input type="button" id="deletecurrentOrder" style="float:right; margin:0 .25em" value="' + core.fn.static.lang('deleteCurrentOrder', 'ticketorder') + '" onclick="ticketorder.fn.currentorder.clear(); this.value=\'' + core.fn.static.lang('deleteCurrentOrderDeleted', 'ticketorder') + '\'; this.disabled=true;" />';
+			if (ticketorderCart) form += '<input type="button" id="deleteCart" style="float:right; margin:2em .25em" value="' + core.fn.static.lang('deleteCart', 'ticketorder') + '" onclick="core.fn.async.memory.delete(\'ticketorderCart\'); this.value=\'' + core.fn.static.lang('deleteCartDeleted', 'ticketorder') + '\'; this.disabled=true; core.fn.async.growlNotif(\'' + core.fn.static.lang('deleteCartDeleted', 'ticketorder') + '\');" />';
+			if (ticketorderAwaitingOrders && core.var.currentScope == 'ticketorder') form += '<input type="button" id="deletecurrentOrder" style="float:right; margin:2em .25em" value="' + core.fn.static.lang('deleteCurrentOrder', 'ticketorder') + '" onclick="ticketorder.fn.currentorder.clear(); this.value=\'' + core.fn.static.lang('deleteCurrentOrderDeleted', 'ticketorder') + '\'; this.disabled=true;" />';
 			form += '<form action="javascript:ticketorder.fn.currentorder.add()">';
-			form += '<br /><input type="text" id="orderer" required placeholder="' + core.fn.static.lang('orderer', 'ticketorder') + '" title="' + core.fn.static.lang('orderer', 'ticketorder') + '" /> ';
-			form += core.fn.static.insert.select(ordererDeptList, 'ordererDept', 'ordererDept', ticketorderDept, 'required title="' + core.fn.static.lang('ordererDept', 'ticketorder') + '"');
-			form += core.fn.static.insert.select(ordererCostUnitList, 'ordererCostUnit', 'ordererCostUnit', ticketorderCostUnit, 'required title="' + core.fn.static.lang('ordererCostUnit', 'ticketorder') + '"');
-			form += ' <input type="text" id="ordererContact" required placeholder="' + core.fn.static.lang('ordererContact', 'ticketorder') + '" title="' + core.fn.static.lang('ordererContact', 'ticketorder') + '" value="' + (ticketorderContact || '') + '" /> ';
-			form += '<br style="clear:both" />';
-			form += core.fn.static.insert.radio(core.fn.static.lang('notcommissioned', 'ticketorder'), 'commissioned', 'notcommissioned', true, 'onclick="el(\'orderRcptName\').required=el(\'orderRcptDob\').required = el(\'orderRcptFlag\').required = el(\'orderReferralTicket\').required = false"', '') + '<br />';
-			form += core.fn.static.insert.radio(core.fn.static.lang('commissioned', 'ticketorder'), 'commissioned', 'commissioned', false, 'onclick="el(\'orderRcptName\').required=el(\'orderRcptDob\').required = el(\'orderRcptFlag\').required = true; el(\'orderReferralTicket\').required = false"', '') + '<br />';
-			form += core.fn.static.insert.radio(core.fn.static.lang('retour', 'ticketorder'), 'commissioned', 'retour', false, 'onclick="el(\'orderRcptName\').required=el(\'orderRcptDob\').required = el(\'orderRcptFlag\').required = false; el(\'orderReferralTicket\').required = true"', '') + '<br />';
-			form += core.fn.static.insert.radio(core.fn.static.lang('service', 'ticketorder'), 'commissioned', 'service', false, 'onclick="el(\'orderRcptName\').required=el(\'orderRcptDob\').required = el(\'orderRcptFlag\').required = false; el(\'orderReferralTicket\').required = true"', '');
-			form += '<br /><input type="text" id="orderRcptName" placeholder="' + core.fn.static.lang('orderRcptName', 'ticketorder') + '" title="' + core.fn.static.lang('orderRcptName', 'ticketorder') + '" onchange="el(\'orderRcptDob\').required = el(\'orderRcptFlag\').required = Boolean(el(\'orderRcptName\').value.length);" />' +
-				'<input type="date" id="orderRcptDob" placeholder="' + core.fn.static.lang('orderRcptDob', 'ticketorder') + '" title="' + core.fn.static.lang('orderRcptDob', 'ticketorder') + '" />' +
-				'<input type="text" id="orderRcptFlag" placeholder="' + core.fn.static.lang('orderRcptFlag', 'ticketorder') + '" title="' + core.fn.static.lang('orderRcptFlag', 'ticketorder') + '" />';
-			form += '<br style="clear:both" /><input type="text" id="orderReferralTicket" placeholder="' + core.fn.static.lang('orderReferralTicket', 'ticketorder') + '" title="' + core.fn.static.lang('orderReferralTicket', 'ticketorder') + '" /> ';
-			form += '<br style="clear:both" /><input type="date" id="orderNeededBy" placeholder="' + core.fn.static.lang('orderNeededBy', 'ticketorder') + '" title="' + core.fn.static.lang('orderNeededBy', 'ticketorder') + '" /> ';
 			form += '<br style="clear:both" /><table id="ordertable"><tr>';
 			ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, index) {
 				form += '<td';
-				if (index < 1) form += ' style="display:none"'; // hide id
+				if (field[1] == null) form += ' style="display:none"'; // hidden in form but not in output because of significance for inventory control
 				form += '>' + field[0] + '</td>';
 			});
 			form += '</tr></table>';
 			form += '<input type="button" value="' + core.fn.static.lang('orderAdd', 'ticketorder') + '" onclick="ticketorder.fn.addrow()" />' +
-				'<br /><br /><textarea id="orderNote" rows="5" style="width:90%" placeholder="' + core.fn.static.lang('orderNote', 'ticketorder') + '"></textarea>' +
-				'<br /><br /><input type="submit" id="submitOrder" disabled value="' + core.fn.static.lang('orderSubmit', 'ticketorder') + '" />';
-			form += '<hr /><input type="button" id="confirmOrder" value="' + core.fn.static.lang('orderConfirm', 'ticketorder') + '" onclick=\'ticketorder.fn.drm.confirmform()\' />' +
-				'<br /><br /><a id="mailto" href="javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\',\'\')">' +
-				core.fn.static.insert.icon('email') + core.fn.static.lang('openMailApp', 'ticketorder') + '</a><br /><br />';
+				'<br /><br /><textarea id="orderNote" rows="5" style="width:90%" placeholder="' + core.fn.static.lang('orderNote', 'ticketorder') + '"></textarea>';
+			form += '<br /><input type="text" id="orderer" required placeholder="' + core.fn.static.lang('orderer', 'ticketorder') + '" title="' + core.fn.static.lang('orderer', 'ticketorder') + '" /><br /><br />';
+			form += core.fn.static.insert.select(ordererDeptList, 'ordererDept', 'ordererDept', ticketorderDept, 'required title="' + core.fn.static.lang('ordererDept', 'ticketorder') + '"') + "<br /><br />";
+			form += core.fn.static.insert.select(ordererCostUnitList, 'ordererCostUnit', 'ordererCostUnit', ticketorderCostUnit, 'required title="' + core.fn.static.lang('ordererCostUnit', 'ticketorder') + '"') + "<br /><br />";
+			form += '<input type="text" id="ordererContact" required placeholder="' + core.fn.static.lang('ordererContact', 'ticketorder') + '" title="' + core.fn.static.lang('ordererContact', 'ticketorder') + '" value="' + (ticketorderContact || '') + '" /> ';
+			form += '<br style="clear:both" />';
+			form += core.fn.static.insert.radio(core.fn.static.lang('notcommissioned', 'ticketorder'), 'commissioned', 'notcommissioned', true, 'onclick="ticketorder.fn.requirements(\'none\')"', '') + '<br />';
+			form += core.fn.static.insert.radio(core.fn.static.lang('commissioned', 'ticketorder'), 'commissioned', 'commissioned', false, 'onclick="ticketorder.fn.requirements(\'commissioned\')"', '') + '<br />';
+			form += '<div id="commissioned_required" class="items items0">';
+			form += '<input type="text" id="orderRcptName" placeholder="' + core.fn.static.lang('orderRcptName', 'ticketorder') + '" title="' + core.fn.static.lang('orderRcptName', 'ticketorder') + '" onchange="el(\'orderRcptDob\').required = el(\'orderRcptFlag\').required = Boolean(el(\'orderRcptName\').value.length);" />' +
+				'<input type="text" onfocus="this.type=\'date\'" onblur="this.type=\'text\'" id="orderRcptDob" placeholder="' + core.fn.static.lang('orderRcptDob', 'ticketorder') + '" title="' + core.fn.static.lang('orderRcptDob', 'ticketorder') + '" />' +
+				'<input type="text" id="orderRcptFlag" placeholder="' + core.fn.static.lang('orderRcptFlag', 'ticketorder') + '" title="' + core.fn.static.lang('orderRcptFlag', 'ticketorder') + '" />';
+			form += '</div>';
+			form += core.fn.static.insert.radio(core.fn.static.lang('retour', 'ticketorder'), 'commissioned', 'retour', false, 'onclick="ticketorder.fn.requirements(\'ticket\')"', '') + '<br />';
+			form += core.fn.static.insert.radio(core.fn.static.lang('service', 'ticketorder'), 'commissioned', 'service', false, 'onclick="ticketorder.fn.requirements(\'ticket\')"', '');
+			form += '<div id="ticket_required" class="items items0"><input type="text" id="orderReferralTicket" placeholder="' + core.fn.static.lang('orderReferralTicket', 'ticketorder') + '" title="' + core.fn.static.lang('orderReferralTicket', 'ticketorder') + '" /> ';
+			form += '</div>';
+			form += '<br style="clear:both" /><input type="text" onfocus="this.type=\'date\'" onblur="this.type=\'text\'" id="orderNeededBy" placeholder="' + core.fn.static.lang('orderNeededBy', 'ticketorder') + '" title="' + core.fn.static.lang('orderNeededBy', 'ticketorder') + '" /> ';
+			form += '<br style="clear:both" />';
+			form += '<input type="submit" id="tidyOrder" disabled value="' + core.fn.static.lang('tidyOrder', 'ticketorder') + '" onclick="ticketorder.var.displayOnly = true;" />';
+			if (ticketorderModule)
+				form += '<br /><br /><input type="submit" id="submitOrder" disabled value="' + core.fn.static.lang('orderSubmit', 'ticketorder') + '" />';
+			if (core.var.currentScope == 'ticketorder')
+				form += '<hr /><input type="button" id="confirmOrder" value="' + core.fn.static.lang('orderConfirm', 'ticketorder') + '" onclick=\'ticketorder.fn.drm.confirmform()\' />';
+			form += '<br /><br /><a ' + await core.fn.async.file.link(ticketorder.var.orderFormFile) + '>' +
+				core.fn.static.insert.icon('pdf') + core.fn.static.lang('orderFormFile', 'ticketorder') + '</a>';
+			form += '<br /><br /><a id="mailto" href="javascript:core.fn.dynamicMailto(\'' + ticketorder.var.inventoryControl + '\',\'\')">' +
+				core.fn.static.insert.icon('email') + core.fn.static.lang('openMailApp', 'ticketorder') + '</a>';
 			return form;
+		},
+		requirements: (what) => {
+			set = {
+				'all': {
+					required: ['orderRcptName', 'orderRcptDob', 'orderRcptFlag', 'orderReferralTicket'],
+					displayed: ['commissioned_required', 'ticket_required']
+				},
+				'none': {
+					required: [],
+					displayed: []
+				},
+				'commissioned': {
+					required: ['orderRcptName', 'orderRcptDob', 'orderRcptFlag'],
+					displayed: ['commissioned_required']
+				},
+				'ticket': {
+					required: ['orderReferralTicket'],
+					displayed: ['ticket_required']
+				}
+			};
+			set['all'].required.forEach(f => {
+				el(f).required = set[what].required.includes(f);
+			});
+			set['all'].displayed.forEach(f => {
+				core.fn.static.toggleHeight(el(f), set[what].displayed.includes(f));
+			});
 		},
 		addrow: function (conditionalDisabled) {
 			let cellContent,
@@ -192,7 +224,7 @@ var ticketorder = {
 			ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, index) {
 				td = tr.appendChild(document.createElement('td'));
 				td.style.cssText = 'width:' + field[1];
-				if (index < 1) td.style.cssText += '; display:none'; // hide id
+				if (field[1] == null) td.style.cssText += '; display:none'; // hidden in form but not in output becouse of significance for inventory control
 				cellContent = '<input style="width:100%;" type="text" id="' + field[0].replace(/\W/g, '') + ticketorder.var.orderrows + '" required placeholder="' + field[0] + '" ';
 				//prefill with ticket or copy from former row, disable conditional
 				disabledPreset = field[2];
@@ -204,7 +236,8 @@ var ticketorder = {
 			td = tr.appendChild(document.createElement('td'));
 			td.innerHTML = core.fn.static.insert.icon('delete', 'bigger rownumberingpseudoclass', false, 'lineexists' + (ticketorder.var.orderrows) + ' onclick="ticketorder.fn.deleterow(' + (ticketorder.var.orderrows) + ')"');
 			table.appendChild(tr);
-			el('submitOrder').disabled = false;
+			el('tidyOrder').disabled = false;
+			if (el('submitOrder')) el('submitOrder').disabled = false;
 			return ticketorder.var.orderrows;
 		},
 		deleterow: function (itemindex) {
@@ -222,7 +255,6 @@ var ticketorder = {
 				let currentorder,
 					curval,
 					field,
-					id,
 					items,
 					ordernum,
 					orderobj = {},
@@ -240,12 +272,11 @@ var ticketorder = {
 				// iterate through order form for item descriptions
 				for (var i = 0; i < ticketorder.var.orderrows + 1; i++) {
 					items = [];
-					if (el(ticketorder.var.orderFields[core.var.selectedLanguage][0][0].replace(/\W/g, '') + i)) {
+					if (el(ticketorder.var.apiTranslate.idField().replace(/\W/g, '') + i)) {
 						for (let index = 0; index < ticketorder.var.orderFields[core.var.selectedLanguage].length; index++) {
 							field = ticketorder.var.orderFields[core.var.selectedLanguage][index]
-							id = el(ticketorder.var.orderFields[core.var.selectedLanguage][0][0].replace(/\W/g, '') + i).value || '';
 							curval = el(field[0].replace(/\W/g, '') + i).value || '';
-							if (!id || (id && index === 0) || (id && !field[2])) items.push(curval); // if item id exists skip disabled and conditional formfields to limit data usage
+							items.push(curval);
 							if (ticketorder.var.apiTranslate.orderNumberWildcard && curval.indexOf(ticketorder.var.apiTranslate.orderNumberWildcard) > -1) wildcard = true;
 						}
 					}
@@ -259,70 +290,87 @@ var ticketorder = {
 				core.fn.async.memory.write('ticketorderDept', el('ordererDept').selectedIndex);
 				core.fn.async.memory.write('ticketorderCostUnit', el('ordererCostUnit').selectedIndex);
 				core.fn.async.memory.write('ticketorderContact', el('ordererContact').value);
-				ordernum = await core.fn.async.memory.read('ticketorderAwaitingOrders');
-				ordernum = eval(ordernum) + 1;
-				neworder = await core.fn.async.memory.write('ticketorderAwaitingOrder' + ordernum, JSON.stringify(orderobj), core.fn.static.lang('orderStorageError', 'ticketorder'));
-				if (neworder) {
-					core.fn.async.memory.write('ticketorderAwaitingOrders', ordernum);
-					currentorder = await ticketorder.fn.currentorder.get();
+
+				if (!ticketorder.var.displayOnly) {
+					ordernum = await core.fn.async.memory.read('ticketorderAwaitingOrders');
+					ordernum = eval(ordernum) + 1;
+					neworder = await core.fn.async.memory.write('ticketorderAwaitingOrder' + ordernum, JSON.stringify(orderobj), core.fn.static.lang('orderStorageError', 'ticketorder'));
+					if (neworder) {
+						core.fn.async.memory.write('ticketorderAwaitingOrders', ordernum);
+						currentorder = await ticketorder.fn.currentorder.get();
+						core.fn.async.stdout('output', currentorder);
+						el('output').scrollTop = el('output').scrollHeight;
+						core.fn.async.memory.delete('ticketorderCart')
+						if (el('deleteCart')) el('deleteCart').style.display = 'none';
+					}
+				} else {
+					currentorder = await ticketorder.fn.currentorder.get(JSON.stringify(orderobj));
 					core.fn.async.stdout('output', currentorder);
 					el('output').scrollTop = el('output').scrollHeight;
-					core.fn.async.memory.delete('ticketorderCart')
-					if (el('deleteCart')) el('deleteCart').style.display = 'none';
 				}
+				ticketorder.var.displayOnly = false;
 			},
-			get: async () => {
-				let currentTicket = await core.fn.async.memory.read('ticketorderCurrentTicket'),
+			get: async (temporaryCart = null) => {
+				let currentTicket = ticketorder.fn.translate.newTicket(),
 					ordernum = await core.fn.async.memory.read('ticketorderAwaitingOrders'),
-					orderobj,
 					orders,
-					output = '',
-					pos,
-					value;
-				if (ordernum) {
+					output = '';
+
+				core.fn.async.memory.write('ticketorderCurrentTicket', currentTicket);
+				ticketorder.var.disableOutputSelect = true; // (re-)set in case a cart has been displayed
+
+				function displayOrder(orderobj) {
+					orderobj = JSON.parse(orderobj);
+					output += orderobj.subject + '<br /><br />';
+					output += '<i>' + orderobj.type + '</i><br /><br />'
+					output += core.fn.static.lang('captionCheckTicket', 'ticketorder') + ': ' + currentTicket + '<br />';
+					Object.keys(orderobj).forEach(function (key) {
+						if (['subject', 'type', 'items'].indexOf(key) === -1) {
+							output += core.fn.static.lang(key, 'ticketorder') + ": " + orderobj[key] + '<br />';
+						}
+					});
+					output += '<br /><table border=1 cellpadding=5 cellspacing=0><tr>';
+					ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, index) {
+						output += '<th';
+						output += '>' + field[0] + '</th>';
+					});
+					output += '</tr>';
+					for (let i = 0; i < orderobj.items.length; i++) {
+						output += '<tr>';
+						let pos = 0,
+							value;
+						if (orderobj.items[i].length < ticketorder.var.orderFields[core.var.selectedLanguage].length) {
+							ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, fieldindex) {
+								// caution: set field correlation accordingly to order/table layout dependent of excel-file or stocklist.py-erp-dump in ticketorder.var.js!!
+								if (fieldindex in ticketorder.var.apiTranslate.fieldCorrelation) value = stocklist.data.content[orderobj.items[i][0]][ticketorder.var.apiTranslate.fieldCorrelation[fieldindex]];
+								else {
+									value = orderobj.items[i][pos];
+									pos++
+								}
+								output += '<td';
+								output += '>' + value + '</td>';
+							});
+						} else {
+							for (let index = 0; index < orderobj.items[i].length; index++) {
+								output += '<td';
+								output += '>' + orderobj.items[i][index] + '</td>';
+							}
+						}
+						output += '</tr>';
+					}
+					output += '</table><br /><br />';
+				}
+
+				if (temporaryCart) {
+					displayOrder(temporaryCart);
+					ticketorder.var.disableOutputSelect = false;
+					stocklist.var.disableOutputSelect = false;
+				} else if (ordernum) {
 					for (let o = 0; o < ordernum; o++) {
 						orders = await core.fn.async.memory.read('ticketorderAwaitingOrder' + (o + 1))
 						orders = orders || '';
 						if (orders.length) {
-							// caution: order/table layout dependent of excel-file !!
-							orderobj = JSON.parse(orders);
-							output += orderobj.subject + '<br /><br />';
-							output += '<i>' + orderobj.type + '</i><br /><br />'
-							output += core.fn.static.lang('captionCheckTicket', 'ticketorder') + ': ' + currentTicket + '<br />';
-							Object.keys(orderobj).forEach(function (key) {
-								if (['subject', 'type', 'items'].indexOf(key) === -1) {
-									output += core.fn.static.lang(key, 'ticketorder') + ": " + orderobj[key] + '<br />';
-								}
-							});
-							output += '<br /><table border=1 cellpadding=5 cellspacing=0><tr>';
-							ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, index) {
-								output += '<th';
-								output += '>' + field[0] + '</th>';
-							});
-							output += '</tr>';
-							for (let i = 0; i < orderobj.items.length; i++) {
-								output += '<tr>';
-								pos = 0;
-								if (orderobj.items[i].length < ticketorder.var.orderFields[core.var.selectedLanguage].length) {
-									ticketorder.var.orderFields[core.var.selectedLanguage].forEach(function (field, fieldindex) {
-										value;
-										if (fieldindex in ticketorder.var.apiTranslate.fieldCorrelation) value = stocklist.data.content[orderobj.items[i][0]][ticketorder.var.apiTranslate.fieldCorrelation[fieldindex]];
-										else {
-											value = orderobj.items[i][pos];
-											pos++
-										}
-										output += '<td';
-										output += '>' + value + '</td>';
-									});
-								} else {
-									for (let index = 0; index < orderobj.items[i].length; index++) {
-										output += '<td';
-										output += '>' + orderobj.items[i][index] + '</td>';
-									}
-								}
-								output += '</tr>';
-							}
-							output += '</table><br /><br />';
+							displayOrder(orders);
 						}
 					}
 				}

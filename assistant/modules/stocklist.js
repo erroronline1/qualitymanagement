@@ -4,8 +4,10 @@
 //  module for checking if an item exists in stock
 //
 //  dependencies:	{core.var.moduleVarDir}stocklist.var.js
-//					{core.var.moduleDataDir}stocklist.js
-//					stocklist.xlsm
+//					{core.var.moduleDataDir}stocklist.data.js
+//					{core.var.moduleDir}ticketorder.js
+//                  {core.var.moduleVarDir}ticketorder.var.js
+//					stocklist.xlsm or stocklist.py
 //
 //////////////////////////////////////////////////////////////
 
@@ -32,7 +34,9 @@ var stocklist = {
 		addToCart: async (index) => {
 			// this only makes sense in case of using the ticketorder-module
 			let ticketorderCart = await core.fn.async.memory.read('ticketorderCart');
-			core.fn.async.memory.write('ticketorderCart', ticketorderCart + index + ",");
+			await core.fn.async.memory.write('ticketorderCart', ticketorderCart + index + ",");
+			core.fn.async.growlNotif(core.fn.static.lang('articleAdded', 'stocklist'));
+			await ticketorder.api.getShoppingCart('update');
 		},
 		currentStatus: () => {
 			return;
@@ -53,10 +57,11 @@ var stocklist = {
 			if (!selectedFilter) await core.fn.async.memory.delete('stocklistFilter');
 			else await core.fn.async.memory.write('stocklistFilter', selectedFilter);
 
+			stocklist.var.disableOutputSelect = true; // (re-)set in case a cart has been displayed
+
 			query = query || el('itemname').value;
 			core.history.write('stocklist.fn.init(\'' + query + '\')');
-			let core_ticketorder = await core.fn.async.memory.read('core_ticketorder'),
-				found,
+			let found,
 				list = '',
 				mailbody,
 				maillanguage,
@@ -102,8 +107,7 @@ var stocklist = {
 						list += tresult +
 							'<a title="' + maillanguage.helpChangeItemTitle + '" onclick="return confirm(\'' + maillanguage.helpChangeItemPopup + '\');" href="javascript:core.fn.static.dynamicMailto(\'' + core.var.eMailAddress.inventorycontrol.address + '\',\'' + maillanguage.helpChangeItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpChangeItemCaption + '</a> ' +
 							'<a title="' + maillanguage.helpDeleteItemTitle + '" onclick="return confirm(\'' + maillanguage.helpDeleteItemPopup + '\');" href="javascript:core.fn.static.dynamicMailto(\'' + core.var.eMailAddress.inventorycontrol.address + '\',\'' + maillanguage.helpDeleteItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpDeleteItemCaption + '</a> ' +
-							(ordered_stocklist_data.content[value[0]][0] && (typeof core.var.modules['ticketorder'] === 'object' && (core_ticketorder !== false ? eval(core_ticketorder) : core.var.modules['ticketorder'].enabledByDefault)) ?
-								'<span style="float:right">' + core.fn.static.insert.icon('shoppingcart', 'bigger', false, 'onclick="stocklist.api.addToCart(' + ordered_stocklist_data.content[value[0]][0] + '); core.fn.async.growlNotif(core.fn.static.lang(\'articleAdded\',\'stocklist\'))"') + '</span>' : '') +
+							'<span style="float:right">' + core.fn.static.insert.icon('shoppingcart', 'bigger', false, 'onclick="stocklist.api.addToCart(' + ordered_stocklist_data.content[value[0]][0] + ');"') + '</span>' +
 							'</div>';
 					});
 				} else list = core.fn.static.lang('errorNothingFound', 'stocklist', query);
@@ -119,7 +123,7 @@ var stocklist = {
 				try {
 					if (el('stocklistorderoption1') == null)
 						Object.keys(stocklist.data.content[0]).forEach(function (key) {
-							keynum=parseInt(key)+1;
+							keynum = parseInt(key) + 1;
 							option = document.createElement('option');
 							option.setAttribute('value', keynum);
 							option.setAttribute('id', 'stocklistorderoption' + keynum);
@@ -163,11 +167,16 @@ var stocklist = {
 			await stocklist.fn.order.options();
 			el('itemname').focus();
 			stocklist.temp.overallItems = await stocklist.fn.search();
-			core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'stocklist'));
+			core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'stocklist') + '<br /><br />' +
+				'<div class="items items23" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await ticketorder.fn.mkform() + '</div>');
+			if (await core.fn.async.memory.read('ticketorderCart')) core.fn.static.toggleHeight(el('stocklistOrderForm'), true);
+			ticketorder.api.getShoppingCart();
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'stocklist.var.js');
 			await core.fn.async.loadScript(core.var.moduleDataDir + 'stocklist.data.js');
+			await core.fn.async.loadScript(core.var.moduleDir + 'ticketorder.js');
+			await core.fn.async.loadScript(core.var.moduleVarDir + 'ticketorder.var.js');
 		}
 	}
 };

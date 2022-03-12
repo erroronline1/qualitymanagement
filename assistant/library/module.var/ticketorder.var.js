@@ -27,9 +27,13 @@ ticketorder.var = {
 		/////////////////////////////////////////////////////
 		// module chunks
 		//////////////////////////////////////////////////////
-		formInputPlaceholder: {
+		apiItemsFound: {
+			en: ' tickets found',
+			de: ' Tickets gefunden'
+		},
+		buttonTranslate: {
 			en: 'date ticket',
-			de: 'Ticket datieren'
+			de: 'Ticket datieren',
 		},
 		buttonVerifyToken: {
 			en: 'verify code',
@@ -43,113 +47,17 @@ ticketorder.var = {
 			en: 'code',
 			de: 'Code',
 		},
-		successCheckCode: {
-			en: 'This order was confirmed by ',
-			de: 'Diese Bestellung wurde freigegeben von ',
-		},
-		failureCheckCode: {
-			en: 'The code is invalid! Please contact the ordering person.',
-			de: 'Der Code ist ungültig! Bitte kontaktiere den Besteller.',
-		},
-		buttonTranslate: {
-			en: 'date ticket',
-			de: 'Ticket datieren',
-		},
-		newOrder: {
-			en: 'New Order',
-			de: 'Neue Bestellung'
-		},
-		notcommissioned: {
-			en: 'plain order',
-			de: 'Materialbestellung'
-		},
 		commissioned: {
 			en: 'commissioned order&sup1;',
 			de: 'Kommissionsbestellung&sup1;'
 		},
-		retour: {
-			en: 'retour&sup2;',
-			de: 'Rücksendung&sup2;'
+		currentCart: {
+			en: 'items in cart: ',
+			de: 'Artikel im Einkaufswagen: '
 		},
-		service: {
-			en: 'service / warranty&sup2;',
-			de: 'Service / Garantie&sup2;'
-		},
-		orderer: {
-			en: 'orderer',
-			de: 'Besteller'
-		},
-		ordererDept: {
-			en: 'deliver to',
-			de: 'Auslieferung an'
-		},
-		ordererCostUnit: {
-			en: 'cost unit',
-			de: 'Kostenstelle'
-		},
-		ordererContact: {
-			en: 'call back eMail or number',
-			de: 'eMail oder Telefon für Rückfragen'
-		},
-		orderRcptName: {
-			en: 'Commission Name&sup1;',
-			de: 'Kommission Name&sup1;'
-		},
-		orderRcptDob: {
-			en: 'Commission Birth of Date&sup1;',
-			de: 'Kommission Geburtsdatum&sup1;'
-		},
-		orderRcptFlag: {
-			en: 'Case number / approval notice&sup1;',
-			de: 'Vorgangsnummer / Genehmigungsvermerk&sup1;',
-		},
-		orderReferralTicket: {
-			en: 'referral ticket&sup2;',
-			de: 'Referenzticket&sup2;'
-		},
-		orderNeededBy: {
-			en: 'delivery by',
-			de: 'Lieferung bis'
-		},
-		orderAdd: {
-			en: 'add item',
-			de: 'Artikel hinzufügen'
-		},
-		orderNote: {
-			en: 'Additional note',
-			de: 'Zusatzinformation',
-		},
-		orderSubmit: {
-			en: 'add order',
-			de: 'Bestellung hinzufügen'
-		},
-		orderStorageError: {
-			en: 'Please split up order or excute current order list.',
-			de: 'Bitte die Bestellung aufteilen oder zunächst aktuelle Gesamtbestellung auslösen.'
-		},
-		orderConfirm: {
-			en: 'approve order list',
-			de: 'Bestellliste freigeben'
-		},
-		orderConfirmed: {
-			en: function (args) {
-				return 'Order with ticket ' + args[0] + ' approved by code ' + args[1];
-			},
-			de: function (args) {
-				return 'Bestellung mit dem Ticket ' + args[0] + ' freigegeben mit Code ' + args[1];
-			}
-		},
-		orderMailSubject: {
-			en: 'Order by ',
-			de: 'Bestellung von ',
-		},
-		ticketTranslate: {
-			en: 'This ticket was most probably generated on\n',
-			de: 'Dieses Ticket wurde wahrscheinlich generiert am\n',
-		},
-		ticketTranslateError: {
-			en: 'This ticket can not be reverse translated.',
-			de: 'Dieses Ticket kann nicht zurückübersetzt werden.',
+		currentOrders: {
+			en: 'orders for approval: ',
+			de: 'Bestellungen zur Freigabe: '
 		},
 		deleteCart: {
 			en: 'delete shopping cart',
@@ -167,48 +75,149 @@ ticketorder.var = {
 			en: 'current order list deleted, reload module',
 			de: 'aktuelle Bestelliste gelöscht, Modul neu laden',
 		},
+		failureCheckCode: {
+			en: 'The code is invalid! Please contact the ordering person.',
+			de: 'Der Code ist ungültig! Bitte kontaktiere den Besteller.',
+		},
+		formInputPlaceholder: {
+			en: 'date ticket',
+			de: 'Ticket datieren'
+		},
+		newOrder: {
+			en: 'New Order',
+			de: 'Neue Bestellung'
+		},
+		notcommissioned: {
+			en: 'plain order',
+			de: 'Materialbestellung'
+		},
+		orderer: {
+			en: 'orderer',
+			de: 'Besteller'
+		},
+		orderAdd: {
+			en: 'add item',
+			de: 'Artikel hinzufügen'
+		},
+		orderConfirm: {
+			en: 'approve order list',
+			de: 'Bestellliste freigeben'
+		},
+		orderConfirmed: {
+			en: function (args) {
+				return 'Order with ticket ' + args[0] + ' approved by code ' + args[1];
+			},
+			de: function (args) {
+				return 'Bestellung mit dem Ticket ' + args[0] + ' freigegeben mit Code ' + args[1];
+			}
+		},
+		ordererContact: {
+			en: 'call back eMail or number',
+			de: 'eMail oder Telefon für Rückfragen'
+		},
+		ordererCostUnit: {
+			en: 'cost unit',
+			de: 'Kostenstelle'
+		},
+		ordererDept: {
+			en: 'deliver to',
+			de: 'Auslieferung an'
+		},
+		orderFormFile: {
+			en: 'open order form',
+			de: 'Bestellformular öffnen'
+		},
+		orderRcptDob: {
+			en: 'Commission Birth of Date&sup1;',
+			de: 'Kommission Geburtsdatum&sup1;'
+		},
+		orderRcptFlag: {
+			en: 'Case number / approval notice&sup1;',
+			de: 'Vorgangsnummer / Genehmigungsvermerk&sup1;',
+		},
+		orderRcptName: {
+			en: 'Commission Name&sup1;',
+			de: 'Kommission Name&sup1;'
+		},
+		orderReferralTicket: {
+			en: 'referral / referral ticket&sup2;',
+			de: 'Referenz / Referenzticket&sup2;'
+		},
+		orderMailSubject: {
+			en: 'Order by ',
+			de: 'Bestellung von ',
+		},
+		orderNeededBy: {
+			en: 'delivery by',
+			de: 'Lieferung bis'
+		},
+		orderNote: {
+			en: 'Additional note',
+			de: 'Zusatzinformation',
+		},
 		orderNumberWildcard: {
 			en: 'One or more order numbers contains wildcards. Please specify model, size or type.',
 			de: 'Eine oder mehrere Bestellnummern enhalten Platzhalter. Bitte Modell, Größe oder Typ konkretisieren.',
 		},
-		apiItemsFound: {
-			en: ' tickets found',
-			de: ' Tickets gefunden'
+		orderSubmit: {
+			en: 'add order',
+			de: 'Bestellung hinzufügen'
 		},
-		currentCart:{
-			en: 'items in cart: ',
-			de: 'Artikel im Einkaufswagen: '
+		orderStorageError: {
+			en: 'Please split up order or excute current order list.',
+			de: 'Bitte die Bestellung aufteilen oder zunächst aktuelle Gesamtbestellung auslösen.'
 		},
-		currentOrders:{
-			en: 'orders for approval: ',
-			de: 'Bestellungen zur Freigabe: '
+		retour: {
+			en: 'retour&sup2;',
+			de: 'Rücksendung&sup2;'
+		},
+		service: {
+			en: 'service / warranty&sup2;',
+			de: 'Service / Garantie&sup2;'
+		},
+		successCheckCode: {
+			en: 'This order was confirmed by ',
+			de: 'Diese Bestellung wurde freigegeben von ',
+		},
+		ticketTranslate: {
+			en: 'This ticket was most probably generated on\n',
+			de: 'Dieses Ticket wurde wahrscheinlich generiert am\n',
+		},
+		ticketTranslateError: {
+			en: 'This ticket can not be reverse translated.',
+			de: 'Dieses Ticket kann nicht zurückübersetzt werden.',
+		},
+		tidyOrder: {
+			en: 'display tidy order',
+			de: 'ordentliche Bestellung anzeigen'
 		}
 	},
 	disableOutputSelect: true,
 	inventoryControl: 'inventory.control@email.adr',
 	orderFields: {
-		// [description, displayed width, disabled:true, false, 2 for conditional]
+		// [description, displayed width (null if hidden), disabled:true, false, 2 for conditional]
 		en: [
-			['Id', '10em', true], // stocklist item id, mandatory, hidden
+			['Quantity', '5em', false],
+			['Unit', '5em', 2],
+			['Id', null, true], // stocklist item id, no matter where but mandatory, will be contained in output
 			['Distributor', '15em', 2],
 			['Order number', '15em', 2],
 			['Item description', '20em', 2],
-			['Quantity', '5em', false],
-			['Unit', '5em', 2],
 		],
 		de: [
-			['Id', '10em', true], // stocklist item id, mandatory, hidden
+			['Anzahl', '5em', false],
+			['Einheit', '5em', 2],
+			['Id', null, true], // stocklist item id, no matter where but mandatory, will be contained in output
 			['Lieferant', '15em', 2],
 			['Artikelnummer', '15em', 2],
 			['Artikelbezeichnung, Ausführung', '20em', 2],
-			['Anzahl', '5em', false],
-			['Einheit', '5em', 2],
 		],
 	},
 	orderFieldsToCopy: {
 		en: ['Distributor', ],
 		de: ['Lieferant', ],
 	},
+	orderFormFile: 'D:/Quality Management/published/Sample Form.pdf',
 	orderDept: [
 		'Common',
 		'Office',
@@ -222,12 +231,17 @@ ticketorder.var = {
 		'Workshop B',
 	],
 	apiTranslate: {
-		fieldCorrelation: { // index of order fields in correlation to fields in stock list
-			0: 0,
-			1: 1,
-			2: 3,
-			3: 2,
-			5: 5,
+		fieldCorrelation: { // index of order fields (see above) in correlation to fields in stocklist.data.js
+			//0: NaN; would be quantity in this case which is not correlated to stocklist-data
+			1: 5,
+			2: 0,
+			3: 1,
+			4: 3,
+			5: 2,
+		},
+		idField: function () {
+			let stocklistIDColumn = 0;
+			return ticketorder.var.orderFields[core.var.selectedLanguage][Object.keys(ticketorder.var.apiTranslate.fieldCorrelation).find(key => ticketorder.var.apiTranslate.fieldCorrelation[key] === stocklistIDColumn)][0];
 		},
 		orderNumberWildcard: '(X)', // if this (string) is part of the item number, else false
 	},
