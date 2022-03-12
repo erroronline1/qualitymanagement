@@ -89,9 +89,11 @@ aside {
 	flex: 1 1 20em;
 }
 
-#input .tab {	flex:none;
+#input .tab {
+	flex: none;
 	width: max-content;
 }
+
 .setting {
 	flex: 0 0 4em;
 	text-align: right;
@@ -227,6 +229,12 @@ content box-items
 	transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
 }
 
+.items0 {
+	max-height: 0;
+	margin-bottom: 0;
+	padding: 0
+}
+
 .items23 {
 	max-height: 2.3em;
 }
@@ -243,6 +251,8 @@ content box-items
 	max-height: 1500px;
 	transition: max-height .3s ease-in-out;
 	overflow: auto;
+	margin-bottom: .5em;
+	padding: .5em;
 }
 
 .itemalign {
@@ -324,7 +334,7 @@ elements
 }
 
 .custominput input:checked~.checkmark::after {
-	transform: translateX(calc(2em * .6));
+	transform: translateX(calc(2em * .57));
 }
 
 input[type='text'],
@@ -640,7 +650,7 @@ aside>textarea {
 	background-color: var(--darker);
 }
 
-#menu{
+#menu {
 	background-color: var(--menu);
 }
 
