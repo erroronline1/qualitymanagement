@@ -74,11 +74,11 @@ core.var = {
 			enabledByDefault: true,
 			wide: false,
 		},
-		auditplanner: {
+		regulatorytools: {
 			icon: core.fn.static.insert.icon('checklist'),
 			display: {
-				en: "Audit Planner",
-				de: "Auditplaner"
+				en: "Regulatory Tools",
+				de: "Regulatorische Tools"
 			},
 			enabledByDefault: true,
 			wide: false,

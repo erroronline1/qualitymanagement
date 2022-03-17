@@ -22,9 +22,9 @@ Public Function setupAuditPlanner() As Collection
     setupAuditPlanner.Add "A", "matrix.startColumn" 'customize content column, starting point for matrix
     setupAuditPlanner.Add 2, "matrix.headerRow" 'customize header row, starting point for matrix
     setupAuditPlanner.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
-    setupAuditPlanner.Add "D:\Quality Management\assistant\library\module.data\auditplanner.data.js", "export.defaultFile" 'default path to export file
+    setupAuditPlanner.Add "D:\Quality Management\assistant\library\module.data\regulatorytools.data.auditplanner.js", "export.defaultFile" 'default path to export file
     setupAuditPlanner.Add "Liste für Assistenten bereitstellen?", "export.prompt" 'save dialogue header, customize to your language
-    setupAuditPlanner.Add array("auditplanner.data={content:[", "]};"), "export.object" 'name and wrapper of json-object
+    setupAuditPlanner.Add array("regulatorytools.data.auditplanner={content:[", "]};"), "export.object" 'name and wrapper of json-object
     setupAuditPlanner.Add False, "export.dontSkipEmpty" 'whether to skip empty cells or not depending on structure of assistants processing algorithm
     setupAuditPlanner.Add "3", "m.contentcolumn" 'customize query column (numbered), output only if content is set
 End Function
