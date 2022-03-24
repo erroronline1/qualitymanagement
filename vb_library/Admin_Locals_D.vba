@@ -40,14 +40,34 @@ Public Function setupTransferSchedule() As Collection
     setupTransferSchedule.Add "Legende", "matrix.maxRow"
     setupTransferSchedule.Add "Verarbeitungsmatrix konnte nicht ermittelt werden, es fehlt das Stichwort >Legende< in Spalte A." & vbnewline & vbnewline & "Vorgang abgebrochen.", "matrix.error"	
     setupTransferSchedule.Add "PDF exportieren?", "initiate.Title"
+    setupTransferSchedule.Add "Veröffentlichungsdatum eingeben", "document.releasedate"
+    setupTransferSchedule.Add "Company Identification | Release {release} | Page &P/&N ","document.identifier" '{release} will be replaced with given date
     setupTransferSchedule.Add "Soll der Plan als PDF exportiert werden?" & vbNewLine & "ACHTUNG! Sollte die Datei bereits geöffnet sein wird Excel abstürzen.", "initiate.Confirm"
     setupTransferSchedule.Add "PDF des Ausbildungsplanes bei den Nachweisdokumenten bereitstellen?", "export.xlsPrompt"
+    setupTransferSchedule.Add "Exceldatei archivieren?", "export.xlsArchive"
     setupTransferSchedule.Add "D:\Quality Managment\thirdType\Transferschedule.pdf", "export.xlsDefaultFile"
 End Function
 Public Function monitorTransferSchedule() As Collection
     Set monitorTransferSchedule = New Collection
     monitorTransferSchedule.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
     monitorTransferSchedule.Add Array(False, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
+End Function
+
+
+Public Function setupRecordDocument() As Collection
+    Set setupRecordDocument = New Collection
+    setupRecordDocument.Add "PDF exportieren?", "initiate.Title"
+    setupRecordDocument.Add "Soll das Nachweisdokument als PDF exportiert werden?" & vbNewLine & "ACHTUNG! Sollte die Datei bereits geöffnet sein wird Excel abstürzen.", "initiate.Confirm"
+    setupRecordDocument.Add "Veröffentlichungsdatum eintragen", "document.releasedate"
+    setupRecordDocument.Add "Company Identification | Release {release} | Page &P/&N ","document.identifier" '{release} will be replaced with given date
+    setupRecordDocument.Add "PDF veröffentlichen", "export.xlsPrompt"
+    setupRecordDocument.Add "Exceldatei archivieren?", "export.xlsArchive"
+    setupRecordDocument.Add "D:\Quality Managment\thirdType\", "export.xlsDefaultFile"
+End Function
+Public Function monitorRecordDocument() As Collection
+    Set monitorRecordDocument = New Collection
+    monitorRecordDocument.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
+    monitorRecordDocument.Add Array(False, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
 End Function
 
 

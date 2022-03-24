@@ -11,7 +11,7 @@ Public fileSaveName As Variant
 Public docFolder, pdfFolder As String
 Public WritePermission As Boolean
 Public monitorOverride As Boolean
-
+Public recordReleaseUserInput as String
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' general module handler
@@ -33,7 +33,7 @@ Public Sub openRoutine()
 End Sub
 
 Public Sub asyncOpen()
-    'Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", ThisWorkbook.parentPath & "vb_library\Admin_ThisWorkbook.vba"
+    Rewrite.rewriteMain ThisWorkbook, "DieseArbeitsmappe", ThisWorkbook.parentPath & "vb_library\Admin_ThisWorkbook.vba"
     Specific.openRoutine
 End Sub
 
@@ -214,10 +214,10 @@ Public Sub doclistExport(var As Collection, ByVal replacePath As Boolean, ByVal 
     End If
 End Sub
 
-Public Sub exportXLS(var As Variant)
+Public Sub exportXLS(var As Variant, Optional byVal fileName As String = "")
     'exports a excel-file without macros
     Dim fileSaveName As Variant
-    fileSaveName = Application.GetSaveAsFilename(InitialFileName:=var("export.xlsDefaultFile"), FileFilter:="Excel (*.xlsx), *.xlsx", Title:=var("export.xlsPrompt"))
+    fileSaveName = Application.GetSaveAsFilename(InitialFileName:=var("export.xlsDefaultFile") & fileName, FileFilter:="Excel (*.xlsx), *.xlsx", Title:=var("export.xlsPrompt"))
     If fileSaveName <> False Then
         ThisWorkbook.Sheets().Copy
         Dim WB As Workbook
@@ -229,10 +229,27 @@ Public Sub exportXLS(var As Variant)
    End If
 End Sub
 
-Public Sub exportXLS2PDF(var As Variant)
+Public Sub recordRelease(var As Variant)
+    Dim release
+    Dim regEx As Object
+    Set regEx = CreateObject("vbscript.regexp")
+    regEx.Global = True
+    Dim patternMatch
+    Dim TargetPattern
+
+    release = InputBox(var("document.releasedate"), var("initiate.title"), Format(Date, "YYYYMMDD"))
+    If release <> "" Then
+        regEx.pattern = "{release}"
+        ThisWorkbook.ActiveSheet.PageSetup.LeftHeader = "&10 " & regEx.Replace(var("document.identifier"), release) & vbNewLine & _
+        "&16 " & Left(ThisWorkbook.Name, InStr(ThisWorkbook.Name, ".") - 1)
+        recordReleaseUserInput = release
+    End If
+End Sub
+
+Public Sub exportXLS2PDF(var As Variant, Optional byVal fileName As String = "")
     'exports a excel-file without macros
     Dim fileSaveName As Variant
-    fileSaveName = Application.GetSaveAsFilename(InitialFileName:=var("export.xlsDefaultFile"), FileFilter:="PDF (*.pdf), *.pdf", Title:=var("export.xlsPrompt"))
+    fileSaveName = Application.GetSaveAsFilename(InitialFileName:=var("export.xlsDefaultFile") & fileName, FileFilter:="PDF (*.pdf), *.pdf", Title:=var("export.xlsPrompt"))
     If fileSaveName <> False Then
         ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:=fileSaveName
     End If

@@ -40,14 +40,34 @@ Public Function setupTransferSchedule() As Collection
     setupTransferSchedule.Add "Legend", "matrix.maxRow"
     setupTransferSchedule.Add "Workmatrix could not be determinated, missing keyword >Legend< in column A." & vbnewline & vbnewline & "processing aborted.", "matrix.error"	
     setupTransferSchedule.Add "Export PDF?", "initiate.Title"
+    setupTransferSchedule.Add "Set release date", "document.releasedate"
+    setupTransferSchedule.Add "Company Identification | Release {release} | Page &P/&N ","document.identifier" '{release} will be replaced with given date
     setupTransferSchedule.Add "Publish plan?" & vbNewLine & "CAUTION! If destination file is already opened Excel will crash.", "initiate.Confirm"
     setupTransferSchedule.Add "Publish PDF of transfer schedule?", "export.xlsPrompt"
+    setupTransferSchedule.Add "Archive XLS?", "export.xlsArchive"
     setupTransferSchedule.Add "D:\Quality Managment\thirdType\Transferschedule.pdf", "export.xlsDefaultFile"
 End Function
 Public Function monitorTransferSchedule() As Collection
     Set monitorTransferSchedule = New Collection
     monitorTransferSchedule.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
     monitorTransferSchedule.Add Array(False, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
+End Function
+
+
+Public Function setupRecordDocument() As Collection
+    Set setupRecordDocument = New Collection
+    setupRecordDocument.Add "Export PDF?", "initiate.Title"
+    setupRecordDocument.Add "Publish Document?" & vbNewLine & "CAUTION! If destination file is already opened Excel will crash.", "initiate.Confirm"
+    setupRecordDocument.Add "Set release date", "document.releasedate"
+    setupRecordDocument.Add "Company Identification | Release {release} | Page &P/&N ","document.identifier" '{release} will be replaced with given date
+    setupRecordDocument.Add "Publish PDF", "export.xlsPrompt"
+    setupRecordDocument.Add "Archive XLS?", "export.xlsArchive"
+    setupRecordDocument.Add "D:\Quality Managment\thirdType\", "export.xlsDefaultFile"
+End Function
+Public Function monitorRecordDocument() As Collection
+    Set monitorRecordDocument = New Collection
+    monitorRecordDocument.Add Array(False, monitorRowsTitle, monitorRowsPrompt), "monitor.rows"
+    monitorRecordDocument.Add Array(False, monitorColumnsTitle, monitorColumnsPrompt), "monitor.columns"
 End Function
 
 

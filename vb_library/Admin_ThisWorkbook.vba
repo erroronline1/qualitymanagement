@@ -14,14 +14,14 @@ Public selectedLanguage As String
 Public parentPath
 
 Private Sub Workbook_Open()
-    selectedLanguage = "EN"
+    selectedLanguage = "D"
 
     'get parent path to vb_libraries to be imported
     Dim path() As String
     path() = Split(ThisWorkbook.path, "\")
     Dim i As Integer
     parentPath = ""
-    For i = 0 To UBound(path) - 1 'according to upward steps in folder hierarchy
+    For i = 0 To UBound(path) - 2 'according to upward steps in folder hierarchy
         parentPath = parentPath & path(i) & "\"
     Next i
     'load essentials as module and execute opening procedure
@@ -59,6 +59,13 @@ Public Function importModules(ByVal libraries As Object) As Boolean
                 'renaming to _old because sometimes modules are removed on finishing of the code only, resulting in enumeration of module names
                 .Item(lib).Name = lib & "_OLD"
                 .Import libraries(lib)
+            End With
+        ElseIf Len(Dir(libraries(lib))) = 0 And lib = "Specific" and Len(Dir(ThisWorkbook.parentPath & "vb_library\" & "Admin_RecordDocument.vba")) Then
+            'if no specific module containing ThisWorkbook.Name as specified in Essentials by default it is presumably a record document template
+            With ThisWorkbook.VBProject.VBComponents
+                'renaming to _old because sometimes modules are removed on finishing of the code only, resulting in enumeration of module names
+                .Item(lib).Name = lib & "_OLD"
+                .Import ThisWorkbook.parentPath & "vb_library\" & "Admin_RecordDocument.vba"
             End With
         End If
     Next lib
