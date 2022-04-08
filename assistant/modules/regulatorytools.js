@@ -33,8 +33,7 @@ regulatorytools = {
 	},
 	fn: {
 		auditplannerinput: async (query) => {
-			let checked,
-				list = '';
+			let checked;
 			let qnumOptions = {
 					1: [1, 'max. 1 ' + core.fn.static.lang('selectOptionQuestion', 'regulatorytools')],
 				},
@@ -44,23 +43,13 @@ regulatorytools = {
 				qnumOptions[index] = [index, 'max. ' + index + ' ' + core.fn.static.lang('selectOptionQuestions', 'regulatorytools')];
 			}
 			qnumOptions[index + 1] = [regulatorytools.data.auditplanner.content[0].length, core.fn.static.lang('selectOptionAll', 'regulatorytools') + ' (' + regulatorytools.data.auditplanner.content[0].length + ')'];
-			list+=
+			core.fn.async.stdout('temp',
 				core.fn.static.insert.select(qnumOptions, 'maxquestions', 'maxquestions', '3', 'onchange="regulatorytools.fn.auditplanneroutput()"') +
 				core.fn.static.insert.icon('refreshall', 'bigger inline', false, 'onclick="regulatorytools.fn.auditplannerselect()" title="' + core.fn.static.lang('buttonAllTitle', 'regulatorytools') + '"') +
 				core.fn.static.insert.icon('refreshnone', 'bigger inline', false, 'onclick="regulatorytools.fn.auditplannerselect(\'none\')" title="' + core.fn.static.lang('buttonNoneTitle', 'regulatorytools') + '"') +
 				core.fn.static.insert.icon('shuffle', 'bigger inline', false, 'onclick="regulatorytools.fn.auditplannerselect(\'random\')" title="' + core.fn.static.lang('buttonShuffleTitle', 'regulatorytools') + '"') +
-				"<br /><br />";
-
-			if (regulatorytools.data.auditplanner !== undefined) {
-				Object.keys(regulatorytools.data.auditplanner.content).forEach((key) => {
-					if (key > 0) { //skip first item being header only
-						checked = query == 'random' ? Math.random() >= 0.5 : (query == 'none' ? false : true);
-						list += core.fn.static.insert.checkbox(regulatorytools.data.auditplanner.content[key][0] + ' ' + regulatorytools.data.auditplanner.content[key][1], 'ap' + key, checked, 'onchange="regulatorytools.fn.output()"', false) + '<br />';
-					}
-				});
-				await core.fn.async.stdout('temp', '<span class="highlight">' + core.fn.static.lang('tableOfContents', 'regulatorytools') + ':</span><br />' + list);
-			}
-			regulatorytools.fn.auditplanneroutput();
+				'<br /><br /><div id="auditplannerlist"></div>');
+			await regulatorytools.fn.auditplannerselect();
 		},
 		auditplanneroutput: function () {
 			regulatorytools.var.disableOutputSelect = false;
@@ -96,6 +85,20 @@ regulatorytools = {
 				});
 				core.fn.async.stdout('output', output);
 			}
+		},
+		auditplannerselect: async (query) => {
+			let checked,
+				list = '';
+			if (regulatorytools.data.auditplanner !== undefined) {
+				Object.keys(regulatorytools.data.auditplanner.content).forEach((key) => {
+					if (key > 0) { //skip first item being header only
+						checked = query == 'random' ? Math.random() >= 0.5 : (query == 'none' ? false : true);
+						list += core.fn.static.insert.checkbox(regulatorytools.data.auditplanner.content[key][0] + ' ' + regulatorytools.data.auditplanner.content[key][1], 'ap' + key, checked, 'onchange="regulatorytools.fn.auditplanneroutput()"', false) + '<br />';
+					}
+				});
+				await core.fn.async.stdout('auditplannerlist', '<span class="highlight">' + core.fn.static.lang('tableOfContents', 'regulatorytools') + ':</span><br />' + list);
+			}
+			regulatorytools.fn.auditplanneroutput();
 		},
 		imdrfinput: async(selectedAnnex = 'a')=>{
 			regulatorytools.var.disableOutputSelect = true;
