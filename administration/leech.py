@@ -17,7 +17,7 @@ print ('''
      _             _   
     | |___ ___ ___| |_ 
     | | -_| -_|  _|   |
-    |_|___|___|___|_|_| v1.20220319
+    |_|___|___|___|_|_| v1.20220429
 
     by error on line 1 (erroronline.one)
 
@@ -29,10 +29,10 @@ HELPTEXT= '''
     used from the command line to have access to further options. this is not ai, you'll have to analyze the
     inhomogeneous sources by yourself beforehand in order to set up. 
 
-    usage: leech [ -a | --analyseonly ]               no prompt for download after analyse
+    usage: leech [ -a | --analyseonly ]               no prompt for download after analyse, flushing of file list into log
                  [ -e | --explicit ] IDENTIFIER       handles identifier group from setup exclusively
-                 [ -j | --json ]                      display configuration json sample
                  [ -h | --help ]                      this message, priority handling
+                 [ -j | --json ]                      display configuration json sample
                  [ -r | --results ]                   displays list of detected files urls and names during analysis
                  [ -s | --successlogger ]             logs successful downloads as well
                  [ -v | --viewsource ] URL            displays received sourcecode. url optional for limiting
@@ -116,7 +116,7 @@ JSONSAMPLE='''
 '''
 
 #init logfile, write session start and parameters for backtracking
-LOGFILE=open('leech.log', 'a')
+LOGFILE=open('leech.log', 'a', encoding="utf8")
 LOGFILE.write('\n\nsession on ' + datetime.now().strftime('%Y-%m-%d %H:%M') + ' started with >' + ' '.join(sys.argv) + '\n')
 
 def log(msg):
@@ -128,10 +128,10 @@ def log(msg):
 
 try:
 	'''load settings'''
-	with open('leech.json', 'r') as jsonfile:
+	with open('leech.json', 'r', encoding="utf8") as jsonfile:
 		SETTINGS= json.loads(jsonfile.read().replace('\n', ''))
-except:
-	log('[~] settings could not be loaded, see help for syntax...')
+except Exception as setting_failure:
+	log(f'[~] settings could not be loaded, see help for syntax: {setting_failure}...')
 	SETTINGS=False
 
 #set globals
@@ -147,9 +147,9 @@ TERMINALHEIGHT = 'linter, please ignore unused ' + str(TERMINALHEIGHT)
 
 def animationbar():
 	'''fancy anmiation to show something's going on'''
-	for c in itertools.cycle(['.   ', '..  ', '... ', '....', ' ...', '  ..', '   .']):
+	for cycle_item in itertools.cycle(['.   ', '..  ', '... ', '....', ' ...', '  ..', '   .']):
 		if not HIDEANIMATION:
-			sys.stdout.write('\r' + c)
+			sys.stdout.write('\r' + cycle_item)
 			sys.stdout.flush()
 			time.sleep(0.1)
 		else:
@@ -161,65 +161,59 @@ def get_source( link, postdata ):
 		cookies=''
 		if postdata:
 			session = requests.Session()
-			r = session.post( link, data = postdata, proxies=SETTINGS['proxies'], timeout=SETTINGS['timeout'] )
+			request_answer = session.post( link, data = postdata, proxies=SETTINGS['proxies'], timeout=SETTINGS['timeout'])
 			cookies = session.cookies
 		else:
-			r = requests.get( link, headers = SETTINGS['httpheader'], proxies=SETTINGS['proxies'], timeout=SETTINGS['timeout'] )
+			request_answer = requests.get( link, headers = SETTINGS['httpheader'], proxies=SETTINGS['proxies'], timeout=SETTINGS['timeout'])
 
-		if r.status_code == 200:
-			return (r.text, cookies)
-		else:
-			log( '[~] invalid response received by {0}'.format(link) )
-	except:
-		log( '[~] connection error with {0}'.format(link) )
+		if request_answer.status_code == 200:
+			return (request_answer.text, cookies)
+		log(f'[~] invalid response received by {link} ({request_answer.status_code})')
+	except Exception as request_error:
+		log(f'[~] connection error with {link} | {request_error}')
 
 
 def requesthandle(file, savedestination ):
 	'''download file'''
-	global FILELIST
 	global THREAD_COUNTER
 	THREAD_COUNTER += 1
 	#extract file list-object to readable variables
 	link, name, cookies = file
 	errorcase=re.sub(r'\s+', ' ', link)
-	if len(errorcase) > 100:
-		mid = len(errorcase) // 2
-		errorcase = errorcase[0:20] + ' [...] ' + errorcase[mid - 30:mid + 30] + ' [...] ' + errorcase[-20:]
 	try:
-		r = requests.get( link, stream = True, headers = SETTINGS['httpheader'], proxies=SETTINGS['proxies'], cookies=cookies )
-		if r.status_code == 200:
+		request_answer = requests.get( link, stream = True, headers = SETTINGS['httpheader'], proxies=SETTINGS['proxies'], cookies=cookies )
+		if request_answer.status_code == 200:
 			#print (' |||||| ' + str(r.status_code) + ': ' + link)
-			r.raw.decode_content = True
-			f = open( savedestination + '\\' + name, 'wb' )
-			shutil.copyfileobj(r.raw, f)
-			f.close()
-			if successlogger:
-				log ('[*] downloaded: {0}'.format(savedestination + '\\' + name))
+			request_answer.raw.decode_content = True
+			with open( os.path.join(savedestination, name), 'wb' ) as file_content:
+				shutil.copyfileobj(request_answer.raw, file_content)
+			if SUCCESSLOGGER:
+				log (f'[*] downloaded: {os.path.join(savedestination, name)}')
 			#add file to success list to prevent further attempts
 			DOWNLOADED.append(file)
 			#preceding whitespaces because of animation
 			sys.stdout.write( '\r     successfully downloaded file ' + str(len(DOWNLOADED)) + ' of ' + str(FOUNDFILES) + '' )
 			sys.stdout.flush()
 		else:
-			log ('[~] status error downloading {0} in attempt {1} of {2}'.format(errorcase, SETTINGS['attempts'] - ATTEMPT + 1, SETTINGS['attempts']))
-	except:
-		log ('[~] general error downloading {0} in attempt {1} of {2}'.format(errorcase, SETTINGS['attempts'] - ATTEMPT + 1, SETTINGS['attempts']))
+			log (f'[~] status error downloading {name} from {errorcase} in attempt {SETTINGS["attempts"] - ATTEMPT + 1} of {SETTINGS["attempts"]} | {request_answer.status_code}')
+	except Exception as request_error:
+		log (f'[~] general error downloading {name} from {errorcase} in attempt {SETTINGS["attempts"] - ATTEMPT + 1} of {SETTINGS["attempts"]} | {request_error}')
 	THREAD_COUNTER -= 1
 
 def graburls(site, index, viewsource):
 	'''analyze sourcecode and add to urls list according to matches'''
 	src = SETTINGS['sources'][site][index]
-	for url in src['toplevel']:
+	for toplevel in src['toplevel']:
 		try:
-			ressource = get_source( url, src['postdata'] if 'postdata' in src else False )
-			if (isinstance(viewsource, str) and url == viewsource ) or (isinstance(viewsource, bool) and viewsource):
+			ressource = get_source( toplevel, src['postdata'] if 'postdata' in src else False )
+			if (isinstance(viewsource, str) and toplevel == viewsource ) or (isinstance(viewsource, bool) and viewsource):
 				sys.stdout.write( '\r     ' + ressource[0] + '\n' )
 				sys.stdout.flush()
 			urls = re.findall(src['urlpattern'], ressource[0], re.IGNORECASE | re.DOTALL)
-		except:
+		except Exception:
 			continue
 		if len(urls) < 1:
-			log('[~] no subsites found on [{0}] {1}'.format(site, url))
+			log(f'[~] no subsites found on [{site}] {toplevel}')
 			sys.stdout.write( '\r     still analyzing source [' + site + ']' )
 			sys.stdout.flush()
 		for url in urls:
@@ -228,19 +222,19 @@ def graburls(site, index, viewsource):
 				#make an iterable tuple anyway even if there is just a single match
 				url=tuple([url])
 			#handle filepath and filename concatenation according to settings
-			for s in src['urlpath']:
-				if isinstance(s, int):
-					urlpath += url[s]
+			for source in src['urlpath']:
+				if isinstance(source, int):
+					urlpath += url[source]
 				else:
-					urlpath += s
+					urlpath += source
 			#strip occasional whitespaces
 			urlpath=urlpath.strip()
 			#...and add to list
 			if urlpath not in SETTINGS['sources'][site][index]['url']:
 				SETTINGS['sources'][site][index]['url'].append( urlpath )
-	if displayresults:
-		for f in SETTINGS['sources'][site][index]['url']:
-			sys.stdout.write( '\r' + str(f) + '\n' )
+	if DISPLAYRESULTS:
+		for found in SETTINGS['sources'][site][index]['url']:
+			sys.stdout.write( '\r' + str(found) + '\n' )
 			sys.stdout.flush()
 
 def grabfiles(site, index, viewsource):
@@ -253,10 +247,10 @@ def grabfiles(site, index, viewsource):
 				sys.stdout.write( '\r     ' + ressource[0] + '\n' )
 				sys.stdout.flush()
 			files = re.findall(src['filepattern'], ressource[0], re.IGNORECASE | re.DOTALL)
-		except:
+		except Exception:
 			continue
 		if len(files) < 1:
-			log('[~] no files found on [{0}] {1}'.format(site, url))
+			log(f'[~] no files found on [{site}] {url}')
 			sys.stdout.write( '\r     still analyzing source [' + site + ']' )
 			sys.stdout.flush()
 		for file in files:
@@ -267,16 +261,16 @@ def grabfiles(site, index, viewsource):
 				#make an iterable tuple anyway even if there is just a single match
 				file=tuple([file])
 			#handle filepath and filename concatenation according to settings
-			for s in src['filepath']:
-				if isinstance(s, int):
-					filepath += file[s]
+			for source in src['filepath']:
+				if isinstance(source, int):
+					filepath += file[source]
 				else:
-					filepath += s
-			for s in src['filename']:
-				if isinstance(s, int):
-					filename += '_' + re.sub(r'(?![# \.-])\W', '', file[s].split('/')[-1] )
+					filepath += source
+			for source in src['filename']:
+				if isinstance(source, int):
+					filename += '_' + re.sub(r'(?![# \.-])\W', '', file[source].split('/')[-1] )
 				else:
-					filename += s
+					filename += source
 			if filename[0] == '_':
 				filename = filename[1:]
 			#strip occasional whitespaces
@@ -289,9 +283,9 @@ def grabfiles(site, index, viewsource):
 					FILELIST[site].append( insert )
 			else:
 				FILELIST[site]=[ insert ]
-	if displayresults:
-		for f in FILELIST[site]:
-			sys.stdout.write( '\r' + str(f) + '\n' )
+	if DISPLAYRESULTS:
+		for found in FILELIST[site]:
+			sys.stdout.write( '\r' + str(found) + '\n' )
 			sys.stdout.flush()
 
 def download(site):
@@ -315,8 +309,9 @@ def main(explicit, viewsource):
 	global FOUNDFILES
 	global ATTEMPT
 
-	print(('\n[!] greedy download' if not analyseonly else 'analyse only') + ' initialized. see leech.log-file to reconstruct results.')
+	print(('\n[!] greedy download' if not ANALYSEONLY else '\n[!] analyse only') + ' initialized. see leech.log-file to reconstruct results.')
 	print('[!] starting analysis of ' + ( explicit if explicit else str(len(SETTINGS['sources'])) + ' sources' ) + ' on ' + datetime.now().strftime('%Y-%m-%d %H:%M') +'. please stand by.\n')
+	print('[!] please note that some patterns scrape subsites that can not be used. not all errors are severe ones.')
 
 	animation = threading.Thread(target=animationbar)
 	animation.daemon = True
@@ -339,22 +334,22 @@ def main(explicit, viewsource):
 					graburls(site, index, viewsource)
 				grabfiles(site, index, viewsource)
 	count=0
-	for n in FILELIST:
-		count += len(FILELIST[n])
+	for site in FILELIST:
+		count += len(FILELIST[site])
 
 	HIDEANIMATION=True
 	FOUNDFILES=count
-	message = '[*] approximately {0} files were found.'.format(count)
+	message = f'[*] approximately {count} files were found.'
 	log( message + ' ' * (TERMINALWIDTH - len(message) - 1) )
 
-	if not analyseonly:
-		confirm = input('\n[?] do you want to download {0} files now?\n    type "y" to proceed, "h" for help, nothing or any other key to abort: '.format(count))
+	if not ANALYSEONLY:
+		confirm = input(f'\n[?] do you want to download {count} files now?\n    type "y" to proceed, "h" for help, nothing or any other key to abort: ')
 		if confirm == 'y':
 			HIDEANIMATION = False
 
 			while ATTEMPT >= 1 and len(DOWNLOADED) < FOUNDFILES:
-				for n in FILELIST:
-					download(n)
+				for site in FILELIST:
+					download(site)
 				ATTEMPT -= 1
 			message = '[*] sucessfully downloaded ' + str(len(DOWNLOADED)) + ' files.'
 			log( message + ' ' * (TERMINALWIDTH - len(message) - 1) )
@@ -362,6 +357,7 @@ def main(explicit, viewsource):
 		elif confirm == 'h':
 			print (HELPTEXT)
 		else:
+			LOGFILE.write(json.dumps(FILELIST, indent = 4))
 			LOGFILE.write('session properly terminated on ' + datetime.now().strftime('%Y-%m-%d %H:%M') + ' without further action')
 	else:
 		LOGFILE.write('session properly terminated on ' + datetime.now().strftime('%Y-%m-%d %H:%M') + ' without further action')
@@ -374,15 +370,16 @@ def main(explicit, viewsource):
 
 
 if __name__ == '__main__':
-	lhelp = False
-	ljson = False
-	explicit = False
-	confirm = False
-	viewsource = False
-	displayresults = False
-	analyseonly = False
-	successlogger = False
-	useproxy, user, pw = False, '', ''
+	HELP = False
+	JSON = False
+	EXPLICIT = False
+	COMFIRM = False
+	VIEWSOURCE = False
+	DISPLAYRESULTS = False
+	ANALYSEONLY = False
+	SUCCESSLOGGER = False
+	CONFIRM = False
+	USEPROXY, user, pw = False, '', ''
 
 	#argument handler
 	#options actually ordered by importance
@@ -396,53 +393,53 @@ if __name__ == '__main__':
 	for opt in options:
 		arg=re.findall(options[opt], ' '.join(sys.argv) + ' ', re.IGNORECASE)
 		if opt == 'h' and arg:
-			lhelp = True
-			confirm = 'h'
+			HELP = True
+			CONFIRM = 'h'
 			break
 		elif opt == 'j' and arg:
-			ljson = True
-			confirm = 'j'
+			JSON = True
+			CONFIRM = 'j'
 			break
 		elif opt == 'e' and bool(arg):
-			explicit = arg[0]
+			EXPLICIT = arg[0]
 		elif opt == 'v' and bool(arg):
-			viewsource = arg[0][1] if bool(arg[0][1]) else True
+			VIEWSOURCE = arg[0][1] if bool(arg[0][1]) else True
 		elif opt == 'r' and arg:
-			displayresults = True
+			DISPLAYRESULTS = True
 		elif opt == 'a' and arg:
-			analyseonly = True
+			ANALYSEONLY = True
 		elif opt == 's' and arg:
-			successlogger = True
+			SUCCESSLOGGER = True
 		else:
 			pass
 
 	#auto help if no source file is found
 	if not SETTINGS:
-		ljson = True
-		confirm = 'j'
+		JSON = True
+		CONFIRM = 'j'
 
-	if not lhelp and not ljson and not explicit and not analyseonly:
-		confirm = str(input('[?] without specification you are probably going to download several files from {0} sources.\n    that may take an unpredictable amount of time and data volume.\n    type "y" to proceed with analysis, "h" for help, nothing or any other key to abort: '.format(len(SETTINGS['sources']))))
+	if not HELP and not JSON and not EXPLICIT and not ANALYSEONLY:
+		CONFIRM = str(input(f'[?] without specification you are probably going to download several files from {len(SETTINGS["sources"])} sources.\n    that may take an unpredictable amount of time and data volume.\n    type "y" to proceed with analysis, "h" for help, nothing or any other key to abort: '))
 
-	if confirm in ['h','help'] or lhelp:
+	if CONFIRM in ['h','help'] or HELP:
 		print (HELPTEXT)
 		input('[?] press enter to quit...')
-	elif confirm in ['j','json'] or ljson:
+	elif CONFIRM in ['j','json'] or JSON:
 		print (JSONSAMPLE)
 		input('[?] press enter to quit...')
-	elif confirm == 'y' or explicit or analyseonly:
+	elif CONFIRM == 'y' or EXPLICIT or ANALYSEONLY:
 		for p in SETTINGS['proxies']:
 			if len(SETTINGS['proxies'][p]) > 0:
-				useproxy=True
-		if useproxy:
+				USEPROXY=True
+		if USEPROXY:
 			print('\n[?] use of proxy detected, login name and password might be necessary!\n    note that wrong values result in connection errors.')
 			user=getpass.getuser()
-			pw=getpass.getpass('    please enter password for "{0}" (hidden): '.format(user))
+			pw=getpass.getpass(f'    please enter password for "{user}" (hidden): ')
 			for p in SETTINGS['proxies']:
 				if len(SETTINGS['proxies'][p]) > 0 and len(user) > 0 and len(pw) > 0:
 					temp=re.findall(r'(.+?//)(.+)', SETTINGS['proxies'][p], re.IGNORECASE | re.DOTALL)
 					SETTINGS['proxies'][p] = ''.join([temp[0][0],user,':',pw,'@',temp[0][1]])
-		main(explicit, viewsource)
+		main(EXPLICIT, VIEWSOURCE)
 
 	LOGFILE.write('session properly terminated on ' + datetime.now().strftime('%Y-%m-%d %H:%M') + ' without further action')
 	LOGFILE.close()
