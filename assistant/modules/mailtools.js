@@ -112,16 +112,12 @@ var mailtools = {
 			Object.keys(mailtools.var.submodules).forEach(function (key) {
 				options[key] = [key, mailtools.var.submodules[key][core.var.selectedLanguage]];
 			});
+			query = query ? query : 'notavailable';
 			await core.fn.async.stdout('input',
 				core.fn.static.insert.tabs(options, 'mailtoolsselection', query, 'onchange="mailtools.fn[core.fn.static.getTab(\'mailtoolsselection\')+\'input\']()"')
 			);
-			if (query) {
-				core.fn.static.getTab('mailtoolsselection');
-				eval('mailtools.fn.' + query + 'input()');
-			} else {
-				core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'mailtools'));
-				core.history.write('mailtools.fn.init()');
-			}
+			core.fn.static.getTab('mailtoolsselection');
+			eval('mailtools.fn.' + query + 'input()');
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'mailtools.var.js');
