@@ -87,29 +87,39 @@ var stocklist = {
 						helpDeleteItemCaption: core.fn.static.lang('helpDeleteItemCaption', 'stocklist'),
 					};
 
-					function mklink(str) {
+					async function mklink(str) {
 						// replaces http://website and c:/folder/file with links
 						// given folders may contain whitespaces but are not embedded into text
-						return str.toString().replace(/\w{3,}:\/+\S*|\w:\/.+/g, function (l) {
-							return '<a href="' + l + '" target="_blank">' + l + '</a>';
-						});
+						// str.replace is not capable of async callbacks!!
+						str = str.toString();
+						let genlink;
+						const links = [...str.matchAll(/\w{3,}:\/+\S*/g)],
+							files = [...str.matchAll(/(?:^|\W)\w:\/.+/g)];
+						if (links.length) str = str.replace(/\w{3,}:\/+\S*/g, function (l) {return '<a href="' + l + '" target="_blank">' + l + '</a>'})
+						if (files.length) {
+							await files.forEach(async (value) => {
+								genlink = await core.fn.async.file.link(value[0]);
+								str = str.replace(value[0], '<a ' + genlink.replace('\\','\\\\') + '>' + value[0] + '</a>');
+							});
+						}
+						return str;
 					}
-					await found.forEach(async (value) => {
-						list += core.fn.async.smartSearch.relevance.nextstep(value[1]);
+					for (let item=0; item < found.length; item++){
+						list += core.fn.async.smartSearch.relevance.nextstep(found[item][1]);
 						tresult = '<div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand();
 						mailbody = '';
 						for (let h = 1; h < stocklist.data.content[0].length + 1; h++) { // start from 1 because of assigned id on position 0, add one to length because of offset shift
-							if (ordered_stocklist_data.content[value[0]][h] != '') {
-								tresult += '<p><span class="highlight">' + stocklist.data.content[0][h - 1] + ':</span> ' + mklink(ordered_stocklist_data.content[value[0]][h]) + '</p>';
-								mailbody += stocklist.data.content[0][h - 1] + ': ' + ordered_stocklist_data.content[value[0]][h] + "<br />";
+							if (ordered_stocklist_data.content[found[item][0]][h] != '') {
+								tresult += '<p><span class="highlight">' + stocklist.data.content[0][h - 1] + ':</span> ' + await mklink(ordered_stocklist_data.content[found[item][0]][h]) + '</p>';
+								mailbody += stocklist.data.content[0][h - 1] + ': ' + ordered_stocklist_data.content[found[item][0]][h] + "<br />";
 							}
 						}
 						list += tresult +
 							'<a title="' + maillanguage.helpChangeItemTitle + '" onclick="return confirm(\'' + maillanguage.helpChangeItemPopup + '\');" href="javascript:core.fn.static.dynamicMailto(\'' + core.var.eMailAddress.inventorycontrol.address + '\',\'' + maillanguage.helpChangeItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpChangeItemCaption + '</a> ' +
 							'<a title="' + maillanguage.helpDeleteItemTitle + '" onclick="return confirm(\'' + maillanguage.helpDeleteItemPopup + '\');" href="javascript:core.fn.static.dynamicMailto(\'' + core.var.eMailAddress.inventorycontrol.address + '\',\'' + maillanguage.helpDeleteItemSubject + '\',\'' + mailbody + '\')">' + maillanguage.helpDeleteItemCaption + '</a> ' +
-							'<span style="float:right">' + core.fn.static.insert.icon('shoppingcart', 'bigger', false, 'onclick="stocklist.api.addToCart(' + ordered_stocklist_data.content[value[0]][0] + ');"') + '</span>' +
+							'<span style="float:right">' + core.fn.static.insert.icon('shoppingcart', 'bigger', false, 'onclick="stocklist.api.addToCart(' + ordered_stocklist_data.content[found[item][0]][0] + ');"') + '</span>' +
 							'</div>';
-					});
+					}
 				} else list = core.fn.static.lang('errorNothingFound', 'stocklist', query);
 				core.fn.async.stdout('output', list);
 			} else {
