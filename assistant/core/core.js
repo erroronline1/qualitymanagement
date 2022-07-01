@@ -322,7 +322,7 @@ core.fn = {
 			if (typeof text !== 'undefined') {
 				el('growlNotif').innerHTML = text;
 				el('growlNotif').classList.add('growlNotifshow');
-				window.setTimeout(core.fn.async.growlNotif, coregrowlNotifInterval * 1000 || 2000);
+				window.setTimeout(core.fn.async.growlNotif, coregrowlNotifInterval * 1000 || 3000);
 			} else el('growlNotif').classList.remove('growlNotifshow');
 		},
 		file: {
@@ -571,7 +571,8 @@ core.init = {
 			coreFuzzySearch = await core.fn.async.memory.read('coreFuzzySearch'),
 			coreLanguage = await core.fn.async.memory.read('coreLanguage'),
 			coreSelectedEnv = await core.fn.async.memory.read('coreSelectedEnv'),
-			coreNewWindowCopy = await core.fn.async.memory.read('coreNewWindowCopy');
+			coreNewWindowCopy = await core.fn.async.memory.read('coreNewWindowCopy'),
+			coreOutputWidth = await core.fn.async.memory.read('coreOutputWidth');
 
 		if (coreDirectMailSize) core.var.directMailSize = coreDirectMailSize;
 		if (coreFuzzySearch) core.var.fuzzySearch = coreFuzzySearch;
@@ -612,6 +613,7 @@ core.init = {
 			'default') || 'default') + '.css', {
 			id: 'coretheme'
 		});
+		el('output').style.flexGrow = coreOutputWidth;
 
 		await updateTracker.alert();
 		for (let key of Object.keys(core.var.modules)) {
@@ -632,8 +634,6 @@ core.init = {
 		let modules = {}
 		core.var.currentScope = module;
 		document.title = core.fn.static.lang('title') + (module ? ' - ' + core.var.modules[module].display[core.var.selectedLanguage] : '');
-		if (module != null && core.var.modules[module].wide) el('temp').classList.add('contentWide');
-		else el('temp').classList.remove('contentWide');
 		Object.keys(core.var.modules).forEach((key) => { // unhighlight all menu icons
 			if (el('module' + key) !== null) el('module' + key).checked = false;
 		});
@@ -675,7 +675,6 @@ core.init = {
 			if (el('module' + key) != 'undefined' && el('module' + key) != null) el('module' + key).checked = false;
 		});
 		core.globalSearch.search(query); // api status in case query is undefined
-		el('temp').classList.remove('contentWide');
 		core.history.write('core.init.ui(\'' + query + '\')');
 		return true;
 	},
@@ -894,5 +893,29 @@ var slider = { //just fancy animation of content on module change
 		if (slider.modules.indexOf(module) > slider.recent) el('content').classList.add('slideup')
 		if (slider.modules.indexOf(module) < slider.recent) el('content').classList.add('slidedown')
 		slider.recent = slider.modules.indexOf(module)
+		el('output').addEventListener("mousedown", startresizing, false); //must be readded after cloning
 	}
 };
+
+// resizeable output container
+const BORDER_SIZE = 10;
+let m_pos,
+	panelgrow;
+
+function resize(e) {
+	const dx = (m_pos - e.x) / (window.innerWidth / 4);
+	el('output').style.flexGrow = panelgrow + dx;
+}
+
+function startresizing(e) {
+	if (e.offsetX < BORDER_SIZE) {
+		m_pos = e.x;
+		panelgrow = Number(el('output').style.flexGrow);
+		document.addEventListener("mousemove", resize, false);
+	}
+}
+el('output').addEventListener("mousedown", startresizing, false);
+document.addEventListener("mouseup", function () {
+	document.removeEventListener("mousemove", resize, false);
+	core.fn.async.memory.write('coreOutputWidth', el('output').style.flexGrow);
+}, false);

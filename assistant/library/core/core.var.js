@@ -18,7 +18,6 @@ core.var = {
 				de: "Dokumentensuche",
 			},
 			enabledByDefault: true,
-			wide: false,
 		},
 		documentbundles: {
 			icon: core.fn.static.insert.icon('folder'),
@@ -27,25 +26,14 @@ core.var = {
 				de: "Dokumentenpakete"
 			},
 			enabledByDefault: true,
-			wide: false,
 		},
 		stocklist: {
-			icon: core.fn.static.insert.icon('shelf'),
+			icon: core.fn.static.insert.icon('shoppingcart'),
 			display: {
 				en: "Stock List",
 				de: "Lager- und Artikelliste"
 			},
 			enabledByDefault: true,
-			wide: true,
-		},
-		ticketorder: {
-			icon: core.fn.static.insert.icon('shoppingcart'),
-			display: {
-				en: "Orders",
-				de: "Bestellungen"
-			},
-			enabledByDefault: true,
-			wide: true,
 		},
 		timetable: {
 			icon: core.fn.static.insert.icon('clock'),
@@ -54,7 +42,6 @@ core.var = {
 				de: "Arbeitszeittabelle"
 			},
 			enabledByDefault: true,
-			wide: false,
 		},
 		correspondence: {
 			icon: core.fn.static.insert.icon('argument'),
@@ -63,7 +50,6 @@ core.var = {
 				de: "Textvorschläge / Argumentation"
 			},
 			enabledByDefault: true,
-			wide: false,
 		},
 		mailtools: {
 			icon: core.fn.static.insert.icon('batchmail'),
@@ -72,7 +58,6 @@ core.var = {
 				de: "eMail Tools"
 			},
 			enabledByDefault: true,
-			wide: false,
 		},
 		regulatorytools: {
 			icon: core.fn.static.insert.icon('checklist'),
@@ -81,7 +66,6 @@ core.var = {
 				de: "Regulatorische Tools"
 			},
 			enabledByDefault: true,
-			wide: false,
 		},
 		help: {
 			icon: core.fn.static.insert.icon('faq'),
@@ -90,7 +74,6 @@ core.var = {
 				de: "Hilfe"
 			},
 			enabledByDefault: true,
-			wide: false,
 		},
 	},
 	themes: {
