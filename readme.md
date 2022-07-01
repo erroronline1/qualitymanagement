@@ -126,7 +126,7 @@ to customize this software to your needs it is definitely neccessary to have som
 i was hoping to have done enough documentation and commenting, so maybe you might as well get a grasp on changing the setting-files yourself. 
 **on the bright side everything is open source and can be maintained by any programmer/programming agency that does javascript, vba and python!**
 
-if you are a programmer i can recommend [notepad++ portable](https://notepad-plus-plus.org/download/) out of personal experience in case you have restricted access to your it. also [git portable](https://sourceforge.net/projects/gitportable/).
+if you are a programmer i can recommend [notepad++ portable](https://notepad-plus-plus.org/download/) out of personal experience in case you have restricted access to your it. also [git portable](https://www.softpedia.com/get/PORTABLE-SOFTWARE/Programming/Portable-Git.shtml).
 
 [back to top](#table-of-contents)
 
@@ -150,7 +150,7 @@ in general this system
 * supports free word design choices (as supposed to the aforementioned softwares styling limitations due to use of .rtf-templates)
 * has a built in interface for general availability of information - data export to the assistant
 
-it coincidentally but fortunately matches most of the [requirements for document control software noted here](https://13485store.com/resources/iso-13485-document-control-software/), except some recommended automations that still make sense being done manually for my companies usecase. 
+it coincidentally but fortunately matches most of the [requirements for document control software noted here](https://www.smartsheet.com/document-management-system), except some recommended automations that still make sense being done manually for my companies usecase. 
 
 ![sample registration](assets/registration.gif)
 
@@ -343,7 +343,7 @@ globalSearch api: returns packages that fit search terms.
 
 if you want your employees to have a look at approved products and materials for your company and let them keep in touch with the inventory control this module makes it quite easy to look up all products.
 
-to date inventory control and me were not able to agree upon and introduce use of the order module yet. so parts of the order module (which unfortunately is still disabled by default at my company) are integrated as a slimmed down version. the trouble with hope is it's hard to resist<sup>[\[1\]](https://www.youtube.com/watch?v=9NbkSHTugts)</sup>, so i hope the colleagues might accidentally see the benefits of a structured order using the shopping cart being guided with necessary inputs and getting used to this, avoiding unecessary callbacks.
+to date inventory control and me were not able to agree upon and introduce use of the order module yet. so parts of the order module (which unfortunately is still disabled by default at my company) are integrated as a slimmed down version. the trouble with hope is it's hard to resist<sup>[\[1\]](https://www.youtube.com/results?search_query=doctor+who+that%27s+the+the+trouble+with+hope)</sup>, so i hope the colleagues might accidentally see the benefits of a structured order using the shopping cart being guided with necessary inputs and getting used to this, avoiding unecessary callbacks.
 
 dependencies are: the datalist of inventory and an excel file containing the original data exporting everything OR the stocklist-script [more about that here](#stocklist). the displayed data is sorted according to the excel-lists column organisation or depends on the order of the erp-dump. if something is changed here the filter-method might have to be adjusted. employees have the opportunity to support inventory control via email and keep them updated.
 
