@@ -5,8 +5,7 @@
 //
 //  dependencies:	{core.var.moduleVarDir}stocklist.var.js
 //					{core.var.moduleDataDir}stocklist.data.js
-//					{core.var.moduleDir}ticketorder.js
-//                  {core.var.moduleVarDir}ticketorder.var.js
+//					{core.var.moduleDir}stocklist.ticketorder.js
 //					stocklist.xlsm or stocklist.py
 //
 //////////////////////////////////////////////////////////////
@@ -33,10 +32,10 @@ var stocklist = {
 		},
 		addToCart: async (index) => {
 			// this only makes sense in case of using the ticketorder-module
-			let ticketorderCart = await core.fn.async.memory.read('ticketorderCart');
-			await core.fn.async.memory.write('ticketorderCart', ticketorderCart + index + ",");
+			let stocklistCart = await core.fn.async.memory.read('stocklistCart');
+			await core.fn.async.memory.write('stocklistCart', stocklistCart + index + ",");
 			core.fn.async.growlNotif(core.fn.static.lang('articleAdded', 'stocklist'));
-			await ticketorder.api.getShoppingCart('update');
+			await stocklist.fn.getShoppingCart('update');
 		},
 		currentStatus: () => {
 			return;
@@ -95,16 +94,18 @@ var stocklist = {
 						let genlink;
 						const links = [...str.matchAll(/\w{3,}:\/+\S*/g)],
 							files = [...str.matchAll(/(?:^|\W)\w:\/.+/g)];
-						if (links.length) str = str.replace(/\w{3,}:\/+\S*/g, function (l) {return '<a href="' + l + '" target="_blank">' + l + '</a>'})
+						if (links.length) str = str.replace(/\w{3,}:\/+\S*/g, function (l) {
+							return '<a href="' + l + '" target="_blank">' + l + '</a>'
+						})
 						if (files.length) {
 							await files.forEach(async (value) => {
 								genlink = await core.fn.async.file.link(value[0]);
-								str = str.replace(value[0], '<a ' + genlink.replace('\\','\\\\') + '>' + value[0] + '</a>');
+								str = str.replace(value[0], '<a ' + genlink.replace('\\', '\\\\') + '>' + value[0] + '</a>');
 							});
 						}
 						return str;
 					}
-					for (let item=0; item < found.length; item++){
+					for (let item = 0; item < found.length; item++) {
 						list += core.fn.async.smartSearch.relevance.nextstep(found[item][1]);
 						tresult = '<div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand();
 						mailbody = '';
@@ -178,15 +179,17 @@ var stocklist = {
 			el('itemname').focus();
 			stocklist.temp.overallItems = await stocklist.fn.search();
 			core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'stocklist') + '<br /><br />' +
-				'<div class="items items23" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await ticketorder.fn.mkform() + '</div>');
-			if (await core.fn.async.memory.read('ticketorderCart')) core.fn.static.toggleHeight(el('stocklistOrderForm'), true);
-			ticketorder.api.getShoppingCart();
+				'<div class="items items23" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await stocklist.fn.mkform() + '</div>' +
+				'<div id="currentorders"></div>');
+			if (await core.fn.async.memory.read('stocklistCart')) core.fn.static.toggleHeight(el('stocklistOrderForm'), true);
+			stocklist.fn.getShoppingCart();
+			core.fn.async.stdout('currentorders', await stocklist.fn.currentorder.get());
+
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'stocklist.var.js');
 			await core.fn.async.loadScript(core.var.moduleDataDir + 'stocklist.data.js');
-			await core.fn.async.loadScript(core.var.moduleDir + 'ticketorder.js');
-			await core.fn.async.loadScript(core.var.moduleVarDir + 'ticketorder.var.js');
+			await core.fn.async.loadScript(core.var.moduleDir + 'stocklist.ticketorder.js');
 		}
 	}
 };

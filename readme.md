@@ -351,19 +351,9 @@ globalSearch api: returns number of matches regarding search terms.
 
 [back to top](#table-of-contents)
 
-### orders
-![assistant orders](assets/assistant_ticketorder.png)
+### ~~orders~~
 
-this form supports all employees to create decent orders and send the resulting table to central purchasing by mail. if inventory control / central purchase makes use of administration/ticketorder.xlsm to serve data about the current order status the module.data-file will be sucessfully imported making it searchable from within the module as well as from the home global search.
-
-since ordering things can be expensive for the company, orders can be registered by everyone but have to be verified by persons with respective permissions as managed in the core-drm methods. the same module serves to decrypt the generated verification code for central purchase.
-
-orders can be piled up and verified en bloc. using pure web view the storage space is restricted to 5 mb of localstorage. if your shitty company policy deletes everything on leaving the browser this is obviously disturbing the workflow.
-to be honest this system is yet to be implemented properly.
-
-dependencies are: the datalist of inventory regarding the shopping cart, optional [datalist of current order status](#ticketorderxlsm)
-
-globalSearch api: returns number of matches regarding search terms id datalist if available *or* number of current items in cart and orders awaiting approval.
+the order module has been deprecated as of 7/22 due to neglect by the workshops colleagues as well as inventory control. setting up orders was fully integrated into the stocklist. maybe one day there will be a tracking of tickets again, but the effort to reintegrate this into stocklist (ui- and ux-wise) will only be made on their demand.
 
 [back to top](#table-of-contents)
 
@@ -671,7 +661,7 @@ also this script has a function to split the data by given column values. this m
 [back to top](#table-of-contents)
 
 ## ticketorder.xlsm
-this files purpose is purely for translation. it serves as an interface between your erp-software with item orders and the assistant. basically you can insert any data dump by the erp-software and it translates it to a javascript-object-file as a feedback loop for the ticketorder-module within the assistant. it makes sense to contain the generated ticket-ids within the order process in any field that might be dumped by the output. this definitely has an effect on yout order process but might make communication more easy between inventory control and ordering persons.
+this files purpose is purely for translation. it serves as an interface between your erp-software with item orders and the assistant. basically you can insert any data dump by the erp-software and it translates it to a javascript-object-file as a feedback loop ~~for the ticketorder-module within the assistant~~ *this module has been abandoned. dataprocessing may be reimplemented on demand but this is not a promise*. it makes sense to contain the generated ticket-ids within the order process in any field that might be dumped by the output. this definitely has an effect on yout order process but might make communication more easy between inventory control and ordering persons.
 *be aware that the pattern recognizing regexes in the imported vb_library/administration_Locals_XX.vba rely absolutely on the generated data by your erp-software and have to be customized to your individual situation!*
 
 [back to top](#table-of-contents)
