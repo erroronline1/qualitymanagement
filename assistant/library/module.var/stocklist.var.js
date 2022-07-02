@@ -1,15 +1,6 @@
 if (typeof ticketorder === 'undefined') var ticketorder = {};
 
 stocklist.var = {
-	filter: function () { //filters according to stocklist.xls
-		//id:[select value, select text, filter for smartsearch]
-		return {
-			all: ['all', core.fn.static.lang('filterAll', 'stocklist'), 'true'],
-			conf: ['conf', core.fn.static.lang('filterReadymade', 'stocklist'), 'stocklist.data.content[key][6]==\'yes\''],
-			nconf: ['nconf', core.fn.static.lang('filterNoReadymade', 'stocklist'), 'stocklist.data.content[key][6]==\'no\''],
-			store: ['store', core.fn.static.lang('filterStock', 'stocklist'), 'stocklist.data.content[key][7]!=\'no\''],
-		};
-	},
 	lang: {
 		apiItemsFound: {
 			en: ' articles found',
@@ -18,6 +9,10 @@ stocklist.var = {
 		articleAdded: {
 			en: 'Added to shopping cart',
 			de: 'Zum Warenkorb hinzugefügt'
+		},
+		buttonTranslate: {
+			en: 'date ticket',
+			de: 'Ticket datieren',
 		},
 		captionCheckTicket: {
 			en: 'ticket',
@@ -51,11 +46,11 @@ stocklist.var = {
 			en: 'current order list deleted, reload module if necessary',
 			de: 'aktuelle Bestelliste gelöscht, Modul ggf. neu laden',
 		},
-		deletionReminder:{
+		deletionReminder: {
 			en: 'don\'t forget to delete the order oder shopping cart after a successfull execution!',
 			de: 'Vergiss nicht nach einer erfolgreichen Order die Bestellung oder den Warenkorb zu löschen!'
 		},
-		editOrder:{
+		editOrder: {
 			en: 'edit this order',
 			de: 'diese Bestellung bearbeiten',
 		},
@@ -78,6 +73,10 @@ stocklist.var = {
 		filterStock: {
 			en: 'in stock only',
 			de: 'nur Lagerartikel'
+		},
+		formErpInputPlaceholder: {
+			en: 'ticket, order record or item description',
+			de: 'Ticket, Belegnummer oder Artikelbeschreibung'
 		},
 		helpChangeItemCaption: {
 			en: 'change',
@@ -203,9 +202,9 @@ stocklist.var = {
 			en: 'service / warranty&sup2;',
 			de: 'Service / Garantie&sup2;'
 		},
-		successCheckCode: {
-			en: 'This order was confirmed by ',
-			de: 'Diese Bestellung wurde freigegeben von ',
+		ticketorder: {
+			en: 'trace orders',
+			de: 'Bestellungen nachverfolgen'
 		},
 		ticketTranslate: {
 			en: 'This ticket was most probably generated on\n',
@@ -291,12 +290,23 @@ stocklist.var = {
 		},
 		orderNumberWildcard: '(X)', // if this (string) is part of the item number, else false
 	},
-/*	filter: function () { //filters according to module.data/ticketorder.js
-		//id:[select value, select text, filter for smartsearch]
-		return {
-			nofilter: ['nofilter', core.fn.static.lang('filterNofilter', 'ticketorder'), 'true'],
-			closed: ['closed', core.fn.static.lang('filterClosed', 'ticketorder'), 'ticketorder.data.content[key][3]!=\'\''],
-			open: ['open', core.fn.static.lang('filterOpen', 'ticketorder'), 'ticketorder.data.content[key][3]==\'\''],
-		};
-	},
-*/};
+	filter: {
+		stocklist: function () { //filters according to stocklist.xls
+			//id:[select value, select text, filter for smartsearch]
+			return {
+				all: ['all', core.fn.static.lang('filterAll', 'stocklist'), 'true'],
+				conf: ['conf', core.fn.static.lang('filterReadymade', 'stocklist'), 'stocklist.data.content[key][6]==\'yes\''],
+				nconf: ['nconf', core.fn.static.lang('filterNoReadymade', 'stocklist'), 'stocklist.data.content[key][6]==\'no\''],
+				store: ['store', core.fn.static.lang('filterStock', 'stocklist'), 'stocklist.data.content[key][7]!=\'no\''],
+			};
+		},
+		tickets: function () { //filters according to module.data/ticketorder.js
+			//id:[select value, select text, filter for smartsearch]
+			return {
+				nofilter: ['nofilter', core.fn.static.lang('filterNofilter', 'ticketorder'), 'true'],
+				closed: ['closed', core.fn.static.lang('filterClosed', 'ticketorder'), 'ticketorder.data.content[key][3]!=\'\''],
+				open: ['open', core.fn.static.lang('filterOpen', 'ticketorder'), 'ticketorder.data.content[key][3]==\'\''],
+			};
+		},
+	}
+};

@@ -37,19 +37,54 @@ var stocklist = {
 			core.fn.async.growlNotif(core.fn.static.lang('articleAdded', 'stocklist'));
 			await stocklist.fn.getShoppingCart('update');
 		},
-		currentStatus: () => {
-			return;
+		currentStatus: async () => {
+			let cart = await core.fn.async.memory.read('stocklistCart'),
+				display,
+				orders = await core.fn.async.memory.read('stocklistAwaitingOrders'),
+				ordersrefined = 0;
+			cart = cart || '';
+			if (cart) {
+				cart = cart.split(',');
+				cart.pop();
+			}
+			if (orders) {
+				for (let i = 1; i < orders + 1; i++) {
+					if (await core.fn.async.memory.read('stocklistAwaitingOrder' + i)) ordersrefined++;
+				}
+			}
+			display = (cart.length ? core.fn.static.lang('currentCart', 'stocklist') + cart.length + '<br />' : '') +
+				(ordersrefined > 0 ? core.fn.static.lang('currentOrders', 'stocklist') + ordersrefined + '<br />' : '');
+			//add value and relevance
+			if (display) core.globalSearch.contribute('stocklist', [display, 1]);
 		}
 	},
 	fn: {
 		translate: {
-			returnselect: () => {
+			returnselect: () => { // selection options for displaying results of item queries
 				let output = {};
-				Object.keys(stocklist.var.filter()).forEach(function (key) {
-					output[key] = [stocklist.var.filter()[key][0], stocklist.var.filter()[key][1]];
+				Object.keys(stocklist.var.filter.stocklist()).forEach(function (key) {
+					output[key] = [stocklist.var.filter.stocklist()[key][0], stocklist.var.filter.stocklist()[key][1]];
 				});
 				return output;
 			},
+			returnselect2: function () { // selection options for ticket queries
+				let output = {};
+				Object.keys(stocklist.var.filter.tickets()).forEach(function (key) {
+					output[key] = [stocklist.var.filter.tickets()[key][0], stocklist.var.filter.tickets()[key][1]];
+				});
+				return output;
+			},
+			newTicket: () => {
+				return new Date().getTime().toString(36)
+			},
+			ticketDate: (ticket) => {
+				let date,
+					timestamp = parseInt(ticket, 36);
+				if (timestamp < new Date(2020, 1, 1, 0, 0, 0, 0)) timestamp = NaN;
+				date = new Date(timestamp);
+				core.fn.static.popup(isNaN(date.getDate()) ? core.fn.static.lang('ticketTranslateError', 'stocklist') : core.fn.static.lang('ticketTranslate', 'stocklist') + '<br />' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear() + ' - ' + date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes());
+				return;
+			}
 		},
 		search: async (query = '') => {
 			let selectedFilter = core.fn.static.getTab('stocklistFilter');
@@ -70,7 +105,7 @@ var stocklist = {
 			if (query) {
 				// clone data object and reset first value to undefined otherwise header terms can be displayed as results
 				ordered_stocklist_data = await stocklist.fn.order.prepare();
-				found = await core.fn.async.smartSearch.lookup(query, ordered_stocklist_data.content, stocklist.var.filter()[core.fn.static.getTab('stocklistFilter')][2]);
+				found = await core.fn.async.smartSearch.lookup(query, ordered_stocklist_data.content, stocklist.var.filter.stocklist()[core.fn.static.getTab('stocklistFilter')][2]);
 				// check if search matches item-list
 				if (found.length > 0) {
 					core.fn.async.smartSearch.relevance.init();
@@ -127,7 +162,7 @@ var stocklist = {
 				return stocklist.data.content.length - 1;
 			}
 		},
-		order: {
+		order: { // order of results, no item request - a language thing
 			options: async () => {
 				let option,
 					stocklistOrder = await core.fn.async.memory.read('stocklistOrder');
@@ -179,8 +214,10 @@ var stocklist = {
 			el('itemname').focus();
 			stocklist.temp.overallItems = await stocklist.fn.search();
 			core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'stocklist') + '<br /><br />' +
-				'<div class="items items23" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await stocklist.fn.mkform() + '</div>' +
-				'<div id="currentorders"></div>');
+				'<div class="items items23" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await stocklist.fn.orderform() + '</div>' +
+				'<div id="currentorders"></div>'+
+				'<div class="items items23" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await stocklist.fn.ticketqueryform() + '</div>'
+				);
 			if (await core.fn.async.memory.read('stocklistCart')) core.fn.static.toggleHeight(el('stocklistOrderForm'), true);
 			stocklist.fn.getShoppingCart();
 			core.fn.async.stdout('currentorders', await stocklist.fn.currentorder.get());
@@ -189,7 +226,9 @@ var stocklist = {
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'stocklist.var.js');
 			await core.fn.async.loadScript(core.var.moduleDataDir + 'stocklist.data.js');
+			await core.fn.async.loadScript(core.var.moduleDir + 'stocklist.order.js');
 			await core.fn.async.loadScript(core.var.moduleDir + 'stocklist.ticketorder.js');
+			await core.fn.async.loadScript(core.var.moduleDataDir + 'ticketorder.data.js');
 		}
 	}
 };

@@ -150,7 +150,7 @@ in general this system
 * supports free word design choices (as supposed to the aforementioned softwares styling limitations due to use of .rtf-templates)
 * has a built in interface for general availability of information - data export to the assistant
 
-it coincidentally but fortunately matches most of the [requirements for document control software noted here](https://www.smartsheet.com/document-management-system), except some recommended automations that still make sense being done manually for my companies usecase. 
+it coincidentally but fortunately matches most of the [requirements for document control software noted here](hhttps://www.smartsheet.com/document-management-system), except some recommended automations that still make sense being done manually for my companies usecase. 
 
 ![sample registration](assets/registration.gif)
 
@@ -348,12 +348,6 @@ to date inventory control and me were not able to agree upon and introduce use o
 dependencies are: the datalist of inventory and an excel file containing the original data exporting everything OR the stocklist-script [more about that here](#stocklist). the displayed data is sorted according to the excel-lists column organisation or depends on the order of the erp-dump. if something is changed here the filter-method might have to be adjusted. employees have the opportunity to support inventory control via email and keep them updated.
 
 globalSearch api: returns number of matches regarding search terms.
-
-[back to top](#table-of-contents)
-
-### ~~orders~~
-
-the order module has been deprecated as of 7/22 due to neglect by the workshops colleagues as well as inventory control. setting up orders was fully integrated into the stocklist. maybe one day there will be a tracking of tickets again, but the effort to reintegrate this into stocklist (ui- and ux-wise) will only be made on their demand.
 
 [back to top](#table-of-contents)
 
@@ -661,7 +655,7 @@ also this script has a function to split the data by given column values. this m
 [back to top](#table-of-contents)
 
 ## ticketorder.xlsm
-this files purpose is purely for translation. it serves as an interface between your erp-software with item orders and the assistant. basically you can insert any data dump by the erp-software and it translates it to a javascript-object-file as a feedback loop ~~for the ticketorder-module within the assistant~~ *this module has been abandoned. dataprocessing may be reimplemented on demand but this is not a promise*. it makes sense to contain the generated ticket-ids within the order process in any field that might be dumped by the output. this definitely has an effect on yout order process but might make communication more easy between inventory control and ordering persons.
+this files purpose is purely for translation. it serves as an interface between your erp-software with item orders and the assistant. basically you can insert any data dump by the erp-software and it translates it to a javascript-object-file as a feedback loop for the stocklist-module within the assistant. it makes sense to contain the generated ticket-ids within the order process in any field that might be dumped by the output. this definitely has an effect on yout order process but might make communication more easy between inventory control and ordering persons.
 *be aware that the pattern recognizing regexes in the imported vb_library/administration_Locals_XX.vba rely absolutely on the generated data by your erp-software and have to be customized to your individual situation!*
 
 [back to top](#table-of-contents)
