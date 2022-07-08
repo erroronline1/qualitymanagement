@@ -77,9 +77,9 @@ Public Function setupTicketSystem() As Collection
     setupTicketSystem.Add "A", "matrix.startColumn" 'customize content column, starting point for matrix
     setupTicketSystem.Add 1, "matrix.headerRow" 'customize header row, starting point for matrix
     setupTicketSystem.Add Null, "matrix.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
-    setupTicketSystem.Add "D:\Quality Management\assistant\library\module.data\ticketorder.data.js", "export.defaultFile" 'default path to export file
+    setupTicketSystem.Add "D:\Quality Management\assistant\library\module.data\stocklist.data.ticketorder.js", "export.defaultFile" 'default path to export file
     setupTicketSystem.Add "Export List to the assistant?", "export.prompt" 'save dialogue header, customize to your language
-    setupTicketSystem.Add array("ticketorder.data={content:[", "]};"), "export.object" 'name and wrapper of json-object
+    setupTicketSystem.Add array("stocklist.data.ticketorder={modified:""" & Format (Date(), "YYYY-MM-DD") & """, content:[", "]};"), "export.object" 'name and wrapper of json-object
     setupTicketSystem.Add false, "export.dontSkipEmpty"'whether to skip empty cells or not depending on structure of assistants processing algorithm
     setupTicketSystem.Add "1", "m.contentcolumn" 'customize query column (numbered), output only if content is set
     setupTicketSystem.Add "Data successfully exported. The table has been cleared for next use.", "export.success" 'success message
@@ -241,7 +241,8 @@ Public Function setupDRM() As Collection
     Set setupDRM = New Collection
     setupDRM.Add Item:="DRM", key:="drm.sheet" 'select sheet to process content
     setupDRM.Add "A", "drm.nameColumn" 'customize column, taking displayed name for bundle title
-    setupDRM.Add "B", "drm.hashColumn" 'customize column, starting point for matrix for bundle definitions
+    setupDRM.Add "B", "drm.mailColumn" 'customize column, taking displayed value
+    setupDRM.Add "C", "drm.hashColumn" 'customize column, starting point for matrix for bundle definitions
     setupDRM.Add "2", "drm.headerRow" 'intentionally string, customize NUMBER of headerrow as starting point for exporting the code free excel file
     setupDRM.Add Null, "drm.maxColumns" 'customize last column, ending point for matrix, null value considers all columns regarding filled header columns
     setupDRM.Add Null, "drm.maxRows" 'customize last row, ending point for matrix, null value considers all rows output columns
