@@ -4,7 +4,8 @@
 //  module for checking if an item exists in stock
 //
 //  dependencies:	{core.var.moduleVarDir}stocklist.var.js
-//					{core.var.moduleDataDir}stocklist.data.js
+//					{core.var.moduleDataDir}stocklist.data.stocklist.js
+//					{core.var.moduleDataDir}stocklist.data.ticketorder.js
 //					{core.var.moduleDir}stocklist.ticketorder.js
 //					stocklist.xlsm or stocklist.py
 //
@@ -31,7 +32,6 @@ var stocklist = {
 			}
 		},
 		addToCart: async (index) => {
-			// this only makes sense in case of using the ticketorder-module
 			let stocklistCart = await core.fn.async.memory.read('stocklistCart');
 			await core.fn.async.memory.write('stocklistCart', stocklistCart + index + ",");
 			core.fn.async.growlNotif(core.fn.static.lang('articleAdded', 'stocklist'));
@@ -144,10 +144,10 @@ var stocklist = {
 						list += core.fn.async.smartSearch.relevance.nextstep(found[item][1]);
 						tresult = '<div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand();
 						mailbody = '';
-						for (let h = 1; h < stocklist.data.content[0].length + 1; h++) { // start from 1 because of assigned id on position 0, add one to length because of offset shift
+						for (let h = 1; h < stocklist.data.stocklist.content[0].length + 1; h++) { // start from 1 because of assigned id on position 0, add one to length because of offset shift
 							if (ordered_stocklist_data.content[found[item][0]][h] != '') {
-								tresult += '<p><span class="highlight">' + stocklist.data.content[0][h - 1] + ':</span> ' + await mklink(ordered_stocklist_data.content[found[item][0]][h]) + '</p>';
-								mailbody += stocklist.data.content[0][h - 1] + ': ' + ordered_stocklist_data.content[found[item][0]][h] + "<br />";
+								tresult += '<p><span class="highlight">' + stocklist.data.stocklist.content[0][h - 1] + ':</span> ' + await mklink(ordered_stocklist_data.content[found[item][0]][h]) + '</p>';
+								mailbody += stocklist.data.stocklist.content[0][h - 1] + ': ' + ordered_stocklist_data.content[found[item][0]][h] + "<br />";
 							}
 						}
 						list += tresult +
@@ -159,7 +159,7 @@ var stocklist = {
 				} else list = core.fn.static.lang('errorNothingFound', 'stocklist', query);
 				core.fn.async.stdout('output', list);
 			} else {
-				return stocklist.data.content.length - 1;
+				return stocklist.data.stocklist.content.length - 1;
 			}
 		},
 		order: { // order of results, no item request - a language thing
@@ -168,14 +168,14 @@ var stocklist = {
 					stocklistOrder = await core.fn.async.memory.read('stocklistOrder');
 				try {
 					if (el('stocklistorderoption1') == null)
-						Object.keys(stocklist.data.content[0]).forEach(function (key) {
+						Object.keys(stocklist.data.stocklist.content[0]).forEach(function (key) {
 							keynum = parseInt(key) + 1;
 							option = document.createElement('option');
 							option.setAttribute('value', keynum);
 							option.setAttribute('id', 'stocklistorderoption' + keynum);
 							if (stocklistOrder == keynum)
 								option.setAttribute('selected', 'selected');
-							var optiontext = document.createTextNode(core.fn.static.lang('orderBy', 'stocklist') + stocklist.data.content[0][key]);
+							var optiontext = document.createTextNode(core.fn.static.lang('orderBy', 'stocklist') + stocklist.data.stocklist.content[0][key]);
 							option.appendChild(optiontext);
 							el('stocklistOrder').appendChild(option);
 						});
@@ -185,7 +185,7 @@ var stocklist = {
 			},
 			prepare: async (noOrder) => {
 				// clone data object and reset first value to undefined otherwise header terms can be displayed as results
-				let data_without_header = JSON.parse(JSON.stringify(stocklist.data)), // copy object to manipulate
+				let data_without_header = JSON.parse(JSON.stringify(stocklist.data.stocklist)), // copy object to manipulate
 					order = await core.fn.async.memory.read('stocklistOrder');
 				order = order || 0;
 				data_without_header.content[0] = new Array(data_without_header.content[0].length + 1); // "unset" header item
@@ -215,9 +215,9 @@ var stocklist = {
 			stocklist.temp.overallItems = await stocklist.fn.search();
 			core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'stocklist') + '<br /><br />' +
 				'<div class="items items23" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await stocklist.fn.orderform() + '</div>' +
-				'<div id="currentorders"></div>'+
+				'<div id="currentorders"></div>' +
 				'<div class="items items23" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await stocklist.fn.ticketqueryform() + '</div>'
-				);
+			);
 			if (await core.fn.async.memory.read('stocklistCart')) core.fn.static.toggleHeight(el('stocklistOrderForm'), true);
 			stocklist.fn.getShoppingCart();
 			core.fn.async.stdout('currentorders', await stocklist.fn.currentorder.get());
@@ -225,10 +225,10 @@ var stocklist = {
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'stocklist.var.js');
-			await core.fn.async.loadScript(core.var.moduleDataDir + 'stocklist.data.js');
+			await core.fn.async.loadScript(core.var.moduleDataDir + 'stocklist.data.stocklist.js');
 			await core.fn.async.loadScript(core.var.moduleDir + 'stocklist.order.js');
 			await core.fn.async.loadScript(core.var.moduleDir + 'stocklist.ticketorder.js');
-			await core.fn.async.loadScript(core.var.moduleDataDir + 'ticketorder.data.js');
+			await core.fn.async.loadScript(core.var.moduleDataDir + 'stocklist.data.ticketorder.js');
 		}
 	}
 };

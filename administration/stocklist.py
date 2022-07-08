@@ -30,8 +30,8 @@ DEFAULTJSON={
 				"ORDERSTOP": "true"
 			},
 			"____destination": "choose destination file/path and add wrapping strings to convert a json-dump into a javascript object. modified DATE-string will be replaced with generation date.",
-			"destination": "D:\\Quality Management\\assistant\\library\\module.data\\stocklist.data.js",
-			"wrapstart" :"//this file was automatically created by <stocklist.exe>\nstocklist.data={modified: \"DATE\", content:",
+			"destination": "D:\\Quality Management\\assistant\\library\\module.data\\stocklist.data.stocklist.js",
+			"wrapstart" :"//this file was automatically created by <stocklist.exe>\nstocklist.data.stocklist={modified: \"DATE\", content:",
 			"wrapend": "};",
 			"____unionbyoutputcolumn": "occasionally there are multiple entries in the source file with the same identifier that can be unified",
 			"unionbyoutputcolumn": 1,

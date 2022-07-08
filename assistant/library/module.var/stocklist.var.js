@@ -27,8 +27,8 @@ stocklist.var = {
 			de: 'Artikel im Einkaufswagen: '
 		},
 		currentOrders: {
-			en: 'orders for approval: ',
-			de: 'Bestellungen zur Freigabe: '
+			en: 'draft orders: ',
+			de: 'Bestellungen zur Bearbeitung: '
 		},
 		deleteCart: {
 			en: 'delete shopping cart',
@@ -206,6 +206,14 @@ stocklist.var = {
 			en: 'trace orders',
 			de: 'Bestellungen nachverfolgen'
 		},
+		ticketorderModified: {
+			en: function () {
+				return (stocklist.data.stocklist.modified != undefined ? '<br /><br />(as of ' + stocklist.data.stocklist.modified + ')' : '');
+			},
+			de: function () {
+				return (stocklist.data.stocklist.modified != undefined ? '<br /><br />(Stand ' + stocklist.data.stocklist.modified + ')' : '');
+			}
+		},
 		ticketTranslate: {
 			en: 'This ticket was most probably generated on\n',
 			de: 'Dieses Ticket wurde wahrscheinlich generiert am\n',
@@ -221,12 +229,12 @@ stocklist.var = {
 		useCaseDescription: {
 			en: function () {
 				return (stocklist.temp.overallItems != undefined ? 'There are currently ' + stocklist.temp.overallItems + ' items listed' +
-						(stocklist.data.modified != undefined ? ' (as of ' + stocklist.data.modified + ')' : '') + '. ' : '') +
+						(stocklist.data.stocklist.modified != undefined ? ' (as of ' + stocklist.data.stocklist.modified + ')' : '') + '. ' : '') +
 					'These are the products that have permission to be ordered and used in production. Search for default items by &quot;manufacturer&quot and mess around with search terms.';
 			},
 			de: function () {
 				return (stocklist.temp.overallItems != undefined ? 'Aktuell hat die Artikelliste ' + stocklist.temp.overallItems + ' Einträge' +
-						(stocklist.data.modified != undefined ? ' (Stand ' + stocklist.data.modified + ')' : '') + '. ' : '') +
+						(stocklist.data.stocklist.modified != undefined ? ' (Stand ' + stocklist.data.stocklist.modified + ')' : '') + '. ' : '') +
 					'Artikel mit Bestellstop sind (vorbehaltlich der Aktualität der Liste) bereits herausgefiltert. ' +
 					'<br /><br />' +
 					'<ul>' +
@@ -276,7 +284,7 @@ stocklist.var = {
 		'Workshop B',
 	],
 	apiTranslate: {
-		fieldCorrelation: { // index of order fields (see above) in correlation to fields in stocklist.data.js
+		fieldCorrelation: { // index of order fields (see above) in correlation to fields in stocklist.data.stocklist.js
 			//0: NaN; would be quantity in this case which is not correlated to stocklist-data
 			1: 5,
 			2: 0,
@@ -295,17 +303,17 @@ stocklist.var = {
 			//id:[select value, select text, filter for smartsearch]
 			return {
 				all: ['all', core.fn.static.lang('filterAll', 'stocklist'), 'true'],
-				conf: ['conf', core.fn.static.lang('filterReadymade', 'stocklist'), 'stocklist.data.content[key][6]==\'yes\''],
-				nconf: ['nconf', core.fn.static.lang('filterNoReadymade', 'stocklist'), 'stocklist.data.content[key][6]==\'no\''],
-				store: ['store', core.fn.static.lang('filterStock', 'stocklist'), 'stocklist.data.content[key][7]!=\'no\''],
+				conf: ['conf', core.fn.static.lang('filterReadymade', 'stocklist'), 'stocklist.data.stocklist.content[key][6]==\'yes\''],
+				nconf: ['nconf', core.fn.static.lang('filterNoReadymade', 'stocklist'), 'stocklist.data.stocklist.content[key][6]==\'no\''],
+				store: ['store', core.fn.static.lang('filterStock', 'stocklist'), 'stocklist.data.stocklist.content[key][7]!=\'no\''],
 			};
 		},
-		tickets: function () { //filters according to module.data/ticketorder.js
+		tickets: function () { //filters according to module.data/stocklist.data.ticketorder.js
 			//id:[select value, select text, filter for smartsearch]
 			return {
-				nofilter: ['nofilter', core.fn.static.lang('filterNofilter', 'ticketorder'), 'true'],
-				closed: ['closed', core.fn.static.lang('filterClosed', 'ticketorder'), 'ticketorder.data.content[key][3]!=\'\''],
-				open: ['open', core.fn.static.lang('filterOpen', 'ticketorder'), 'ticketorder.data.content[key][3]==\'\''],
+				nofilter: ['nofilter', core.fn.static.lang('filterNofilter', 'stocklist'), 'true'],
+				closed: ['closed', core.fn.static.lang('filterClosed', 'stocklist'), 'stocklist.data.ticketorder.content[key][3]!=\'\''],
+				open: ['open', core.fn.static.lang('filterOpen', 'stocklist'), 'stocklist.data.ticketorder.content[key][3]==\'\''],
 			};
 		},
 	}
