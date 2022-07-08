@@ -40,6 +40,7 @@ Public Sub drmExport(var As Variant)
         Dim headerrow As Range
         Dim lrow As Long
         Dim nameColumn As Integer: nameColumn = Essentials.convertColumn("2number", var("drm.nameColumn"))
+        Dim mailColumn As Integer: mailColumn = Essentials.convertColumn("2number", var("drm.mailColumn"))
         Dim hashColumn As Integer: hashColumn = Essentials.convertColumn("2number", var("drm.hashColumn"))
         Dim intermediate As String
         
@@ -52,10 +53,10 @@ Public Sub drmExport(var As Variant)
         'loop through list and add permission-sets to intermediate result
         For lrow = LBound(mdrm, 1) To UBound(mdrm, 1)
             If mdrm(lrow, nameColumn) <> "" Then
-                If Trim(mdrm(lrow, hashColumn)) = "" Then
+                If Trim(mdrm(lrow, mailColumn)) = "" And Trim(mdrm(lrow, hashColumn)) = "" Then
                     intermediate = intermediate & vbTab & "}," & vbNewLine & vbTab & "'" & mdrm(lrow, nameColumn) & "': {" & vbNewLine
                 Else
-                    intermediate = intermediate & vbTab & vbTab & "'" & mdrm(lrow, nameColumn) & "': '" & mdrm(lrow, hashColumn) & "'," & vbNewLine
+                    intermediate = intermediate & vbTab & vbTab & "'" & mdrm(lrow, nameColumn) & "': ['" & mdrm(lrow, mailColumn) & "', '" & mdrm(lrow, hashColumn) & "']," & vbNewLine
                 End If
             End If
         Next lrow
