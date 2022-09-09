@@ -423,7 +423,7 @@ globalSearch api: returns entries that match search terms.
 
 ### qr code generator
 ![assistant qr code](assets/assistant_qr.png)
-this module is able to generate qr codes for yet to be named possibilities. currently appointments can be generated to be imported into the mobile calendar by the click of the camera. other uses are expected to follow but can be customized within the web code. this module is available within the [python environment](#python-wrapper) only where the python code creates the images and opens them with the default image application. images are stored within the user directory right right beside the assistants settings. although the files can pile up during use they are cleaned up on every application restart. see (comments)[https://github.com/erroronline1/qualitymanagement/blob/master/assistant/pymodules/qr.py] why i considered this the best solution for the moment.
+this module is able to generate qr codes for yet to be named possibilities. currently appointments can be generated to be imported into the mobile calendar by the click of the camera. other uses are expected to follow but can be customized within the web code. this module is available within the [python environment](#python-wrapper) only where the python code creates the images and opens them with the default image application. images are stored within the user directory right right beside the assistants settings. although the files can pile up during use they are cleaned up on every application restart. see [comments](https://github.com/erroronline1/qualitymanagement/blob/master/assistant/pymodules/qr.py) why i considered this the best solution for the moment.
 
 dependencies are: datalist of possible preprocessed outputs.
 
