@@ -354,6 +354,8 @@ elements
 input[type='text'],
 input[type='password'],
 input[type='date'],
+input[type='time'],
+input[type='number'],
 select,
 span.search {
 	float: left;
@@ -521,7 +523,9 @@ input,
 
 input[type='text'],
 input[type='date'],
+input[type='time'],
 input[type='password'],
+input[type='number'],
 select,
 select option,
 select optgroup,
@@ -658,6 +662,7 @@ aside>textarea {
 #temp,
 #output {
 	background-color: var(--lighter);
+
 }
 
 .items {
