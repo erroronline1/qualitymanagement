@@ -150,7 +150,7 @@ in general this system
 * supports free word design choices (as supposed to the aforementioned softwares styling limitations due to use of .rtf-templates)
 * has a built in interface for general availability of information - data export to the assistant
 
-it coincidentally but fortunately matches most of the [requirements for document control software noted here](hhttps://www.smartsheet.com/document-management-system), except some recommended automations that still make sense being done manually for my companies usecase. 
+it coincidentally but fortunately matches most of the [requirements for document control software noted here](https://www.smartsheet.com/document-management-system), except some recommended automations that still make sense being done manually for my companies usecase. 
 
 ![sample registration](assets/registration.gif)
 
@@ -421,6 +421,16 @@ globalSearch api: returns entries that match search terms.
 
 [back to top](#table-of-contents)
 
+### qr code generator
+![assistant qr code](assets/assistant_qr.png)
+this module is able to generate qr codes for yet to be named possibilities. currently appointments can be generated to be imported into the mobile calendar by the click of the camera. other uses are expected to follow but can be customized within the web code. this module is available within the [python environment](#python-wrapper) only where the python code creates the images and opens them with the default image application. images are stored within the user directory right right beside the assistants settings. although the files can pile up during use they are cleaned up on every application restart. see (comments)[https://github.com/erroronline1/qualitymanagement/blob/master/assistant/pymodules/qr.py] why i considered this the best solution for the moment.
+
+dependencies are: datalist of possible preprocessed outputs.
+
+globalSearch api: returns submodules where titles match the search terms.
+
+[back to top](#table-of-contents)
+
 ## structure
 please adhere to the modules structure. each module consists of an object with properties and methods.
 
@@ -614,14 +624,16 @@ core.eel.js checks for the availability of the wrapper and overrides applicable 
 not yet implemented, but if one day there appear random python specific modules, these could be appended to the core.var.modules-list from core.eel.js and will not mess up plain browser usage.
 
 ![enabled eel](assets/assistant_eel.png)
+
 this indicates whether the assistant was lauched using the wrapper
 
 ![plain web view](assets/assistant_web.png)
+
 this indicates whether the assistant is launched in plain web wiew
 
 modules have to handle conditional behaviour on their own, respective python implementations require adding to and recompiling assistant.py.
 
-because of the architecture of the framework the core.html file is placed in its own folder and has a cumbersome import-procedure for scripts and styles. on the other hand everything else of the assistant remains accessible and changeable without the need of recompiling the wrapper. this is only necessary on changes on the core.html file itself.
+because of the architecture of the framework the core.html file is placed in its own folder and has a cumbersome import-procedure for scripts and styles. on the other hand everything else of the assistant remains accessible and changeable without the need of recompiling the wrapper. this is only necessary on changes on the core.html file itself or on adding python specific modules.
 
 [back to top](#table-of-contents)
 

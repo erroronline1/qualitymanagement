@@ -12,7 +12,7 @@ print('''
  ___ ___ ___|_|___| |_ ___ ___| |_   _ _ _ ___ ___ ___ ___ ___ ___
 | .'|_ -|_ -| |_ -|  _| .'|   |  _| | | | |  _| .'| . | . | -_|  _|
 |__,|___|___|_|___|_| |__,|_|_|_|   |_____|_| |__,|  _|  _|___|_|
-                                                  |_| |_|          built 20211012
+                                                  |_| |_|          built 20220910
 
 by error on line 1 (erroronline.one)
 
@@ -187,6 +187,20 @@ def file_readdir(path):
 		for filename in filenames:
 			files.append([os.path.join(dirpath, filename).replace('\\', '/'),'',''])
 	return files
+
+#               _     _
+#   _____ ___ _| |_ _| |___ ___
+#  |     | . | . | | | | -_|_ -|
+#  |_|_|_|___|___|___|_|___|___|
+#  eel.exposure does not seem to happen just from imported modules.
+#  therefore exposed functions are placed here, since the main application has to be updated with importing anyway.
+#  specific algorithms may take place in the distinctive module file
+
+import pymodules.qr as qr
+@eel.expose
+def createqrandopenwith(data, openwith, usecase):
+	return qr.create(data, openwith, usecase, file_handler)
+	#passing file_handler to reuse but to avoid recursive import
 
 #       _           _
 #   ___| |_ ___ ___| |_

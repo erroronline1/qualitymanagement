@@ -55,6 +55,16 @@ core.eel = () => {
 					}
 				}
 			};
+
+			core.var.modules.pyreq_qr = {
+				icon: core.fn.static.insert.icon('qr'),
+				display: {
+					en: "QRCode generator",
+					de: "QRCode Generator",
+				},
+				enabledByDefault: true,
+			};
+
 		} catch {
 			/* because if not started from eel, this resource is loaded anyway and eel-object stops rendering with undefined-error */
 		}
