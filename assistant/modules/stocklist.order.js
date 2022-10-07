@@ -174,7 +174,7 @@ stocklist.fn.currentorder = {
 		['notcommissioned', 'commissioned', 'retour', 'service'].forEach(function (field) {
 			if (el(field).checked) orderobj.type = core.fn.static.lang(field, 'stocklist');
 		});
-		['orderRcptName', 'orderRcptDob', 'orderRcptFlag', 'orderer', 'ordererDept', 'ordererCostUnit', 'ordererContact', 'orderNeededBy', 'orderNote'].forEach(function (field) {
+		['orderRcptName', 'orderRcptDob', 'orderRcptFlag', 'orderer', 'ordererDept', 'ordererCostUnit', 'ordererContact', 'orderNeededBy', 'orderNote', 'orderReferralTicket'].forEach(function (field) {
 			if (el(field).value) orderobj[field] = el(field).value;
 		});
 		orderobj.items = [];
