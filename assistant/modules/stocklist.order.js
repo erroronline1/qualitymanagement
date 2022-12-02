@@ -225,6 +225,16 @@ stocklist.fn.currentorder = {
 		function displayOrder(orderobj) {
 			let output = '';
 			orderobj = JSON.parse(orderobj);
+
+			orderobj.items.sort((a, b) => {
+				index = stocklist.var.orderFieldToSortBy;
+				if (a[index] === b[index]) {
+					return 0;
+				} else {
+					return (a[index] < b[index]) ? 1 : -1;
+				}
+			});
+
 			output = orderobj.subject + '<br /><br />';
 			output += '<i>' + orderobj.type + '</i><br /><br />'
 			output += core.fn.static.lang('captionCheckTicket', 'stocklist') + ': ' + stocklist.fn.translate.newTicket() + '<br />';
@@ -239,7 +249,12 @@ stocklist.fn.currentorder = {
 				output += '>' + field[0] + '</th>';
 			});
 			output += '</tr>';
+			sortHeader = '';
 			for (let i = 0; i < orderobj.items.length; i++) {
+				if (sortHeader != orderobj.items[i][stocklist.var.orderFieldToSortBy]) {
+					output += '<tr><td colspan="' + stocklist.var.orderFields[core.var.selectedLanguage].length + '">-------' + orderobj.items[i][stocklist.var.orderFieldToSortBy] + '-------</td></tr>';
+					sortHeader = orderobj.items[i][stocklist.var.orderFieldToSortBy];
+				}
 				output += '<tr>';
 				let pos = 0,
 					value;

@@ -270,6 +270,7 @@ stocklist.var = {
 		en: ['Distributor', ],
 		de: ['Lieferant', ],
 	},
+	orderFieldToSortBy: 3, // Distributor
 	orderFormFile: 'D:/Quality Management/published/Sample Form.pdf',
 	orderDept: [
 		'Common',
