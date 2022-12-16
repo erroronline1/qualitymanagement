@@ -1,7 +1,7 @@
 @echo off
 if exist "D:\Quality Management\assistant\" call assistant --webfolder "D:/Quality Management/assistant/" --browser edge
-if exist "C:\Users\dev\aqms\assistant\" call assistant --webfolder "C:/Users/dev/aqms/assistant/" --browser edge
-rem py assistant.py --webfolder "C:/Users/dev/aqms/assistant/"
+if exist "C:\Users\dev\documents\code\aqms\assistant\" call assistant --webfolder "C:/Users/dev/documents/code/aqms/assistant/" --browser edge
+rem py assistant.py --webfolder "C:/Users/dev/documents/code/aqms/assistant/" --browser edge
 
 if %errorlevel% GTR 0 (
     echo.
