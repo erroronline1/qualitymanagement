@@ -113,6 +113,7 @@ var correspondence = {
 			core.history.write('correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + query + '\')');
 		},
 		init: async (query = '') => {
+			core.var.currentScope = 'correspondence';
 			let preset,
 				selection = {};
 			//prepare selection
@@ -128,6 +129,7 @@ var correspondence = {
 
 			correspondence.var.currentModule = query ? preset[0] : correspondence.var.selectedModule();
 			correspondence.fn.start(query ? preset[1] : '');
+			
 		},
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'correspondence.var.js');

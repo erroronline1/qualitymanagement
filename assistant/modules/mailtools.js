@@ -108,6 +108,7 @@ var mailtools = {
 				mailtools.data.notavailableResponse['en'](dates));
 		},
 		init: async (query = '') => {
+			core.var.currentScope = 'mailtools';
 			let options = {};
 			Object.keys(mailtools.var.submodules).forEach(function (key) {
 				options[key] = [key, mailtools.var.submodules[key][core.var.selectedLanguage]];
