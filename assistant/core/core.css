@@ -562,6 +562,10 @@ input[type='submit'],
 	color: var(--highlight);
 }
 
+.grayedout {
+	opacity: .6
+}
+
 a:link,
 a:visited,
 a[onclick] {

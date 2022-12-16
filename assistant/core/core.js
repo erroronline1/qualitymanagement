@@ -329,6 +329,9 @@ core.fn = {
 			} else el('growlNotif').classList.remove('growlNotifshow');
 		},
 		file: {
+			exists: (file) => {
+				return false;
+			},
 			link: async (file, onclick = '') => {
 				return 'href="' + file.replace(/\//g, '\\') + '" target="_blank"' + (onclick ? ' onclick="' + onclick + '"' : '');
 			},
@@ -658,7 +661,8 @@ core.init = {
 			'</form>');
 		el('globalsearch').focus();
 		for (let key of Object.keys(core.var.apps)) {
-			appList += '<a ' + await core.fn.async.file.link(core.var.apps[key].path) + '>' + core.fn.static.insert.icon(core.var.apps[key].icon) + core.var.apps[key].display[core.var.selectedLanguage] + '</a><br />';
+			if (await core.fn.async.file.exists(core.var.apps[key].path)) appList += '<a ' + await core.fn.async.file.link(core.var.apps[key].path) + '>' + core.fn.static.insert.icon(core.var.apps[key].icon) + core.var.apps[key].display[core.var.selectedLanguage] + '</a><br />';
+			else appList += '<i class="grayedout">' + core.var.apps[key].display[core.var.selectedLanguage] + core.fn.static.lang('errorFileAccess') + ' </i><br />';
 		}
 		appList += '</p>';
 		Object.keys(core.var.eMailAddress).forEach((key) => {

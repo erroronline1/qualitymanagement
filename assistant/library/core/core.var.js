@@ -181,28 +181,27 @@ core.var = {
 		}
 	},
 
-	apps: [
-		{
+	apps: [{
 			path: "D:/Quality Management/apps/STLView.exe",
 			display: {
-				en: "open stl viewer app",
-				de: "STLViewer öffnen"
+				en: "STLViewer",
+				de: "STLViewer"
 			},
 			icon: ['0 -512 2048 2048', '1,-1', 'M882 1434l802 -1434h-1604zM1475 124l-593 1068l-593 -1068h1186z'] //key[viewbox, transform scale, d-path]
 		},
 		{
 			path: "D:/Quality Management/apps/FreeCADPortable/FreeCADPortable.exe",
 			display: {
-				en: "open FreeCAD Portable",
-				de: "FreeCAD Portable öffnen"
+				en: "FreeCAD Portable",
+				de: "FreeCAD Portable"
 			},
 			icon: ['0 -512 2048 2048', '1, -1', 'M401 1726q29 0 54.5 -11.5t45.5 -31.5l1869 -1869q42 -42 42 -100q0 -30 -11.5 -56t-31 -46t-45.5 -31.5t-56 -11.5h-2012v2012q0 30 11.5 56.5t31 46t46 31t56.5 11.5zM400 -287h1868l-190 190l-46 -47l-51 51l46 47l-93 93l-118 -119l-51 51l119 118l-93 93l-47 -46 l-51 51l47 46l-93 93l-118 -118l-51 51l118 118l-93 93l-46 -47l-51 51l46 47l-93 93l-118 -119l-51 51l119 118l-93 93l-47 -46l-51 51l47 46l-93 93l-118 -118l-51 51l118 118l-93 93l-46 -47l-51 51l46 47l-93 93l-118 -119l-51 51l119 118l-93 93l-47 -46l-51 51l47 46 l-190 190v-1868zM687 0v863l863 -863h-863z'] //key[viewbox, transform scale, d-path]
 		},
 		{
 			path: "D:/Quality Management/apps/notepad++/notepad++.exe",
 			display: {
-				en: "open Notepad++",
-				de: "Notepad++ öffnen"
+				en: "Notepad++",
+				de: "Notepad++"
 			},
 			icon: ['0 0 2048 2048', '1, 1', 'M2048 335q0 66-25 128t-73 110L633 1890 0 2048l158-633L1475 98q48-48 110-73t128-25q69 0 130 26.5t106.5 72 72 106.5 26.5 130zM326 1428q106 35 182.5 111.5T620 1722L1701 640l-293-293zm-150 444l329-82q-10-46-32.5-87t-54.5-73-73-54.5-87-32.5zM1792 549q25-25 48-47t41-46.5 28.5-53T1920 336q0-43-16.5-80.5t-45-66-66-45T1712 128q-38 0-66.5 10.5t-53 28.5-46.5 41-47 48z'] //key[viewbox, transform scale, d-path]
 		}
@@ -325,6 +324,10 @@ core.var = {
 		drmConfirmationSubmit: {
 			en: 'Approval',
 			de: 'Freigabe'
+		},
+		errorFileAccess: {
+			en: ' is not available',
+			de: ' ist nicht erreichbar'
 		},
 		errorLoadingModules: {
 			en: 'Error loading modules...',

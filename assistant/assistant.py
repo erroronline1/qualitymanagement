@@ -174,6 +174,10 @@ def core_memory_write(name, value):
 #                                        |___|
 
 @eel.expose
+def file_exists(path):
+	return os.path.exists(path)
+
+@eel.expose
 def file_handler(call):
 	escaped=[]
 	for arg in call:

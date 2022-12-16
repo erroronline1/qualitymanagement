@@ -35,6 +35,9 @@ core.eel = () => {
 				}
 			};
 			core.fn.async.file = {
+				exists: async function (file) {
+					return eel.file_exists(file)();
+				},
 				type: function (file) {
 					let environment = core.var.environment[core.var.selectedEnv],
 						extension = file.substring(file.lastIndexOf('.') + 1);
