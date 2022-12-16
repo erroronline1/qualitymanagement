@@ -85,7 +85,8 @@ core.fn = {
 			icon: (icon, addclass, id = '', attributes = '') => { //easy icon handler for inline svg
 				let rtrn,
 					title;
-				//key[viewbox, transform scale, d-path]
+				// key[viewbox, transform scale, d-path]
+				// will be used if icon variables is no passed array on its own
 				const asset = {
 					advancedsetting: ['0 0 2048 2048', '1,-1', 'M128 1152q52 0 99 20.5t81.5 55t55 81t20.5 99.5q0 71 -3 142t4.5 138.5t32 130.5t78.5 117t125 83t147 29v-128q-53 0 -99.5 -20.5t-81 -55t-55 -81.5t-20.5 -99q0 -56 2 -110.5t0.5 -107t-9.5 -102t-27 -94.5t-52 -86t-85 -76q52 -35 85 -76t52 -86t27 -94.5t9.5 -102t-0.5 -107t-2 -110.5q0 -53 20.5 -99.5t55 -81t81 -55t99.5 -20.5v-128q-76 0 -147 29t-125 83t-78.5 117t-32 130.5t-4.5 138.5t3 142q0 52 -20.5 99t-55 81.5t-81.5 55t-99 20.5v128zM1280 2048q76 0 147 -29t125 -83t78.5 -117t32 -130.5t4.5 -138.5t-3 -142q0 -53 20.5 -99.5t55 -81t81 -55t99.5 -20.5v-128q-53 0 -99.5 -20.5t-81 -55t-55 -81.5t-20.5 -99q0 -71 3 -142t-4.5 -138.5t-32 -130.5t-78.5 -117t-125 -83t-147 -29v128q52 0 99 20.5t81.5 55t55 81t20.5 99.5q0 56 -2 110.5t-0.5 107t9.5 102t27 94.5t52 86t85 76q-52 35 -85 76t-52 86t-27 94.5t-9.5 102t0.5 107t2 110.5q0 52 -20.5 99t-55 81.5t-81.5 55t-99 20.5v128z'],
 					argument: ['0 0 2048 2048', '1,-1', 'M958 720q101 -40 184 -106.5t142 -152.5t91.5 -187t32.5 -210v-64h-128v64q0 119 -45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224v-64h-128v64q0 109 32.5 210t91.5 187t142 152.5t184 106.5q-45 31 -81 72t-61 88.5 t-38.5 100t-13.5 107.5q0 93 35.5 174.5t96 142t142 96t174.5 35.5t174.5 -35.5t142 -96t96 -142t35.5 -174.5q0 -55 -13.5 -107.5t-38.5 -100t-61 -88.5t-81 -72zM704 768q66 0 124 25t101.5 68.5t69 102t25.5 124.5t-25.5 124t-69 101.5t-101.5 69t-124 25.5t-124.5 -25.5 t-102 -69t-68.5 -101.5t-25 -124t25 -124.5t68.5 -102t102 -68.5t124.5 -25zM2048 2048v-1024h-256l-384 -384v384h-128v128h256v-203l203 203h181v768h-1280v-230q-32 -4 -64.5 -10.5t-63.5 -17.5v386h1536z'],
@@ -136,7 +137,8 @@ core.fn = {
 				};
 				addclass = addclass || '';
 				try {
-					rtrn = '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + asset[icon][0] + '\" ' + (asset[icon][1] ? 'style=\"transform: scale(' + asset[icon][1] + ');\"' : '') + ' class=\"icon ' + addclass + '\" ' + (id ? ' id=\"' + id + '\" ' : '') + attributes + '><path d=\"' + asset[icon][2] + '\"></path></svg>';
+					if (typeof icon === 'string') rtrn = '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + asset[icon][0] + '\" ' + (asset[icon][1] ? 'style=\"transform: scale(' + asset[icon][1] + ');\"' : '') + ' class=\"icon ' + addclass + '\" ' + (id ? ' id=\"' + id + '\" ' : '') + attributes + '><path d=\"' + asset[icon][2] + '\"></path></svg>';
+					else rtrn = '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + icon[0] + '\" ' + (icon[1] ? 'style=\"transform: scale(' + icon[1] + ');\"' : '') + ' class=\"icon ' + addclass + '\" ' + (id ? ' id=\"' + id + '\" ' : '') + attributes + '><path d=\"' + icon[2] + '\"></path></svg>';
 				} catch (error) {
 					rtrn = '<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"' + asset.construction[0] + '\" style=\"transform: scale(' + asset.construction[1] + ');\" class=\"icon ' + addclass + '\" ' + (id ? ' id=\"' + id + '\" ' : '') + attributes + '><path d=\"' + asset.construction[2] + '\"></path></svg>';
 				}
@@ -645,7 +647,8 @@ core.init = {
 		eval(callback);
 	},
 	ui: async (query = '') => { //displays start screen
-		let eMailList = core.fn.static.lang('importantMails') + '<p>';
+		let eMailList = core.fn.static.lang('importantMails') + '<p>',
+			appList = core.fn.static.lang('importantApps') + '<p>';
 		await core.fn.async.stdout('input',
 			'<form id="search" action="javascript:core.globalSearch.search(el(\'globalsearch\').value);">' +
 			'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
@@ -654,6 +657,10 @@ core.init = {
 			'<input type="submit" id="submit" value="' + core.fn.static.lang('formSubmit') + '" hidden="hidden" /> ' +
 			'</form>');
 		el('globalsearch').focus();
+		for (let key of Object.keys(core.var.apps)) {
+			appList += '<a ' + await core.fn.async.file.link(core.var.apps[key].path) + '>' + core.fn.static.insert.icon(core.var.apps[key].icon) + core.var.apps[key].display[core.var.selectedLanguage] + '</a><br />';
+		}
+		appList += '</p>';
 		Object.keys(core.var.eMailAddress).forEach((key) => {
 			eMailList += '<a href="mailto:' + core.var.eMailAddress[key].address + '">' + core.fn.static.insert.icon('mail') + core.var.eMailAddress[key].display[core.var.selectedLanguage] + '</a><br />';
 		});
@@ -666,7 +673,9 @@ core.init = {
 				core.fn.static.insert.icon('outlook') + core.fn.static.lang('openOutlook') + '</a><br />' : '') +
 			(core.var.publishedFolder ? '<br /><a ' + await core.fn.async.file.link(core.var.publishedFolder) + '>' +
 				core.fn.static.insert.icon('fileexplorer') + core.fn.static.lang('openPublishedFolder') + '</a><br />' : '') +
-			'<br /><br /><div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + eMailList + '</div>' +
+			'<br /><br />' +
+			'<div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + eMailList + '</div>' +
+			(root.eel ? '<div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + appList + '</div>' : '') +
 			'<br /><br /><div id="randomTip">' + randomTip.show() + '</div>'
 		);
 		core.fn.async.stdout('output', '');
