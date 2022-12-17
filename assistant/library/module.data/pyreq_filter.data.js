@@ -18,7 +18,7 @@ pyreq_filter.data = {
 			],
 			"filter": [{
 					"comment": "keep if all general patterns match",
-					"keep": True,
+					"keep": true,
 					"patterns": {
 						"all": {
 							"DELIEVERED": "delivered",
@@ -28,7 +28,7 @@ pyreq_filter.data = {
 				},
 				{
 					"comment": "discard if any general exclusions match",
-					"keep": False,
+					"keep": false,
 					"patterns": {
 						"any": {
 							"DEATH": ".+?",
@@ -39,7 +39,7 @@ pyreq_filter.data = {
 				},
 				{
 					"comment": "discard if value is below 400 unless pattern matches",
-					"keep": False,
+					"keep": false,
 					"patterns": {
 						"all": {
 							"PRICE": "^[2-9]\\d\\D|^[1-3]\\d{2,2}\\D",
@@ -50,7 +50,7 @@ pyreq_filter.data = {
 			],
 			"concentrate": [{
 					"comment": "discard by identifier and date diff in months, do not contact if last event within x months",
-					"keep": False,
+					"keep": false,
 					"date": {
 						"identifier": "CUSTOMERID",
 						"column": "SOMEDATE",
@@ -61,17 +61,17 @@ pyreq_filter.data = {
 				},
 				{
 					"comment": "keep amount of duplicates of concatenated column(s) value(s), ordered by another column (asc/desc)",
-					"keep": True,
+					"keep": true,
 					"duplicates": {
 						"orderby": ["ORIGININDEX"],
-						"descending": False,
+						"descending": false,
 						"column": "CUSTOMERID",
 						"amount": 1
 					}
 				},
 				{
 					"comment": "discard explicit excemptions as stated in excemption file, based on same identifier. source with absolute path or in the same working directory",
-					"keep": False,
+					"keep": false,
 					"compare": {
 						"source": "excemptions.*?.csv",
 						"sourceformat": "(.+?)[;\\s]",
@@ -88,7 +88,7 @@ pyreq_filter.data = {
 				},
 				{
 					"comment": "discard by not matching interval in months, optional offset from initial column value",
-					"keep": False,
+					"keep": false,
 					"interval": {
 						"column": "SOMEDATE",
 						"format": ["d", "m", "y"],
@@ -189,7 +189,7 @@ pyreq_filter.data = {
 					},
 					"Additional Information": {
 						"fields": ["INFORMATION", "MODEL_NAME", "SIZE_NAME", "COLOR_NAME"],
-						"process": False,
+						"process": false,
 						"width": 10
 					}
 				},
