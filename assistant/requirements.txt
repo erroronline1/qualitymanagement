@@ -1,5 +1,7 @@
-eel==0.14.0
-PyInstaller==4.5.1
+eel==0.15.0
+PyInstaller==5.6.2
 cchardet==2.1.7
 qrcode==7.3.1
-pillow==8.4.0
+pillow==9.3.0
+xlsxwriter==3.0.3
+wxPython==4.2.0
