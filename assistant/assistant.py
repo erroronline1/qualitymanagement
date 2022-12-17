@@ -6,13 +6,14 @@ import re
 import subprocess
 import sqlite3
 import sys
+import wx
 
 print('''
              _     _           _
  ___ ___ ___|_|___| |_ ___ ___| |_   _ _ _ ___ ___ ___ ___ ___ ___
 | .'|_ -|_ -| |_ -|  _| .'|   |  _| | | | |  _| .'| . | . | -_|  _|
 |__,|___|___|_|___|_| |__,|_|_|_|   |_____|_| |__,|  _|  _|___|_|
-                                                  |_| |_|          built 20220910
+                                                  |_| |_|          built 20221217
 
 by error on line 1 (erroronline.one)
 
@@ -192,6 +193,18 @@ def file_readdir(path):
 			files.append([os.path.join(dirpath, filename).replace('\\', '/'),'',''])
 	return files
 
+@eel.expose
+def file_picker(wildcard="*"):
+    app = wx.App(None)
+    style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
+    dialog = wx.FileDialog(None, 'Open', wildcard=wildcard, style=style)
+    if dialog.ShowModal() == wx.ID_OK:
+        path = dialog.GetPath()
+    else:
+        path = None
+    dialog.Destroy()
+    return path
+
 #               _     _
 #   _____ ___ _| |_ _| |___ ___
 #  |     | . | . | | | | -_|_ -|
@@ -205,6 +218,16 @@ import pymodules.qr as qr
 def createqrandopenwith(data, openwith, usecase):
 	return qr.create(data, openwith, usecase, file_handler)
 	#passing file_handler to reuse but to avoid recursive import
+
+import pymodules.filter as processfilter
+@eel.expose
+def filter(settings, arguments):
+	return processfilter.filter(settings, arguments)
+
+import pymodules.stocklist as stocklistfilter
+@eel.expose
+def translate_split(settings, module, arguments):
+	return stocklistfilter.start(settings, module, arguments)
 
 #       _           _
 #   ___| |_ ___ ___| |_

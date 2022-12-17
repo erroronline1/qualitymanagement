@@ -423,9 +423,18 @@ globalSearch api: returns entries that match search terms.
 
 ### qr code generator
 ![assistant qr code](assets/assistant_qr.png)
-this module is able to generate qr codes for yet to be named possibilities. currently appointments can be generated to be imported into the mobile calendar by the click of the camera. other uses are expected to follow but can be customized within the web code. this module is available within the [python environment](#python-wrapper) only where the python code creates the images and opens them with the default image application. images are stored within the user directory right right beside the assistants settings. although the files can pile up during use they are cleaned up on every application restart. see [comments](https://github.com/erroronline1/qualitymanagement/blob/master/assistant/pymodules/qr.py) why i considered this the best solution for the moment.
+this module is able to generate qr codes for yet to be named possibilities. currently appointments can be generated to be imported into the mobile calendar by the click of the camera. other uses are expected to follow but can be customized within the web code. this module is available within the [python environment](#python-wrapper) only where the python code creates the images and opens them with the default image application. images are stored within the user directory right right beside the assistants settings. although the files can pile up during use they are cleaned up on every application restart. see [comments](https://github.com/erroronline1/qualitymanagement/blob/master/assistant/pymodules/qr.py)  why i considered this the best solution for the moment.
 
 dependencies are: datalist of possible preprocessed outputs.
+
+globalSearch api: returns submodules where titles match the search terms.
+
+[back to top](#table-of-contents)
+
+### filter
+this module accesses [stocklist.py](#stocklistpy) and [filter.py](#filterpy) with a user interface so no one has to be afraid of spooky hacker shell wiggly text windows and *just maybe* doesn't leave the execution to the hackerman and does their job as in the description. sourcefiles are selectable through a file dialogue, as well as operational arguements with sliders and buttons. settings have to be done within the modules data-object as opposed to json-setup-files for stand-alone-use.
+
+dependencies are: datalist for setups.
 
 globalSearch api: returns submodules where titles match the search terms.
 
@@ -661,6 +670,7 @@ the audit planner can be filled with a question set for internal audits. by expo
 ## stocklist.py
 ![python stocklist translator](assets/py_stocklist.png)
 the script translates a dump from the erp-software and makes it accessible and searchable for all employees using the assistant hence optimizing dialogue with inventory control. you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
+as of december 2022 this script can either be used on its own or ad a module within the (compiled) assistant. in the latter case the setup has to be done within the modules data-file.
 
 also this script has a function to split the data by given column values. this might help e.g. in case of annual stocktaking. this is not related to quality management in the first place but can come in handy and since the same source has to be processed by the same rules, why the heck not?
 
@@ -705,6 +715,7 @@ if you have efficient electronic supported methods for time tracking of the empl
 ![python csv-filter](assets/py_filter.png)
 
 there might be a reccuring need to filter huge data-sets. some erp-software can create csv-dumps of data that can be used for statistics or post market surveillance. it can be way easier to filter these dumps and create a serial letter from the output, than adjust the erps database for an example. with the python filter you can describe filter-patterns with regex for different usecases. you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
+as of december 2022 this script can either be used on its own or ad a module within the (compiled) assistant. in the latter case the setup has to be done within the modules data-file.
 
 [back to top](#table-of-contents)
 
