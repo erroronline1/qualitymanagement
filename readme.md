@@ -94,7 +94,7 @@ and yes, whether or not i should use ascii to do a logo, i most certainly can.
 * one webdeveloper to customize the application for your companies needs and optionally provide you with desired additional modules
 * at best a python-developer for provided scripts, having heard of json and knowing how to regex
 * patience with coworkers blaming 'your' assistant for every network failure, printer settings and their inability to read the literal hints and descriptions
-* provided python-scripts probably will have to be compiled (unless you have python installed - [3.6 for the moment](https://www.python.org/downloads/release/python-3612/)). i recommend [pyinstaller](http://www.pyinstaller.org/) for this usecase - at least for windows environments - i just don't know about others.
+* provided python-scripts probably will have to be compiled (unless you have python installed - [3.8 for the moment](https://www.python.org/downloads/release/python-3810/)). i recommend [pyinstaller](http://www.pyinstaller.org/) for this usecase - at least for windows environments - i just don't know about others.
 
 [back to top](#table-of-contents)
 
@@ -112,7 +112,8 @@ in case you use the python wrapper for the assistant i recommend creating a virt
 * pip install -r requirements.txt
 * python -m eel assistant.py html --onefile --icon html/favicon.ico
 
-*it appears the compiling process evaluates javascript as well. i don't know for sure but during compiling word occasionally pops up for docm-files contained in data-lists. it may help to create these only after compiling.*
+if you create a fresh virtual environment you can exclude following modules to save some bytes: 'altgraph', 'certifi', 'future', 'idna', 'numpy', 'pyinstaller', 'setuptools', 'six', 'urllib3'.
+put these into the exclude-list within the spec-file and occasionally rerun *pyinstaller assistant.spec*.
 
 ![sample folder structure](assets/folderstructure.png)
 * the provided folder structure might not be neccessarily your first choice and serves just as a sample. you have to change at least the default paths within the vba-code and the assistant anyway.
