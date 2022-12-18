@@ -4,4 +4,3 @@ cchardet==2.1.7
 qrcode==7.3.1
 pillow==9.3.0
 xlsxwriter==3.0.3
-wxPython==4.2.0

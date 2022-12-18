@@ -6,7 +6,8 @@ import re
 import subprocess
 import sqlite3
 import sys
-import wx
+import tkinter as tk
+from tkinter import filedialog
 
 print('''
              _     _           _
@@ -130,12 +131,12 @@ def webroot():
 
 @eel.expose
 def rootResourcesImport(file):
-    # https://dev.to/bowmanjd/character-encodings-and-detection-with-python-chardet-and-cchardet-4hj7
-    blob = Path(file).read_bytes()
-    detection = cchardet.detect(blob)
-    encoding = detection["encoding"]
-    text = blob.decode(encoding)
-    return text
+	# https://dev.to/bowmanjd/character-encodings-and-detection-with-python-chardet-and-cchardet-4hj7
+	blob = Path(file).read_bytes()
+	detection = cchardet.detect(blob)
+	encoding = detection["encoding"]
+	text = blob.decode(encoding)
+	return text
 
 #                                 _             _ _ _
 #   _____ ___ _____ ___ ___ _ _  | |_ ___ ___ _| | |_|___ ___
@@ -194,16 +195,16 @@ def file_readdir(path):
 	return files
 
 @eel.expose
-def file_picker(wildcard="*"):
-    app = wx.App(None)
-    style = wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
-    dialog = wx.FileDialog(None, 'Open', wildcard=wildcard, style=style)
-    if dialog.ShowModal() == wx.ID_OK:
-        path = dialog.GetPath()
-    else:
-        path = None
-    dialog.Destroy()
-    return path
+def file_picker(initial = None, title = None, filetypes = None):
+	picker = tk.Tk()
+	picker.attributes("-topmost", True)
+	path = filedialog.askopenfilename(
+		initialdir=initial,
+		title=title,
+		filetypes=tuple(filetypes) if filetypes else ()
+	)
+	picker.destroy()
+	return path
 
 #               _     _
 #   _____ ___ _| |_ _| |___ ___
