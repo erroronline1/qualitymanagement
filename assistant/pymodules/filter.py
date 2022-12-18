@@ -25,9 +25,6 @@ else:
 
 print('built 20221217 by error on line 1 (erroronline.one)')
 
-
-print ()
-
 DEFAULTJSON = {
 	"defaultset": 0,
 	"sets": [{
