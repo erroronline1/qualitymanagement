@@ -1,12 +1,24 @@
 pyreq_filter.var = {
 	lang: {
+		errorMissingParameters:{
+			en: 'Please specify all settings!',
+			de: 'Bitte alle Einstellungen vornehmen!'
+		},
+		labelprocessfilterCompare: {
+			en: 'load compare file',
+			de: 'Vergleichsdatei laden'
+		},
+		labelprocessfilterDestination: {
+			en: 'save in',
+			de: 'Speichern in'
+		},
 		labelprocessfilterMonth: {
 			en: 'month',
 			de: 'Monat'
 		},
 		labelprocessfilterSet: {
-			en: 'use rule set for destination:',
-			de: 'benutze Filterregel für Ausgabe:'
+			en: 'use rule set for destination',
+			de: 'benutze Filterregel für Ausgabe'
 		},
 		labelprocessfilterSrc: {
 			en: 'load case export file',
@@ -15,6 +27,10 @@ pyreq_filter.var = {
 		labelprocessfilterSubmit: {
 			en: 'start filtering',
 			de: 'jetzt filtern'
+		},
+		labelprocessfilterTrack: {
+			en: 'track values: column:value[,value,value ...]',
+			de: 'Wert verfolgen: Spalte:Wert[,Wert,Wert ...]'
 		},
 		labelprocessfilterYear: {
 			en: 'year',
