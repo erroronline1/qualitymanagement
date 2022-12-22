@@ -14,7 +14,7 @@ print('''
  ___ ___ ___|_|___| |_ ___ ___| |_   _ _ _ ___ ___ ___ ___ ___ ___
 | .'|_ -|_ -| |_ -|  _| .'|   |  _| | | | |  _| .'| . | . | -_|  _|
 |__,|___|___|_|___|_| |__,|_|_|_|   |_____|_| |__,|  _|  _|___|_|
-                                                  |_| |_|          built 20221217
+                                                  |_| |_|          built 20221220
 
 by error on line 1 (erroronline.one)
 
@@ -180,6 +180,14 @@ def file_exists(path):
 	return os.path.exists(path)
 
 @eel.expose
+def file_directory(initial = None, title = None, filetypes = None):
+	picker = tk.Tk()
+	picker.attributes("-topmost", True)
+	path = filedialog.askdirectory()
+	picker.destroy()
+	return path
+
+@eel.expose
 def file_handler(call):
 	escaped=[]
 	for arg in call:
@@ -199,9 +207,21 @@ def file_picker(initial = None, title = None, filetypes = None):
 	picker = tk.Tk()
 	picker.attributes("-topmost", True)
 	path = filedialog.askopenfilename(
-		initialdir=initial,
-		title=title,
-		filetypes=tuple(filetypes) if filetypes else ()
+		initialdir = initial,
+		title = title,
+		filetypes = tuple(filetypes) if filetypes else ()
+	)
+	picker.destroy()
+	return path
+
+@eel.expose
+def file_saveas(initial = None, title = None, filetypes = None):
+	picker = tk.Tk()
+	picker.attributes("-topmost", True)
+	path = filedialog.asksaveasfilename(
+		initialdir = initial,
+		title = title,
+		filetypes = tuple(filetypes) if filetypes else ()
 	)
 	picker.destroy()
 	return path
@@ -237,7 +257,7 @@ def translate_split(settings, module, arguments):
 #
 
 if WEBFOLDER:
-	print ('Do not close this window, otherwise the browserview will stop working.')
+	print ('\nDo not close this window, otherwise the browserview will stop working.\n')
 	eel.init('html') #fldr name for web content
 	eel.start('core.html', port = PORT, mode = BROWSER)
 else:

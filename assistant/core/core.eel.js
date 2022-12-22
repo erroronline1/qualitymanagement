@@ -47,8 +47,16 @@ core.eel = () => {
 				link: async function (file, onclick = '') {
 					return 'href="#" onclick="eel.file_handler(core.var.environment[core.var.selectedEnv][\'' + this.type(file) + '\'].open.concat([\'' + file + '\']))(); ' + onclick + '"';
 				},
-				load: async function (destination) {
-					el(destination).value = await eel.file_picker()();
+				load: async function (destination, type = null) {
+					el(destination).value = await eel.file_picker(null, null, type)();
+					return;
+				},
+				pickdir: async function (destination) {
+					el(destination).value = await eel.file_directory()();
+					return;
+				},
+				saveas: async function (destination, filename = null) {
+					el(destination).value = await eel.file_saveas(filename, null, null)();
 					return;
 				},
 				type: function (file) {
