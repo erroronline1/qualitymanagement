@@ -9,6 +9,7 @@ import sys
 import os
 import itertools
 import traceback
+import xlsxwriter
 
 if __name__ == '__main__':
 	print('''                     
@@ -23,7 +24,7 @@ $ filter --help    for overview
 else:
 	print ('<filter> as integrated module')
 
-print('built 20221217 by error on line 1 (erroronline.one)')
+print('built 20221222 by error on line 1 (erroronline.one)')
 
 DEFAULTJSON = {
 	"defaultset": 0,
@@ -96,18 +97,37 @@ DEFAULTJSON = {
 				}
 			},
 			{
-				"comment": "discard explicit excemptions as stated in excemption file, based on same identifier. source with absolute path or in the same working directory",
+				"comment": "discard or keep explicit excemptions as stated in excemption file, based on same identifier. source with absolute path or in the same working directory",
 				"keep": False,
 				"compare": {
 					"source": "excemptions.*?.csv",
 					"sourceformat": "(.+?)[;\\s]",
 					"headerrowindex": 0,
 					"patterns": {
-						"COMPAREFILEINDEX": {
-							"correspond": "ORIGININDEX"
+						"modify":{
+							"add":{
+								"NEWCOLUMNNAME": "string",
+								"ANOTHERCOLUMNNAME" : "string"
+							},
+							"replace":{
+								"NAME": ["regex", "replacement"]
+							}
 						},
-						"COMPAREFILEDELIVERED": {
-							"match": "^delivered"
+						"all":{
+							"COMPAREFILEINDEX": {
+								"correspond": "ORIGININDEX"
+							},
+							"COMPAREFILEDELIVERED": {
+								"match": "^delivered"
+							}
+						},
+						"any":{
+							"COMPAREFILEINDEX": {
+								"correspond": "ORIGININDEX"
+							},
+							"COMPAREFILEDELIVERED": {
+								"match": "^delivered"
+							}
 						}
 					}
 				}
@@ -123,6 +143,15 @@ DEFAULTJSON = {
 				}
 			}
 		],
+		"modify":{
+			"add":{
+				"NEWCOLUMNNAME": "string",
+				"ANOTHERCOLUMNNAME" : "string"
+			},
+			"replace":{
+				"NAME": ["regex", "replacement"]
+			}
+		},
 		"evaluate": {
 			"EMAIL": "^((?!@).)*$"
 		}
@@ -182,6 +211,9 @@ helptext='''
             "format": list/array of date format order e.g. ["d", "m", "y"],
             "interval": integer for months,
             "offset": optional offset in months
+    "modify": modifies the result
+        "add": adds a column with the set value. if the name is already in ise this will be replaced!
+        "replace": replaces regex matches with the given value
     "evaluate": object/dict with colum-name keys and patterns as values that just create a warning, e.g. email verification
 '''
 
@@ -220,7 +252,7 @@ def sourcefile(regex):
 	# look for last touched source file that matches filter for source according to settings
 	sourcefile = []
 	directory = os.getcwd()
-	if '/' in regex: # aka distinct file with path is passed
+	if os.path.isfile(regex): # aka distinct file with path is passed
 		directory = os.path.split(regex)[0]
 		regex = os.path.split(regex)[1]
 	for entry in os.scandir( directory ):
@@ -268,8 +300,21 @@ class resulthandler:
 			fprint('[!] tracked value ', deleted[track['column']], ' has been deleted ', track['cause'])
 	def looplist(self):
 		return dict(self.list)
+	def modify(self, modifications):
+		addedcolumns=[]
+		for modify in modifications:
+			for rule in modifications[modify]:
+				if modify == "add":
+					addedcolumns.append(rule)
+					for row in self.list:
+						self.list[row][rule] = modifications[modify][rule]
+				if modify == "replace":
+					for entry in self.looplist().keys():
+						self.list[entry][rule]=re.sub(modifications[modify][rule][0], modifications[modify][rule][1], self.list[entry][rule])
+		return addedcolumns
 
 def filter(setting, argument):
+	global STOPANIMATION
 	global RESULTSTRING
 	RESULTSTRING = ''
 
@@ -288,7 +333,7 @@ def filter(setting, argument):
 
 			# compare and proceed only if all columns from the settings exist and do fully match the list
 			if not set(setting['columns']).intersection(headers) == set(setting['columns']):
-				fprint('[~] not all necessary fields were found in sourcefile or header-format not processable! filter aborted! ', headers)
+				fprint('[~] not all necessary fields were found in sourcefile or header-format not processable! filter aborted! ', headers, setting['columns'])
 				STOPANIMATION = True
 				raise Exception("not all necessary fields were found in sourcefile or header-format not processable! filter aborted!")
 
@@ -393,8 +438,7 @@ def filter(setting, argument):
 						if '/' in concentrate['compare']['source']:
 							directory = os.path.split(concentrate['compare']['source'])[0]
 							filename = os.path.split(concentrate['compare']['source'])[1]
-						concentrate['compare']['source'] = os.path.join(directory, filename)
-
+						concentrate['compare']['source'] = os.path.abspath(os.path.join(directory, filename))
 						file = sourcefile(concentrate['compare']['source'])
 						fprint('[*] comparing with: ' + file + '...')
 						with open(file, newline='') as csvfile2:
@@ -404,27 +448,50 @@ def filter(setting, argument):
 							rows2 = csv.reader(csvfile2, delimiter=';')
 							COMPARE = resulthandler(headers2, rows2, setting)
 						csvfile2.close()
+						
+						# modify compare list
+						if 'modify' in concentrate['compare']:
+							COMPARE.modify(concentrate['compare']['modify'])
+						
 						rows2 = COMPARE.looplist()
-						# sanitize compare list 
+						# sanitize compare list for unmatched patterns
+						cp = concentrate['compare']['patterns']
+						sanitizeCompare = {}
+						if 'all' in cp:
+							sanitizeCompare.update(cp['all'])
+						if 'any' in cp:
+							sanitizeCompare.update(cp['any'])
 						for i in rows2:
-							cp = concentrate['compare']['patterns']
-							for f in cp:
-								if 'match' in cp[f]:
-									if not bool(re.search(cp[f]['match'], rows2[i][f], re.IGNORECASE|re.MULTILINE)):
+							for f in sanitizeCompare:
+								if 'match' in sanitizeCompare[f]:
+									if not bool(re.search(sanitizeCompare[f]['match'], rows2[i][f], re.IGNORECASE|re.MULTILINE)):
 										COMPARE.delete(i, argument['track'])
-						# compare both lists for boolean comparison
+						# compare both lists for matching comparison of corresponding values
 						rows = RESULT.looplist()
 						rows2 = COMPARE.looplist()
 						corresponding = set()
-						for j in rows2:
+						for anyall in cp:
+							cpaa = concentrate['compare']['patterns'][anyall]
+							# prepare possibly needed amout of matches
+							correspond = []
+							for f in cpaa:
+								if 'correspond' in cpaa[f]:
+									correspond.append(False)
 							for i in rows:
-								cp = concentrate['compare']['patterns']
-								for f in cp:
-									if 'correspond' in cp[f]:
-										if rows[i][cp[f]['correspond']] == rows2[j][f]:
-											corresponding.add(i)
+								for j in rows2:
+									corresponded = 0
+									#iterate over matches
+									for f in cpaa:
+										if 'correspond' in cpaa[f]:
+											correspond[corresponded] = rows[i][cpaa[f]['correspond']] == rows2[j][f]
+											if anyall == 'any':
+												break
+											corresponded += 1
+									if (anyall == 'any' and True in correspond) or (anyall == 'all' and all(correspond)):
+										corresponding.add(i)
 						for i in rows:
 							if (i in corresponding) != concentrate['keep']:
+								argument['track']['cause'] = {'identified by': i , 'corresponding values do not match: ': i}
 								RESULT.delete(i, argument['track'])
 					except Exception as e:
 						# in case file does not exist
@@ -446,23 +513,15 @@ def filter(setting, argument):
 							RESULT.delete(i, argument['track'])
 			fprint('[*] after concentrate: ', len(RESULT.list))
 
+		###########################################################################
+		## modify the result list
+		###########################################################################
+		if 'modify' in setting:
+			setting['columns'].extend(RESULT.modify(setting['modify']))
+			fprint('[*] modifications done')
+
 		# write filtered list to destination file
-		try:
-
-			destination=os.path.join(os.path.split(os.path.abspath(sfile))[0], setting['destination']);
-			with open(destination, 'w', newline='') as csvfile:
-				writer = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-				# add reduced header
-				writer.writerow('"'+h+'"' for h in setting['columns'])
-				for row in RESULT.list:
-					output = []
-					for reduce in setting['columns']:
-						output.append(RESULT.list[row][reduce])
-					writer.writerow('"'+c+'"' for c in output)
-			csvfile.close()
-		except Exception as e:
-			fprint('[~] ' + destination + ' could not be written probably because it was already opened.\n' + traceback.format_exc())
-
+		destination = export(setting, sfile, RESULT)
 
 		# generate warnings in case evaluations fail
 		if 'evaluate' in setting:
@@ -476,13 +535,69 @@ def filter(setting, argument):
 							warning[evaluation] = 1
 			for key, value in warning.items():
 				fprint('\n[!] WARNING: ' + str(value) + ' values of ' + key + ' may be faulty, please revise in the output file ' + destination)
-		fprint('\n[*] done! do not forget to archive ' + destination)
+		fprint('\n[*] done! do not forget to check and archive ' + destination)
 
 	except Exception as e:
 		fprint('[~] source file ', sfile, ' could not be loaded or some filter error occured, filter not successful...\n' + traceback.format_exc())
 
 	STOPANIMATION = True
 	return RESULTSTRING
+
+def export(setting, sfile, RESULT):
+	destination = os.path.join(os.path.split(os.path.abspath(sfile))[0], setting['destination']);
+	filetype = setting['destination'][setting['destination'].rindex("."):].lower()
+	try:
+		if filetype == ".csv":
+			with open(destination, 'w', newline='') as csvfile:
+				writer = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+				# add reduced header
+				writer.writerow('"'+h+'"' for h in setting['columns'])
+				for row in RESULT.list:
+					output = []
+					for reduce in setting['columns']:
+						output.append(RESULT.list[row][reduce])
+					writer.writerow('"'+c+'"' for c in output)
+			csvfile.close()
+			return destination
+
+		elif filetype == ".xlsx":
+			workbook = xlsxwriter.Workbook(destination)
+
+			cell_std = workbook.add_format({'top': 1, 'num_format':'@', 'valign': 'top', 'text_wrap': True})
+			# define other formats if necessary:
+			cell_other = workbook.add_format({'top': 1, 'num_format':'@', 'valign': 'top', 'text_wrap': True})
+
+			worksheet = workbook.add_worksheet() # sheet[0:31])
+			worksheet.set_landscape()
+			worksheet.set_margins(left = .25, right = .15, top = .5, bottom = .25)
+			worksheet.set_default_row(32)
+
+			# add headers + static
+			header = [h for h in setting['columns']]
+			row=0
+			col=0
+			# add sort key as header on sheet
+			for cell in header:
+				worksheet.write(row, col, cell)
+				col +=1
+			worksheet.repeat_rows(row)
+
+			# write content
+			res = RESULT.looplist()
+			for rrow in res:
+				row += 1
+				col = 0
+				for cell in header:
+					cell_format = cell_std
+					worksheet.write(row, col, res[rrow][cell], cell_format)
+					col += 1
+			workbook.close()
+			return destination
+
+		else:
+			raise Exception('[~] filetype ' + filetype + ' not supported!')
+	except Exception as e:
+		fprint('[~] ' + destination + ' could not be written probably because it was already opened or filetype is not supported.\n' + traceback.format_exc())
 
 if __name__ == '__main__':
 	selectedset = False

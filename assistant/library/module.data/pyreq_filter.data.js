@@ -2,6 +2,7 @@ pyreq_filter.data = {
 	processfilter: {
 		//"defaultset": 0,
 		"sets": [{
+			"useCase": "This filter works so-and-so and you need to prepare the source files like that...",
 			//"source": "Export.+?\\.csv",
 			"sourceformat": "\\\"(.*?)\\\"",
 			"headerrowindex": 0,
@@ -77,11 +78,21 @@ pyreq_filter.data = {
 						"sourceformat": "(.+?)[;\\s]",
 						"headerrowindex": 0,
 						"patterns": {
-							"COMPAREFILEINDEX": {
-								"correspond": "ORIGININDEX"
+							"modify": {
+								"add": {
+									"ANEWCOLUMN": "defaultvalue",
+								},
+								"replace": {
+									"AID": ["match", "replacement value"]
+								}
 							},
-							"COMPAREFILEDELIVERED": {
-								"match": "^delivered"
+							"all": {
+								"COMPAREFILEINDEX": {
+									"correspond": "ORIGININDEX"
+								},
+								"COMPAREFILEDELIVERED": {
+									"match": "^delivered"
+								}
 							}
 						}
 					}
@@ -97,7 +108,15 @@ pyreq_filter.data = {
 					}
 				}
 			],
-			"evaluate": {
+			"modify": {
+				"add": {
+					"ANEWCOLUMN": "defaultvalue",
+				},
+				"replace": {
+					"AID": ["match", "replacement value"]
+				}
+			},
+"evaluate": {
 				"EMAIL": "^((?!@).)*$"
 			}
 		}]
@@ -111,11 +130,11 @@ pyreq_filter.data = {
 				},
 				"____destination": "choose destination file/path and add wrapping strings to convert a json-dump into a javascript object. modified DATE-string will be replaced with generation date.",
 				"destination": "D:\\Quality Management\\assistant\\library\\module.data\\stocklist.data.stocklist.js",
-				"wrapstart" :"//this file was automatically created by the assistants filter module\nstocklist.data.stocklist={modified: \"DATE\", content:",
+				"wrapstart": "//this file was automatically created by the assistants filter module\nstocklist.data.stocklist={modified: \"DATE\", content:",
 				"wrapend": "};",
 				"____unionbyoutputcolumn": "occasionally there are multiple entries in the source file with the same identifier that can be unified",
 				"unionbyoutputcolumn": 1,
-				"____readcolumns" : "fields have to be lists, even with single entries. lists will be concatenated, values can be processed by global translate or scoped pick, 'process' can either be omitted or set to false",
+				"____readcolumns": "fields have to be lists, even with single entries. lists will be concatenated, values can be processed by global translate or scoped pick, 'process' can either be omitted or set to false",
 				"readcolumns": {
 					"Item-ID": {
 						"fields": ["ID"]
@@ -159,7 +178,7 @@ pyreq_filter.data = {
 				"orderbyoutputcolumn": 3,
 				"____xlsxwidth": "number of points to width of the excelsheet to handle procentual column widths for readcolumns",
 				"xlsxwidth": 120,
-				"____readcolumnd" : "fields have to be lists, even with single entries. lists will be concatenated, values can be processed by global translate or scoped pick, 'process' can either be omitted or set to false, width can be set in percents for xlsx-output",
+				"____readcolumnd": "fields have to be lists, even with single entries. lists will be concatenated, values can be processed by global translate or scoped pick, 'process' can either be omitted or set to false, width can be set in percents for xlsx-output",
 				"readcolumns": {
 					"Item-ID": {
 						"fields": ["ID"],
@@ -225,7 +244,7 @@ pyreq_filter.data = {
 				"7": "square metre",
 				"8": "bag"
 			},
-			"REPOSITORY":{
+			"REPOSITORY": {
 				"1": "Central",
 				"2": "Department 1",
 				"3": "Department 2",
