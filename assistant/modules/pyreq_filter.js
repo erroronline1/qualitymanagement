@@ -53,8 +53,7 @@ var pyreq_filter = {
 				'<input type="button" value="' + core.fn.static.lang('labelprocessfilterCompare', 'pyreq_filter') + '" onclick="core.fn.async.file.load(\'processfilterCompare\', [[\'csv files\',\'*.csv\']])" id="processfilterCompareButton" /><br /><input type="text" id="processfilterCompare" required /><br /><br />' +
 				'<input type="button" value="' + core.fn.static.lang('labelprocessfilterDestination', 'pyreq_filter') + '" onclick="core.fn.async.file.pickdir(\'processfilterDestination\')" id="processfilterDestinationButton" /><br /><input type="text" id="processfilterDestination" required /><br /><br />' +
 				'<input type="submit" value="' + core.fn.static.lang('labelprocessfilterSubmit', 'pyreq_filter') + '" /><br /><br />' +
-				'</form>' +
-				core.fn.static.lang('processfilterInstruction', 'pyreq_filter'));
+				'</form>');
 			core.fn.async.stdout('output', '');
 			core.history.write('pyreq_filter.fn.init(\'processfilter\')');
 		},
