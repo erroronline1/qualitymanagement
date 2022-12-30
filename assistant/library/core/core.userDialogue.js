@@ -127,24 +127,34 @@ const aboutNotification = {
 let updateTracker = {
 	enlist: () => {
 		//	listing all update hints in reverse order
-		let tracker = '';
+		let tracker = '',
+			currentdate = new Date(Date.now()),
+			latestdate;
+
 		for (let i = updateTracker.list.length - 1; i > -1; i--) {
-			if (updateTracker.list[i][0].length) tracker += '<span class="highlight">' + updateTracker.list[i][0] + ':</span> ' + updateTracker.list[i][1] + '<br /><hr /><br />';
+			latestdate = new Date(updateTracker.list[i][2]);
+			if (updateTracker.list[i][0].length && latestdate < currentdate) tracker += '<span class="highlight">' + updateTracker.list[i][0] + ':</span> ' + updateTracker.list[i][2] + ": " + updateTracker.list[i][3] + '<br /><hr /><br />';
 		}
 		return 'Update Tracker:<br /><br />' + tracker;
 	},
 	latestMajorUpdate: () => {
+		let currentdate = new Date(Date.now()),
+			latestdate;
 		for (let i = updateTracker.list.length - 1; i > -1; i--) {
-			if (updateTracker.list[i][0] === 'Major') return i;
+			latestdate = new Date(updateTracker.list[i][2]);
+			if (updateTracker.list[i][0] === 'Major' && latestdate < currentdate && Math.floor((currentdate-latestdate)/(3600*1000*24)) < updateTracker.list[i][1]) return i;
 		}
+		return false
 	},
 	alert: async () => {
 		//	display latest update hint on startup as long as it is not disabled
+		console.log(updateTracker.latestMajorUpdate());
+		if (!updateTracker.latestMajorUpdate()) return false;
 		let latestNotif = 'coreNotificationHide' + updateTracker.latestMajorUpdate(),
 			module = {};
 		module[latestNotif] = await core.fn.async.memory.read(latestNotif);
-		if (module[latestNotif] === false && updateTracker.list[updateTracker.list.length - 1][0].length) {
-			text = updateTracker.list[updateTracker.latestMajorUpdate()][1] + '<br /><br />' +
+		if (module[latestNotif] === false) {
+			text = updateTracker.list[updateTracker.latestMajorUpdate()][2] + ': ' + updateTracker.list[updateTracker.latestMajorUpdate()][3] + '<br /><br />' +
 				core.fn.static.insert.checkbox(core.fn.static.lang('settingNotificationSelector'), latestNotif, 0, 'onchange="this.checked ? core.fn.async.memory.write(\'' + latestNotif + '\', 1) : core.fn.async.memory.delete(\'' + latestNotif + '\')"', core.fn.static.lang('settingRestartNeccessary')) +
 				'<br /><small>' + core.fn.static.lang('settingNotificationHint') + '</small>';
 			core.fn.static.popup(text);
@@ -153,13 +163,14 @@ let updateTracker = {
 	},
 	list: [
 		//	list of updates in ascending order. this is considered not to be critical in terms of language so feel free to fill this list in you main oder native language
-		['Minor', '15.06.2019: Enjoy!'],
-		['Major', '16.06.2019: Welcome to the assistant. As the responsible person you can delete this message and later add your own announcements or update hints.'],
-		['Major', '16.08.2019: Welcome to the assistant. This is the next version. Search less, find more...'],
-		['Major', '06.09.2019: Welcome to the assistant. This is the next version with clear and tidy separation between algorithms and customized data.'],
-		['Major', '19.06.2020: Welcome to the assistant. As from today it is possible to handle permissions to modules or functions.'],
-		['Minor', '24.08.2021: Implemented an efficient compression for data storage. If you came back, something unpredictable might have happened and you should reset the application.'],
-		['Major', '16.10.2021: Refactored to ECMAScript6+'],
-		//['',''], // adding an empty set disables the popup of the latestMajorUpdate(). get a bit annoying after a while without updates
+		//[minor/major, days to popup, effective-as-of/scheduled, infotext]
+		['Minor', 1, '2019-06-15', 'Enjoy!'],
+		['Major', 1, '2019-06-16', 'Welcome to the assistant. As the responsible person you can delete this message and later add your own announcements or update hints.'],
+		['Major', 1, '2019-08-16', 'Welcome to the assistant. This is the next version. Search less, find more...'],
+		['Major', 1, '2019-09-06', 'Welcome to the assistant. This is the next version with clear and tidy separation between algorithms and customized data.'],
+		['Major', 1, '2020-06-19', 'Welcome to the assistant. As from today it is possible to handle permissions to modules or functions.'],
+		['Minor', 1, '2021-08-24', 'Implemented an efficient compression for data storage. If you came back, something unpredictable might have happened and you should reset the application.'],
+		['Major', 5, '2021-10-16', 'Refactored to ECMAScript6+'],
+		['Major', 5, '2022-12-29', 'Update-alerts can now be scheduled and temporary limited. No need for an empty array anymore.'],
 	],
 };

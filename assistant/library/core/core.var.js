@@ -543,10 +543,10 @@ core.var = {
 		},
 		settingNotificationSelector: {
 			en: function () {
-				return 'Hide hint #' + (updateTracker.latestMajorUpdate() + 1) + ' on startup';
+				return 'Hide latest hint on startup';
 			},
 			de: function () {
-				return 'Hinweis #' + (updateTracker.latestMajorUpdate() + 1) + ' beim Start verbergen';
+				return 'Neuesten Hinweis beim Start verbergen';
 			}
 		},
 		settingResetApp: {
