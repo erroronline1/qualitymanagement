@@ -3,24 +3,28 @@ pyreq_filter.data = {
 		//"defaultset": 0,
 		"sets": [{
 			"useCase": "This filter works so-and-so and you need to prepare the source files like that...",
-			//"source": "Export.+?\\.csv",
-			"sourceformat": "\\\"(.*?)\\\"",
-			"headerrowindex": 0,
-			"destination": "filtered.csv",
-			"columns": [
-				"ORIGININDEX",
-				"SOMEDATE",
-				"CUSTOMERID",
-				"NAME",
-				"DEATH",
-				"AID",
-				"PRICE",
-				"DELIVERED",
-			],
+			"filesetting": {
+				"source": "Export.+?\\.csv",
+				"sourceformat": "\\\"(.*?)\\\"",
+				"delimiter": ";",
+				"headerrowindex": 0,
+				"destination": "filtered.csv",
+				"columns": [
+					"ORIGININDEX",
+					"SOMEDATE",
+					"CUSTOMERID",
+					"NAME",
+					"DEATH",
+					"AID",
+					"PRICE",
+					"DELIVERED",
+				],
+			},
 			"filter": [{
+					"apply": "filter_by_expression",
 					"comment": "keep if all general patterns match",
 					"keep": true,
-					"patterns": {
+					"match": {
 						"all": {
 							"DELIEVERED": "delivered",
 							"NAME": ".+?"
@@ -28,9 +32,10 @@ pyreq_filter.data = {
 					}
 				},
 				{
+					"apply": "filter_by_expression",
 					"comment": "discard if any general exclusions match",
 					"keep": false,
-					"patterns": {
+					"match": {
 						"any": {
 							"DEATH": ".+?",
 							"NAME": "company|special someone",
@@ -39,21 +44,20 @@ pyreq_filter.data = {
 					}
 				},
 				{
+					"apply": "filter_by_expression",
 					"comment": "discard if value is below 400 unless pattern matches",
 					"keep": false,
-					"patterns": {
+					"match": {
 						"all": {
 							"PRICE": "^[2-9]\\d\\D|^[1-3]\\d{2,2}\\D",
 							"AID": "^(?!(?!.*(not|those)).*(but|these|surely)).*"
 						}
 					}
-				}
-			],
-			"concentrate": [{
+				}, {
+					"apply": "filter_by_monthdiff",
 					"comment": "discard by identifier and date diff in months, do not contact if last event within x months",
 					"keep": false,
 					"date": {
-						"identifier": "CUSTOMERID",
 						"column": "SOMEDATE",
 						"format": ["d", "m", "y"],
 						"threshold": 6,
@@ -61,6 +65,7 @@ pyreq_filter.data = {
 					}
 				},
 				{
+					"apply": "filter_by_duplicates",
 					"comment": "keep amount of duplicates of concatenated column(s) value(s), ordered by another column (asc/desc)",
 					"keep": true,
 					"duplicates": {
@@ -71,33 +76,27 @@ pyreq_filter.data = {
 					}
 				},
 				{
+					"apply": "filter_by_comparison_file",
 					"comment": "discard explicit excemptions as stated in excemption file, based on same identifier. source with absolute path or in the same working directory",
 					"keep": false,
-					"compare": {
+					"filesetting": {
 						"source": "excemptions.*?.csv",
 						"sourceformat": "(.+?)[;\\s]",
+						"delimiter": ";",
 						"headerrowindex": 0,
-						"patterns": {
-							"modify": {
-								"add": {
-									"ANEWCOLUMN": "defaultvalue",
-								},
-								"replace": {
-									"AID": ["match", "replacement value"]
-								}
-							},
-							"all": {
-								"COMPAREFILEINDEX": {
-									"correspond": "ORIGININDEX"
-								},
-								"COMPAREFILEDELIVERED": {
-									"match": "^delivered"
-								}
-							}
+						"columns": [
+							"COMPAREFILEINDEX"
+						]
+					},
+					"filter": [],
+					"match": {
+						"all": {
+							"ORIGININDEX": "COMPAREFILEINDEX"
 						}
 					}
 				},
 				{
+					"apply": "filter_by_monthinterval",
 					"comment": "discard by not matching interval in months, optional offset from initial column value",
 					"keep": false,
 					"interval": {
@@ -116,7 +115,7 @@ pyreq_filter.data = {
 					"AID": ["match", "replacement value"]
 				}
 			},
-"evaluate": {
+			"evaluate": {
 				"EMAIL": "^((?!@).)*$"
 			}
 		}]

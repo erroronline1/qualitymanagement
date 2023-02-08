@@ -36,7 +36,7 @@ var pyreq_filter = {
 				filtersets = {}
 			presets = [];
 			Object.keys(pyreq_filter.data.processfilter.sets).forEach(set => {
-				filtersets[set] = [set, pyreq_filter.data.processfilter.sets[set].destination];
+				filtersets[set] = [set, pyreq_filter.data.processfilter.sets[set].filesetting.destination];
 			})
 			core.fn.async.stdout('temp', '<form action="javascript:pyreq_filter.fn.processfiltersubmit()">' +
 				'<input type="button" value="' + core.fn.static.lang('labelprocessfilterSrc', 'pyreq_filter') + '" onclick="core.fn.async.file.load(\'processfilterSrc\', [[\'csv files\',\'*.csv\']])" /><br /><input type="text" id="processfilterSrc" required />' +
@@ -52,7 +52,7 @@ var pyreq_filter = {
 				'<br /><br />' +
 				'<input type="button" value="' + core.fn.static.lang('labelprocessfilterCompare', 'pyreq_filter') + '" onclick="core.fn.async.file.load(\'processfilterCompare\', [[\'csv files\',\'*.csv\']])" id="processfilterCompareButton" /><br /><input type="text" id="processfilterCompare" required /><br /><br />' +
 				'<input type="button" value="' + core.fn.static.lang('labelprocessfilterDestination', 'pyreq_filter') + '" onclick="core.fn.async.file.pickdir(\'processfilterDestination\')" id="processfilterDestinationButton" /><br /><input type="text" id="processfilterDestination" required /><br /><br />' +
-				'<input type="submit" value="' + core.fn.static.lang('labelprocessfilterSubmit', 'pyreq_filter') + '" /><br /><br />' +
+				'<input type="submit" id="submitprocessfilter" value="' + core.fn.static.lang('labelprocessfilterSubmit', 'pyreq_filter') + '" /><br /><br />' +
 				'</form>');
 			core.fn.async.stdout('output', '');
 			core.history.write('pyreq_filter.fn.init(\'processfilter\')');
@@ -68,22 +68,27 @@ var pyreq_filter = {
 						values: null
 					}
 				};
-			if (el('processfilterTrack').value.length) {
-				let query = el('processfilterTrack').value.split(':');
+			if (el('processfilterTrack').value.length){
+				let query=el('processfilterTrack').value.split(':');
 				farguments.track.column = query[0];
 				farguments.track.values = query[1].split(',');
 			}
 
-			fsettings.source = el('processfilterSrc').value.replaceAll(/\\/ig, '/');
-			if ('concentrate' in fsettings) {
-				for (let c = 0; c < fsettings.concentrate.length; c++) {
-					if ('compare' in fsettings.concentrate[c]) fsettings.concentrate[c].compare.source = el('processfilterCompare').value.replaceAll(/\\/ig, '/');
+			fsettings.filesetting.source = el('processfilterSrc').value.replaceAll(/\\/ig, '/');
+			if ('filter' in fsettings) {
+				for (let c = 0; c < fsettings.filter.length; c++) {
+					if (fsettings.filter[c].apply === "filter_by_comparison_file" && fsettings.filter[c].filesetting.source !== "SELF") fsettings.filter[c].filesetting.source = el('processfilterCompare').value.replaceAll(/\\/ig, '/');
 				}
 			}
-			fsettings.destination = el('processfilterDestination').value.replaceAll(/\\/ig, '/') + '/' + fsettings.destination;
+			fsettings.filesetting.destination = el('processfilterDestination').value.replaceAll(/\\/ig, '/') + '/' + fsettings.filesetting.destination;
 			document.body.style.cursor = 'wait';
+			el("submitprocessfilter").disabled = "disabled"
+			core.fn.async.stdout('output', '');
+			core.eel.interface.destination = [el("output"), "innerHTML"];
+			core.eel.interface.append = true;
 			let result = await eel.filter(fsettings, farguments)();
 			core.fn.async.stdout('output', result.replaceAll(/\n/ig, '<br />'));
+			el("submitprocessfilter").disabled = null
 			document.body.style.cursor = 'initial';
 		},
 
@@ -96,7 +101,7 @@ var pyreq_filter = {
 				core.fn.static.insert.radio(core.fn.static.lang('labelstocklistfilterSplitCSV', 'pyreq_filter'), 'exportformat', 'c', false) + '<br /><br />' +
 				core.fn.static.lang('labelstocklistfilterSplitFactor', 'pyreq_filter') + ':<br />' +
 				'<input type="text" disabled value="' + Object.keys(pyreq_filter.data.stocklistfilter.module.split.splitbycolumns).join(', ') + '" /><br /><br />' +
-				'<input type="submit" value="' + core.fn.static.lang('labelstocklistfilterSubmit', 'pyreq_filter') + '" />' +
+				'<input type="submit" id="submitstocklistfilter" value="' + core.fn.static.lang('labelstocklistfilterSubmit', 'pyreq_filter') + '" />' +
 				'</form>' +
 				(pyreq_filter.data.stocklistfilter.useCase ? core.fn.static.insert.icon('info', 'bigger', null, 'onclick="core.fn.static.popup(pyreq_filter.data.stocklistfilter.useCase)"') + '<br />' : '') +
 				core.fn.static.lang('stocklistfilterInstruction', 'pyreq_filter'));
@@ -126,8 +131,13 @@ var pyreq_filter = {
 			fsettings.source = el('stocklistfilterSrc').value.replaceAll(/\\/ig, '/');
 			console.log(module, farguments);
 			document.body.style.cursor = 'wait';
+			el("submitstocklistfilter").disabled = "disabled"
+			core.fn.async.stdout('output', '');
+			core.eel.interface.destination = [el("output"), "innerHTML"];
+			core.eel.interface.append = true;
 			let result = await eel.translate_split(fsettings, module, farguments)();
 			core.fn.async.stdout('output', result.replaceAll(/\n/ig, '<br />'));
+			el("submitstocklistfilter").disabled = null
 			document.body.style.cursor = 'initial';
 		},
 

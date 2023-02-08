@@ -3,13 +3,15 @@ import json
 import re
 from datetime import datetime
 import calendar
-import time
-import threading
 import sys
 import os
-import itertools
 import traceback
 import xlsxwriter
+try:
+	from assistant import interface
+	ASSISTANT = True
+except:
+	ASSISTANT = False
 
 if __name__ == '__main__':
 	print('''                     
@@ -24,29 +26,34 @@ $ filter --help    for overview
 else:
 	print ('<filter> as integrated module')
 
-print('built 20221222 by error on line 1 (erroronline.one)')
+print('built 20230207 by error on line 1 (erroronline.one)')
 
 DEFAULTJSON = {
 	"defaultset": 0,
 	"sets": [{
-		"source": "Export.+?\\.csv",
-		"sourceformat": "\\\"(.*?)\\\"",
-		"headerrowindex": 0,
-		"destination": "filtered.csv",
-		"columns": [
-			"ORIGININDEX",
-			"SOMEDATE",
-			"CUSTOMERID",
-			"NAME",
-			"DEATH",
-			"AID",
-			"PRICE",
-			"DELIVERED",
-		],
-		"filter": [{
+		"filesetting": {
+			"source": "Export.+?\\.csv",
+			"sourceformat": "\\\"(.*?)\\\"",
+			"delimiter": ";",
+			"headerrowindex": 0,
+			"destination": "filtered.csv",
+			"columns": [
+				"ORIGININDEX",
+				"SOMEDATE",
+				"CUSTOMERID",
+				"NAME",
+				"DEATH",
+				"AID",
+				"PRICE",
+				"DELIVERED",
+			]
+		},
+		"filter": [
+			{
+				"apply": "filter_by_expression",
 				"comment": "keep if all general patterns match",
 				"keep": True,
-				"patterns": {
+				"match": {
 					"all": {
 						"DELIEVERED": "delivered",
 						"NAME": ".+?"
@@ -54,9 +61,10 @@ DEFAULTJSON = {
 				}
 			},
 			{
+				"apply": "filter_by_expression",
 				"comment": "discard if any general exclusions match",
 				"keep": False,
-				"patterns": {
+				"match": {
 					"any": {
 						"DEATH": ".+?",
 						"NAME": "company|special someone",
@@ -65,21 +73,21 @@ DEFAULTJSON = {
 				}
 			},
 			{
+				"apply": "filter_by_expression",
 				"comment": "discard if value is below 400 unless pattern matches",
 				"keep": False,
-				"patterns": {
+				"match": {
 					"all": {
 						"PRICE": "^[2-9]\\d\\D|^[1-3]\\d{2,2}\\D",
 						"AID": "^(?!(?!.*(not|those)).*(but|these|surely)).*"
 					}
 				}
-			}
-		],
-		"concentrate": [{
-				"comment": "discard by identifier and date diff in months, do not contact if last event within x months",
+			},
+			{
+				"apply": "filter_by_monthdiff",
+				"comment": "discard by date diff in months, do not contact if last event within x months",
 				"keep": False,
 				"date": {
-					"identifier": "CUSTOMERID",
 					"column": "SOMEDATE",
 					"format": ["d", "m", "y"],
 					"threshold": 6,
@@ -87,7 +95,8 @@ DEFAULTJSON = {
 				}
 			},
 			{
-				"comment": "keep amount of duplicates of concatenated column(s) value(s), ordered by another column (asc/desc)",
+				"apply": "filter_by_duplicates",
+				"comment": "keep amount of duplicates of column value, ordered by another concatenated column values (asc/desc)",
 				"keep": True,
 				"duplicates": {
 					"orderby": ["ORIGININDEX"],
@@ -97,42 +106,30 @@ DEFAULTJSON = {
 				}
 			},
 			{
+				"apply": "filter_by_comparison_file",
 				"comment": "discard or keep explicit excemptions as stated in excemption file, based on same identifier. source with absolute path or in the same working directory",
 				"keep": False,
-				"compare": {
+				"filesetting": {
 					"source": "excemptions.*?.csv",
 					"sourceformat": "(.+?)[;\\s]",
+					"delimiter": ";",
 					"headerrowindex": 0,
-					"patterns": {
-						"modify":{
-							"add":{
-								"NEWCOLUMNNAME": "string",
-								"ANOTHERCOLUMNNAME" : "string"
-							},
-							"replace":{
-								"NAME": ["regex", "replacement"]
-							}
-						},
-						"all":{
-							"COMPAREFILEINDEX": {
-								"correspond": "ORIGININDEX"
-							},
-							"COMPAREFILEDELIVERED": {
-								"match": "^delivered"
-							}
-						},
-						"any":{
-							"COMPAREFILEINDEX": {
-								"correspond": "ORIGININDEX"
-							},
-							"COMPAREFILEDELIVERED": {
-								"match": "^delivered"
-							}
-						}
+					"columns": [
+						"VORGANG"
+					]
+				},
+				"filter": [],
+				"match": {
+					"all":{
+						"ORIGININDEX": "COMPAREFILEINDEX"
+					},
+					"any":{
+						"ORIGININDEX": "COMPAREFILEINDEX"
 					}
 				}
 			},
 			{
+				"apply": "filter_by_monthinterval",
 				"comment": "discard by not matching interval in months, optional offset from initial column value",
 				"keep": False,
 				"interval": {
@@ -172,20 +169,29 @@ helptext='''
     if a filterset uses date thresholds or date intervals and month or year are not manually set,
     the current date is processed.
 
-    setup is specified in filter.json and can be extended for other lists and filters
+    setup can either be specified in filter.json can be extended for other lists and filters and the specific
+    filter-set set as default or passed as argument, or passed as dict if used as a module.
+    filters are processed in order of appearance.
+    modifications take place with the filtered list only for performance reasons.
+    compare lists can be filtered and manipulated likewise. due to recursive implementation the origin list
+    can be used as a filter by itself.
 
-    "source": matching regex, opens last touched file
-    "sourceformat": matching regex to extract column titles
-    "headerrowindex": offset for title row
-    "destination": file to write output to
-    "columns": list/array of column names to process and export to destination
+    "filesetting":
+		"source": matching regex, opens last touched file
+	    "sourceformat": matching regex to extract column titles
+	    "headerrowindex": offset for title row
+	    "destination": file to write output to
+	    "columns": list/array of column names to process and export to destination
+
     "filter": list/array of objects/dicts
-        "comment": description, will be displayed
+        "apply": "filter_by_expression"
+		"comment": description, will be displayed
         "keep": boolean if matches are kept or omitted
-        "patterns":
+        "match":
             "all": all expressions have to be matched, object/dict with column-name-key, and pattern as value
             "any": at least one expression has to be matched, it's either "all" or "any"
-    "concentrate": list/array of object/dicts
+
+        "apply": "filter_by_monthdiff"
         "comment": description, will be displayed
         "keep": boolean if matches are kept or omitted
         "date": filter by identifier and date diff in months
@@ -194,367 +200,96 @@ helptext='''
             "format": list/array of date format order e.g. ["d", "m", "y"],
             "threshold": integer for months,
             "bias": < less than, > greater than threshold
-        "duplicates": keep amount of duplicates of concatenated column(s) value(s), ordered by another column (asc/desc)
+
+        "apply": "filter_by_duplicates",
+        "comment": description, will be displayed
+        "keep": boolean if matches are kept or omitted
+        "duplicates": keep amount of duplicates of column value, ordered by another concatenated column values (asc/desc)
             "orderby": list/array of column names whose values concatenate for comparison
             "descending": boolean,
             "column": column name with recurring values, e.g. customer id of which duplicates are allowed
             "amount": integer > 0
-        "compare": discard explicit excemptions as stated in excemption file, based on same identifier
-            "source": matching regex, opens last touched file
-            "sourceformat": matching regex to extract column titles
-            "headerrowindex": offset for title row
-                "patterns": object/dict of column names of comparation-file that again contain an object/dict
-                    "correspond": column name of original file whose values should match
-                    "match": pattern for filtering
+
+        "apply": "filter_by_comparison_file",
+        "comment": description, will be displayed
+        "keep": boolean if matches are kept or omitted
+        "compare": keep or discard explicit excemptions as stated in excemption file, based on same identifier
+            "filesetting": same structure as base. if source == "SELF" the origin file will be processed
+                           sourceformat for headers may differ between "(.+?)[;\\s]" and "\\\"(.*?)\\\"", idk why
+            "filter": same structure as base
+            "modify": same structure as base
+            "match":
+                "all": dict with one or multiple "ORIGININDEX": "COMPAREFILEINDEX", kept if all match
+                "any": dict with one or multiple "ORIGININDEX": "COMPAREFILEINDEX", kept if at least one matches
+
+        "apply": "filter_by_monthinterval",
+        "comment": description, will be displayed
+        "keep": boolean if matches are kept or omitted
         "interval": discard by not matching interval in months, optional offset from initial column value
             "column": column name with date to process,
             "format": list/array of date format order e.g. ["d", "m", "y"],
             "interval": integer for months,
             "offset": optional offset in months
+
     "modify": modifies the result
         "add": adds a column with the set value. if the name is already in ise this will be replaced!
         "replace": replaces regex matches with the given value
     "evaluate": object/dict with colum-name keys and patterns as values that just create a warning, e.g. email verification
 '''
 
-STOPANIMATION = True
 RESULTSTRING = ''
 
-def animationbar():
-    for c in itertools.cycle( ['.   ', '..  ', '... ', '....', ' ...', '  ..', '   .'] ):
-        if STOPANIMATION:
-            break
-        sys.stdout.write( '\r' + c )
-        sys.stdout.flush()
-        time.sleep(0.1)
-        sys.stdout.write('\r')
-
 def fprint(*args):
+	# like print but adds to resultstring for external call 
 	global RESULTSTRING
-	# like print but flushes loading bar animation beforehand
-	sys.stdout.flush()
 	msg = ''
 	for a in args:
 		msg += str( a )
-	sys.stdout.write( '\r' + msg +'\n' )
+	print(msg)
 	RESULTSTRING += msg +'\n'
+	if ASSISTANT:
+		interface(msg + '<br />')
 
 def reset(thisfilename):
 	# create a default configuration file
 	try:
 		with open(thisfilename + '.json', 'x', newline = '', encoding = 'utf8') as file:
 			json.dump(DEFAULTJSON, file, ensure_ascii = False, indent = 4)
-		fprint('[*]  default setting file ' + thisfilename + '.json successfully written. please accommodate to your environment.\n')
+		fprint('[*] default setting file ', thisfilename, '.json successfully written. please accommodate to your environment.\n')
 	except:
-		fprint('[~]  ' + thisfilename + '.json could not be written because it already existed. please contact devops.\n')
+		fprint('[~] ', thisfilename, '.json could not be written because it already existed. please contact devops.\n')
 
-def sourcefile(regex):
+def sourcefile(regexPattern):
 	# look for last touched source file that matches filter for source according to settings
 	sourcefile = []
-	directory = os.getcwd()
-	if os.path.isfile(regex): # aka distinct file with path is passed
-		directory = os.path.split(regex)[0]
-		regex = os.path.split(regex)[1]
+	directory = None
+	if os.path.isfile(regexPattern): # aka distinct file with path is passed
+		directory = os.path.split(regexPattern)[0]
+		regexPattern = os.path.split(regexPattern)[1]
+	if not directory:
+		directory = os.getcwd()
 	for entry in os.scandir( directory ):
 		if os.path.isfile( os.path.join( directory, entry) ):
-			if re.match( regex, entry.name ):
+			if re.match( regexPattern, entry.name ):
 				sourcefile.append( [ os.path.join( directory, entry), entry.stat().st_mtime ] )
 	if len(sourcefile):
-		sourcefile.sort( key=lambda time: time[1], reverse=True )
+		sourcefile.sort( key = lambda time: time[1], reverse = True )
 		return sourcefile[0][0]
 	else:
 		return False
 
-def monthdelta(date, delta):
-    m, y = (date.month + delta) % 12, date.year + ((date.month) + delta - 1) // 12
-    if not m: m = 12
-    d = min(date.day, calendar.monthrange(y, m)[1])
-    return date.replace(day = d, month = m, year = y)
-	
-def monthdiff(first,last,format):
-	# determine approximately difference of months
-	fchunk, lchunk = re.findall( r'\d+', first ), re.findall( r'\d+', last )
-	fdate, ldate = {}, {}
-	i = 0
-	for key in format:
-		fdate[key], ldate[key] = int(fchunk[i]), int(lchunk[i])
-		i += 1
-	fdate['datetime'] = datetime(fdate['y'], fdate['m'], fdate['d'])
-	ldate['datetime'] = datetime(ldate['y'], ldate['m'], ldate['d'])
-	return round((ldate['datetime'] - fdate['datetime']).days / (365 / 12))
-
-class resulthandler:
-	def __init__(self, headers, rows, setting):
-		self.list={}
-		for i, row in enumerate(list(rows)[setting['headerrowindex']+1:]):
-			l={}
-			for cell in zip(headers, row):
-				# this cumbersome behaviour is necessary to certainly populate fields due to possible identical column names
-				# this had me for some hours. who tf does shit like that?
-				if not cell[0] in l or l[cell[0]] == '':
-					l[cell[0]] = cell[1].strip()
-			self.list[i] = l
-	def delete(self, key, track=None):
-		deleted = self.list.pop(key, None)
-		if deleted != None and track and track['column'] and track['values'] and track['column'] in deleted and deleted[track['column']] in track['values']:
-			fprint('[!] tracked value ', deleted[track['column']], ' has been deleted ', track['cause'])
-	def looplist(self):
-		return dict(self.list)
-	def modify(self, modifications):
-		addedcolumns=[]
-		for modify in modifications:
-			for rule in modifications[modify]:
-				if modify == "add":
-					addedcolumns.append(rule)
-					for row in self.list:
-						self.list[row][rule] = modifications[modify][rule]
-				if modify == "replace":
-					for entry in self.looplist().keys():
-						self.list[entry][rule]=re.sub(modifications[modify][rule][0], modifications[modify][rule][1], self.list[entry][rule])
-		return addedcolumns
-
-def filter(setting, argument):
-	global STOPANIMATION
-	global RESULTSTRING
-	RESULTSTRING = ''
-
-	sfile = sourcefile(setting['source'])
-	try:
-		with open( sfile, newline='' ) as csvfile:
-			STOPANIMATION = False
-			animation = threading.Thread( target = animationbar )
-			animation.daemon = True
-			animation.start()
-
-			fprint('[*] loading source file ' + sfile + '...')
-
-			# extract headers from first row to list
-			headers=re.findall( setting['sourceformat'], csvfile.readlines()[setting['headerrowindex']] )
-
-			# compare and proceed only if all columns from the settings exist and do fully match the list
-			if not set(setting['columns']).intersection(headers) == set(setting['columns']):
-				fprint('[~] not all necessary fields were found in sourcefile or header-format not processable! filter aborted! ', headers, setting['columns'])
-				STOPANIMATION = True
-				raise Exception("not all necessary fields were found in sourcefile or header-format not processable! filter aborted!")
-
-			# reset internal pointer
-			csvfile.seek(0)
-			# csv.DictReader does not handle the structure of the given file thus needing a custom solution for use of fieldnames
-			rows = csv.reader(csvfile, delimiter=';')
-			# iterate over rows, strip whitespaces, assign headers as keys to values and row-index as key to global result
-			RESULT = resulthandler(headers, rows, setting)
-		csvfile.close()
-
-		fprint('[*] total rows: ', len(RESULT.list))
-		if argument['track']['column'] and argument['track']['values']:
-			fprint('[!] tracking ', argument['track']['values'], ' in column ', argument['track']['column'], '; you will be notified if deletion occurs')
-		elif bool(argument['track']['column']) != bool(argument['track']['values']):
-			fprint('[~] necessary tracking parameters incomplete')
-
-		##############################################################################
-		# apply filters by regular expressions
-		##############################################################################
-		if 'filter' in setting:
-			for filter in setting['filter']:
-				if 'comment' in filter:
-					fprint('[*] applying filter: ' + filter['comment'] + '...')
-				rows = RESULT.looplist()
-				for i in rows:
-					keep = True
-					argument['track']['cause'] = []
-					if 'patterns' in filter:
-						if 'any' in filter['patterns']:
-							for f in filter['patterns']['any']:
-								if bool(re.search(filter['patterns']['any'][f], rows[i][f], re.IGNORECASE|re.MULTILINE)):
-									keep = filter['keep']
-									argument['track']['cause'].append({'filtered':f, 'keep':keep})
-									break
-								else:
-									keep = not filter['keep']
-									argument['track']['cause'].append({'filtered':f, 'keep':keep})
-						elif 'all' in filter['patterns']:
-							for f in filter['patterns']['all']:
-								if bool(re.search(filter['patterns']['all'][f], rows[i][f], re.IGNORECASE|re.MULTILINE)):
-									keep = filter['keep']
-									argument['track']['cause'].append({'filtered':f, 'keep':keep})
-								else:
-									keep = not filter['keep']
-									argument['track']['cause'].append({'filtered':f, 'keep':keep})
-									break
-					if not keep:
-						RESULT.delete(i, argument['track'])
-			fprint('[*] remaining filtered: ', str(len(RESULT.list)))
-		###########################################################################
-		## now as you've got all entries that passed the regular expression filters
-		## let's occasionally concentrate and summarize
-		###########################################################################
-		if 'concentrate' in setting:
-			for concentrate in setting['concentrate']:
-				argument['track']['cause'] = ''
-				if 'comment' in concentrate:
-					fprint('[*] applying concentration: ' + concentrate['comment'] + '...')
-				if 'date' in concentrate:
-					# 'keep' all entries with same 'identifier' if any 'column' meets 'bias' for 'threshold'
-					dateFormat = concentrate['date']['format']
-					rows = RESULT.looplist()
-					for i in rows:
-						entrydate = re.findall(r'\d+', rows[i][concentrate['date']['column']])
-						if len(entrydate) < 1:
-							continue
-						# create dictionary according to set format
-						edate = {}
-						for j, key in enumerate(dateFormat):
-							edate[key] = entrydate[j]
-						timespan = monthdiff('01.' + str(edate['m']) + '.' + str(edate['y']), '01.' + argument['processedMonth'] + '.' + argument['processedYear'], dateFormat)
-						filtermatch = (concentrate['date']['bias'] == "<" and timespan <= concentrate['date']['threshold']) or (concentrate['date']['bias'] == ">" and timespan >= concentrate['date']['threshold'])
-						if (filtermatch and not concentrate['keep']) or (not filtermatch and concentrate['keep']):
-							RESULT.delete(i, argument['track'])
-				elif 'duplicates' in concentrate:
-					duplicates = {}
-					rows = RESULT.looplist()
-					for i in rows:
-						identifier = rows[i][concentrate['duplicates']['column']]
-						if not identifier in duplicates:
-							duplicates[identifier] = [[''.join([rows[i][v] for v in concentrate['duplicates']['orderby']]), i]]
-						else:
-							duplicates[identifier].append([''.join([rows[i][v] for v in concentrate['duplicates']['orderby']]), i])
-					for i in duplicates:
-						duplicates[i].sort(key=lambda x:x[0], reverse = concentrate['duplicates']['descending'])
-						argument['track']['cause'] = {'identified by': i , 'duplicate values for column': duplicates[i]}
-						for j, k in enumerate(duplicates[i]):
-							if j < concentrate['duplicates']['amount']:
-								argument['track']['cause']['kept'] = duplicates[i][j]
-							else:
-								RESULT.delete(k[1], argument['track'])
-				elif 'compare' in concentrate:
-					# 'keep' all entries that match mith 'src'
-					# column-name boolean compares value
-					# column-name string matches pattern
-					try:
-						directory = os.getcwd()
-						filename = concentrate['compare']['source'] 
-						if '/' in sfile: # aka distinct file with path is passed
-							directory = os.path.split(sfile)[0]
-						if '/' in concentrate['compare']['source']:
-							directory = os.path.split(concentrate['compare']['source'])[0]
-							filename = os.path.split(concentrate['compare']['source'])[1]
-						concentrate['compare']['source'] = os.path.abspath(os.path.join(directory, filename))
-						file = sourcefile(concentrate['compare']['source'])
-						fprint('[*] comparing with: ' + file + '...')
-						with open(file, newline='') as csvfile2:
-							# same approach like the above
-							headers2 = re.findall(concentrate['compare']['sourceformat'], csvfile2.readlines()[concentrate['compare']['headerrowindex']])
-							csvfile2.seek(0)
-							rows2 = csv.reader(csvfile2, delimiter=';')
-							COMPARE = resulthandler(headers2, rows2, setting)
-						csvfile2.close()
-						
-						# modify compare list
-						if 'modify' in concentrate['compare']:
-							COMPARE.modify(concentrate['compare']['modify'])
-						
-						rows2 = COMPARE.looplist()
-						# sanitize compare list for unmatched patterns
-						cp = concentrate['compare']['patterns']
-						sanitizeCompare = {}
-						if 'all' in cp:
-							sanitizeCompare.update(cp['all'])
-						if 'any' in cp:
-							sanitizeCompare.update(cp['any'])
-						for i in rows2:
-							for f in sanitizeCompare:
-								if 'match' in sanitizeCompare[f]:
-									if not bool(re.search(sanitizeCompare[f]['match'], rows2[i][f], re.IGNORECASE|re.MULTILINE)):
-										COMPARE.delete(i, argument['track'])
-						# compare both lists for matching comparison of corresponding values
-						rows = RESULT.looplist()
-						rows2 = COMPARE.looplist()
-						corresponding = set()
-						for anyall in cp:
-							cpaa = concentrate['compare']['patterns'][anyall]
-							# prepare possibly needed amout of matches
-							correspond = []
-							for f in cpaa:
-								if 'correspond' in cpaa[f]:
-									correspond.append(False)
-							for i in rows:
-								for j in rows2:
-									corresponded = 0
-									#iterate over matches
-									for f in cpaa:
-										if 'correspond' in cpaa[f]:
-											correspond[corresponded] = rows[i][cpaa[f]['correspond']] == rows2[j][f]
-											if anyall == 'any':
-												break
-											corresponded += 1
-									if (anyall == 'any' and True in correspond) or (anyall == 'all' and all(correspond)):
-										corresponding.add(i)
-						for i in rows:
-							if (i in corresponding) != concentrate['keep']:
-								argument['track']['cause'] = {'identified by': i , 'corresponding values do not match: ': i}
-								RESULT.delete(i, argument['track'])
-					except Exception as e:
-						# in case file does not exist
-						fprint('[~] comparison file not processable.\n' + traceback.format_exc())
-				elif 'interval' in concentrate:
-					# 'keep' if 'column'-value -+ 'offset' matches 'interval' from current or cli-set date
-					dateFormat = concentrate['interval']['format']
-					rows = RESULT.looplist()
-					for i in rows:
-						entrydate = re.findall(r'\d+', rows[i][concentrate['interval']['column']])
-						if len(entrydate) < 1:
-							continue
-						for j, key in enumerate(dateFormat):
-							edate[key]=entrydate[j]
-						offset_edate = monthdelta(datetime(int(edate['y']), int(edate['m']), 1), concentrate['interval']['offset'])
-						timespan = monthdiff('01.' + str(offset_edate.month) + '.' + str(offset_edate.year), '01.' + argument['processedMonth'] + '.' + argument['processedYear'], dateFormat)
-						filtermatch = timespan % concentrate['interval']['interval']
-						if (filtermatch and not concentrate['keep']) or (not filtermatch and concentrate['keep']):
-							RESULT.delete(i, argument['track'])
-			fprint('[*] after concentrate: ', len(RESULT.list))
-
-		###########################################################################
-		## modify the result list
-		###########################################################################
-		if 'modify' in setting:
-			setting['columns'].extend(RESULT.modify(setting['modify']))
-			fprint('[*] modifications done')
-
-		# write filtered list to destination file
-		destination = export(setting, sfile, RESULT)
-
-		# generate warnings in case evaluations fail
-		if 'evaluate' in setting:
-			warning={}
-			for row in RESULT.list:
-				for evaluation in setting['evaluate']:
-					if RESULT.list[row][evaluation] and re.match(setting['evaluate'][evaluation], RESULT.list[row][evaluation]):
-						if evaluation in warning:
-							warning[evaluation] += 1
-						else:
-							warning[evaluation] = 1
-			for key, value in warning.items():
-				fprint('\n[!] WARNING: ' + str(value) + ' values of ' + key + ' may be faulty, please revise in the output file ' + destination)
-		fprint('\n[*] done! do not forget to check and archive ' + destination)
-
-	except Exception as e:
-		fprint('[~] source file ', sfile, ' could not be loaded or some filter error occured, filter not successful...\n' + traceback.format_exc())
-
-	STOPANIMATION = True
-	return RESULTSTRING
-
-def export(setting, sfile, RESULT):
-	destination = os.path.join(os.path.split(os.path.abspath(sfile))[0], setting['destination']);
-	filetype = setting['destination'][setting['destination'].rindex("."):].lower()
+def export(RESULT):
+	destination = os.path.join(os.path.split(os.path.abspath(RESULT.file))[0], RESULT.setting['filesetting']['destination']);
+	filetype = RESULT.setting['filesetting']['destination'][RESULT.setting['filesetting']['destination'].rindex("."):].lower()
 	try:
 		if filetype == ".csv":
 			with open(destination, 'w', newline='') as csvfile:
 				writer = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
 				# add reduced header
-				writer.writerow('"'+h+'"' for h in setting['columns'])
+				writer.writerow('"'+h+'"' for h in RESULT.setting['filesetting']['columns'])
 				for row in RESULT.list:
 					output = []
-					for reduce in setting['columns']:
+					for reduce in RESULT.setting['filesetting']['columns']:
 						output.append(RESULT.list[row][reduce])
 					writer.writerow('"'+c+'"' for c in output)
 			csvfile.close()
@@ -573,7 +308,7 @@ def export(setting, sfile, RESULT):
 			worksheet.set_default_row(32)
 
 			# add headers + static
-			header = [h for h in setting['columns']]
+			header = [h for h in RESULT.setting['filesetting']['columns']]
 			row=0
 			col=0
 			# add sort key as header on sheet
@@ -583,7 +318,7 @@ def export(setting, sfile, RESULT):
 			worksheet.repeat_rows(row)
 
 			# write content
-			res = RESULT.looplist()
+			res = dict(RESULT.list)
 			for rrow in res:
 				row += 1
 				col = 0
@@ -595,9 +330,263 @@ def export(setting, sfile, RESULT):
 			return destination
 
 		else:
-			raise Exception('[~] filetype ' + filetype + ' not supported!')
+			raise Exception(f'[~] filetype {filetype} not supported!')
 	except Exception as e:
-		fprint('[~] ' + destination + ' could not be written probably because it was already opened or filetype is not supported.\n' + traceback.format_exc())
+		fprint('[~] ', destination, ' could not be written probably because it was already opened or filetype is not supported.\n', traceback.format_exc())
+	return False
+
+def monthdelta(date, delta):
+    m, y = (date.month + delta) % 12, date.year + ((date.month) + delta - 1) // 12
+    if not m: m = 12
+    d = min(date.day, calendar.monthrange(y, m)[1])
+    return date.replace(day = d, month = m, year = y)
+	
+def monthdiff(first, last, format):
+	# determine approximately difference of months
+	fchunk, lchunk = re.findall( r'\d+', first ), re.findall( r'\d+', last )
+	fdate, ldate = {}, {}
+	i = 0
+	for key in format:
+		fdate[key], ldate[key] = int(fchunk[i]), int(lchunk[i])
+		i += 1
+	fdate['datetime'] = datetime(fdate['y'], fdate['m'], fdate['d'])
+	ldate['datetime'] = datetime(ldate['y'], ldate['m'], ldate['d'])
+	return round((ldate['datetime'] - fdate['datetime']).days / (365 / 12))
+
+class listprocessor:
+	def __init__(self, setting, argument = None, isChild = False):
+		self.isChild = isChild
+		self.argument = argument
+		self.setting = setting
+		self.list = {}
+		self.file = sourcefile(self.setting['filesetting']['source'])
+		try:
+			with open( self.file, newline='' ) as csvfile:
+				self.log('[*] loading source file ', self.file, '...')
+				# extract headers from first row to list
+				self.headers = re.findall( self.setting['filesetting']['sourceformat'], csvfile.readlines()[self.setting['filesetting']['headerrowindex']] )
+				# compare and proceed only if all columns from the settings exist and do fully match the list
+				if not set(self.setting['filesetting']['columns']).intersection(self.headers) == set(self.setting['filesetting']['columns']):
+					self.log('[~] not all necessary fields were found in sourcefile or header-format not processable! filter aborted! ', self.headers, self.setting['filesetting']['columns'])
+					raise Exception("not all necessary fields were found in sourcefile or header-format not processable! filter aborted!")
+				# reset internal pointer
+				csvfile.seek(0)
+				# csv.DictReader does not handle the structure of the given file thus needing a custom solution for use of fieldnames
+				rows = csv.reader(csvfile, delimiter=self.setting['filesetting']['delimiter'])
+				for i, row in enumerate(list(rows)[self.setting['filesetting']['headerrowindex'] + 1:]):
+					l = {}
+					for cell in zip(self.headers, row):
+						# this cumbersome behaviour is necessary to certainly populate fields due to possible identical column names
+						# this had me for some hours. who tf does shit like that?
+						if not cell[0] in l or l[cell[0]] == '':
+							l[cell[0]] = cell[1].strip()
+					self.list[i] = l
+			csvfile.close()
+		except Exception as e:
+			self.log('[~] source file ', self.file, ' could not be loaded or some filter error occured, filter not successful...\n', traceback.format_exc())
+		if len(self.list):
+			self.filter()
+
+	def filter(self):
+		self.log('[*] total rows: ', len(self.list))
+		if 'track' in self.argument:
+			if self.argument['track']['column'] and self.argument['track']['values']:
+				self.log('[!] tracking ', self.argument['track']['values'], ' in column ', self.argument['track']['column'], '; you will be notified if deletion occurs')
+			elif bool(self.argument['track']['column']) != bool(self.argument['track']['values']):
+				self.log('[~] necessary tracking parameters incomplete')
+
+		##############################################################################
+		# apply filters
+		##############################################################################
+		if 'filter' in self.setting:
+			for filter in self.setting['filter']:
+				if 'comment' in filter:
+					self.log('[*] applying filter: ', filter["apply"], ' ', filter["comment"], '...')
+				
+				try:
+					getattr(self, filter["apply"])(filter)
+					self.log('[*] remaining filtered: ', len(self.list))
+
+				except Exception as e:
+					self.log('[~] ', filter["apply"], ' does not exist and could not be applied!\n', traceback.format_exc())
+
+		###########################################################################
+		## modify the result list if applicable
+		###########################################################################
+		if 'modify' in self.setting:
+			self.setting['filesetting']['columns'].extend(self.modify(self.setting['modify']))
+			self.log('[*] modifications done')
+
+		###########################################################################
+		## export if applicable and generate warnings in case evaluations fail
+		###########################################################################
+		destination = export(self) if 'destination' in self.setting['filesetting'] else False
+		if destination:
+			if 'evaluate' in self.setting:
+				warning={}
+				for row in self.list:
+					for evaluation in self.setting['evaluate']:
+						if self.list[row][evaluation] and re.match(self.setting['evaluate'][evaluation], self.list[row][evaluation]):
+							if evaluation in warning:
+								warning[evaluation] += 1
+							else:
+								warning[evaluation] = 1
+				for key, value in warning.items():
+					self.log('\n[!] WARNING: ', str(value), ' values of ', key, ' may be faulty, please revise in the output file ', destination)
+			self.log('\n[*] done! do not forget to check and archive ', destination)
+
+	def log(self, *msg):
+		if not self.isChild:
+			fprint(*msg)
+
+	def delete(self, key):
+		deleted = self.list.pop(key, None)
+		if deleted != None and not self.isChild and self.argument['track'] and self.argument['track']['column'] and self.argument['track']['values'] and self.argument['track']['column'] in deleted and deleted[self.argument['track']['column']] in self.argument['track']['values']:
+			self.log('[!] tracked value ', deleted[self.argument['track']['column']], ' has been deleted ', self.argument['track']['cause'])
+
+	def modify(self, modifications):
+		###########################################################################
+		# add column with fixed value or formula or replace regex pattern in existing column
+		###########################################################################
+		addedcolumns=[]
+		for modify in modifications:
+			for rule in modifications[modify]:
+				if modify == "add":
+					addedcolumns.append(rule)
+					for row in self.list:
+						self.list[row][rule] = modifications[modify][rule]
+				if modify == "replace":
+					for entry in dict(self.list).keys():
+						self.list[entry][rule]=re.sub(modifications[modify][rule][0], modifications[modify][rule][1], self.list[entry][rule])
+		return addedcolumns
+
+	def filter_by_expression(self, rule):
+		###########################################################################
+		# keep or discard all entries where column values match regex pattern 
+		###########################################################################
+		rows = dict(self.list)
+		for i in rows:
+			keep = True
+			self.argument['track']['cause'] = []
+			if 'match' in rule:
+				if 'any' in rule['match']:
+					for column in rule['match']['any']:
+						keep = not rule['keep']
+						if bool(re.search(rule['match']['any'][column], rows[i][column], re.IGNORECASE|re.MULTILINE)):
+							keep = rule['keep']
+							self.argument['track']['cause'].append({'filtered':column, 'keep':keep})
+							break
+				elif 'all' in rule['match']:
+					for column in rule['match']['all']:
+						keep = rule['keep']
+						if not bool(re.search(rule['match']['all'][column], rows[i][column], re.IGNORECASE|re.MULTILINE)):
+							keep = not rule['keep']
+							self.argument['track']['cause'].append({'filtered':column, 'keep':keep})
+							break
+			if not keep:
+				self.delete(i)
+
+	def filter_by_monthdiff(self, rule):
+		###########################################################################
+		# keep or discard all entries if 'column' meets 'bias' for 'threshold'
+		###########################################################################
+		dateFormat = rule['date']['format']
+		rows = dict(self.list)
+		for i in rows:
+			entrydate = re.findall(r'\d+', rows[i][rule['date']['column']])
+			if len(entrydate) < 1:
+				continue
+			# create dictionary according to set format
+			edate = {}
+			for j, key in enumerate(dateFormat):
+				edate[key] = entrydate[j]
+			timespan = monthdiff('01.' + str(edate['m']) + '.' + str(edate['y']), '01.' + self.argument['processedMonth'] + '.' + self.argument['processedYear'], dateFormat)
+			filtermatch = (rule['date']['bias'] == "<" and timespan <= rule['date']['threshold']) or (rule['date']['bias'] == ">" and timespan >= rule['date']['threshold'])
+			if (filtermatch and not rule['keep']) or (not filtermatch and rule['keep']):
+				self.delete(i)
+	
+	def filter_by_monthinterval(self, rule):
+		###########################################################################
+		# keep or discard if 'column'-value -+ 'offset' matches 'interval' from current or cli-set date
+		###########################################################################
+		dateFormat = rule['interval']['format']
+		rows = dict(self.list)
+		edate = {}
+		for i in rows:
+			entrydate = re.findall(r'\d+', rows[i][rule['interval']['column']])
+			if len(entrydate) < 1:
+				continue
+			for j, key in enumerate(dateFormat):
+				edate[key]=entrydate[j]
+			offset_edate = monthdelta(datetime(int(edate['y']), int(edate['m']), 1), rule['interval']['offset'])
+			timespan = monthdiff('01.' + str(offset_edate.month) + '.' + str(offset_edate.year), '01.' + self.argument['processedMonth'] + '.' + self.argument['processedYear'], dateFormat)
+			filtermatch = timespan % rule['interval']['interval']
+			if (filtermatch and not rule['keep']) or (not filtermatch and rule['keep']):
+				self.delete(i)
+	
+	def filter_by_comparison_file(self, rule):
+		###########################################################################
+		## discard or keep explicit excemptions as stated in excemption file, based on same identifier.
+		###########################################################################
+		if rule['filesetting']['source'] == "SELF":
+			rule['filesetting']['source'] = self.setting['filesetting']['source']
+		fprint('[*] comparing with ', rule['filesetting']['source'])
+		COMPARE = listprocessor(rule, {'track': {'column': None, 'values': None}, 'processedMonth': self.argument['processedMonth'], 'processedYear': self.argument['processedYear']}, True)
+		selfRows = dict(self.list)
+		cmpRows = dict(COMPARE.list)
+		equals = set()
+		for anyOrAll in rule['match']:
+			compareColumns = rule['match'][anyOrAll]
+			# prepare possibly needed amount of matches
+			correspond = [False * len(compareColumns)]
+			# fill false-prepared match-items with values
+			for i in selfRows:
+				for j in cmpRows:
+					corresponded = 0
+					#iterate over matches
+					for column in compareColumns:
+						correspond[corresponded] = selfRows[i][column] == cmpRows[j][compareColumns[column]]
+						if anyOrAll == 'any':
+							break
+						corresponded += 1
+					if (anyOrAll == 'any' and True in correspond) or (anyOrAll == 'all' and all(correspond)):
+						equals.add(i)
+		for i in selfRows:
+			if (i in equals) != rule['keep']:
+				self.argument['track']['cause'] = {'identified by': i , 'corresponding values do not match: ': i}
+				self.delete(i)
+
+	def filter_by_duplicates(self, rule):
+		###########################################################################
+		## keep amount of duplicates of concatenated column(s) value(s), ordered by another column (asc/desc)
+		###########################################################################
+		duplicates = {}
+		rows = dict(self.list)
+		for i in rows:
+			identifier = rows[i][rule['duplicates']['column']]
+			if not identifier in duplicates:
+				duplicates[identifier] = [[''.join([rows[i][v] for v in rule['duplicates']['orderby']]), i]]
+			else:
+				duplicates[identifier].append([''.join([rows[i][v] for v in rule['duplicates']['orderby']]), i])
+		for i in duplicates:
+			duplicates[i].sort(key=lambda x:x[0], reverse = rule['duplicates']['descending'])
+			self.argument['track']['cause'] = {'identified by': i , 'duplicate values for column': duplicates[i]}
+			for j, k in enumerate(duplicates[i]):
+				if j < rule['duplicates']['amount']:
+					self.argument['track']['cause']['kept'] = duplicates[i][j]
+					pass
+				else:
+					self.delete(k[1])
+	
+
+def filter(setting, argument):
+	global RESULTSTRING
+	RESULTSTRING = ''
+
+	listprocessor(setting, argument)
+
+	return RESULTSTRING
+
 
 if __name__ == '__main__':
 	selectedset = False
@@ -614,18 +603,19 @@ if __name__ == '__main__':
 		with open(thisfilename + '.json', 'r') as jsonfile:
 			SETTINGS = json.loads(jsonfile.read().replace('\n', ''))
 	except Exception as e:
-		fprint('[~] settings could not be loaded, see help for syntax...\n'+ traceback.format_exc())
+		fprint('[~] settings could not be loaded, see help for syntax...\n', traceback.format_exc())
 		SETTINGS = False
 		
 	# argument handler	
 	# options actually ordered by importance
 	sys.argv.pop(0)
-	options = {'r':'--reset|-r',
-		'h':'--help|-h',
-		's':'((?:--set|-s)[:\\s]+)(\\d+)',
-		'm':'((?:--month|-m)[:\\s]+)(\\d+)',
-		'y':'((?:--year|-y)[:\\s]+)(\\d+)',
-		't':'((?:--track|-t)[:\\s]+)(\\S+)'}
+	options = {
+		'r': '--reset|-r',
+		'h': '--help|-h',
+		's': '((?:--set|-s)[:\\s]+)(\\d+)',
+		'm': '((?:--month|-m)[:\\s]+)(\\d+)',
+		'y': '((?:--year|-y)[:\\s]+)(\\d+)',
+		't': '((?:--track|-t)[:\\s]+)(\\S+)'}
 	params = ' '.join(sys.argv) + ' '
 	for opt in options:
 		arg = re.findall(options[opt], params, re.IGNORECASE)
@@ -662,9 +652,9 @@ if __name__ == '__main__':
 		selectedset = SETTINGS['defaultset']
 	ini = SETTINGS['sets'][int(selectedset)]
 
-	file = sourcefile(ini['source'])
+	file = sourcefile(ini['filesetting']['source'])
 	if not file:
-		input('[~] sourcefile named like ' + ini['source'] + '-something not found, program aborted... press enter to exit program.')
+		input('[~] sourcefile named like ' + ini['filesetting']['source'] + '-something not found, program aborted... press enter to exit program.')
 		sys.exit()
 
 	filter(ini, arguments)
