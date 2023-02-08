@@ -148,7 +148,6 @@ let updateTracker = {
 	},
 	alert: async () => {
 		//	display latest update hint on startup as long as it is not disabled
-		console.log(updateTracker.latestMajorUpdate());
 		if (!updateTracker.latestMajorUpdate()) return false;
 		let latestNotif = 'coreNotificationHide' + updateTracker.latestMajorUpdate(),
 			module = {};
