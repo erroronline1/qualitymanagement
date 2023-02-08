@@ -6,7 +6,7 @@
 	<title></title>
 	<script>
 		//////////////////////////////////////////////////////////////
-		//  2020-2022 by error on line 1 (erroronline.one)
+		//  2020-2023 by error on line 1 (erroronline.one)
 		//
 		//  modular software platform to handle different javascripts
 		//  for automated dataprocessing where security setting leave
@@ -60,7 +60,7 @@
 				// import all the scripts
 				await this.imports(this.scripts);
 				// override core-functions if applicable
-				await core.eel();
+				await core.eel.init();
 				// set up encironment variables
 				await core.init.application();
 				// launch ui
@@ -136,7 +136,13 @@
 	<div id="growlNotif"></div>
 	<div id="environment"></div>
 	<script>
-		root.initApp();
+		init = async () => {
+			await root.initApp();
+			if (root.eel) {
+				eel.expose(core.eel.interface.write, "eel_interface");
+			}
+		}
+		init()
 	</script>
 </body>
 
