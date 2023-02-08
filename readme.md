@@ -761,7 +761,7 @@ i was not able to find information if there are special requirements for a quali
 # license
 bottle light quality management software
 
-copyright (c) 2020-2022  [by error on line 1](http://erroronline.one)
+copyright (c) 2020-2023  [by error on line 1](http://erroronline.one)
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version. 
 
