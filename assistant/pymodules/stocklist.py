@@ -8,6 +8,11 @@ import os
 import itertools
 import xlsxwriter
 import datetime
+try:
+	from assistant import interface
+	ASSISTANT = True
+except:
+	ASSISTANT = False
 
 if __name__ == '__main__':
 	print('''                    
@@ -215,6 +220,8 @@ def fprint(*args, clearanimation = False):
 	sys.stdout.write( '\n\r' + msg  )
 	sys.stdout.flush()
 	RESULTSTRING += msg +'\n'
+	if ASSISTANT:
+		interface(msg + '<br />')
 
 
 class tidied_cell_content:
