@@ -26,15 +26,14 @@ $ filter --help    for overview
 else:
 	print ('<filter> as integrated module')
 
-print('built 20230207 by error on line 1 (erroronline.one)')
+print('built 20230216 by error on line 1 (erroronline.one)')
 
 DEFAULTJSON = {
 	"defaultset": 0,
 	"sets": [{
 		"filesetting": {
 			"source": "Export.+?\\.csv",
-			"sourceformat": "\\\"(.*?)\\\"",
-			"delimiter": ";",
+			"sourceformat": ["\\\"(.*?)\\\"", "(.+?)[;\\r\\n]"],
 			"headerrowindex": 0,
 			"destination": "filtered.csv",
 			"columns": [
@@ -46,6 +45,7 @@ DEFAULTJSON = {
 				"AID",
 				"PRICE",
 				"DELIVERED",
+				"DEPARTMENT"
 			]
 		},
 		"filter": [
@@ -112,7 +112,6 @@ DEFAULTJSON = {
 				"filesetting": {
 					"source": "excemptions.*?.csv",
 					"sourceformat": "(.+?)[;\\s]",
-					"delimiter": ";",
 					"headerrowindex": 0,
 					"columns": [
 						"VORGANG"
@@ -147,7 +146,8 @@ DEFAULTJSON = {
 			},
 			"replace":{
 				"NAME": ["regex", "replacement"]
-			}
+			},
+			"remove": ["DEPARTMENT"]
 		},
 		"evaluate": {
 			"EMAIL": "^((?!@).)*$"
@@ -178,7 +178,7 @@ helptext='''
 
     "filesetting":
 		"source": matching regex, opens last touched file
-	    "sourceformat": matching regex to extract column titles
+	    "sourceformat": matching regex to extract column titles, multiple options available
 	    "headerrowindex": offset for title row
 	    "destination": file to write output to
 	    "columns": list/array of column names to process and export to destination
@@ -232,8 +232,10 @@ helptext='''
             "offset": optional offset in months
 
     "modify": modifies the result
-        "add": adds a column with the set value. if the name is already in ise this will be replaced!
+        "add": adds a column with the set value. if the name is already in use this will be replaced!
         "replace": replaces regex matches with the given value
+		"remove": remove columns from result, may have been used solely for filtering
+
     "evaluate": object/dict with colum-name keys and patterns as values that just create a warning, e.g. email verification
 '''
 
@@ -280,9 +282,9 @@ def sourcefile(regexPattern):
 
 def export(RESULT):
 	destination = os.path.join(os.path.split(os.path.abspath(RESULT.file))[0], RESULT.setting['filesetting']['destination']);
-	filetype = RESULT.setting['filesetting']['destination'][RESULT.setting['filesetting']['destination'].rindex("."):].lower()
+	filetype = RESULT.setting['filesetting']['destination'][RESULT.setting['filesetting']['destination'].rindex('.'):].lower()
 	try:
-		if filetype == ".csv":
+		if filetype == '.csv':
 			with open(destination, 'w', newline='') as csvfile:
 				writer = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
 				# add reduced header
@@ -295,7 +297,7 @@ def export(RESULT):
 			csvfile.close()
 			return destination
 
-		elif filetype == ".xlsx":
+		elif filetype == '.xlsx':
 			workbook = xlsxwriter.Workbook(destination)
 
 			cell_std = workbook.add_format({'top': 1, 'num_format':'@', 'valign': 'top', 'text_wrap': True})
@@ -326,6 +328,7 @@ def export(RESULT):
 					cell_format = cell_std
 					worksheet.write(row, col, res[rrow][cell], cell_format)
 					col += 1
+
 			workbook.close()
 			return destination
 
@@ -361,18 +364,25 @@ class listprocessor:
 		self.list = {}
 		self.file = sourcefile(self.setting['filesetting']['source'])
 		try:
-			with open( self.file, newline='' ) as csvfile:
+			with open( self.file, newline='') as csvfile:
 				self.log('[*] loading source file ', self.file, '...')
-				# extract headers from first row to list
-				self.headers = re.findall( self.setting['filesetting']['sourceformat'], csvfile.readlines()[self.setting['filesetting']['headerrowindex']] )
+				#detect dialect, with quotes or without, idk, works well but not without
+				dialect = csv.Sniffer().sniff(csvfile.read(1024))
+				# extract headers from first row to list, try different formats
+				for sformat in self.setting['filesetting']['sourceformat']:
+					# reset internal pointer
+					csvfile.seek(0)
+					self.headers = re.findall( sformat, csvfile.readlines()[self.setting['filesetting']['headerrowindex']] )
+					if set(self.setting['filesetting']['columns']).intersection(self.headers) == set(self.setting['filesetting']['columns']):
+						break
 				# compare and proceed only if all columns from the settings exist and do fully match the list
 				if not set(self.setting['filesetting']['columns']).intersection(self.headers) == set(self.setting['filesetting']['columns']):
 					self.log('[~] not all necessary fields were found in sourcefile or header-format not processable! filter aborted! ', self.headers, self.setting['filesetting']['columns'])
-					raise Exception("not all necessary fields were found in sourcefile or header-format not processable! filter aborted!")
+					raise Exception('not all necessary fields were found in sourcefile or header-format not processable! filter aborted!')
 				# reset internal pointer
 				csvfile.seek(0)
 				# csv.DictReader does not handle the structure of the given file thus needing a custom solution for use of fieldnames
-				rows = csv.reader(csvfile, delimiter=self.setting['filesetting']['delimiter'])
+				rows = csv.reader(csvfile, dialect)
 				for i, row in enumerate(list(rows)[self.setting['filesetting']['headerrowindex'] + 1:]):
 					l = {}
 					for cell in zip(self.headers, row):
@@ -401,20 +411,26 @@ class listprocessor:
 		if 'filter' in self.setting:
 			for filter in self.setting['filter']:
 				if 'comment' in filter:
-					self.log('[*] applying filter: ', filter["apply"], ' ', filter["comment"], '...')
+					self.log('[*] applying filter: ', filter['apply'], ' ', filter['comment'], '...')
 				
 				try:
-					getattr(self, filter["apply"])(filter)
+					getattr(self, filter['apply'])(filter)
 					self.log('[*] remaining filtered: ', len(self.list))
 
 				except Exception as e:
-					self.log('[~] ', filter["apply"], ' does not exist and could not be applied!\n', traceback.format_exc())
+					self.log('[~] ', filter['apply'], ' does not exist and could not be applied!\n', traceback.format_exc())
 
 		###########################################################################
 		## modify the result list if applicable
 		###########################################################################
 		if 'modify' in self.setting:
-			self.setting['filesetting']['columns'].extend(self.modify(self.setting['modify']))
+			modifications = self.modify(self.setting['modify'])
+			self.setting['filesetting']['columns'].extend(modifications['add'])
+			for column in modifications['remove']:
+				try:
+					self.setting['filesetting']['columns'].remove(column)
+				except Exception as e:
+					pass
 			self.log('[*] modifications done')
 
 		###########################################################################
@@ -448,16 +464,18 @@ class listprocessor:
 		###########################################################################
 		# add column with fixed value or formula or replace regex pattern in existing column
 		###########################################################################
-		addedcolumns=[]
+		addedcolumns={'add':[], 'remove':[]}
 		for modify in modifications:
 			for rule in modifications[modify]:
-				if modify == "add":
-					addedcolumns.append(rule)
+				if modify == 'add':
+					addedcolumns['add'].append(rule)
 					for row in self.list:
 						self.list[row][rule] = modifications[modify][rule]
-				if modify == "replace":
+				if modify == 'replace':
 					for entry in dict(self.list).keys():
 						self.list[entry][rule]=re.sub(modifications[modify][rule][0], modifications[modify][rule][1], self.list[entry][rule])
+				if modify == 'remove':
+					addedcolumns['remove'].append(rule)
 		return addedcolumns
 
 	def filter_by_expression(self, rule):
@@ -501,7 +519,7 @@ class listprocessor:
 			for j, key in enumerate(dateFormat):
 				edate[key] = entrydate[j]
 			timespan = monthdiff('01.' + str(edate['m']) + '.' + str(edate['y']), '01.' + self.argument['processedMonth'] + '.' + self.argument['processedYear'], dateFormat)
-			filtermatch = (rule['date']['bias'] == "<" and timespan <= rule['date']['threshold']) or (rule['date']['bias'] == ">" and timespan >= rule['date']['threshold'])
+			filtermatch = (rule['date']['bias'] == '<' and timespan <= rule['date']['threshold']) or (rule['date']['bias'] == '>' and timespan >= rule['date']['threshold'])
 			if (filtermatch and not rule['keep']) or (not filtermatch and rule['keep']):
 				self.delete(i)
 	
@@ -528,7 +546,7 @@ class listprocessor:
 		###########################################################################
 		## discard or keep explicit excemptions as stated in excemption file, based on same identifier.
 		###########################################################################
-		if rule['filesetting']['source'] == "SELF":
+		if rule['filesetting']['source'] == 'SELF':
 			rule['filesetting']['source'] = self.setting['filesetting']['source']
 		fprint('[*] comparing with ', rule['filesetting']['source'])
 		COMPARE = listprocessor(rule, {'track': {'column': None, 'values': None}, 'processedMonth': self.argument['processedMonth'], 'processedYear': self.argument['processedYear']}, True)
@@ -593,7 +611,7 @@ if __name__ == '__main__':
 	processedMonth = str(datetime.today().month)
 	processedYear = str(datetime.today().year)
 	lhelp = False
-	track = {"column": None, "values": None}
+	track = {'column': None, 'values': None}
 
 	# load settings
 	thisfilename = sys.argv[0].split('.')[0]

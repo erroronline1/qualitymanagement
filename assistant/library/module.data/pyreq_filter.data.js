@@ -5,8 +5,7 @@ pyreq_filter.data = {
 			"useCase": "This filter works so-and-so and you need to prepare the source files like that...",
 			"filesetting": {
 				"source": "Export.+?\\.csv",
-				"sourceformat": "\\\"(.*?)\\\"",
-				"delimiter": ";",
+				"sourceformat": ["\\\"(.*?)\\\"", "(.+?)[;\\r\\n]"],
 				"headerrowindex": 0,
 				"destination": "filtered.csv",
 				"columns": [
@@ -81,8 +80,7 @@ pyreq_filter.data = {
 					"keep": false,
 					"filesetting": {
 						"source": "excemptions.*?.csv",
-						"sourceformat": "(.+?)[;\\s]",
-						"delimiter": ";",
+						"sourceformat": ["\\\"(.*?)\\\"", "(.+?)[;\\r\\n]"],
 						"headerrowindex": 0,
 						"columns": [
 							"COMPAREFILEINDEX"
