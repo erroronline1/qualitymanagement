@@ -35,7 +35,6 @@
 * [tools](#tools)
 	* [vendorlist.xlsm](#vendorlistxlsm)
 	* [audit planner.xlsm](#audit-plannerxlsm)
-	* [stocklist.py](#stocklistpy)
 	* [ticketorder.xlsm](#ticketorderxlsm)
 	* [data rights management.xlsm](#data-rights-managementxlsm)
 	* [transfer schedule.xlsm](#transfer-schedulexlsm)
@@ -57,7 +56,7 @@ while it makes way more sense to automate quality management using assistive tec
 
 and you are not able to change this in the near future.
 
-this system has been in use in context to [iso 13485:2015](https://www.iso.org/search.html?q=13485%3A2015) and was approved by the certification authority.
+this system has been in use in context of [iso 13485](https://www.iso.org/search.html?q=13485) and was approved by the certification authority.
 
 if your company does not have the ressources to test out different expensive qm-software-solutions until you find one to suit your needs and you somehow make use of the simple tools you have access to, bottle light qms might be a good start for you.
 by using quite basic ressources like microsoft office word and excel and standard browsers it also is able to bypass weird system restrictions. editing (if necessary) can be done via any given text editor.
@@ -88,13 +87,13 @@ and yes, whether or not i should use ascii to do a logo, i most certainly can.
 [back to top](#table-of-contents)
 
 ## requirements
-* microsoft office (developed and tested with office 2013 and 2019 professional, word, excel and outlook, lower versions probably work as well, at some point company dropped office 2010 so i can not test it any longer)
+* microsoft office (developed and tested with office 2013 and 2019 professional, word, excel and outlook, previous versions probably work as well, at some point company dropped office 2010 so i can not test it any longer)
 * network access for every employee to access the assistant only from one source
 * one somewhat experienced office user to customize the document-blueprints and vba-codes
 * one webdeveloper to customize the application for your companies needs and optionally provide you with desired additional modules
 * at best a python-developer for provided scripts, having heard of json and knowing how to regex
 * patience with coworkers blaming 'your' assistant for every network failure, printer settings and their inability to read the literal hints and descriptions
-* provided python-scripts probably will have to be compiled (unless you have python installed - [3.8 for the moment](https://www.python.org/downloads/release/python-3810/)). i recommend [pyinstaller](http://www.pyinstaller.org/) for this usecase - at least for windows environments - i just don't know about others.
+* provided python-scripts probably will have to be compiled (unless you have python installed - [3.8 for the moment](https://www.python.org/downloads/release/python-3810/) due to compatibility with eel as the main driver for the [assistant](#the-assistant)). i recommend [pyinstaller](http://www.pyinstaller.org/) for this usecase - at least for windows environments - i just don't know about others.
 
 [back to top](#table-of-contents)
 
@@ -289,7 +288,7 @@ the digital assistant provides your company with an application to have an easie
 
 the assistant was initially created as a web-application run on internet explorer (still being the defacto standard in the beginning). in the meantime ie-support is finally ditched and the assistant comes with a python wrapper to compensate for rigid company policies regarding the deletion of browser history on closing.
 
-you can start the assistant by opening the html-file, or using the (compiled or raw) python wrapper with passed --webfolder argument. use a bash/batch-file for convenience.  
+you can start the assistant by opening the html-file, or using the (compiled or raw) python wrapper with passed --webfolder and --browser argument. use the provided bash/batch-file for convenience. this allows you to access the developer version if your machine supports python, copies the compiled excutable to temp to allow updates of the main executable during working hours while the application is started on several machines from a network folder and provides the pure web-view as a fallback.
 
 * the current version makes excessive use of the [vanillaJS-library](http://vanilla-js.com).
 * the assistant is designed to handle multiple language support, comes with english and german and can be extended as desired. extend the lang-objects in every module, the config-file and register the languages in this config-file to make them available.
@@ -433,7 +432,8 @@ globalSearch api: returns submodules where titles match the search terms.
 [back to top](#table-of-contents)
 
 ### filter
-this module accesses [stocklist.py](#stocklistpy) and [filter.py](#filterpy) with a user interface so no one has to be afraid of spooky hacker shell wiggly text windows and *just maybe* doesn't leave the execution to the hackerman and does their job as in the description. sourcefiles are selectable through a file dialogue, as well as operational arguements with sliders and buttons. settings have to be done within the modules data-object as opposed to json-setup-files for stand-alone-use.
+![assistant filter](assets/assistant_filter.png)
+this module accesses  [filter.py](#filterpy) with a user interface so no one has to be afraid of spooky hacker shell wiggly text windows and *just maybe* doesn't leave the execution to the hackerman and does their job as in the description. sourcefiles are selectable through a file dialogue, as well as operational arguments with sliders and buttons. settings have to be done within the modules data-object as opposed to json-setup-files for stand-alone-use.
 
 dependencies are: datalist for setups.
 
@@ -629,9 +629,9 @@ extends the core-object with the language synthesis. here you define textblocks 
 
 ## python wrapper
 ![python wrapper](assets/assistant_wrapper.png)
-the python wrapper uses [the eel-framework](https://github.com/ChrisKnott/Eel#building-distributable-binary-with-pyinstaller) to start a server and display the assistant tunneling everything through a python backend. this extends some capabilities like storage or is able to fix browser behaviours like opening files instead of storing them like edge 94.
+the python wrapper uses [the eel-framework](https://github.com/ChrisKnott/Eel#building-distributable-binary-with-pyinstaller) to start a server and display the assistant tunneling everything through a python backend. this extends some capabilities like storage, listing folder contents without provided data lists or is able to fix browser behaviours like opening files instead of storing them like edge 94.
 core.eel.js checks for the availability of the wrapper and overrides applicable core methods to use eel-functions instead.
-not yet implemented, but if one day there appear random python specific modules, these could be appended to the core.var.modules-list from core.eel.js and will not mess up plain browser usage.
+python specific modules are appended to the core.var.modules-list from core.eel.js and will not mess up plain browser usage.
 
 ![enabled eel](assets/assistant_eel.png)
 
@@ -643,7 +643,7 @@ this indicates whether the assistant is launched in plain web wiew
 
 modules have to handle conditional behaviour on their own, respective python implementations require adding to and recompiling assistant.py.
 
-because of the architecture of the framework the core.html file is placed in its own folder and has a cumbersome import-procedure for scripts and styles. on the other hand everything else of the assistant remains accessible and changeable without the need of recompiling the wrapper. this is only necessary on changes on the core.html file itself or on adding python specific modules.
+because of the architecture of the framework the core.html file is placed in its own folder and has a cumbersome import-procedure for scripts and styles. on the other hand everything else of the assistant remains accessible and changeable without the need of recompiling the wrapper. this is only necessary on changes on the core.html file itself or on adding or editing python specific modules.
 
 [back to top](#table-of-contents)
 
@@ -668,17 +668,8 @@ the audit planner can be filled with a question set for internal audits. by expo
 
 [back to top](#table-of-contents)
 
-## stocklist.py
-![python stocklist translator](assets/py_stocklist.png)
-the script translates a dump from the erp-software and makes it accessible and searchable for all employees using the assistant hence optimizing dialogue with inventory control. you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
-as of december 2022 this script can either be used on its own or ad a module within the (compiled) assistant. in the latter case the setup has to be done within the modules data-file.
-
-also this script has a function to split the data by given column values. this might help e.g. in case of annual stocktaking. this is not related to quality management in the first place but can come in handy and since the same source has to be processed by the same rules, why the heck not?
-
-[back to top](#table-of-contents)
-
 ## ticketorder.xlsm
-this files purpose is purely for translation. it serves as an interface between your erp-software with item orders and the assistant. basically you can insert any data dump by the erp-software and it translates it to a javascript-object-file as a feedback loop for the stocklist-module within the assistant. it makes sense to contain the generated ticket-ids within the order process in any field that might be dumped by the output. this definitely has an effect on yout order process but might make communication more easy between inventory control and ordering persons.
+this files purpose is purely for translation. it serves as an interface between your erp-software with item orders and the assistant. basically you can insert any data dump by the erp-software and it translates it to a javascript-object-file as a feedback loop for the stocklist-module within the assistant. it makes sense to contain the generated ticket-ids within the order process in any field that might be dumped by the output. this definitely has an effect on your order process but might make communication more easy between inventory control and ordering persons.
 *be aware that the pattern recognizing regexes in the imported vb_library/administration_Locals_XX.vba rely absolutely on the generated data by your erp-software and have to be customized to your individual situation!*
 
 [back to top](#table-of-contents)
@@ -716,7 +707,7 @@ if you have efficient electronic supported methods for time tracking of the empl
 ![python csv-filter](assets/py_filter.png)
 
 there might be a reccuring need to filter huge data-sets. some erp-software can create csv-dumps of data that can be used for statistics or post market surveillance. it can be way easier to filter these dumps and create a serial letter from the output, than adjust the erps database for an example. with the python filter you can describe filter-patterns with regex for different usecases. you will have to customize the json-setup-file and probably compile the python code to an executable that suits your operating system.
-as of december 2022 this script can either be used on its own or ad a module within the (compiled) assistant. in the latter case the setup has to be done within the modules data-file.
+as of december 2022 this script can either be used on its own or [as a module within](#filter) the (compiled) assistant. in the latter case the setup has to be done within the modules data-file.
 
 [back to top](#table-of-contents)
 
