@@ -26,16 +26,18 @@ $ filter --help    for overview
 else:
 	print ('<filter> as integrated module')
 
-print('built 20230216 by error on line 1 (erroronline.one)')
+print('built 20230218 by error on line 1 (erroronline.one)')
 
 DEFAULTJSON = {
 	"defaultset": 0,
 	"sets": [{
+		"postProcessing": "do not forget to check an archive",
 		"filesetting": {
 			"source": "Export.+?\\.csv",
 			"sourceformat": ["\\\"(.*?)\\\"", "(.+?)[;\\r\\n]"],
 			"headerrowindex": 0,
 			"destination": "filtered.csv",
+			"enclose": ["before. DATE will be replaced", "after"],
 			"columns": [
 				"ORIGININDEX",
 				"SOMEDATE",
@@ -45,7 +47,8 @@ DEFAULTJSON = {
 				"AID",
 				"PRICE",
 				"DELIVERED",
-				"DEPARTMENT"
+				"DEPARTMENT",
+				"SOMEFILTERCOLUMN"
 			]
 		},
 		"filter": [
@@ -144,15 +147,47 @@ DEFAULTJSON = {
 				"NEWCOLUMNNAME": "string",
 				"ANOTHERCOLUMNNAME" : "string"
 			},
-			"replace":{
-				"NAME": ["regex", "replacement"]
+			"replace":[
+				["NAME", "regex", "replacement"],
+				[None, ";", ","]
+			],
+			"remove": ["SOMEFILTERCOLUMN", "DEATH"],
+			"rewrite":[
+				{"Customer": ["CUSTOMERID", " separator ", "NAME"]}
+			],
+			"translate":{
+				"DEPARTMENT": "departments"
+			}
+		},
+		"split":{
+			"DEPARTMENT": "(.*)",
+			"DELIVERED": "(?:\\d\\d\.\d\d.)(\d+)"
+		},
+		"format":{
+			"sheet": {
+				"width": 125
 			},
-			"remove": ["DEPARTMENT"]
+			"columns":{
+				"ORIGININDEX":5,
+				"SOMEDATE":5,
+				"CUSTOMERID":5,
+				"NAME":10,
+				"AID":15,
+				"PRICE": None
+			}
 		},
 		"evaluate": {
 			"EMAIL": "^((?!@).)*$"
 		}
-	}]
+	}],
+	"translations":{
+		"departments":{
+			"1": "Central",
+			"2": "Department 1",
+			"3": "Department 2",
+			"4": "Office"
+		}
+	}
 }
 
 helptext='''
@@ -171,16 +206,18 @@ helptext='''
 
     setup can either be specified in filter.json can be extended for other lists and filters and the specific
     filter-set set as default or passed as argument, or passed as dict if used as a module.
-    filters are processed in order of appearance.
+    filters and modifications are processed in order of appearance.
     modifications take place with the filtered list only for performance reasons.
     compare lists can be filtered and manipulated likewise. due to recursive implementation the origin list
     can be used as a filter by itself.
 
+	"postProcessing": optional string as hint what to do with the result file
     "filesetting":
 		"source": matching regex, opens last touched file
 	    "sourceformat": matching regex to extract column titles, multiple options available
 	    "headerrowindex": offset for title row
 	    "destination": file to write output to
+		"enclose": [before, after] optional in case of js-export, some strings to enclose the json-dump as a js-object
 	    "columns": list/array of column names to process and export to destination
 
     "filter": list/array of objects/dicts
@@ -233,10 +270,25 @@ helptext='''
 
     "modify": modifies the result
         "add": adds a column with the set value. if the name is already in use this will be replaced!
-        "replace": replaces regex matches with the given value
-		"remove": remove columns from result, may have been used solely for filtering
+        "replace": replaces regex matches with the given value either at a specified field or in all
+                   according to index 0 being a column name or none/null
+        "remove": remove columns from result, may have been used solely for filtering
+        "rewrite": adds newly named columns consisting of concatenated origin column values and separators.
+                   original columns will be omitted, nested within a list to make sure to order as given
+        "translate": column values to be translated according to specified translation object
+
+    "split": split output by matched patterns of column values into multiple files (csv, js) or sheets (xlsx)
+
+    "format: optional in case of xlsx-exports
+        "sheet": global as width in points
+        "columns": dict of columns and their percentage portion 
 
     "evaluate": object/dict with colum-name keys and patterns as values that just create a warning, e.g. email verification
+
+    translations can replace e.g. numerical values with legible translations.
+    this is an object/dict whose keys can be refered to from the modifier. as translations may be reused they are
+    outside of the filter sets scope. they are passed as "translations"-property to the rule-set.
+    the dict keys are processed as regex for a possible broader use.
 '''
 
 RESULTSTRING = ''
@@ -285,17 +337,39 @@ def export(RESULT):
 	filetype = RESULT.setting['filesetting']['destination'][RESULT.setting['filesetting']['destination'].rindex('.'):].lower()
 	try:
 		if filetype == '.csv':
-			with open(destination, 'w', newline='') as csvfile:
-				writer = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-				# add reduced header
-				writer.writerow('"'+h+'"' for h in RESULT.setting['filesetting']['columns'])
-				for row in RESULT.list:
-					output = []
-					for reduce in RESULT.setting['filesetting']['columns']:
-						output.append(RESULT.list[row][reduce])
-					writer.writerow('"'+c+'"' for c in output)
-			csvfile.close()
-			return destination
+			filename, file_extension = os.path.splitext(destination)
+			files = []
+			for subset in RESULT.list:
+				outputfile = filename + '_' + subset + file_extension if len(RESULT.list) > 1 else destination
+				with open(outputfile, 'w', newline='') as csvfile:
+					writer = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+					# add reduced header
+					writer.writerow('"'+h+'"' for h in RESULT.setting['filesetting']['columns'])
+					for row in RESULT.list[subset]:
+						output = []
+						for column in RESULT.setting['filesetting']['columns']:
+							output.append(row[column])
+						writer.writerow('"'+c+'"' for c in output)
+				csvfile.close()
+				files.append(outputfile)
+			return ", ".join(files)
+
+		if filetype == ".js":
+			filename, file_extension = os.path.splitext(destination)
+			files = []
+			for subset in RESULT.list:
+				outputfile = filename + '_' + subset + file_extension if len(RESULT.list) > 1 else destination
+				jsonobj=[[column for column in RESULT.setting['filesetting']['columns']]]
+				for row in RESULT.list[subset]:
+					jsonobj.append([row[column] for column in RESULT.setting['filesetting']['columns']])
+				with open(outputfile, 'w', newline = '', encoding = 'utf8') as jsfile:
+					if "enclose" in RESULT.setting['filesetting']:
+						jsfile.write(RESULT.setting['filesetting']['enclose'][0].replace('DATE', datetime.now().strftime('%Y-%m-%d')))
+					json.dump(jsonobj, jsfile, ensure_ascii = False, indent = 4)
+					if "enclose" in RESULT.setting['filesetting'] and len(RESULT.setting['filesetting']['enclose'])>1:
+						jsfile.write(RESULT.setting['filesetting']['enclose'][1])
+				files.append(outputfile)
+			return ", ".join(files)
 
 		elif filetype == '.xlsx':
 			workbook = xlsxwriter.Workbook(destination)
@@ -304,30 +378,43 @@ def export(RESULT):
 			# define other formats if necessary:
 			cell_other = workbook.add_format({'top': 1, 'num_format':'@', 'valign': 'top', 'text_wrap': True})
 
-			worksheet = workbook.add_worksheet() # sheet[0:31])
-			worksheet.set_landscape()
-			worksheet.set_margins(left = .25, right = .15, top = .5, bottom = .25)
-			worksheet.set_default_row(32)
+			for subset in RESULT.list:
+				worksheet = workbook.add_worksheet() # sheet[0:31])
+				worksheet.set_landscape()
+				worksheet.set_margins(left = .25, right = .15, top = .5, bottom = .25)
+				worksheet.set_default_row(32)
+				worksheet.set_header(os.path.split(RESULT.setting['filesetting']['destination'])[1] + ' - ' + (subset + ' - ' if isinstance(subset, str) else '') + datetime.now().strftime('%B %Y'))
 
-			# add headers + static
-			header = [h for h in RESULT.setting['filesetting']['columns']]
-			row=0
-			col=0
-			# add sort key as header on sheet
-			for cell in header:
-				worksheet.write(row, col, cell)
-				col +=1
-			worksheet.repeat_rows(row)
+				# set column widths and store column number for supported style properties
+				xlcol = 0
+				for column in RESULT.setting['filesetting']['columns']:
+					if RESULT.setting['format']['columns'].get(column) and RESULT.setting['format']['sheet']['width']:
+						worksheet.set_column(xlcol, xlcol, RESULT.setting['format']['sheet']['width'] / 100 * RESULT.setting['format']['columns'][column])
+					xlcol += 1
+				xlrow=0
+				xlcol=0
+				# add sort key as header on sheet
+				worksheet.write(xlrow, xlcol, subset)
+				xlrow += 1
 
-			# write content
-			res = dict(RESULT.list)
-			for rrow in res:
-				row += 1
-				col = 0
+				# add headers + static
+				header = [h for h in RESULT.setting['filesetting']['columns']]
+				xlrow=0
+				xlcol=0
+				# add sort key as header on sheet
 				for cell in header:
-					cell_format = cell_std
-					worksheet.write(row, col, res[rrow][cell], cell_format)
-					col += 1
+					worksheet.write(xlrow, xlcol, cell)
+					xlcol +=1
+				worksheet.repeat_rows(xlrow)
+
+				# write content
+				for row in RESULT.list[subset]:
+					xlrow += 1
+					xlcol = 0
+					for cell in header:
+						cell_format = cell_std
+						worksheet.write(xlrow, xlcol, row[cell], cell_format)
+						xlcol += 1
 
 			workbook.close()
 			return destination
@@ -359,7 +446,7 @@ def monthdiff(first, last, format):
 class listprocessor:
 	def __init__(self, setting, argument = None, isChild = False):
 		self.isChild = isChild
-		self.argument = argument
+		self.argument = argument if argument else {'track': {'column': None, 'values': None}}
 		self.setting = setting
 		self.list = {}
 		self.file = sourcefile(self.setting['filesetting']['source'])
@@ -434,22 +521,32 @@ class listprocessor:
 			self.log('[*] modifications done')
 
 		###########################################################################
+		## split list or at least elevate to n = 1 for output
+		###########################################################################
+		if not self.isChild:
+			self.split(self.setting.get('split'))
+
+		###########################################################################
 		## export if applicable and generate warnings in case evaluations fail
 		###########################################################################
 		destination = export(self) if 'destination' in self.setting['filesetting'] else False
 		if destination:
 			if 'evaluate' in self.setting:
 				warning={}
-				for row in self.list:
-					for evaluation in self.setting['evaluate']:
-						if self.list[row][evaluation] and re.match(self.setting['evaluate'][evaluation], self.list[row][evaluation]):
-							if evaluation in warning:
-								warning[evaluation] += 1
-							else:
-								warning[evaluation] = 1
-				for key, value in warning.items():
-					self.log('\n[!] WARNING: ', str(value), ' values of ', key, ' may be faulty, please revise in the output file ', destination)
-			self.log('\n[*] done! do not forget to check and archive ', destination)
+				for subset in self.list:
+					for row in self.list[subset]:
+						for evaluation in self.setting['evaluate']:
+							if row[evaluation] and re.match(self.setting['evaluate'][evaluation], row[evaluation]):
+								if evaluation in warning:
+									warning[evaluation] += 1
+								else:
+									warning[evaluation] = 1
+					for key, value in warning.items():
+						self.log('\n[!] WARNING: ', str(value), ' values of ', key, ' may be faulty, please revise in the output file ', destination)
+			postProcessing = ''
+			if 'postProcessing' in self.setting:
+				postProcessing = self.setting['postProcessing']
+			self.log('\n[*] done! ', postProcessing, ' ', destination)
 
 	def log(self, *msg):
 		if not self.isChild:
@@ -468,15 +565,60 @@ class listprocessor:
 		for modify in modifications:
 			for rule in modifications[modify]:
 				if modify == 'add':
-					addedcolumns['add'].append(rule)
+					if not rule in addedcolumns['add']:
+						addedcolumns['add'].append(rule)
 					for row in self.list:
 						self.list[row][rule] = modifications[modify][rule]
 				if modify == 'replace':
-					for entry in dict(self.list).keys():
-						self.list[entry][rule]=re.sub(modifications[modify][rule][0], modifications[modify][rule][1], self.list[entry][rule])
-				if modify == 'remove':
+					for row in self.list:
+						for column in self.list[row]:
+							if not rule[0] or rule[0] == column:
+								self.list[row][column] = re.sub(rule[1], rule[2], self.list[row][column]).strip()
+				if modify == 'remove' and not rule in addedcolumns['remove']:
 					addedcolumns['remove'].append(rule)
+				if modify == 'rewrite':
+					for newColumn in rule:
+						if not newColumn in addedcolumns['add']:
+							addedcolumns['add'].append(newColumn)
+						for row in self.list:
+							concatenate = ''
+							for column in rule[newColumn]:
+								if column in self.list[row]:
+									concatenate += self.list[row][column]
+									if not column in addedcolumns['remove']:
+										addedcolumns['remove'].append(column)
+								else:
+									concatenate += column
+							self.list[row][newColumn] = concatenate
+				if modify == 'translate' and self.setting.get('translations'):
+					for row in self.list:
+						for translation in self.setting['translations'][modifications[modify][rule]]:
+							self.list[row][rule] = re.sub(translation, self.setting['translations'][modifications[modify][rule]][translation], self.list[row][rule]).strip()
+		# unify passed columns
+		addedcolumns={'add':addedcolumns['add'], 'remove':addedcolumns['remove']}
 		return addedcolumns
+
+	def split(self, rule = None):
+		splitList = {}
+		for row in self.list:
+			if rule:
+				# create sorting key by matched patterns, mandatory translated if applicable
+				sorting = ''
+				for sort in rule:
+					match = re.findall(rule[sort], self.list[row][sort], re.IGNORECASE)
+					if len(match):
+						sorting +=  ' '.join(match).strip()
+
+				if not sorting in splitList:
+					splitList[sorting] = [self.list[row]]
+				else:
+					splitList[sorting].append(self.list[row])
+			else:
+				if not 1 in splitList:
+					splitList[1] = [self.list[row]]
+				else:
+					splitList[1].append(self.list[row])
+		self.list = splitList
 
 	def filter_by_expression(self, rule):
 		###########################################################################
@@ -548,6 +690,7 @@ class listprocessor:
 		###########################################################################
 		if rule['filesetting']['source'] == 'SELF':
 			rule['filesetting']['source'] = self.setting['filesetting']['source']
+		rule['translations'] = self.setting['translations']
 		fprint('[*] comparing with ', rule['filesetting']['source'])
 		COMPARE = listprocessor(rule, {'track': {'column': None, 'values': None}, 'processedMonth': self.argument['processedMonth'], 'processedYear': self.argument['processedYear']}, True)
 		selfRows = dict(self.list)
@@ -556,7 +699,7 @@ class listprocessor:
 		for anyOrAll in rule['match']:
 			compareColumns = rule['match'][anyOrAll]
 			# prepare possibly needed amount of matches
-			correspond = [False * len(compareColumns)]
+			correspond = [False for i in range(len(compareColumns))]
 			# fill false-prepared match-items with values
 			for i in selfRows:
 				for j in cmpRows:
@@ -597,7 +740,7 @@ class listprocessor:
 					self.delete(k[1])
 	
 
-def filter(setting, argument):
+def filter(setting, argument = None):
 	global RESULTSTRING
 	RESULTSTRING = ''
 
@@ -669,6 +812,7 @@ if __name__ == '__main__':
 	if not selectedset:
 		selectedset = SETTINGS['defaultset']
 	ini = SETTINGS['sets'][int(selectedset)]
+	ini['translations'] = SETTINGS.get('translations')
 
 	file = sourcefile(ini['filesetting']['source'])
 	if not file:
