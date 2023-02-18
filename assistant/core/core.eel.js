@@ -99,7 +99,6 @@ core.eel = {
 		element: [null, null], //element, property like innerHTML or value or whatever
 			append: true,
 			write: function (what) {
-				console.log(what, core.eel.interface);
 				if (core.eel.interface.destination[0]) {
 					if (core.eel.interface.append) core.eel.interface.destination[0][core.eel.interface.destination[1]] += what;
 					else core.eel.interface.destination[0][core.eel.interface.destination[1]] = what;
