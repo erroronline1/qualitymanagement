@@ -388,7 +388,7 @@ def export(RESULT):
 				# set column widths and store column number for supported style properties
 				xlcol = 0
 				for column in RESULT.setting['filesetting']['columns']:
-					if RESULT.setting['format']['columns'].get(column) and RESULT.setting['format']['sheet']['width']:
+					if RESULT.setting.get('format') and RESULT.setting['format']['columns'].get(column) and RESULT.setting['format']['sheet']['width']:
 						worksheet.set_column(xlcol, xlcol, RESULT.setting['format']['sheet']['width'] / 100 * RESULT.setting['format']['columns'][column])
 					xlcol += 1
 				xlrow=0

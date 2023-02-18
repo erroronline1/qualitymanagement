@@ -1,9 +1,5 @@
 pyreq_filter.var = {
 	lang: {
-		errorMissingParameters:{
-			en: 'Please specify all settings!',
-			de: 'Bitte alle Einstellungen vornehmen!'
-		},
 		labelprocessfilterCompare: {
 			en: 'load compare file',
 			de: 'Vergleichsdatei laden'
@@ -36,22 +32,6 @@ pyreq_filter.var = {
 			en: 'year',
 			de: 'Jahr'
 		},
-		labelstocklistfilterSplit: {
-			en: 'split for stocktaking',
-			de: 'für Inventur sortieren'
-		},
-		labelstocklistfilterSplitCSV: {
-			en: 'separate csv-files',
-			de: 'separate CSV-Dateien'
-		},
-		labelstocklistfilterSplitFactor: {
-			en: 'split for stocktaking by',
-			de: 'für Inventur sortieren nach'
-		},
-		labelstocklistfilterSplitXLSX: {
-			en: 'single Excel-file with sheets',
-			de: 'einzelne Excel-Datei mit Blättern'
-		},
 		labelstocklistfilterSrc: {
 			en: 'load inventory export file',
 			de: 'Artikelstamm-Export laden'
@@ -59,20 +39,6 @@ pyreq_filter.var = {
 		labelstocklistfilterSubmit: {
 			en: 'process inventory list',
 			de: 'Artikelstamm verarbeiten'
-		},
-		labelstocklistfilterTranslate: {
-			en: 'update Assistant',
-			de: 'den Assistenten aktualisieren'
-		},
-		processfilterInstruction: {
-			en: 'The filtered file will be stored within the source folder.',
-			de: 'Die gefilterte Datei wird im Verzeichnis der Quelldatei gespeichert.'
-		},
-		stocklistfilterInstruction: {
-			en: 'In case of updating the Assistant, the destination is preset. The Assistant will have to be restarted afterwards.<br /><br />' +
-				'Stocktaking lists will be stored in the folder of the sourcefile. Split factors have to be edited within this modules settings sourcecode.',
-			de: 'Im Falle einer Aktualisierung des Artikelstamms des Assistenten ist der Zielort für die Datei festgelegt. Nach der Durchführung muss der Assistent neu gestartet werden.<br /><br />' +
-				'Inventurlisten werden im selben Ordner wie die Quelldate gespeichert. Sortierkriterien müssen in den Einstellungen dieses Moduls direkt im Quelltext angepasst werden.'
 		},
 	},
 	submodules: {
