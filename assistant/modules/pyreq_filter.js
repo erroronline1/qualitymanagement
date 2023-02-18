@@ -31,10 +31,45 @@ var pyreq_filter = {
 		}
 	},
 	fn: {
+		required: {
+			// filter analyzer 
+			filter_by_comparison_file: function (filter) {
+				//comparison file not required if no comparison filter specified
+				let set = filter.sets[el('processfilterSet').options[el('processfilterSet').selectedIndex].value];
+				if (set.hasOwnProperty('filter')) {
+					for (let i = 0; i < set.filter.length; i++) {
+						if (set.filter[i].apply == "filter_by_comparison_file") return true
+					}
+				}
+				return false
+			},
+			export_directory: function (filter) {
+				// export directory disabled if specified in filter settings
+				let set = filter.sets[el('processfilterSet').options[el('processfilterSet').selectedIndex].value];
+				if (set.filesetting.destination.match(/\\|\//gi)) return false
+				return true
+			},
+			// submodule requests
+			processfilter: function () {
+				let filter = this.filter_by_comparison_file(pyreq_filter.data.processfilter);
+				el('processfilterCompareButton').disabled = !filter;
+				el('processfilterCompare').required = filter;
+				el('processfilterCompare').value = '';
+				let destination = this.export_directory(pyreq_filter.data.processfilter);
+				el('processfilterDestinationButton').disabled = !destination;
+				el('processfilterDestination').required = destination;
+				el('processfilterDestination').value = '';
+			},
+			stocklistfilter: function () {
+				let destination = this.export_directory(pyreq_filter.data.stocklistfilter);
+				el('stocklistfilterDestinationButton').disabled = !destination;
+				el('stocklistfilterDestination').required = destination;
+				el('stocklistfilterDestination').value = '';
+			}
+		},
 		processfilterinput: function () {
 			let ts = new Date(),
-				filtersets = {}
-			presets = [];
+				filtersets = {};
 			Object.keys(pyreq_filter.data.processfilter.sets).forEach(set => {
 				filtersets[set] = [set, pyreq_filter.data.processfilter.sets[set].filesetting.destination];
 			})
@@ -47,7 +82,7 @@ var pyreq_filter = {
 				core.fn.static.lang('labelprocessfilterYear', 'pyreq_filter') + ':<br />' +
 				'<input type="text" id="processfilterYear" value="' + (ts.getFullYear()) + '" required disabled /><br /><br />' +
 				core.fn.static.lang('labelprocessfilterSet', 'pyreq_filter') + ':<br />' +
-				core.fn.static.insert.select(filtersets, 'processfilterSet', 'processfilterSet') +
+				core.fn.static.insert.select(filtersets, 'processfilterSet', 'processfilterSet', null, 'onchange="pyreq_filter.fn.required.processfilter()"') +
 				core.fn.static.insert.icon('info', 'bigger', null, 'onclick="core.fn.static.popup(pyreq_filter.data.processfilter.sets[el(\'processfilterSet\').selectedIndex].useCase + \'<br /><textarea readonly style=&quot;overflow:scroll; width:100%; height:15em;&quot;>\' + JSON.stringify(pyreq_filter.data.processfilter.sets[el(\'processfilterSet\').selectedIndex], null, 4) + \'</textarea>\')"') +
 				'<br /><br />' +
 				'<input type="button" value="' + core.fn.static.lang('labelprocessfilterCompare', 'pyreq_filter') + '" onclick="core.fn.async.file.load(\'processfilterCompare\', [[\'csv files\',\'*.csv\']])" id="processfilterCompareButton" /><br /><input type="text" id="processfilterCompare" required /><br /><br />' +
@@ -68,8 +103,10 @@ var pyreq_filter = {
 						values: null
 					}
 				};
-			if (el('processfilterTrack').value.length){
-				let query=el('processfilterTrack').value.split(':');
+
+			fsettings['translations'] = 'translations' in pyreq_filter.data.processfilter ? JSON.parse(JSON.stringify(pyreq_filter.data.processfilter.translations)) : null;
+			if (el('processfilterTrack').value.length) {
+				let query = el('processfilterTrack').value.split(':');
 				farguments.track.column = query[0];
 				farguments.track.values = query[1].split(',');
 			}
@@ -93,49 +130,35 @@ var pyreq_filter = {
 		},
 
 		stocklistfilterinput: function () {
+			let filtersets = {};
+			Object.keys(pyreq_filter.data.stocklistfilter.sets).forEach(set => {
+				filtersets[set] = [set, pyreq_filter.data.stocklistfilter.sets[set].filesetting.destination];
+			})
 			core.fn.async.stdout('temp', '<form action="javascript:pyreq_filter.fn.stocklistfiltersubmit()">' +
-				'<input type="button" value="' + core.fn.static.lang('labelstocklistfilterSrc', 'pyreq_filter') + '" onclick="core.fn.async.file.load(\'stocklistfilterSrc\')" /><br /><br /><input type="text" id="stocklistfilterSrc" required /><br /><br />' +
-				core.fn.static.insert.radio(core.fn.static.lang('labelstocklistfilterTranslate', 'pyreq_filter'), 'stocklistaction', 'translate', 1) + '<br /><br />' +
-				core.fn.static.insert.radio(core.fn.static.lang('labelstocklistfilterSplit', 'pyreq_filter'), 'stocklistaction', 'split', false) + '<br />' +
-				core.fn.static.insert.radio(core.fn.static.lang('labelstocklistfilterSplitXLSX', 'pyreq_filter'), 'exportformat', 'x', 1) + '<br />' +
-				core.fn.static.insert.radio(core.fn.static.lang('labelstocklistfilterSplitCSV', 'pyreq_filter'), 'exportformat', 'c', false) + '<br /><br />' +
-				core.fn.static.lang('labelstocklistfilterSplitFactor', 'pyreq_filter') + ':<br />' +
-				'<input type="text" disabled value="' + Object.keys(pyreq_filter.data.stocklistfilter.module.split.splitbycolumns).join(', ') + '" /><br /><br />' +
-				'<input type="submit" id="submitstocklistfilter" value="' + core.fn.static.lang('labelstocklistfilterSubmit', 'pyreq_filter') + '" />' +
-				'</form>' +
-				(pyreq_filter.data.stocklistfilter.useCase ? core.fn.static.insert.icon('info', 'bigger', null, 'onclick="core.fn.static.popup(pyreq_filter.data.stocklistfilter.useCase)"') + '<br />' : '') +
-				core.fn.static.lang('stocklistfilterInstruction', 'pyreq_filter'));
+				'<input type="button" value="' + core.fn.static.lang('labelstocklistfilterSrc', 'pyreq_filter') + '" onclick="core.fn.async.file.load(\'stocklistfilterSrc\', [[\'csv files\',\'*.csv\']])" /><br /><input type="text" id="stocklistfilterSrc" required /><br /> <br />' +
+				core.fn.static.lang('labelprocessfilterSet', 'pyreq_filter') + ':<br />' +
+				core.fn.static.insert.select(filtersets, 'stocklistfilterSet', 'stocklistfilterSet', null, 'onchange="pyreq_filter.fn.required.stocklistfilter()"') +
+				core.fn.static.insert.icon('info', 'bigger', null, 'onclick="core.fn.static.popup(pyreq_filter.data.stocklistfilter.sets[el(\'stocklistfilterSet\').selectedIndex].useCase + \'<br /><textarea readonly style=&quot;overflow:scroll; width:100%; height:15em;&quot;>\' + JSON.stringify(pyreq_filter.data.stocklistfilter.sets[el(\'stocklistfilterSet\').selectedIndex], null, 4) + \'</textarea>\')"') +
+				'<br /><br />' +
+				'<input type="button" value="' + core.fn.static.lang('labelprocessfilterDestination', 'pyreq_filter') + '" onclick="core.fn.async.file.pickdir(\'stocklistfilterDestination\')" id="stocklistfilterDestinationButton" /><br /><input type="text" id="stocklistfilterDestination" required /><br /><br />' +
+				'<input type="submit" id="submitstocklistfilter" value="' + core.fn.static.lang('labelstocklistfilterSubmit', 'pyreq_filter') + '" /><br /><br />' +
+				'</form>');
 			core.fn.async.stdout('output', '');
 			core.history.write('pyreq_filter.fn.init(\'stocklistfilter\')');
 		},
 		stocklistfiltersubmit: async function () {
-			let fsettings = pyreq_filter.data.stocklistfilter,
-				farguments = true,
-				module;
-			for (let i = 0; i < document.getElementsByName('stocklistaction').length; i++) {
-				let action = document.getElementsByName('stocklistaction')[i];
-				if (action.checked) {
-					module = action.id;
-					break;
-				}
-			}
-			if (module === 'split') {
-				for (let i = 0; i < document.getElementsByName('exportformat').length; i++) {
-					let action = document.getElementsByName('exportformat')[i];
-					if (action.checked) {
-						farguments = action.id;
-						break;
-					}
-				}
-			}
-			fsettings.source = el('stocklistfilterSrc').value.replaceAll(/\\/ig, '/');
-			console.log(module, farguments);
+			// deepcopy settings and prepare arguments
+			let fsettings = JSON.parse(JSON.stringify(pyreq_filter.data.stocklistfilter.sets[el('stocklistfilterSet').options[el('stocklistfilterSet').selectedIndex].value]));
+			fsettings['translations'] = 'translations' in pyreq_filter.data.stocklistfilter ? JSON.parse(JSON.stringify(pyreq_filter.data.stocklistfilter.translations)) : null;
+
+			fsettings.filesetting.source = el('stocklistfilterSrc').value.replaceAll(/\\/ig, '/');
+			fsettings.filesetting.destination = el('stocklistfilterDestination').value.replaceAll(/\\/ig, '/') + '/' + fsettings.filesetting.destination;
 			document.body.style.cursor = 'wait';
 			el("submitstocklistfilter").disabled = "disabled"
 			core.fn.async.stdout('output', '');
 			core.eel.interface.destination = [el("output"), "innerHTML"];
 			core.eel.interface.append = true;
-			let result = await eel.translate_split(fsettings, module, farguments)();
+			let result = await eel.filter(fsettings, null)();
 			core.fn.async.stdout('output', result.replaceAll(/\n/ig, '<br />'));
 			el("submitstocklistfilter").disabled = null
 			document.body.style.cursor = 'initial';

@@ -240,10 +240,6 @@ if __name__ == '__main__':
 	def filter(settings, arguments):
 		return processfilter.filter(settings, arguments)
 
-	import pymodules.stocklist as stocklistfilter
-	def translate_split(settings, module, arguments):
-		return stocklistfilter.start(settings, module, arguments)
-
 	#       _           _
 	#   ___| |_ ___ ___| |_
 	#  |_ -|  _| .'|  _|  _|
@@ -270,7 +266,6 @@ if __name__ == '__main__':
 
 	eel.expose(createqrandopenwith)
 	eel.expose(filter)
-	eel.expose(translate_split)
 
 	if WEBFOLDER:
 		print ('\nDo not close this window, otherwise the browserview will stop working.\n')
