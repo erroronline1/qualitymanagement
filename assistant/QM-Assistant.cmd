@@ -15,7 +15,8 @@ SET python_location="C:\Program Files\Python38"
 
 IF EXIST %python_location% (
     :: optional change to dev environment, launch .venv, start py-project
-    SET /P "dev_env=[?] i see, you're a person of culture! %python_name:"=% is available on your machine. Want to start %python_name:"=%-environment [y/N]? "
+    echo [!] I see, you're a person of culture.  %python_name:"=% is available on your machine. 
+    SET /P "dev_env=[?] Want to start %python_name:"=%-environment [y/N]? "
     IF /I "!dev_env!"=="y" (
         CD %dev_location:~1,2% >> NUL
         IF NOT "%cd%"=="%dev_location:"=%" (
@@ -36,7 +37,7 @@ if %errorlevel% GTR 0 (
     :: webview as fallback, even if not recommended for several reasons, documents are still accessible
     echo.
     echo [!] Error starting wrapper application. Please contact application administration for help.
-    echo [!] About to start web application without wrapper by default, but there might be reduced functionality!
+    echo [!] About to start web application without wrapper by default, but there might be reduced functionality.
     echo [!] Your default browser must support HTML5/ECMAScript 6+
     echo.
     pause
