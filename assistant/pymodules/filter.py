@@ -593,7 +593,7 @@ class listprocessor:
 				if modify == 'translate' and self.setting.get('translations'):
 					for row in self.list:
 						for translation in self.setting['translations'][modifications[modify][rule]]:
-							self.list[row][rule] = re.sub(translation, self.setting['translations'][modifications[modify][rule]][translation], self.list[row][rule]).strip()
+							self.list[row][rule] = re.sub("^" + translation + "$", self.setting['translations'][modifications[modify][rule]][translation], self.list[row][rule]).strip()
 		# unify passed columns
 		addedcolumns={'add':addedcolumns['add'], 'remove':addedcolumns['remove']}
 		return addedcolumns
@@ -607,8 +607,8 @@ class listprocessor:
 				for sort in rule:
 					match = re.findall(rule[sort], self.list[row][sort], re.IGNORECASE)
 					if len(match):
-						sorting +=  ' '.join(match).strip()
-
+						sorting += ' '.join(match)
+				sorting = sorting.strip()
 				if not sorting in splitList:
 					splitList[sorting] = [self.list[row]]
 				else:
