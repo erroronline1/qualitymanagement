@@ -33,9 +33,9 @@ var pyreq_filter = {
 	fn: {
 		required: {
 			// filter analyzer 
-			filter_by_comparison_file: function (filter) {
+			filter_by_comparison_file: function (filter, selection) {
 				//comparison file not required if no comparison filter specified
-				let set = filter.sets[el('processfilterSet').options[el('processfilterSet').selectedIndex].value];
+				let set = filter.sets[selection.options[selection.selectedIndex].value];
 				if (set.hasOwnProperty('filter')) {
 					for (let i = 0; i < set.filter.length; i++) {
 						if (set.filter[i].apply == "filter_by_comparison_file") return true
@@ -43,31 +43,31 @@ var pyreq_filter = {
 				}
 				return false
 			},
-			export_directory: function (filter) {
+			export_directory: function (filter, selection) {
 				// export directory disabled if specified in filter settings
-				let set = filter.sets[el('processfilterSet').options[el('processfilterSet').selectedIndex].value];
-				if (set.filesetting.destination.match(/\\|\//gi)) return false
+				let set = filter.sets[selection.options[selection.selectedIndex].value];
+				if (set.filesetting.destination.match(/\\|\//gmi)) return false
 				return true
 			},
 			// submodule requests
 			processfilter: function () {
-				let filter = this.filter_by_comparison_file(pyreq_filter.data.processfilter);
-				el('processfilterCompareButton').disabled = !filter;
+				let filter = this.filter_by_comparison_file(pyreq_filter.data.processfilter, el('processfilterSet'));
+				el('processfilterCompareButton').disabled = el('processfilterCompare').disabled = !filter;
 				el('processfilterCompare').required = filter;
 				el('processfilterCompare').value = '';
-				let destination = this.export_directory(pyreq_filter.data.processfilter);
-				el('processfilterDestinationButton').disabled = !destination;
+				let destination = this.export_directory(pyreq_filter.data.processfilter, el('processfilterSet'));
+				el('processfilterDestinationButton').disabled = el('processfilterDestination').disabled= !destination;
 				el('processfilterDestination').required = destination;
 				el('processfilterDestination').value = '';
 			},
 			stocklistfilter: function () {
-				let destination = this.export_directory(pyreq_filter.data.stocklistfilter);
-				el('stocklistfilterDestinationButton').disabled = !destination;
+				let destination = this.export_directory(pyreq_filter.data.stocklistfilter, el('stocklistfilterSet'));
+				el('stocklistfilterDestinationButton').disabled = el('stocklistfilterDestination').disabled = !destination;
 				el('stocklistfilterDestination').required = destination;
 				el('stocklistfilterDestination').value = '';
 			}
 		},
-		processfilterinput: function () {
+		processfilterinput: async function () {
 			let ts = new Date(),
 				filtersets = {};
 			Object.keys(pyreq_filter.data.processfilter.sets).forEach(set => {
@@ -89,7 +89,8 @@ var pyreq_filter = {
 				'<input type="button" value="' + core.fn.static.lang('labelprocessfilterDestination', 'pyreq_filter') + '" onclick="core.fn.async.file.pickdir(\'processfilterDestination\')" id="processfilterDestinationButton" /><br /><input type="text" id="processfilterDestination" required /><br /><br />' +
 				'<input type="submit" id="submitprocessfilter" value="' + core.fn.static.lang('labelprocessfilterSubmit', 'pyreq_filter') + '" /><br /><br />' +
 				'</form>');
-			core.fn.async.stdout('output', '');
+			await core.fn.async.stdout('output', '');
+			pyreq_filter.fn.required.processfilter();
 			core.history.write('pyreq_filter.fn.init(\'processfilter\')');
 		},
 		processfiltersubmit: async function () {
@@ -129,7 +130,7 @@ var pyreq_filter = {
 			document.body.style.cursor = 'initial';
 		},
 
-		stocklistfilterinput: function () {
+		stocklistfilterinput: async function () {
 			let filtersets = {};
 			Object.keys(pyreq_filter.data.stocklistfilter.sets).forEach(set => {
 				filtersets[set] = [set, pyreq_filter.data.stocklistfilter.sets[set].filesetting.destination];
@@ -143,7 +144,8 @@ var pyreq_filter = {
 				'<input type="button" value="' + core.fn.static.lang('labelprocessfilterDestination', 'pyreq_filter') + '" onclick="core.fn.async.file.pickdir(\'stocklistfilterDestination\')" id="stocklistfilterDestinationButton" /><br /><input type="text" id="stocklistfilterDestination" required /><br /><br />' +
 				'<input type="submit" id="submitstocklistfilter" value="' + core.fn.static.lang('labelstocklistfilterSubmit', 'pyreq_filter') + '" /><br /><br />' +
 				'</form>');
-			core.fn.async.stdout('output', '');
+			await core.fn.async.stdout('output', '');
+			pyreq_filter.fn.required.stocklistfilter()
 			core.history.write('pyreq_filter.fn.init(\'stocklistfilter\')');
 		},
 		stocklistfiltersubmit: async function () {
