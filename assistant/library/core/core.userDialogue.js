@@ -113,6 +113,10 @@ let randomTip = {
 		{
 			en: 'Edge 94 is known to download files instead of opening them with the systems default application. This could be true for other browsers and lead to a weird behavior and cluttered storage.',
 			de: 'Von Edge 94 ist bekannt, dass Dateien heruntergeladen, statt mit der Standard-Anwendung geöffnet zu werden. Das könnte auch auf andere Browser zutreffen und zu einem seltsamen Verhalten und einem überfüllten Speicherplatz führen.'
+		},
+		{
+			en: 'If something is spinning in the upper right corner an update is available and the assistent shpuld be restarted in due course. Most likely not critical, but you\'ll never know...',
+			de: 'Wenn sich oben rechts plötzlich was dreht gab es ein Update und der Assistent sollte beizeiten neu gestartet werden. Nicht kritisch, aber man weiß ja nie...'
 		}
 	],
 };

@@ -6,6 +6,7 @@ import re
 import subprocess
 import sqlite3
 import sys
+import time
 import tkinter as tk
 from tkinter import filedialog
 
@@ -20,8 +21,9 @@ start this application with options:
 '''
 
 WEBFOLDER = None
-BROWSER = None
-PORT =11235
+BROWSER = "edge"
+PORT = 11235
+LAUNCHTIME = time.time()
 
 #   _     _ _
 #  |_|___|_| |_
@@ -34,7 +36,7 @@ if __name__ == '__main__':
  ___ ___ ___|_|___| |_ ___ ___| |_   _ _ _ ___ ___ ___ ___ ___ ___
 | .'|_ -|_ -| |_ -|  _| .'|   |  _| | | | |  _| .'| . | . | -_|  _|
 |__,|___|___|_|___|_| |__,|_|_|_|   |_____|_| |__,|  _|  _|___|_|
-                                                  |_| |_|          built 20230208
+                                                  |_| |_|          built 20230220
 
 by error on line 1 (erroronline.one)
 
@@ -88,6 +90,22 @@ def rootResourcesImport(file):
 	encoding = detection["encoding"]
 	text = blob.decode(encoding)
 	return text
+
+def has_update(curdir):
+	exclude=["__pycache__", ".venv", "test.py"]
+	dir = os.scandir(curdir)
+	for file in dir:
+		if not file.name in exclude and file.is_dir() and has_update(os.path.normpath(os.path.join(curdir, file.name))):
+			return True
+		elif not file.name in exclude and file.is_file() and file.stat().st_mtime > LAUNCHTIME:
+			return True
+	return False
+
+def update_daemon():
+	while True:
+		if has_update(WEBFOLDER):
+			eel.update_available()()
+		eel.sleep(600)
 
 #                                 _             _ _ _
 #   _____ ___ _____ ___ ___ _ _  | |_ ___ ___ _| | |_|___ ___
@@ -269,8 +287,8 @@ if __name__ == '__main__':
 
 	if WEBFOLDER:
 		print ('\nDo not close this window, otherwise the browserview will stop working.\n')
+		eel.spawn(update_daemon)
 		eel.start('core.html', port = PORT, mode = BROWSER)
-
 	else:
 		print(HELP)
 

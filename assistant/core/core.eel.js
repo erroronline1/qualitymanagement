@@ -75,8 +75,8 @@ core.eel = {
 				core.var.modules.pyreq_qr = {
 					icon: core.fn.static.insert.icon('qr'),
 					display: {
-						en: "QRCode generator",
-						de: "QRCode Generator",
+						en: 'QRCode generator',
+						de: 'QRCode Generator',
 					},
 					enabledByDefault: true,
 				};
@@ -84,25 +84,33 @@ core.eel = {
 				core.var.modules.pyreq_filter = {
 					icon: core.fn.static.insert.icon('filter'),
 					display: {
-						en: "Filter",
-						de: "Filter",
+						en: 'Filter',
+						de: 'Filter',
 					},
 					enabledByDefault: true,
 				};
 
+				core.var.lang.updateAvailable = {
+					en: 'Update available :) Restart the assistant in due course.',
+					de: 'Update am Start :) Starte den Assistenten beizeiten neu.'
+				}
 			} catch {
 				/* because if not started from eel, this resource is loaded anyway and eel-object stops rendering with undefined-error */
 			}
-		} else console.warn("this application was not started from python eel. default use from browser. functions may be limited.")
+		} else console.warn('this application was not started from python eel. default use from browser. functions may be limited.')
 	},
 	interface: {
 		element: [null, null], //element, property like innerHTML or value or whatever
-			append: true,
-			write: function (what) {
-				if (core.eel.interface.destination[0]) {
-					if (core.eel.interface.append) core.eel.interface.destination[0][core.eel.interface.destination[1]] += what;
-					else core.eel.interface.destination[0][core.eel.interface.destination[1]] = what;
-				}
+		append: true,
+		write: function (what) {
+			if (core.eel.interface.destination[0]) {
+				if (core.eel.interface.append) core.eel.interface.destination[0][core.eel.interface.destination[1]] += what;
+				else core.eel.interface.destination[0][core.eel.interface.destination[1]] = what;
 			}
+		},
+		update_available: function(){
+			el('environment').children[0].title = core.fn.static.lang('updateAvailable');
+			el('environment').children[0].children[0].classList.add('appupdate');
+		}
 	}
 };

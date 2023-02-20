@@ -288,7 +288,7 @@ the digital assistant provides your company with an application to have an easie
 
 the assistant was initially created as a web-application run on internet explorer (still being the defacto standard in the beginning). in the meantime ie-support is finally ditched and the assistant comes with a python wrapper to compensate for rigid company policies regarding the deletion of browser history on closing.
 
-you can start the assistant by opening the html-file, or using the (compiled or raw) python wrapper with passed --webfolder and --browser argument. use the provided bash/batch-file for convenience. this allows you to access the developer version if your machine supports python, copies the compiled excutable to temp to allow updates of the main executable during working hours while the application is started on several machines from a network folder and provides the pure web-view as a fallback.
+you can start the assistant by opening the html-file, or using the (compiled or raw) [python wrapper](#python-wrapper) with passed --webfolder and --browser argument. 
 
 * the current version makes excessive use of the [vanillaJS-library](http://vanilla-js.com).
 * the assistant is designed to handle multiple language support, comes with english and german and can be extended as desired. extend the lang-objects in every module, the config-file and register the languages in this config-file to make them available.
@@ -635,11 +635,11 @@ python specific modules are appended to the core.var.modules-list from core.eel.
 
 ![enabled eel](assets/assistant_eel.png)
 
-this indicates whether the assistant was lauched using the wrapper
+this indicates whether the assistant was lauched using the wrapper (*yaaaaay*). use the provided batch-file for convenience. this allows you to access the developer version if your machine supports python, copies the compiled excutable to temp to allow updates of the main executable during working hours while the application is started on several machines from a network folder and provides the pure web-view as a fallback. the python wrapper checks every ten minutes if any updates have been made (files touched after opening the application), and encourages a restart by a rotating icon if this is the case. 
 
 ![plain web view](assets/assistant_web.png)
 
-this indicates whether the assistant is launched in plain web wiew
+this indicates whether the assistant is launched in plain web view (*booooo*)
 
 modules have to handle conditional behaviour on their own, respective python implementations require adding to and recompiling assistant.py.
 

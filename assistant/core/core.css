@@ -463,7 +463,7 @@ hr {
 add a little fancyness
 //////////////////////////////////////////////////////////////////////////////////*/
 
-#environment svg:hover {
+#environment svg:hover, .appupdate {
 	animation-name: environmentspinner;
 	animation-duration: 1s;
 	animation-iteration-count: infinite;

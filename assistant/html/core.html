@@ -140,6 +140,7 @@
 			await root.initApp();
 			if (root.eel) {
 				eel.expose(core.eel.interface.write, "eel_interface");
+				eel.expose(core.eel.interface.update_available, "update_available");
 			}
 		}
 		init()
