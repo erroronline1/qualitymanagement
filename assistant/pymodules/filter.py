@@ -165,7 +165,8 @@ DEFAULTJSON = {
 		},
 		"format":{
 			"sheet": {
-				"width": 125
+				"width": 125,
+				"orientation": "landscape"
 			},
 			"columns":{
 				"ORIGININDEX":5,
@@ -280,7 +281,7 @@ helptext='''
     "split": split output by matched patterns of column values into multiple files (csv, js) or sheets (xlsx)
 
     "format: optional in case of xlsx-exports
-        "sheet": global as width in points
+        "sheet": global as width in points, orientation portrait or landscape by default
         "columns": dict of columns and their percentage portion 
 
     "evaluate": object/dict with colum-name keys and patterns as values that just create a warning, e.g. email verification
@@ -328,13 +329,13 @@ def sourcefile(regexPattern):
 				sourcefile.append( [ os.path.join( directory, entry), entry.stat().st_mtime ] )
 	if len(sourcefile):
 		sourcefile.sort( key = lambda time: time[1], reverse = True )
-		return sourcefile[0][0]
+		return os.path.abspath(sourcefile[0][0])
 	else:
 		return False
 
 def export(RESULT):
-	destination = os.path.join(os.path.split(os.path.abspath(RESULT.file))[0], RESULT.setting['filesetting']['destination']);
-	filetype = RESULT.setting['filesetting']['destination'][RESULT.setting['filesetting']['destination'].rindex('.'):].lower()
+	destination = os.path.abspath(RESULT.setting['filesetting']['destination'])
+	filetype = destination[destination.rindex('.'):].lower()
 	try:
 		if filetype == '.csv':
 			filename, file_extension = os.path.splitext(destination)
@@ -381,9 +382,13 @@ def export(RESULT):
 			for subset in RESULT.list:
 				worksheet = workbook.add_worksheet() # sheet[0:31])
 				worksheet.set_landscape()
+				if RESULT.setting.get('format') and RESULT.setting['format'].get('sheet'):
+					orientation = RESULT.setting['format']['sheet'].get('orientation')
+					if orientation == "portrait":
+						worksheet.set_portrait()
 				worksheet.set_margins(left = .25, right = .15, top = .5, bottom = .25)
 				worksheet.set_default_row(32)
-				worksheet.set_header(os.path.split(RESULT.setting['filesetting']['destination'])[1] + ' - ' + (subset + ' - ' if isinstance(subset, str) else '') + datetime.now().strftime('%B %Y'))
+				worksheet.set_header(os.path.split(destination)[1] + ' - ' + (subset + ' - ' if isinstance(subset, str) else '') + datetime.now().strftime('%B %Y'))
 
 				# set column widths and store column number for supported style properties
 				xlcol = 0
@@ -454,7 +459,7 @@ class listprocessor:
 			with open( self.file, newline='') as csvfile:
 				self.log('[*] loading source file ', self.file, '...')
 				#detect dialect, with quotes or without, idk, works well but not without
-				dialect = csv.Sniffer().sniff(csvfile.read(1024))
+				dialect = csv.Sniffer().sniff(csvfile.readlines()[self.setting['filesetting']['headerrowindex']])
 				# extract headers from first row to list, try different formats
 				for sformat in self.setting['filesetting']['sourceformat']:
 					# reset internal pointer
@@ -529,7 +534,12 @@ class listprocessor:
 		###########################################################################
 		## export if applicable and generate warnings in case evaluations fail
 		###########################################################################
-		destination = export(self) if 'destination' in self.setting['filesetting'] else False
+		destination = False
+		if 'destination' in self.setting['filesetting']:
+			if len(self.list) > 1:
+				destination = export(self)
+			else:
+				self.log('\n[!] nothing left to save :(')
 		if destination:
 			if 'evaluate' in self.setting:
 				warning={}
