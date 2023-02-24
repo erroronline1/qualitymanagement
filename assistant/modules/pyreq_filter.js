@@ -35,17 +35,17 @@ var pyreq_filter = {
 			// filter analyzer 
 			filter_by_comparison_file: function (filter, selection) {
 				//comparison file not required if no comparison filter specified
-				let set = filter.sets[selection.options[selection.selectedIndex].value];
+				let set = filter.sets[selection.selectedIndex||0];
 				if (set.hasOwnProperty('filter')) {
 					for (let i = 0; i < set.filter.length; i++) {
-						if (set.filter[i].apply == "filter_by_comparison_file") return set.filter[i].filesetting.source
+						if (set.filter[i].apply == "filter_by_comparison_file" && set.filter[i].filesetting.source != "SELF") return set.filter[i].filesetting.source
 					}
 				}
 				return false
 			},
 			export_directory: function (filter, selection) {
 				// export directory disabled if specified in filter settings
-				let set = filter.sets[selection.options[selection.selectedIndex].value];
+				let set = filter.sets[selection.selectedIndex||0];
 				if (set.filesetting.destination.match(/\\|\//gmi)) return false
 				return true
 			},
