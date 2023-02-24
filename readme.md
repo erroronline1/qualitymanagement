@@ -538,7 +538,7 @@ all modules are depentent on the main module, only some may have dependencies of
 container for output are named 'input', 'temp' and 'output' and can be accessed preferably via `core.fn.async.stdout('input', content)` or `el('input').innerHTML` or whatever.
 
 ### registering and loading of modules
-register and deregister modules in ROOT/core/config.js so they are accessible and listed and imported on initial start. files to be imported (preferably from the modules load-method) always have to be hardcoded (e.g. dropdown-list) because javascript having no indirect access to local file system (directory-listing etc.). data-objects should be stored in `core.var.moduleDataDir`-folder prefixed with modulename_. therefore these can remain untouched if any changes occur for the main module-file and won't be affected during file-transfers in reviews. modules will be loaded on startup with the load-method as callback.
+register and deregister modules in ROOT/core/core.var.js so they are accessible and listed and imported on initial start. files to be imported (preferably from the modules load-method) always have to be hardcoded (e.g. dropdown-list) because javascript having no indirect access to local file system (directory-listing etc.). data-objects should be stored in `core.var.moduleDataDir`-folder prefixed with modulename_. therefore these can remain untouched if any changes occur for the main module-file and won't be affected during file-transfers in reviews. modules will be loaded on startup with the load-method as callback.
 
 [back to top](#table-of-contents)
 
