@@ -26,7 +26,7 @@ $ filter --help    for overview
 else:
 	print ('<filter> as integrated module')
 
-print('built 20230218 by error on line 1 (erroronline.one)')
+print('built 20230223 by error on line 1 (erroronline.one)')
 
 DEFAULTJSON = {
 	"defaultset": 0,
@@ -34,7 +34,6 @@ DEFAULTJSON = {
 		"postProcessing": "do not forget to check an archive",
 		"filesetting": {
 			"source": "Export.+?\\.csv",
-			"sourceformat": ["\\\"(.*?)\\\"", "(.+?)[;\\r\\n]"],
 			"headerrowindex": 0,
 			"destination": "filtered.csv",
 			"enclose": ["before. DATE will be replaced", "after"],
@@ -114,7 +113,6 @@ DEFAULTJSON = {
 				"keep": False,
 				"filesetting": {
 					"source": "excemptions.*?.csv",
-					"sourceformat": "(.+?)[;\\s]",
 					"headerrowindex": 0,
 					"columns": [
 						"VORGANG"
@@ -215,7 +213,6 @@ helptext='''
 	"postProcessing": optional string as hint what to do with the result file
     "filesetting":
 		"source": matching regex, opens last touched file
-	    "sourceformat": matching regex to extract column titles, multiple options available
 	    "headerrowindex": offset for title row
 	    "destination": file to write output to
 		"enclose": [before, after] optional in case of js-export, some strings to enclose the json-dump as a js-object
@@ -253,7 +250,6 @@ helptext='''
         "keep": boolean if matches are kept or omitted
         "compare": keep or discard explicit excemptions as stated in excemption file, based on same identifier
             "filesetting": same structure as base. if source == "SELF" the origin file will be processed
-                           sourceformat for headers may differ between "(.+?)[;\\s]" and "\\\"(.*?)\\\"", idk why
             "filter": same structure as base
             "modify": same structure as base
             "match":
@@ -459,23 +455,19 @@ class listprocessor:
 			with open( self.file, newline='') as csvfile:
 				self.log('[*] loading source file ', self.file, '...')
 				#detect dialect, with quotes or without, idk, works well but not without
-				dialect = csv.Sniffer().sniff(csvfile.readlines()[self.setting['filesetting']['headerrowindex']])
-				# extract headers from first row to list, try different formats
-				for sformat in self.setting['filesetting']['sourceformat']:
-					# reset internal pointer
-					csvfile.seek(0)
-					self.headers = re.findall( sformat, csvfile.readlines()[self.setting['filesetting']['headerrowindex']] )
-					if set(self.setting['filesetting']['columns']).intersection(self.headers) == set(self.setting['filesetting']['columns']):
-						break
+				rows = csvfile.readlines()
+				dialect = csv.Sniffer().sniff(list(rows)[self.setting['filesetting']['headerrowindex']])
+				csvfile.seek(0)
+				rows = list(csv.reader(csvfile, dialect))
+				# extract headers from first row to list
+				self.headers = rows[self.setting['filesetting']['headerrowindex']]
+				self.headers = ["null" if column == "" else column for column in self.headers] # some exports have empty columns. wtf?
 				# compare and proceed only if all columns from the settings exist and do fully match the list
 				if not set(self.setting['filesetting']['columns']).intersection(self.headers) == set(self.setting['filesetting']['columns']):
 					self.log('[~] not all necessary fields were found in sourcefile or header-format not processable! filter aborted! ', self.headers, self.setting['filesetting']['columns'])
 					raise Exception('not all necessary fields were found in sourcefile or header-format not processable! filter aborted!')
-				# reset internal pointer
-				csvfile.seek(0)
 				# csv.DictReader does not handle the structure of the given file thus needing a custom solution for use of fieldnames
-				rows = csv.reader(csvfile, dialect)
-				for i, row in enumerate(list(rows)[self.setting['filesetting']['headerrowindex'] + 1:]):
+				for i, row in enumerate(rows[self.setting['filesetting']['headerrowindex'] + 1:]):
 					l = {}
 					for cell in zip(self.headers, row):
 						# this cumbersome behaviour is necessary to certainly populate fields due to possible identical column names
@@ -536,7 +528,7 @@ class listprocessor:
 		###########################################################################
 		destination = False
 		if 'destination' in self.setting['filesetting']:
-			if len(self.list) > 1:
+			if self.list and len(self.list[list(self.list.keys())[0]]) > 0:
 				destination = export(self)
 			else:
 				self.log('\n[!] nothing left to save :(')
@@ -559,8 +551,11 @@ class listprocessor:
 			self.log('\n[*] done! ', postProcessing, ' ', destination)
 
 	def log(self, *msg):
-		if not self.isChild:
-			fprint(*msg)
+		if self.isChild:
+			msg = list(msg)
+			msg[0]=re.sub('(\[.+\])', r'\1 compare file:')
+			msg = tuple(msg)
+		fprint(*msg)
 
 	def delete(self, key):
 		deleted = self.list.pop(key, None)
