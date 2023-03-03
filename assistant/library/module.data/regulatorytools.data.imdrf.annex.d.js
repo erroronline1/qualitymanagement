@@ -1,3 +1,4 @@
+// last update: 28.02.2023
 if (regulatorytools.data.imdrf === undefined) regulatorytools.data.imdrf = {};
 if (regulatorytools.data.imdrf.annex === undefined) regulatorytools.data.imdrf.annex = {};
 regulatorytools.data.imdrf.annex.d = [
@@ -8,7 +9,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D01"
+    "codehierarchy": "D01"
   },
   {
     "code": "D0101",
@@ -17,7 +18,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D01|D0101"
+    "codehierarchy": "D01|D0101"
   },
   {
     "code": "D0102",
@@ -26,7 +27,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D01|D0102"
+    "codehierarchy": "D01|D0102"
   },
   {
     "code": "D0103",
@@ -35,7 +36,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D01|D0103"
+    "codehierarchy": "D01|D0103"
   },
   {
     "code": "D0104",
@@ -44,7 +45,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D01|D0104"
+    "codehierarchy": "D01|D0104"
   },
   {
     "code": "D0105",
@@ -53,7 +54,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D01|D0105"
+    "codehierarchy": "D01|D0105"
   },
   {
     "code": "D0106",
@@ -62,7 +63,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D01|D0106"
+    "codehierarchy": "D01|D0106"
   },
   {
     "code": "D0107",
@@ -71,7 +72,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "New term/definition added on 21 January 2021. for details, refer to comment No. 26 of the Change Log.",
-    "CodeHierarchy": "D01|D0107"
+    "codehierarchy": "D01|D0107"
   },
   {
     "code": "D0108",
@@ -80,7 +81,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "New term/definition added on 21 January 2021. for details, refer to comment No. 27 of the Change Log.",
-    "CodeHierarchy": "D01|D0108"
+    "codehierarchy": "D01|D0108"
   },
   {
     "code": "D02",
@@ -89,7 +90,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D02"
+    "codehierarchy": "D02"
   },
   {
     "code": "D03",
@@ -98,7 +99,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D03"
+    "codehierarchy": "D03"
   },
   {
     "code": "D0301",
@@ -107,7 +108,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D03|D0301"
+    "codehierarchy": "D03|D0301"
   },
   {
     "code": "D0302",
@@ -116,7 +117,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D03|D0302"
+    "codehierarchy": "D03|D0302"
   },
   {
     "code": "D04",
@@ -125,7 +126,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D04"
+    "codehierarchy": "D04"
   },
   {
     "code": "D05",
@@ -134,7 +135,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D05"
+    "codehierarchy": "D05"
   },
   {
     "code": "D06",
@@ -143,7 +144,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D06"
+    "codehierarchy": "D06"
   },
   {
     "code": "D07",
@@ -152,7 +153,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D07"
+    "codehierarchy": "D07"
   },
   {
     "code": "D08",
@@ -161,7 +162,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D08"
+    "codehierarchy": "D08"
   },
   {
     "code": "D09",
@@ -170,7 +171,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D09"
+    "codehierarchy": "D09"
   },
   {
     "code": "D10",
@@ -179,7 +180,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "The term and definition were modified on 21 January 2021. (Old term/definition: Cause Cannot be Traced to Device/The adverse event that occurred is not attributable to a device.). For details, refer to comment No. 28 of the Change Log.",
-    "CodeHierarchy": "D10"
+    "codehierarchy": "D10"
   },
   {
     "code": "D1001",
@@ -188,7 +189,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D10|D1001"
+    "codehierarchy": "D10|D1001"
   },
   {
     "code": "D1002",
@@ -197,7 +198,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D10|D1002"
+    "codehierarchy": "D10|D1002"
   },
   {
     "code": "D1003",
@@ -206,7 +207,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D10|D1003"
+    "codehierarchy": "D10|D1003"
   },
   {
     "code": "D11",
@@ -215,7 +216,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D11"
+    "codehierarchy": "D11"
   },
   {
     "code": "D1101",
@@ -224,7 +225,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D11|D1101"
+    "codehierarchy": "D11|D1101"
   },
   {
     "code": "D1102",
@@ -233,7 +234,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D11|D1102"
+    "codehierarchy": "D11|D1102"
   },
   {
     "code": "D1103",
@@ -242,7 +243,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D11|D1103"
+    "codehierarchy": "D11|D1103"
   },
   {
     "code": "D1104",
@@ -251,7 +252,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D11|D1104"
+    "codehierarchy": "D11|D1104"
   },
   {
     "code": "D1105",
@@ -260,7 +261,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D11|D1105"
+    "codehierarchy": "D11|D1105"
   },
   {
     "code": "D1106",
@@ -269,7 +270,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D11|D1106"
+    "codehierarchy": "D11|D1106"
   },
   {
     "code": "D1107",
@@ -278,7 +279,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 16 February 2021.",
-    "CodeHierarchy": "D11|D1107"
+    "codehierarchy": "D11|D1107"
   },
   {
     "code": "D1108",
@@ -287,7 +288,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 27 January 2022. For details, see comment No. 10 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "D11|D1108"
+    "codehierarchy": "D11|D1108"
   },
   {
     "code": "D12",
@@ -296,7 +297,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "The definition was modified on 21 January 2021 (addition of phrase \"and all reasonable mitigation steps have been taken.\"). For details, refer to comment No. 31 of the Change Log.",
-    "CodeHierarchy": "D12"
+    "codehierarchy": "D12"
   },
   {
     "code": "D13",
@@ -305,7 +306,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D13"
+    "codehierarchy": "D13"
   },
   {
     "code": "D14",
@@ -314,7 +315,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D14"
+    "codehierarchy": "D14"
   },
   {
     "code": "D15",
@@ -323,7 +324,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D15"
+    "codehierarchy": "D15"
   },
   {
     "code": "D1501",
@@ -332,7 +333,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "New term/definition added on 21 January 2021. for details, refer to comment No. 30 of the Change Log.",
-    "CodeHierarchy": "D15|D1501"
+    "codehierarchy": "D15|D1501"
   },
   {
     "code": "D16",
@@ -341,7 +342,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D16"
+    "codehierarchy": "D16"
   },
   {
     "code": "D17",
@@ -350,7 +351,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "D17"
+    "codehierarchy": "D17"
   },
   {
     "code": "D18",
@@ -359,7 +360,7 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "New term/definition added on 21 January 2021. for details, refer to comment No. 27 of the Change Log.",
-    "CodeHierarchy": "D18"
+    "codehierarchy": "D18"
   },
   {
     "code": "D19",
@@ -368,6 +369,24 @@ regulatorytools.data.imdrf.annex.d = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 27 January 2022. For details, see comment No. 12 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "D19"
+    "codehierarchy": "D19"
+  },
+  {
+    "code": "D20",
+    "term": "Cause Traced to Another Device",
+    "definition": "Problem is traced to be caused by another device.",
+    "Non-IMDRF Code/Term": "",
+    "Status": "New",
+    "Status Description": "Term was added on 31 January 2023. For details, see comment No. 75 of the Change Log (Release Number 2023).",
+    "codehierarchy": "D20"
+  },
+  {
+    "code": "D21",
+    "term": "Cause Traced to Health Disparity",
+    "definition": "Problems traced to device performing inadequately or inconsistently in people with certain equality characteristics (e.g. sex, racial or ethnic origin).",
+    "Non-IMDRF Code/Term": "",
+    "Status": "New",
+    "Status Description": "Term was added on 31 January 2023. For details, see comment No. 142 of the Change Log (Release Number 2023).",
+    "codehierarchy": "D21"
   }
 ]

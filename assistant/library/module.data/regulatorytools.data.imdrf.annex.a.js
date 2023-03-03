@@ -1,3 +1,4 @@
+// last update: 28.02.2023
 if (regulatorytools.data.imdrf === undefined) regulatorytools.data.imdrf = {};
 if (regulatorytools.data.imdrf.annex === undefined) regulatorytools.data.imdrf.annex = {};
 regulatorytools.data.imdrf.annex.a = [
@@ -8,7 +9,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A01"
+    "codehierarchy": "A01"
   },
   {
     "code": "A0101",
@@ -17,7 +18,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A01|A0101"
+    "codehierarchy": "A01|A0101"
   },
   {
     "code": "A010101",
@@ -26,7 +27,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A01|A0101|A010101"
+    "codehierarchy": "A01|A0101|A010101"
   },
   {
     "code": "A010102",
@@ -35,7 +36,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A01|A0101|A010102"
+    "codehierarchy": "A01|A0101|A010102"
   },
   {
     "code": "A010103",
@@ -44,7 +45,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A01|A0101|A010103"
+    "codehierarchy": "A01|A0101|A010103"
   },
   {
     "code": "A0102",
@@ -53,7 +54,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A01|A0102"
+    "codehierarchy": "A01|A0102"
   },
   {
     "code": "A010201",
@@ -62,7 +63,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A01|A0102|A010201"
+    "codehierarchy": "A01|A0102|A010201"
   },
   {
     "code": "A010202",
@@ -71,7 +72,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A01|A0102|A010202"
+    "codehierarchy": "A01|A0102|A010202"
   },
   {
     "code": "A0103",
@@ -80,7 +81,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A01|A0103"
+    "codehierarchy": "A01|A0103"
   },
   {
     "code": "A0104",
@@ -89,7 +90,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A01|A0104"
+    "codehierarchy": "A01|A0104"
   },
   {
     "code": "A010401",
@@ -98,7 +99,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A01|A0104|A010401"
+    "codehierarchy": "A01|A0104|A010401"
   },
   {
     "code": "A010402",
@@ -107,7 +108,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A01|A0104|A010402"
+    "codehierarchy": "A01|A0104|A010402"
   },
   {
     "code": "A0105",
@@ -116,7 +117,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 27 January 2022. For details, see comment No. 23 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A01|A0105"
+    "codehierarchy": "A01|A0105"
   },
   {
     "code": "A0106",
@@ -125,7 +126,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 27 January 2022. For details, see comment No. 148, 176 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A01|A0106"
+    "codehierarchy": "A01|A0106"
   },
   {
     "code": "A02",
@@ -134,7 +135,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02"
+    "codehierarchy": "A02"
   },
   {
     "code": "A0201",
@@ -143,7 +144,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0201"
+    "codehierarchy": "A02|A0201"
   },
   {
     "code": "A020101",
@@ -152,7 +153,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0201|A020101"
+    "codehierarchy": "A02|A0201|A020101"
   },
   {
     "code": "A020102",
@@ -161,7 +162,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0201|A020102"
+    "codehierarchy": "A02|A0201|A020102"
   },
   {
     "code": "A0202",
@@ -170,7 +171,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0202"
+    "codehierarchy": "A02|A0202"
   },
   {
     "code": "A0203",
@@ -179,7 +180,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0203"
+    "codehierarchy": "A02|A0203"
   },
   {
     "code": "A0204",
@@ -188,7 +189,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0204"
+    "codehierarchy": "A02|A0204"
   },
   {
     "code": "A0205",
@@ -197,7 +198,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0205"
+    "codehierarchy": "A02|A0205"
   },
   {
     "code": "A020501",
@@ -206,7 +207,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0205|A020501"
+    "codehierarchy": "A02|A0205|A020501"
   },
   {
     "code": "A020502",
@@ -215,7 +216,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0205|A020502"
+    "codehierarchy": "A02|A0205|A020502"
   },
   {
     "code": "A020503",
@@ -224,7 +225,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0205|A020503"
+    "codehierarchy": "A02|A0205|A020503"
   },
   {
     "code": "A020504",
@@ -233,7 +234,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0205|A020504"
+    "codehierarchy": "A02|A0205|A020504"
   },
   {
     "code": "A0206",
@@ -242,7 +243,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0206"
+    "codehierarchy": "A02|A0206"
   },
   {
     "code": "A020601",
@@ -251,7 +252,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Definition was modified on 27 January 2022 (Old definition: Component Misassembled: A device found to have one or more components incorrectly assembled when delivered to the user facility. For details, see comment No. 1 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A02|A0206|A020601"
+    "codehierarchy": "A02|A0206|A020601"
   },
   {
     "code": "A020602",
@@ -260,7 +261,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0206|A020602"
+    "codehierarchy": "A02|A0206|A020602"
   },
   {
     "code": "A020603",
@@ -269,7 +270,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 27 January 2022. For details, see comment No. 222 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A02|A0206|A020603"
+    "codehierarchy": "A02|A0206|A020603"
   },
   {
     "code": "A0207",
@@ -278,7 +279,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0207"
+    "codehierarchy": "A02|A0207"
   },
   {
     "code": "A020701",
@@ -287,7 +288,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A02|A0207|A020701"
+    "codehierarchy": "A02|A0207|A020701"
   },
   {
     "code": "A03",
@@ -296,7 +297,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A03"
+    "codehierarchy": "A03"
   },
   {
     "code": "A0301",
@@ -305,7 +306,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A03|A0301"
+    "codehierarchy": "A03|A0301"
   },
   {
     "code": "A0302",
@@ -314,7 +315,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A03|A0302"
+    "codehierarchy": "A03|A0302"
   },
   {
     "code": "A030201",
@@ -323,7 +324,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A03|A0302|A030201"
+    "codehierarchy": "A03|A0302|A030201"
   },
   {
     "code": "A030202",
@@ -332,7 +333,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A03|A0302|A030202"
+    "codehierarchy": "A03|A0302|A030202"
   },
   {
     "code": "A030203",
@@ -341,7 +342,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A03|A0302|A030203"
+    "codehierarchy": "A03|A0302|A030203"
   },
   {
     "code": "A030204",
@@ -350,7 +351,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A03|A0302|A030204"
+    "codehierarchy": "A03|A0302|A030204"
   },
   {
     "code": "A030205",
@@ -359,7 +360,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A03|A0302|A030205"
+    "codehierarchy": "A03|A0302|A030205"
   },
   {
     "code": "A030206",
@@ -368,7 +369,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A03|A0302|A030206"
+    "codehierarchy": "A03|A0302|A030206"
   },
   {
     "code": "A030207",
@@ -377,7 +378,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A03|A0302|A030207"
+    "codehierarchy": "A03|A0302|A030207"
   },
   {
     "code": "A030208",
@@ -386,7 +387,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 18 March 2020 as an additional level 3 term under \"Device Ingredient or Reagent Problem\".",
-    "CodeHierarchy": "A03|A0302|A030208"
+    "codehierarchy": "A03|A0302|A030208"
   },
   {
     "code": "A0303",
@@ -395,7 +396,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A03|A0303"
+    "codehierarchy": "A03|A0303"
   },
   {
     "code": "A04",
@@ -404,7 +405,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04"
+    "codehierarchy": "A04"
   },
   {
     "code": "A0401",
@@ -413,7 +414,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0401"
+    "codehierarchy": "A04|A0401"
   },
   {
     "code": "A040101",
@@ -422,7 +423,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0401|A040101"
+    "codehierarchy": "A04|A0401|A040101"
   },
   {
     "code": "A040102",
@@ -431,7 +432,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0401|A040102"
+    "codehierarchy": "A04|A0401|A040102"
   },
   {
     "code": "A040103",
@@ -440,7 +441,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0401|A040103"
+    "codehierarchy": "A04|A0401|A040103"
   },
   {
     "code": "A040104",
@@ -449,7 +450,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0401|A040104"
+    "codehierarchy": "A04|A0401|A040104"
   },
   {
     "code": "A0402",
@@ -458,7 +459,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0402"
+    "codehierarchy": "A04|A0402"
   },
   {
     "code": "A0403",
@@ -467,7 +468,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0403"
+    "codehierarchy": "A04|A0403"
   },
   {
     "code": "A0404",
@@ -476,7 +477,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0404"
+    "codehierarchy": "A04|A0404"
   },
   {
     "code": "A0405",
@@ -485,7 +486,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0405"
+    "codehierarchy": "A04|A0405"
   },
   {
     "code": "A040501",
@@ -494,7 +495,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0405|A040501"
+    "codehierarchy": "A04|A0405|A040501"
   },
   {
     "code": "A040502",
@@ -503,7 +504,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0405|A040502"
+    "codehierarchy": "A04|A0405|A040502"
   },
   {
     "code": "A040503",
@@ -512,7 +513,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0405|A040503"
+    "codehierarchy": "A04|A0405|A040503"
   },
   {
     "code": "A040504",
@@ -521,7 +522,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0405|A040504"
+    "codehierarchy": "A04|A0405|A040504"
   },
   {
     "code": "A040505",
@@ -530,7 +531,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0405|A040505"
+    "codehierarchy": "A04|A0405|A040505"
   },
   {
     "code": "A040506",
@@ -539,7 +540,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0405|A040506"
+    "codehierarchy": "A04|A0405|A040506"
   },
   {
     "code": "A040507",
@@ -548,7 +549,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0405|A040507"
+    "codehierarchy": "A04|A0405|A040507"
   },
   {
     "code": "A040508",
@@ -557,7 +558,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0405|A040508"
+    "codehierarchy": "A04|A0405|A040508"
   },
   {
     "code": "A0406",
@@ -566,7 +567,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0406"
+    "codehierarchy": "A04|A0406"
   },
   {
     "code": "A040601",
@@ -575,7 +576,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0406|A040601"
+    "codehierarchy": "A04|A0406|A040601"
   },
   {
     "code": "A040602",
@@ -584,7 +585,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0406|A040602"
+    "codehierarchy": "A04|A0406|A040602"
   },
   {
     "code": "A040603",
@@ -593,7 +594,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0406|A040603"
+    "codehierarchy": "A04|A0406|A040603"
   },
   {
     "code": "A040604",
@@ -602,7 +603,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0406|A040604"
+    "codehierarchy": "A04|A0406|A040604"
   },
   {
     "code": "A040605",
@@ -611,7 +612,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0406|A040605"
+    "codehierarchy": "A04|A0406|A040605"
   },
   {
     "code": "A040606",
@@ -620,7 +621,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0406|A040606"
+    "codehierarchy": "A04|A0406|A040606"
   },
   {
     "code": "A040607",
@@ -629,7 +630,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0406|A040607"
+    "codehierarchy": "A04|A0406|A040607"
   },
   {
     "code": "A040608",
@@ -638,7 +639,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0406|A040608"
+    "codehierarchy": "A04|A0406|A040608"
   },
   {
     "code": "A040609",
@@ -647,7 +648,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0406|A040609"
+    "codehierarchy": "A04|A0406|A040609"
   },
   {
     "code": "A040610",
@@ -656,7 +657,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0406|A040610"
+    "codehierarchy": "A04|A0406|A040610"
   },
   {
     "code": "A040611",
@@ -665,7 +666,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0406|A040611"
+    "codehierarchy": "A04|A0406|A040611"
   },
   {
     "code": "A040612",
@@ -674,7 +675,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 18 March 2020 as an additional level 3 term under \"Material Deformation\".",
-    "CodeHierarchy": "A04|A0406|A040612"
+    "codehierarchy": "A04|A0406|A040612"
   },
   {
     "code": "A0407",
@@ -683,7 +684,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0407"
+    "codehierarchy": "A04|A0407"
   },
   {
     "code": "A0408",
@@ -692,7 +693,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0408"
+    "codehierarchy": "A04|A0408"
   },
   {
     "code": "A0409",
@@ -701,7 +702,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0409"
+    "codehierarchy": "A04|A0409"
   },
   {
     "code": "A0410",
@@ -710,7 +711,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0410"
+    "codehierarchy": "A04|A0410"
   },
   {
     "code": "A041001",
@@ -719,7 +720,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0410|A041001"
+    "codehierarchy": "A04|A0410|A041001"
   },
   {
     "code": "A0411",
@@ -728,7 +729,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0411"
+    "codehierarchy": "A04|A0411"
   },
   {
     "code": "A0412",
@@ -737,7 +738,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0412"
+    "codehierarchy": "A04|A0412"
   },
   {
     "code": "A0413",
@@ -746,7 +747,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0413"
+    "codehierarchy": "A04|A0413"
   },
   {
     "code": "A0414",
@@ -755,7 +756,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0414"
+    "codehierarchy": "A04|A0414"
   },
   {
     "code": "A0415",
@@ -764,7 +765,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A04|A0415"
+    "codehierarchy": "A04|A0415"
   },
   {
     "code": "A05",
@@ -773,7 +774,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05"
+    "codehierarchy": "A05"
   },
   {
     "code": "A0501",
@@ -782,7 +783,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0501"
+    "codehierarchy": "A05|A0501"
   },
   {
     "code": "A0502",
@@ -791,7 +792,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0502"
+    "codehierarchy": "A05|A0502"
   },
   {
     "code": "A0503",
@@ -800,7 +801,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 18 March 2020.",
-    "CodeHierarchy": "A05|A0503"
+    "codehierarchy": "A05|A0503"
   },
   {
     "code": "A050301",
@@ -809,7 +810,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 18 March 2020.",
-    "CodeHierarchy": "A05|A0503|A050301"
+    "codehierarchy": "A05|A0503|A050301"
   },
   {
     "code": "A050302",
@@ -818,7 +819,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 18 March 2020.",
-    "CodeHierarchy": "A05|A0503|A050302"
+    "codehierarchy": "A05|A0503|A050302"
   },
   {
     "code": "A0504",
@@ -827,7 +828,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Definition was modified on 27 January 2022 (Old definition: Leak/Splash: Problem associated with the escape of a liquid, gas or radiation from the vessel or container in which it is housed). For details, see comment No. 14 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A05|A0504"
+    "codehierarchy": "A05|A0504"
   },
   {
     "code": "A050401",
@@ -836,7 +837,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Term/Definition was modified on 27 January 2022 (Old term/definition: Fluid Leak: Escape (Release, Discharge) of fluid through an unintended location often accompanied by a loss of pressure and/or output). For details, see comment No. 15, 16, 17, 18 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A05|A0504|A050401"
+    "codehierarchy": "A05|A0504|A050401"
   },
   {
     "code": "A050402",
@@ -845,7 +846,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Term/Definition was modified on 27 January 2022 (Old term/definition: Gas Leak: Problem associated with the unintended escape of a gas from the container in which it is housed). For details, see comment No. 19, 20 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A05|A0504|A050402"
+    "codehierarchy": "A05|A0504|A050402"
   },
   {
     "code": "A050403",
@@ -854,7 +855,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0504|A050403"
+    "codehierarchy": "A05|A0504|A050403"
   },
   {
     "code": "A050404",
@@ -863,16 +864,16 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0504|A050404"
+    "codehierarchy": "A05|A0504|A050404"
   },
   {
     "code": "A050405",
     "term": "Perivalvular Leak",
-    "definition": "Problem associated with the escape of blood around a heart valve, particularly around its leaflets.",
+    "definition": "Problem associated with the escape of blood around a heart valve, particularly around its leaflets. Also known as paravalvular leak.",
     "Non-IMDRF Code/Term": "",
-    "Status": "",
-    "Status Description": "",
-    "CodeHierarchy": "A05|A0504|A050405"
+    "Status": "Modified (editorial)",
+    "Status Description": "Definition was modified on 31 January 2023 (Old definition: Problem associated with the escape of blood around a heart valve, particularly around its leaflets.). For details, see comment No. 7 of the Change Log (Release Number 2023).",
+    "codehierarchy": "A05|A0504|A050405"
   },
   {
     "code": "A050406",
@@ -881,7 +882,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 27 January 2022. For details, see comment No. 147, 175 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A05|A0504|A050406"
+    "codehierarchy": "A05|A0504|A050406"
   },
   {
     "code": "A050407",
@@ -890,7 +891,16 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 27 January 2022. For details, see comment No. 21 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A05|A0504|A050407"
+    "codehierarchy": "A05|A0504|A050407"
+  },
+  {
+    "code": "A050408",
+    "term": "Endoleaks",
+    "definition": "Problem associated with persistent blood flow/pressure in the aneurysm sac following an endovascular aneurysm repair (EVAR) procedure.",
+    "Non-IMDRF Code/Term": "",
+    "Status": "New",
+    "Status Description": "Term was added on 31 January 2023. For details, see comment No. 33 of the Change Log (Release Number 2023).",
+    "codehierarchy": "A05|A0504|A050408"
   },
   {
     "code": "A0505",
@@ -899,7 +909,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0505"
+    "codehierarchy": "A05|A0505"
   },
   {
     "code": "A050501",
@@ -908,7 +918,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0505|A050501"
+    "codehierarchy": "A05|A0505|A050501"
   },
   {
     "code": "A050502",
@@ -917,7 +927,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0505|A050502"
+    "codehierarchy": "A05|A0505|A050502"
   },
   {
     "code": "A0506",
@@ -926,7 +936,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0506"
+    "codehierarchy": "A05|A0506"
   },
   {
     "code": "A0507",
@@ -935,7 +945,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0507"
+    "codehierarchy": "A05|A0507"
   },
   {
     "code": "A050701",
@@ -944,7 +954,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0507|A050701"
+    "codehierarchy": "A05|A0507|A050701"
   },
   {
     "code": "A050702",
@@ -953,7 +963,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0507|A050702"
+    "codehierarchy": "A05|A0507|A050702"
   },
   {
     "code": "A050703",
@@ -962,7 +972,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0507|A050703"
+    "codehierarchy": "A05|A0507|A050703"
   },
   {
     "code": "A050704",
@@ -971,7 +981,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0507|A050704"
+    "codehierarchy": "A05|A0507|A050704"
   },
   {
     "code": "A050705",
@@ -980,7 +990,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 27 January 2022. For details, see comment No. 198 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A05|A0507|A050705"
+    "codehierarchy": "A05|A0507|A050705"
   },
   {
     "code": "A0508",
@@ -989,7 +999,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0508"
+    "codehierarchy": "A05|A0508"
   },
   {
     "code": "A0509",
@@ -998,7 +1008,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0509"
+    "codehierarchy": "A05|A0509"
   },
   {
     "code": "A050901",
@@ -1007,7 +1017,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 27 January 2022. For details, see comment No. 215 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A05|A0509|A050901"
+    "codehierarchy": "A05|A0509|A050901"
   },
   {
     "code": "A0510",
@@ -1016,7 +1026,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0510"
+    "codehierarchy": "A05|A0510"
   },
   {
     "code": "A0511",
@@ -1025,7 +1035,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0511"
+    "codehierarchy": "A05|A0511"
   },
   {
     "code": "A051101",
@@ -1034,7 +1044,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0511|A051101"
+    "codehierarchy": "A05|A0511|A051101"
   },
   {
     "code": "A051102",
@@ -1043,7 +1053,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0511|A051102"
+    "codehierarchy": "A05|A0511|A051102"
   },
   {
     "code": "A051103",
@@ -1052,7 +1062,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the term on 18 March 2020 to include difficulty in collapsing.",
-    "CodeHierarchy": "A05|A0511|A051103"
+    "codehierarchy": "A05|A0511|A051103"
   },
   {
     "code": "A051104",
@@ -1061,7 +1071,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0511|A051104"
+    "codehierarchy": "A05|A0511|A051104"
   },
   {
     "code": "A051105",
@@ -1070,7 +1080,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0511|A051105"
+    "codehierarchy": "A05|A0511|A051105"
   },
   {
     "code": "A0512",
@@ -1079,7 +1089,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0512"
+    "codehierarchy": "A05|A0512"
   },
   {
     "code": "A051201",
@@ -1088,7 +1098,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0512|A051201"
+    "codehierarchy": "A05|A0512|A051201"
   },
   {
     "code": "A051202",
@@ -1097,7 +1107,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0512|A051202"
+    "codehierarchy": "A05|A0512|A051202"
   },
   {
     "code": "A051203",
@@ -1106,7 +1116,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0512|A051203"
+    "codehierarchy": "A05|A0512|A051203"
   },
   {
     "code": "A051204",
@@ -1115,7 +1125,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0512|A051204"
+    "codehierarchy": "A05|A0512|A051204"
   },
   {
     "code": "A051205",
@@ -1124,7 +1134,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0512|A051205"
+    "codehierarchy": "A05|A0512|A051205"
   },
   {
     "code": "A051206",
@@ -1133,7 +1143,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0512|A051206"
+    "codehierarchy": "A05|A0512|A051206"
   },
   {
     "code": "A051207",
@@ -1142,7 +1152,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0512|A051207"
+    "codehierarchy": "A05|A0512|A051207"
   },
   {
     "code": "A051208",
@@ -1151,7 +1161,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A05|A0512|A051208"
+    "codehierarchy": "A05|A0512|A051208"
   },
   {
     "code": "A0513",
@@ -1160,7 +1170,16 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 18 March 2020 as an additional level 2 term under \"Mechanical Problem.",
-    "CodeHierarchy": "A05|A0513"
+    "codehierarchy": "A05|A0513"
+  },
+  {
+    "code": "A0514",
+    "term": "Damaged Thread",
+    "definition": "Problems associated with threads that are damaged either prior to use due to bad threading or repeated re-use (possibly with other damaged components) or threads that became stripped or damaged while being used.",
+    "Non-IMDRF Code/Term": "",
+    "Status": "New",
+    "Status Description": "Term was added on 31 January 2023. For details, see comment No. 5 of the Change Log (Release Number 2023).",
+    "codehierarchy": "A05|A0514"
   },
   {
     "code": "A06",
@@ -1169,7 +1188,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A06"
+    "codehierarchy": "A06"
   },
   {
     "code": "A0601",
@@ -1178,7 +1197,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A06|A0601"
+    "codehierarchy": "A06|A0601"
   },
   {
     "code": "A0602",
@@ -1187,7 +1206,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A06|A0602"
+    "codehierarchy": "A06|A0602"
   },
   {
     "code": "A0603",
@@ -1196,7 +1215,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A06|A0603"
+    "codehierarchy": "A06|A0603"
   },
   {
     "code": "A0604",
@@ -1205,7 +1224,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A06|A0604"
+    "codehierarchy": "A06|A0604"
   },
   {
     "code": "A0605",
@@ -1214,16 +1233,16 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A06|A0605"
+    "codehierarchy": "A06|A0605"
   },
   {
     "code": "A07",
     "term": "Electrical /Electronic Property Problem",
-    "definition": "Problem associated with a failure of the electrical circuitry of the device.",
+    "definition": "Problem associated with the function of the electrical circuitry of the device.",
     "Non-IMDRF Code/Term": "",
-    "Status": "",
-    "Status Description": "",
-    "CodeHierarchy": "A07"
+    "Status": "Modified (technical)",
+    "Status Description": "Definition was modified on 31 January 2023 to replace \"a failure\" with \"the function\". For details, see comment No. 8 of the Change Log (Release Number 2023).",
+    "codehierarchy": "A07"
   },
   {
     "code": "A0701",
@@ -1232,7 +1251,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0701"
+    "codehierarchy": "A07|A0701"
   },
   {
     "code": "A070101",
@@ -1241,7 +1260,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0701|A070101"
+    "codehierarchy": "A07|A0701|A070101"
   },
   {
     "code": "A070102",
@@ -1250,7 +1269,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0701|A070102"
+    "codehierarchy": "A07|A0701|A070102"
   },
   {
     "code": "A070103",
@@ -1259,7 +1278,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0701|A070103"
+    "codehierarchy": "A07|A0701|A070103"
   },
   {
     "code": "A070104",
@@ -1268,7 +1287,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0701|A070104"
+    "codehierarchy": "A07|A0701|A070104"
   },
   {
     "code": "A0702",
@@ -1277,7 +1296,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0702"
+    "codehierarchy": "A07|A0702"
   },
   {
     "code": "A0703",
@@ -1286,7 +1305,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0703"
+    "codehierarchy": "A07|A0703"
   },
   {
     "code": "A070301",
@@ -1295,7 +1314,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0703|A070301"
+    "codehierarchy": "A07|A0703|A070301"
   },
   {
     "code": "A070302",
@@ -1304,7 +1323,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0703|A070302"
+    "codehierarchy": "A07|A0703|A070302"
   },
   {
     "code": "A0704",
@@ -1313,7 +1332,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0704"
+    "codehierarchy": "A07|A0704"
   },
   {
     "code": "A0705",
@@ -1322,7 +1341,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0705"
+    "codehierarchy": "A07|A0705"
   },
   {
     "code": "A070501",
@@ -1331,7 +1350,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0705|A070501"
+    "codehierarchy": "A07|A0705|A070501"
   },
   {
     "code": "A070502",
@@ -1340,7 +1359,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0705|A070502"
+    "codehierarchy": "A07|A0705|A070502"
   },
   {
     "code": "A070503",
@@ -1349,7 +1368,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0705|A070503"
+    "codehierarchy": "A07|A0705|A070503"
   },
   {
     "code": "A070504",
@@ -1358,7 +1377,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0705|A070504"
+    "codehierarchy": "A07|A0705|A070504"
   },
   {
     "code": "A0706",
@@ -1367,7 +1386,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0706"
+    "codehierarchy": "A07|A0706"
   },
   {
     "code": "A070601",
@@ -1376,7 +1395,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0706|A070601"
+    "codehierarchy": "A07|A0706|A070601"
   },
   {
     "code": "A070602",
@@ -1385,7 +1404,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0706|A070602"
+    "codehierarchy": "A07|A0706|A070602"
   },
   {
     "code": "A070603",
@@ -1394,7 +1413,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0706|A070603"
+    "codehierarchy": "A07|A0706|A070603"
   },
   {
     "code": "A0707",
@@ -1403,7 +1422,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0707"
+    "codehierarchy": "A07|A0707"
   },
   {
     "code": "A0708",
@@ -1412,7 +1431,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0708"
+    "codehierarchy": "A07|A0708"
   },
   {
     "code": "A070801",
@@ -1421,7 +1440,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0708|A070801"
+    "codehierarchy": "A07|A0708|A070801"
   },
   {
     "code": "A070802",
@@ -1430,7 +1449,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0708|A070802"
+    "codehierarchy": "A07|A0708|A070802"
   },
   {
     "code": "A070803",
@@ -1439,7 +1458,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0708|A070803"
+    "codehierarchy": "A07|A0708|A070803"
   },
   {
     "code": "A070804",
@@ -1448,7 +1467,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0708|A070804"
+    "codehierarchy": "A07|A0708|A070804"
   },
   {
     "code": "A0709",
@@ -1457,7 +1476,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709"
+    "codehierarchy": "A07|A0709"
   },
   {
     "code": "A070901",
@@ -1466,7 +1485,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709|A070901"
+    "codehierarchy": "A07|A0709|A070901"
   },
   {
     "code": "A070902",
@@ -1475,7 +1494,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709|A070902"
+    "codehierarchy": "A07|A0709|A070902"
   },
   {
     "code": "A070903",
@@ -1484,7 +1503,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709|A070903"
+    "codehierarchy": "A07|A0709|A070903"
   },
   {
     "code": "A070904",
@@ -1493,7 +1512,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709|A070904"
+    "codehierarchy": "A07|A0709|A070904"
   },
   {
     "code": "A070905",
@@ -1502,7 +1521,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709|A070905"
+    "codehierarchy": "A07|A0709|A070905"
   },
   {
     "code": "A070906",
@@ -1511,7 +1530,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709|A070906"
+    "codehierarchy": "A07|A0709|A070906"
   },
   {
     "code": "A070907",
@@ -1520,7 +1539,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709|A070907"
+    "codehierarchy": "A07|A0709|A070907"
   },
   {
     "code": "A070908",
@@ -1529,7 +1548,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709|A070908"
+    "codehierarchy": "A07|A0709|A070908"
   },
   {
     "code": "A070909",
@@ -1538,7 +1557,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709|A070909"
+    "codehierarchy": "A07|A0709|A070909"
   },
   {
     "code": "A070910",
@@ -1547,7 +1566,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709|A070910"
+    "codehierarchy": "A07|A0709|A070910"
   },
   {
     "code": "A070911",
@@ -1556,7 +1575,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709|A070911"
+    "codehierarchy": "A07|A0709|A070911"
   },
   {
     "code": "A070912",
@@ -1565,7 +1584,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0709|A070912"
+    "codehierarchy": "A07|A0709|A070912"
   },
   {
     "code": "A0710",
@@ -1574,7 +1593,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0710"
+    "codehierarchy": "A07|A0710"
   },
   {
     "code": "A0711",
@@ -1583,7 +1602,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0711"
+    "codehierarchy": "A07|A0711"
   },
   {
     "code": "A071101",
@@ -1592,7 +1611,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0711|A071101"
+    "codehierarchy": "A07|A0711|A071101"
   },
   {
     "code": "A071102",
@@ -1601,7 +1620,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0711|A071102"
+    "codehierarchy": "A07|A0711|A071102"
   },
   {
     "code": "A0712",
@@ -1610,7 +1629,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0712"
+    "codehierarchy": "A07|A0712"
   },
   {
     "code": "A071201",
@@ -1619,7 +1638,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0712|A071201"
+    "codehierarchy": "A07|A0712|A071201"
   },
   {
     "code": "A071202",
@@ -1628,7 +1647,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0712|A071202"
+    "codehierarchy": "A07|A0712|A071202"
   },
   {
     "code": "A071203",
@@ -1637,7 +1656,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0712|A071203"
+    "codehierarchy": "A07|A0712|A071203"
   },
   {
     "code": "A071204",
@@ -1646,16 +1665,16 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0712|A071204"
+    "codehierarchy": "A07|A0712|A071204"
   },
   {
     "code": "A071205",
     "term": "Pacemaker Found in Back-Up Mode",
     "definition": "A device with a pacing function found in back-up Mode. This may be an appropriate fail-safe action (e.g. end of battery life), or be caused by device malfunction or due to operator error.",
     "Non-IMDRF Code/Term": "",
-    "Status": "",
-    "Status Description": "",
-    "CodeHierarchy": "A07|A0712|A071205"
+    "Status": "Retired",
+    "Status Description": "Term was inactivated on 31 January 2023, with the addition of term A0723 Device in Backup-mode. For details, see comment No. 8 of the Change Log (Release Number 2023).",
+    "codehierarchy": "A07|A0712|A071205"
   },
   {
     "code": "A071206",
@@ -1664,7 +1683,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0712|A071206"
+    "codehierarchy": "A07|A0712|A071206"
   },
   {
     "code": "A071207",
@@ -1673,7 +1692,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0712|A071207"
+    "codehierarchy": "A07|A0712|A071207"
   },
   {
     "code": "A071208",
@@ -1682,7 +1701,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0712|A071208"
+    "codehierarchy": "A07|A0712|A071208"
   },
   {
     "code": "A071209",
@@ -1691,7 +1710,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0712|A071209"
+    "codehierarchy": "A07|A0712|A071209"
   },
   {
     "code": "A0713",
@@ -1700,7 +1719,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the term and definition on 18 March 2020 to include stimulation and to differentiate this term with \"Unintended Electrical Shock\" (A0714).",
-    "CodeHierarchy": "A07|A0713"
+    "codehierarchy": "A07|A0713"
   },
   {
     "code": "A071301",
@@ -1709,7 +1728,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the term on 18 March 2020 to include stimulation.",
-    "CodeHierarchy": "A07|A0713|A071301"
+    "codehierarchy": "A07|A0713|A071301"
   },
   {
     "code": "A071302",
@@ -1718,7 +1737,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the term and definition on 18 March 2020 to include inadequate stimulation.",
-    "CodeHierarchy": "A07|A0713|A071302"
+    "codehierarchy": "A07|A0713|A071302"
   },
   {
     "code": "A071303",
@@ -1727,7 +1746,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the term and definition on 18 March 2020 to include stimulation.",
-    "CodeHierarchy": "A07|A0713|A071303"
+    "codehierarchy": "A07|A0713|A071303"
   },
   {
     "code": "A0714",
@@ -1736,7 +1755,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the definition on 18 March 2020 to differentiate this term with \"Defibrillation/Stimulation Problem\" (A0713) and lower level terms.",
-    "CodeHierarchy": "A07|A0714"
+    "codehierarchy": "A07|A0714"
   },
   {
     "code": "A0715",
@@ -1745,7 +1764,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0715"
+    "codehierarchy": "A07|A0715"
   },
   {
     "code": "A0716",
@@ -1754,7 +1773,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0716"
+    "codehierarchy": "A07|A0716"
   },
   {
     "code": "A0717",
@@ -1763,7 +1782,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0717"
+    "codehierarchy": "A07|A0717"
   },
   {
     "code": "A0718",
@@ -1772,7 +1791,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0718"
+    "codehierarchy": "A07|A0718"
   },
   {
     "code": "A071801",
@@ -1781,7 +1800,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0718|A071801"
+    "codehierarchy": "A07|A0718|A071801"
   },
   {
     "code": "A0719",
@@ -1790,7 +1809,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0719"
+    "codehierarchy": "A07|A0719"
   },
   {
     "code": "A0720",
@@ -1799,7 +1818,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0720"
+    "codehierarchy": "A07|A0720"
   },
   {
     "code": "A072001",
@@ -1808,7 +1827,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0720|A072001"
+    "codehierarchy": "A07|A0720|A072001"
   },
   {
     "code": "A072002",
@@ -1817,7 +1836,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0720|A072002"
+    "codehierarchy": "A07|A0720|A072002"
   },
   {
     "code": "A0721",
@@ -1826,7 +1845,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0721"
+    "codehierarchy": "A07|A0721"
   },
   {
     "code": "A072101",
@@ -1835,7 +1854,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0721|A072101"
+    "codehierarchy": "A07|A0721|A072101"
   },
   {
     "code": "A072102",
@@ -1844,7 +1863,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0721|A072102"
+    "codehierarchy": "A07|A0721|A072102"
   },
   {
     "code": "A072103",
@@ -1853,7 +1872,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0721|A072103"
+    "codehierarchy": "A07|A0721|A072103"
   },
   {
     "code": "A0722",
@@ -1862,7 +1881,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0722"
+    "codehierarchy": "A07|A0722"
   },
   {
     "code": "A072201",
@@ -1871,7 +1890,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0722|A072201"
+    "codehierarchy": "A07|A0722|A072201"
   },
   {
     "code": "A072202",
@@ -1880,7 +1899,16 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A07|A0722|A072202"
+    "codehierarchy": "A07|A0722|A072202"
+  },
+  {
+    "code": "A0723",
+    "term": "Device in Backup-mode",
+    "definition": "A device found in back-up mode. This may be an appropriate fail-safe action (e.g. end of battery life), or be caused by device malfunction or due to operator error.",
+    "Non-IMDRF Code/Term": "",
+    "Status": "New",
+    "Status Description": "Term was added on 31 January 2023. For details, see comment No. 8 of the Change Log (Release Number 2023).",
+    "codehierarchy": "A07|A0723"
   },
   {
     "code": "A08",
@@ -1889,7 +1917,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A08"
+    "codehierarchy": "A08"
   },
   {
     "code": "A0801",
@@ -1898,7 +1926,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A08|A0801"
+    "codehierarchy": "A08|A0801"
   },
   {
     "code": "A0802",
@@ -1907,7 +1935,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A08|A0802"
+    "codehierarchy": "A08|A0802"
   },
   {
     "code": "A0803",
@@ -1916,7 +1944,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A08|A0803"
+    "codehierarchy": "A08|A0803"
   },
   {
     "code": "A0804",
@@ -1925,7 +1953,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A08|A0804"
+    "codehierarchy": "A08|A0804"
   },
   {
     "code": "A0805",
@@ -1934,7 +1962,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 18 March 2020 as an additional level 2 term under \"Calibration Problem\".",
-    "CodeHierarchy": "A08|A0805"
+    "codehierarchy": "A08|A0805"
   },
   {
     "code": "A09",
@@ -1943,7 +1971,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09"
+    "codehierarchy": "A09"
   },
   {
     "code": "A0901",
@@ -1952,7 +1980,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the term on 18 March 2020.",
-    "CodeHierarchy": "A09|A0901"
+    "codehierarchy": "A09|A0901"
   },
   {
     "code": "A090101",
@@ -1961,7 +1989,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0901|A090101"
+    "codehierarchy": "A09|A0901|A090101"
   },
   {
     "code": "A090102",
@@ -1970,7 +1998,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0901|A090102"
+    "codehierarchy": "A09|A0901|A090102"
   },
   {
     "code": "A090103",
@@ -1979,7 +2007,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0901|A090103"
+    "codehierarchy": "A09|A0901|A090103"
   },
   {
     "code": "A0902",
@@ -1988,7 +2016,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0902"
+    "codehierarchy": "A09|A0902"
   },
   {
     "code": "A090201",
@@ -1997,7 +2025,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0902|A090201"
+    "codehierarchy": "A09|A0902|A090201"
   },
   {
     "code": "A090202",
@@ -2006,7 +2034,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0902|A090202"
+    "codehierarchy": "A09|A0902|A090202"
   },
   {
     "code": "A090203",
@@ -2015,7 +2043,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0902|A090203"
+    "codehierarchy": "A09|A0902|A090203"
   },
   {
     "code": "A090204",
@@ -2024,7 +2052,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0902|A090204"
+    "codehierarchy": "A09|A0902|A090204"
   },
   {
     "code": "A090205",
@@ -2033,7 +2061,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0902|A090205"
+    "codehierarchy": "A09|A0902|A090205"
   },
   {
     "code": "A090206",
@@ -2042,7 +2070,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0902|A090206"
+    "codehierarchy": "A09|A0902|A090206"
   },
   {
     "code": "A090207",
@@ -2051,7 +2079,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0902|A090207"
+    "codehierarchy": "A09|A0902|A090207"
   },
   {
     "code": "A090208",
@@ -2060,7 +2088,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0902|A090208"
+    "codehierarchy": "A09|A0902|A090208"
   },
   {
     "code": "A090209",
@@ -2069,7 +2097,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0902|A090209"
+    "codehierarchy": "A09|A0902|A090209"
   },
   {
     "code": "A0903",
@@ -2078,7 +2106,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0903"
+    "codehierarchy": "A09|A0903"
   },
   {
     "code": "A090301",
@@ -2087,7 +2115,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0903|A090301"
+    "codehierarchy": "A09|A0903|A090301"
   },
   {
     "code": "A090302",
@@ -2096,7 +2124,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0903|A090302"
+    "codehierarchy": "A09|A0903|A090302"
   },
   {
     "code": "A0904",
@@ -2105,7 +2133,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0904"
+    "codehierarchy": "A09|A0904"
   },
   {
     "code": "A090401",
@@ -2114,7 +2142,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0904|A090401"
+    "codehierarchy": "A09|A0904|A090401"
   },
   {
     "code": "A090402",
@@ -2123,7 +2151,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0904|A090402"
+    "codehierarchy": "A09|A0904|A090402"
   },
   {
     "code": "A090403",
@@ -2132,7 +2160,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0904|A090403"
+    "codehierarchy": "A09|A0904|A090403"
   },
   {
     "code": "A090404",
@@ -2141,7 +2169,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0904|A090404"
+    "codehierarchy": "A09|A0904|A090404"
   },
   {
     "code": "A090405",
@@ -2150,7 +2178,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0904|A090405"
+    "codehierarchy": "A09|A0904|A090405"
   },
   {
     "code": "A090406",
@@ -2159,7 +2187,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0904|A090406"
+    "codehierarchy": "A09|A0904|A090406"
   },
   {
     "code": "A090407",
@@ -2168,7 +2196,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0904|A090407"
+    "codehierarchy": "A09|A0904|A090407"
   },
   {
     "code": "A0905",
@@ -2177,7 +2205,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0905"
+    "codehierarchy": "A09|A0905"
   },
   {
     "code": "A090501",
@@ -2186,7 +2214,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0905|A090501"
+    "codehierarchy": "A09|A0905|A090501"
   },
   {
     "code": "A090502",
@@ -2195,7 +2223,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0905|A090502"
+    "codehierarchy": "A09|A0905|A090502"
   },
   {
     "code": "A090503",
@@ -2204,7 +2232,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0905|A090503"
+    "codehierarchy": "A09|A0905|A090503"
   },
   {
     "code": "A090504",
@@ -2213,7 +2241,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0905|A090504"
+    "codehierarchy": "A09|A0905|A090504"
   },
   {
     "code": "A0906",
@@ -2222,7 +2250,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0906"
+    "codehierarchy": "A09|A0906"
   },
   {
     "code": "A0907",
@@ -2231,7 +2259,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0907"
+    "codehierarchy": "A09|A0907"
   },
   {
     "code": "A0908",
@@ -2240,7 +2268,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the term on 16 Feburary 2021.",
-    "CodeHierarchy": "A09|A0908"
+    "codehierarchy": "A09|A0908"
   },
   {
     "code": "A090801",
@@ -2249,7 +2277,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the term on 18 March 2020 to include signal noise.",
-    "CodeHierarchy": "A09|A0908|A090801"
+    "codehierarchy": "A09|A0908|A090801"
   },
   {
     "code": "A090802",
@@ -2258,7 +2286,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0908|A090802"
+    "codehierarchy": "A09|A0908|A090802"
   },
   {
     "code": "A090803",
@@ -2267,7 +2295,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0908|A090803"
+    "codehierarchy": "A09|A0908|A090803"
   },
   {
     "code": "A090804",
@@ -2276,7 +2304,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0908|A090804"
+    "codehierarchy": "A09|A0908|A090804"
   },
   {
     "code": "A090805",
@@ -2285,7 +2313,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0908|A090805"
+    "codehierarchy": "A09|A0908|A090805"
   },
   {
     "code": "A090806",
@@ -2294,7 +2322,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0908|A090806"
+    "codehierarchy": "A09|A0908|A090806"
   },
   {
     "code": "A090807",
@@ -2303,7 +2331,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0908|A090807"
+    "codehierarchy": "A09|A0908|A090807"
   },
   {
     "code": "A090808",
@@ -2312,7 +2340,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0908|A090808"
+    "codehierarchy": "A09|A0908|A090808"
   },
   {
     "code": "A090809",
@@ -2321,7 +2349,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0908|A090809"
+    "codehierarchy": "A09|A0908|A090809"
   },
   {
     "code": "A090810",
@@ -2330,7 +2358,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0908|A090810"
+    "codehierarchy": "A09|A0908|A090810"
   },
   {
     "code": "A090811",
@@ -2339,7 +2367,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0908|A090811"
+    "codehierarchy": "A09|A0908|A090811"
   },
   {
     "code": "A090812",
@@ -2348,7 +2376,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0908|A090812"
+    "codehierarchy": "A09|A0908|A090812"
   },
   {
     "code": "A090813",
@@ -2357,7 +2385,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 18 March 2020 as an additional level 3 term to \"Incorrect, Inadequate or Imprecise Results or Readings\".",
-    "CodeHierarchy": "A09|A0908|A090813"
+    "codehierarchy": "A09|A0908|A090813"
   },
   {
     "code": "A090814",
@@ -2366,7 +2394,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 27 January 2022. For details, see comment No. 146 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A09|A0908|A090814"
+    "codehierarchy": "A09|A0908|A090814"
   },
   {
     "code": "A0909",
@@ -2375,7 +2403,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A09|A0909"
+    "codehierarchy": "A09|A0909"
   },
   {
     "code": "A10",
@@ -2384,7 +2412,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A10"
+    "codehierarchy": "A10"
   },
   {
     "code": "A1001",
@@ -2393,7 +2421,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A10|A1001"
+    "codehierarchy": "A10|A1001"
   },
   {
     "code": "A1002",
@@ -2402,7 +2430,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A10|A1002"
+    "codehierarchy": "A10|A1002"
   },
   {
     "code": "A1003",
@@ -2411,7 +2439,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A10|A1003"
+    "codehierarchy": "A10|A1003"
   },
   {
     "code": "A1004",
@@ -2420,7 +2448,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A10|A1004"
+    "codehierarchy": "A10|A1004"
   },
   {
     "code": "A1005",
@@ -2429,7 +2457,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A10|A1005"
+    "codehierarchy": "A10|A1005"
   },
   {
     "code": "A1006",
@@ -2438,7 +2466,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A10|A1006"
+    "codehierarchy": "A10|A1006"
   },
   {
     "code": "A1007",
@@ -2447,7 +2475,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A10|A1007"
+    "codehierarchy": "A10|A1007"
   },
   {
     "code": "A1008",
@@ -2456,7 +2484,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A10|A1008"
+    "codehierarchy": "A10|A1008"
   },
   {
     "code": "A1009",
@@ -2465,7 +2493,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A10|A1009"
+    "codehierarchy": "A10|A1009"
   },
   {
     "code": "A11",
@@ -2474,7 +2502,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11"
+    "codehierarchy": "A11"
   },
   {
     "code": "A1101",
@@ -2483,7 +2511,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1101"
+    "codehierarchy": "A11|A1101"
   },
   {
     "code": "A1102",
@@ -2492,7 +2520,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1102"
+    "codehierarchy": "A11|A1102"
   },
   {
     "code": "A110201",
@@ -2501,7 +2529,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Definition was modified on 27 January 2022 to add in \"/or\" For details, see comment No. 27 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A11|A1102|A110201"
+    "codehierarchy": "A11|A1102|A110201"
   },
   {
     "code": "A110202",
@@ -2510,7 +2538,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1102|A110202"
+    "codehierarchy": "A11|A1102|A110202"
   },
   {
     "code": "A110203",
@@ -2519,7 +2547,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1102|A110203"
+    "codehierarchy": "A11|A1102|A110203"
   },
   {
     "code": "A110204",
@@ -2528,7 +2556,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1102|A110204"
+    "codehierarchy": "A11|A1102|A110204"
   },
   {
     "code": "A110205",
@@ -2537,7 +2565,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1102|A110205"
+    "codehierarchy": "A11|A1102|A110205"
   },
   {
     "code": "A110206",
@@ -2546,7 +2574,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1102|A110206"
+    "codehierarchy": "A11|A1102|A110206"
   },
   {
     "code": "A110207",
@@ -2555,7 +2583,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1102|A110207"
+    "codehierarchy": "A11|A1102|A110207"
   },
   {
     "code": "A110208",
@@ -2564,7 +2592,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1102|A110208"
+    "codehierarchy": "A11|A1102|A110208"
   },
   {
     "code": "A1103",
@@ -2573,7 +2601,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1103"
+    "codehierarchy": "A11|A1103"
   },
   {
     "code": "A110301",
@@ -2582,7 +2610,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1103|A110301"
+    "codehierarchy": "A11|A1103|A110301"
   },
   {
     "code": "A110302",
@@ -2591,7 +2619,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1103|A110302"
+    "codehierarchy": "A11|A1103|A110302"
   },
   {
     "code": "A110303",
@@ -2600,7 +2628,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1103|A110303"
+    "codehierarchy": "A11|A1103|A110303"
   },
   {
     "code": "A1104",
@@ -2609,7 +2637,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1104"
+    "codehierarchy": "A11|A1104"
   },
   {
     "code": "A110401",
@@ -2618,7 +2646,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1104|A110401"
+    "codehierarchy": "A11|A1104|A110401"
   },
   {
     "code": "A110402",
@@ -2627,7 +2655,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1104|A110402"
+    "codehierarchy": "A11|A1104|A110402"
   },
   {
     "code": "A1105",
@@ -2636,7 +2664,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1105"
+    "codehierarchy": "A11|A1105"
   },
   {
     "code": "A110501",
@@ -2645,7 +2673,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1105|A110501"
+    "codehierarchy": "A11|A1105|A110501"
   },
   {
     "code": "A110502",
@@ -2654,7 +2682,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1105|A110502"
+    "codehierarchy": "A11|A1105|A110502"
   },
   {
     "code": "A1106",
@@ -2663,7 +2691,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1106"
+    "codehierarchy": "A11|A1106"
   },
   {
     "code": "A110601",
@@ -2672,7 +2700,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1106|A110601"
+    "codehierarchy": "A11|A1106|A110601"
   },
   {
     "code": "A110602",
@@ -2681,7 +2709,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1106|A110602"
+    "codehierarchy": "A11|A1106|A110602"
   },
   {
     "code": "A1107",
@@ -2690,7 +2718,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1107"
+    "codehierarchy": "A11|A1107"
   },
   {
     "code": "A110701",
@@ -2699,7 +2727,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1107|A110701"
+    "codehierarchy": "A11|A1107|A110701"
   },
   {
     "code": "A110702",
@@ -2708,7 +2736,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1107|A110702"
+    "codehierarchy": "A11|A1107|A110702"
   },
   {
     "code": "A1108",
@@ -2717,7 +2745,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A11|A1108"
+    "codehierarchy": "A11|A1108"
   },
   {
     "code": "A12",
@@ -2726,7 +2754,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A12"
+    "codehierarchy": "A12"
   },
   {
     "code": "A1201",
@@ -2735,7 +2763,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A12|A1201"
+    "codehierarchy": "A12|A1201"
   },
   {
     "code": "A1202",
@@ -2744,7 +2772,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A12|A1202"
+    "codehierarchy": "A12|A1202"
   },
   {
     "code": "A1203",
@@ -2753,7 +2781,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A12|A1203"
+    "codehierarchy": "A12|A1203"
   },
   {
     "code": "A1204",
@@ -2762,7 +2790,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A12|A1204"
+    "codehierarchy": "A12|A1204"
   },
   {
     "code": "A1205",
@@ -2771,7 +2799,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A12|A1205"
+    "codehierarchy": "A12|A1205"
   },
   {
     "code": "A1206",
@@ -2780,7 +2808,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A12|A1206"
+    "codehierarchy": "A12|A1206"
   },
   {
     "code": "A1207",
@@ -2789,7 +2817,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A12|A1207"
+    "codehierarchy": "A12|A1207"
   },
   {
     "code": "A1208",
@@ -2798,7 +2826,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A12|A1208"
+    "codehierarchy": "A12|A1208"
   },
   {
     "code": "A13",
@@ -2807,7 +2835,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A13"
+    "codehierarchy": "A13"
   },
   {
     "code": "A1301",
@@ -2816,7 +2844,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A13|A1301"
+    "codehierarchy": "A13|A1301"
   },
   {
     "code": "A1302",
@@ -2825,7 +2853,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A13|A1302"
+    "codehierarchy": "A13|A1302"
   },
   {
     "code": "A1303",
@@ -2834,7 +2862,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A13|A1303"
+    "codehierarchy": "A13|A1303"
   },
   {
     "code": "A1304",
@@ -2843,7 +2871,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A13|A1304"
+    "codehierarchy": "A13|A1304"
   },
   {
     "code": "A1305",
@@ -2852,16 +2880,16 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A13|A1305"
+    "codehierarchy": "A13|A1305"
   },
   {
     "code": "A14",
     "term": "Infusion or Flow Problem",
-    "definition": "Problem associated with the device failing to deliver or draw liquids or gases as intended (e.g. delivering drugs at incorrect rate, Problems with drawing fluid from a system). This includes vacuum collection devices.",
+    "definition": "Problem associated with the device failing to deliver or draw liquids or gases as intended (e.g. delivering drugs at incorrect rate, problems with drawing fluid from a system). This includes vacuum collection devices and manual or mechanical pumps.",
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
-    "Status Description": "Technical change to the definition on 18 March 2020 to include vacuum collection devices.",
-    "CodeHierarchy": "A14"
+    "Status Description": "Definition was modified on 31 January 2023 (Old definition: Problem associated with the device failing to deliver or draw liquids or gases as intended (e.g. delivering drugs at incorrect rate, Problems with drawing fluid from a system). This includes vacuum collection devices.). For details, see comment No. 35 of the Change Log (Release Number 2023).",
+    "codehierarchy": "A14"
   },
   {
     "code": "A1401",
@@ -2870,7 +2898,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the definition on 18 March 2020 to accommodate additional level 3 terms.",
-    "CodeHierarchy": "A14|A1401"
+    "codehierarchy": "A14|A1401"
   },
   {
     "code": "A140101",
@@ -2879,7 +2907,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 18 March 2020 to differentiate between a failure to deflate and an unintended deflation.",
-    "CodeHierarchy": "A14|A1401|A140101"
+    "codehierarchy": "A14|A1401|A140101"
   },
   {
     "code": "A140102",
@@ -2888,7 +2916,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 18 March 2020 to differentiate between a failure to deflate and an unintended deflation.",
-    "CodeHierarchy": "A14|A1401|A140102"
+    "codehierarchy": "A14|A1401|A140102"
   },
   {
     "code": "A1402",
@@ -2897,7 +2925,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1402"
+    "codehierarchy": "A14|A1402"
   },
   {
     "code": "A1403",
@@ -2906,7 +2934,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1403"
+    "codehierarchy": "A14|A1403"
   },
   {
     "code": "A140301",
@@ -2915,7 +2943,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1403|A140301"
+    "codehierarchy": "A14|A1403|A140301"
   },
   {
     "code": "A140302",
@@ -2924,7 +2952,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1403|A140302"
+    "codehierarchy": "A14|A1403|A140302"
   },
   {
     "code": "A140303",
@@ -2933,7 +2961,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1403|A140303"
+    "codehierarchy": "A14|A1403|A140303"
   },
   {
     "code": "A140304",
@@ -2942,7 +2970,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1403|A140304"
+    "codehierarchy": "A14|A1403|A140304"
   },
   {
     "code": "A1404",
@@ -2951,7 +2979,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1404"
+    "codehierarchy": "A14|A1404"
   },
   {
     "code": "A140401",
@@ -2960,7 +2988,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1404|A140401"
+    "codehierarchy": "A14|A1404|A140401"
   },
   {
     "code": "A140402",
@@ -2969,7 +2997,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1404|A140402"
+    "codehierarchy": "A14|A1404|A140402"
   },
   {
     "code": "A1405",
@@ -2978,7 +3006,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1405"
+    "codehierarchy": "A14|A1405"
   },
   {
     "code": "A140501",
@@ -2987,7 +3015,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1405|A140501"
+    "codehierarchy": "A14|A1405|A140501"
   },
   {
     "code": "A140502",
@@ -2996,7 +3024,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1405|A140502"
+    "codehierarchy": "A14|A1405|A140502"
   },
   {
     "code": "A140503",
@@ -3005,7 +3033,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1405|A140503"
+    "codehierarchy": "A14|A1405|A140503"
   },
   {
     "code": "A140504",
@@ -3014,7 +3042,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1405|A140504"
+    "codehierarchy": "A14|A1405|A140504"
   },
   {
     "code": "A140505",
@@ -3023,7 +3051,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1405|A140505"
+    "codehierarchy": "A14|A1405|A140505"
   },
   {
     "code": "A140506",
@@ -3032,7 +3060,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1405|A140506"
+    "codehierarchy": "A14|A1405|A140506"
   },
   {
     "code": "A140507",
@@ -3041,7 +3069,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1405|A140507"
+    "codehierarchy": "A14|A1405|A140507"
   },
   {
     "code": "A140508",
@@ -3050,7 +3078,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1405|A140508"
+    "codehierarchy": "A14|A1405|A140508"
   },
   {
     "code": "A140509",
@@ -3059,7 +3087,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1405|A140509"
+    "codehierarchy": "A14|A1405|A140509"
   },
   {
     "code": "A1406",
@@ -3068,7 +3096,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1406"
+    "codehierarchy": "A14|A1406"
   },
   {
     "code": "A1407",
@@ -3077,7 +3105,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1407"
+    "codehierarchy": "A14|A1407"
   },
   {
     "code": "A1408",
@@ -3086,7 +3114,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1408"
+    "codehierarchy": "A14|A1408"
   },
   {
     "code": "A140801",
@@ -3095,7 +3123,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1408|A140801"
+    "codehierarchy": "A14|A1408|A140801"
   },
   {
     "code": "A140802",
@@ -3104,7 +3132,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1408|A140802"
+    "codehierarchy": "A14|A1408|A140802"
   },
   {
     "code": "A140803",
@@ -3113,7 +3141,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1408|A140803"
+    "codehierarchy": "A14|A1408|A140803"
   },
   {
     "code": "A1409",
@@ -3122,7 +3150,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the definition on 18 March 2020 to clarify that the term includes problems related to blood clotting.",
-    "CodeHierarchy": "A14|A1409"
+    "codehierarchy": "A14|A1409"
   },
   {
     "code": "A140901",
@@ -3131,7 +3159,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1409|A140901"
+    "codehierarchy": "A14|A1409|A140901"
   },
   {
     "code": "A140902",
@@ -3140,7 +3168,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1409|A140902"
+    "codehierarchy": "A14|A1409|A140902"
   },
   {
     "code": "A1410",
@@ -3149,7 +3177,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1410"
+    "codehierarchy": "A14|A1410"
   },
   {
     "code": "A1411",
@@ -3158,7 +3186,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1411"
+    "codehierarchy": "A14|A1411"
   },
   {
     "code": "A141101",
@@ -3167,7 +3195,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1411|A141101"
+    "codehierarchy": "A14|A1411|A141101"
   },
   {
     "code": "A141102",
@@ -3176,7 +3204,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1411|A141102"
+    "codehierarchy": "A14|A1411|A141102"
   },
   {
     "code": "A141103",
@@ -3185,16 +3213,16 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1411|A141103"
+    "codehierarchy": "A14|A1411|A141103"
   },
   {
     "code": "A1412",
     "term": "Pumping Problem",
-    "definition": "Problem associated with pump performance deviating from specifications in a way to compromise flow or infusion.",
+    "definition": "Problem associated with pump performance deviating from specifications in a way to compromise flow or infusion or dispensing.",
     "Non-IMDRF Code/Term": "",
-    "Status": "",
-    "Status Description": "",
-    "CodeHierarchy": "A14|A1412"
+    "Status": "Modified (technical)",
+    "Status Description": "Definition was modified on 31 January 2023 (Old definition: Problem associated with pump performance deviating from specifications in a way to compromise flow or infusion). For details, see comment No. 35 of the Change Log (Release Number 2023).",
+    "codehierarchy": "A14|A1412"
   },
   {
     "code": "A141201",
@@ -3203,7 +3231,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1412|A141201"
+    "codehierarchy": "A14|A1412|A141201"
   },
   {
     "code": "A141202",
@@ -3212,7 +3240,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1412|A141202"
+    "codehierarchy": "A14|A1412|A141202"
   },
   {
     "code": "A141203",
@@ -3221,7 +3249,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1412|A141203"
+    "codehierarchy": "A14|A1412|A141203"
   },
   {
     "code": "A141204",
@@ -3230,7 +3258,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1412|A141204"
+    "codehierarchy": "A14|A1412|A141204"
   },
   {
     "code": "A1413",
@@ -3239,7 +3267,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1413"
+    "codehierarchy": "A14|A1413"
   },
   {
     "code": "A141301",
@@ -3248,7 +3276,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the definition on 18 March 2020 to include removal of fluid or gas from a device.",
-    "CodeHierarchy": "A14|A1413|A141301"
+    "codehierarchy": "A14|A1413|A141301"
   },
   {
     "code": "A141302",
@@ -3257,7 +3285,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the definition on 18 March 2020 to include removal of fluid or gas from a device.",
-    "CodeHierarchy": "A14|A1413|A141302"
+    "codehierarchy": "A14|A1413|A141302"
   },
   {
     "code": "A141303",
@@ -3266,7 +3294,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1413|A141303"
+    "codehierarchy": "A14|A1413|A141303"
   },
   {
     "code": "A1414",
@@ -3275,7 +3303,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1414"
+    "codehierarchy": "A14|A1414"
   },
   {
     "code": "A141401",
@@ -3284,7 +3312,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1414|A141401"
+    "codehierarchy": "A14|A1414|A141401"
   },
   {
     "code": "A141402",
@@ -3293,7 +3321,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A14|A1414|A141402"
+    "codehierarchy": "A14|A1414|A141402"
   },
   {
     "code": "A1415",
@@ -3302,7 +3330,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 18 March 2020 as an additional level 2 term to \"Infusion or Flow Problem\".",
-    "CodeHierarchy": "A14|A1415"
+    "codehierarchy": "A14|A1415"
   },
   {
     "code": "A15",
@@ -3311,7 +3339,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the term on 16 Feburary 2021.",
-    "CodeHierarchy": "A15"
+    "codehierarchy": "A15"
   },
   {
     "code": "A1501",
@@ -3320,7 +3348,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the definition on 18 March 2020 to clarify that activation includes expansion.",
-    "CodeHierarchy": "A15|A1501"
+    "codehierarchy": "A15|A1501"
   },
   {
     "code": "A150101",
@@ -3329,7 +3357,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 18 March 2020.",
-    "CodeHierarchy": "A15|A1501|A150101"
+    "codehierarchy": "A15|A1501|A150101"
   },
   {
     "code": "A150102",
@@ -3338,7 +3366,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1501|A150102"
+    "codehierarchy": "A15|A1501|A150102"
   },
   {
     "code": "A150103",
@@ -3347,7 +3375,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1501|A150103"
+    "codehierarchy": "A15|A1501|A150103"
   },
   {
     "code": "A150104",
@@ -3356,7 +3384,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1501|A150104"
+    "codehierarchy": "A15|A1501|A150104"
   },
   {
     "code": "A150105",
@@ -3365,7 +3393,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 18 March 2020 as an additional level 3 term to \"Activation Problem\".",
-    "CodeHierarchy": "A15|A1501|A150105"
+    "codehierarchy": "A15|A1501|A150105"
   },
   {
     "code": "A1502",
@@ -3374,7 +3402,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1502"
+    "codehierarchy": "A15|A1502"
   },
   {
     "code": "A150201",
@@ -3383,7 +3411,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1502|A150201"
+    "codehierarchy": "A15|A1502|A150201"
   },
   {
     "code": "A150202",
@@ -3392,7 +3420,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1502|A150202"
+    "codehierarchy": "A15|A1502|A150202"
   },
   {
     "code": "A150203",
@@ -3401,7 +3429,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1502|A150203"
+    "codehierarchy": "A15|A1502|A150203"
   },
   {
     "code": "A150204",
@@ -3410,7 +3438,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1502|A150204"
+    "codehierarchy": "A15|A1502|A150204"
   },
   {
     "code": "A150205",
@@ -3419,7 +3447,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1502|A150205"
+    "codehierarchy": "A15|A1502|A150205"
   },
   {
     "code": "A150206",
@@ -3428,7 +3456,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1502|A150206"
+    "codehierarchy": "A15|A1502|A150206"
   },
   {
     "code": "A150207",
@@ -3437,7 +3465,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 18 March 2020.",
-    "CodeHierarchy": "A15|A1502|A150207"
+    "codehierarchy": "A15|A1502|A150207"
   },
   {
     "code": "A150208",
@@ -3446,7 +3474,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1502|A150208"
+    "codehierarchy": "A15|A1502|A150208"
   },
   {
     "code": "A1503",
@@ -3455,7 +3483,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1503"
+    "codehierarchy": "A15|A1503"
   },
   {
     "code": "A150301",
@@ -3464,7 +3492,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1503|A150301"
+    "codehierarchy": "A15|A1503|A150301"
   },
   {
     "code": "A150302",
@@ -3473,7 +3501,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1503|A150302"
+    "codehierarchy": "A15|A1503|A150302"
   },
   {
     "code": "A150303",
@@ -3482,7 +3510,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A15|A1503|A150303"
+    "codehierarchy": "A15|A1503|A150303"
   },
   {
     "code": "A16",
@@ -3491,7 +3519,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16"
+    "codehierarchy": "A16"
   },
   {
     "code": "A1601",
@@ -3500,7 +3528,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1601"
+    "codehierarchy": "A16|A1601"
   },
   {
     "code": "A160101",
@@ -3509,7 +3537,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1601|A160101"
+    "codehierarchy": "A16|A1601|A160101"
   },
   {
     "code": "A160102",
@@ -3518,7 +3546,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1601|A160102"
+    "codehierarchy": "A16|A1601|A160102"
   },
   {
     "code": "A160103",
@@ -3527,7 +3555,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1601|A160103"
+    "codehierarchy": "A16|A1601|A160103"
   },
   {
     "code": "A160104",
@@ -3536,7 +3564,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1601|A160104"
+    "codehierarchy": "A16|A1601|A160104"
   },
   {
     "code": "A160105",
@@ -3545,7 +3573,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1601|A160105"
+    "codehierarchy": "A16|A1601|A160105"
   },
   {
     "code": "A160106",
@@ -3554,7 +3582,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1601|A160106"
+    "codehierarchy": "A16|A1601|A160106"
   },
   {
     "code": "A1602",
@@ -3563,7 +3591,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1602"
+    "codehierarchy": "A16|A1602"
   },
   {
     "code": "A160201",
@@ -3572,7 +3600,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1602|A160201"
+    "codehierarchy": "A16|A1602|A160201"
   },
   {
     "code": "A160202",
@@ -3581,7 +3609,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1602|A160202"
+    "codehierarchy": "A16|A1602|A160202"
   },
   {
     "code": "A1603",
@@ -3590,7 +3618,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1603"
+    "codehierarchy": "A16|A1603"
   },
   {
     "code": "A1604",
@@ -3599,7 +3627,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1604"
+    "codehierarchy": "A16|A1604"
   },
   {
     "code": "A1605",
@@ -3608,7 +3636,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1605"
+    "codehierarchy": "A16|A1605"
   },
   {
     "code": "A160501",
@@ -3617,7 +3645,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1605|A160501"
+    "codehierarchy": "A16|A1605|A160501"
   },
   {
     "code": "A160502",
@@ -3626,7 +3654,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1605|A160502"
+    "codehierarchy": "A16|A1605|A160502"
   },
   {
     "code": "A160503",
@@ -3635,7 +3663,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1605|A160503"
+    "codehierarchy": "A16|A1605|A160503"
   },
   {
     "code": "A1606",
@@ -3644,7 +3672,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1606"
+    "codehierarchy": "A16|A1606"
   },
   {
     "code": "A160601",
@@ -3653,7 +3681,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1606|A160601"
+    "codehierarchy": "A16|A1606|A160601"
   },
   {
     "code": "A160602",
@@ -3662,7 +3690,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1606|A160602"
+    "codehierarchy": "A16|A1606|A160602"
   },
   {
     "code": "A1607",
@@ -3671,7 +3699,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A16|A1607"
+    "codehierarchy": "A16|A1607"
   },
   {
     "code": "A17",
@@ -3680,7 +3708,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A17"
+    "codehierarchy": "A17"
   },
   {
     "code": "A1701",
@@ -3689,7 +3717,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A17|A1701"
+    "codehierarchy": "A17|A1701"
   },
   {
     "code": "A170101",
@@ -3698,7 +3726,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A17|A1701|A170101"
+    "codehierarchy": "A17|A1701|A170101"
   },
   {
     "code": "A170102",
@@ -3707,7 +3735,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A17|A1701|A170102"
+    "codehierarchy": "A17|A1701|A170102"
   },
   {
     "code": "A1702",
@@ -3716,7 +3744,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A17|A1702"
+    "codehierarchy": "A17|A1702"
   },
   {
     "code": "A1703",
@@ -3725,7 +3753,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A17|A1703"
+    "codehierarchy": "A17|A1703"
   },
   {
     "code": "A1704",
@@ -3734,7 +3762,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A17|A1704"
+    "codehierarchy": "A17|A1704"
   },
   {
     "code": "A18",
@@ -3743,7 +3771,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18"
+    "codehierarchy": "A18"
   },
   {
     "code": "A1801",
@@ -3752,7 +3780,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the term on 18 March 2020 to separate when/where contamination occurred from type of contamination (\"During Use\" was removed). NOTE: This change affects all lower level terms (A180101 - A180105) which are also no longer limited to contamination during use.",
-    "CodeHierarchy": "A18|A1801"
+    "codehierarchy": "A18|A1801"
   },
   {
     "code": "A180101",
@@ -3761,7 +3789,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18|A1801|A180101"
+    "codehierarchy": "A18|A1801|A180101"
   },
   {
     "code": "A180102",
@@ -3770,7 +3798,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18|A1801|A180102"
+    "codehierarchy": "A18|A1801|A180102"
   },
   {
     "code": "A180103",
@@ -3779,7 +3807,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18|A1801|A180103"
+    "codehierarchy": "A18|A1801|A180103"
   },
   {
     "code": "A180104",
@@ -3788,7 +3816,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18|A1801|A180104"
+    "codehierarchy": "A18|A1801|A180104"
   },
   {
     "code": "A180105",
@@ -3797,7 +3825,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18|A1801|A180105"
+    "codehierarchy": "A18|A1801|A180105"
   },
   {
     "code": "A1802",
@@ -3806,7 +3834,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Technical change to the definition on 18 March 2020 to clarify that contamination occurred during manufacture or shipping.",
-    "CodeHierarchy": "A18|A1802"
+    "codehierarchy": "A18|A1802"
   },
   {
     "code": "A1803",
@@ -3815,7 +3843,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18|A1803"
+    "codehierarchy": "A18|A1803"
   },
   {
     "code": "A180301",
@@ -3824,7 +3852,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18|A1803|A180301"
+    "codehierarchy": "A18|A1803|A180301"
   },
   {
     "code": "A180302",
@@ -3833,7 +3861,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18|A1803|A180302"
+    "codehierarchy": "A18|A1803|A180302"
   },
   {
     "code": "A180303",
@@ -3842,7 +3870,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18|A1803|A180303"
+    "codehierarchy": "A18|A1803|A180303"
   },
   {
     "code": "A180304",
@@ -3851,7 +3879,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18|A1803|A180304"
+    "codehierarchy": "A18|A1803|A180304"
   },
   {
     "code": "A180305",
@@ -3860,7 +3888,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18|A1803|A180305"
+    "codehierarchy": "A18|A1803|A180305"
   },
   {
     "code": "A180306",
@@ -3869,7 +3897,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A18|A1803|A180306"
+    "codehierarchy": "A18|A1803|A180306"
   },
   {
     "code": "A1804",
@@ -3878,7 +3906,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 18 March 2020 for coding of contamination at the user facility which was originally included in \"Contamination During Use\" (A1801).",
-    "CodeHierarchy": "A18|A1804"
+    "codehierarchy": "A18|A1804"
   },
   {
     "code": "A19",
@@ -3887,7 +3915,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19"
+    "codehierarchy": "A19"
   },
   {
     "code": "A1901",
@@ -3896,7 +3924,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1901"
+    "codehierarchy": "A19|A1901"
   },
   {
     "code": "A1902",
@@ -3905,7 +3933,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1902"
+    "codehierarchy": "A19|A1902"
   },
   {
     "code": "A1903",
@@ -3914,7 +3942,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1903"
+    "codehierarchy": "A19|A1903"
   },
   {
     "code": "A1904",
@@ -3923,7 +3951,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1904"
+    "codehierarchy": "A19|A1904"
   },
   {
     "code": "A1905",
@@ -3932,7 +3960,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1905"
+    "codehierarchy": "A19|A1905"
   },
   {
     "code": "A190501",
@@ -3941,7 +3969,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1905|A190501"
+    "codehierarchy": "A19|A1905|A190501"
   },
   {
     "code": "A1906",
@@ -3950,7 +3978,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1906"
+    "codehierarchy": "A19|A1906"
   },
   {
     "code": "A190601",
@@ -3959,7 +3987,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1906|A190601"
+    "codehierarchy": "A19|A1906|A190601"
   },
   {
     "code": "A1907",
@@ -3968,7 +3996,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1907"
+    "codehierarchy": "A19|A1907"
   },
   {
     "code": "A1908",
@@ -3977,7 +4005,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1908"
+    "codehierarchy": "A19|A1908"
   },
   {
     "code": "A1909",
@@ -3986,7 +4014,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1909"
+    "codehierarchy": "A19|A1909"
   },
   {
     "code": "A1910",
@@ -3995,7 +4023,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1910"
+    "codehierarchy": "A19|A1910"
   },
   {
     "code": "A191001",
@@ -4004,7 +4032,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1910|A191001"
+    "codehierarchy": "A19|A1910|A191001"
   },
   {
     "code": "A191002",
@@ -4013,7 +4041,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1910|A191002"
+    "codehierarchy": "A19|A1910|A191002"
   },
   {
     "code": "A191003",
@@ -4022,7 +4050,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A19|A1910|A191003"
+    "codehierarchy": "A19|A1910|A191003"
   },
   {
     "code": "A20",
@@ -4031,7 +4059,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A20"
+    "codehierarchy": "A20"
   },
   {
     "code": "A2001",
@@ -4040,7 +4068,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A20|A2001"
+    "codehierarchy": "A20|A2001"
   },
   {
     "code": "A21",
@@ -4049,7 +4077,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A21"
+    "codehierarchy": "A21"
   },
   {
     "code": "A2101",
@@ -4058,7 +4086,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A21|A2101"
+    "codehierarchy": "A21|A2101"
   },
   {
     "code": "A210101",
@@ -4067,7 +4095,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A21|A2101|A210101"
+    "codehierarchy": "A21|A2101|A210101"
   },
   {
     "code": "A210102",
@@ -4076,7 +4104,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A21|A2101|A210102"
+    "codehierarchy": "A21|A2101|A210102"
   },
   {
     "code": "A210103",
@@ -4085,7 +4113,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A21|A2101|A210103"
+    "codehierarchy": "A21|A2101|A210103"
   },
   {
     "code": "A210104",
@@ -4094,7 +4122,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A21|A2101|A210104"
+    "codehierarchy": "A21|A2101|A210104"
   },
   {
     "code": "A210105",
@@ -4103,7 +4131,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A21|A2101|A210105"
+    "codehierarchy": "A21|A2101|A210105"
   },
   {
     "code": "A210106",
@@ -4112,7 +4140,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 27 January 2022. For details, see comment No. 2 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A21|A2101|A210106"
+    "codehierarchy": "A21|A2101|A210106"
   },
   {
     "code": "A2102",
@@ -4121,7 +4149,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A21|A2102"
+    "codehierarchy": "A21|A2102"
   },
   {
     "code": "A2103",
@@ -4130,7 +4158,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A21|A2103"
+    "codehierarchy": "A21|A2103"
   },
   {
     "code": "A2104",
@@ -4139,7 +4167,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A21|A2104"
+    "codehierarchy": "A21|A2104"
   },
   {
     "code": "A2105",
@@ -4148,7 +4176,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A21|A2105"
+    "codehierarchy": "A21|A2105"
   },
   {
     "code": "A22",
@@ -4157,7 +4185,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A22"
+    "codehierarchy": "A22"
   },
   {
     "code": "A2201",
@@ -4166,7 +4194,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A22|A2201"
+    "codehierarchy": "A22|A2201"
   },
   {
     "code": "A2202",
@@ -4175,7 +4203,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A22|A2202"
+    "codehierarchy": "A22|A2202"
   },
   {
     "code": "A2203",
@@ -4184,7 +4212,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A22|A2203"
+    "codehierarchy": "A22|A2203"
   },
   {
     "code": "A2204",
@@ -4193,7 +4221,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A22|A2204"
+    "codehierarchy": "A22|A2204"
   },
   {
     "code": "A23",
@@ -4202,7 +4230,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A23"
+    "codehierarchy": "A23"
   },
   {
     "code": "A2301",
@@ -4211,7 +4239,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A23|A2301"
+    "codehierarchy": "A23|A2301"
   },
   {
     "code": "A2302",
@@ -4220,7 +4248,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (technical)",
     "Status Description": "Term/Definition was modified on 27 January 2022 (Old term/definition: Use of Incorrect Control Settings: Problem associated with the use of the device in terms of inappropriate or false control settings for the device's specified operation and/or intended use). For details, see comment No. 26 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "A23|A2302"
+    "codehierarchy": "A23|A2302"
   },
   {
     "code": "A2303",
@@ -4229,7 +4257,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A23|A2303"
+    "codehierarchy": "A23|A2303"
   },
   {
     "code": "A2304",
@@ -4238,7 +4266,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A23|A2304"
+    "codehierarchy": "A23|A2304"
   },
   {
     "code": "A2305",
@@ -4247,7 +4275,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A23|A2305"
+    "codehierarchy": "A23|A2305"
   },
   {
     "code": "A230501",
@@ -4256,7 +4284,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A23|A2305|A230501"
+    "codehierarchy": "A23|A2305|A230501"
   },
   {
     "code": "A230502",
@@ -4265,7 +4293,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A23|A2305|A230502"
+    "codehierarchy": "A23|A2305|A230502"
   },
   {
     "code": "A24",
@@ -4274,7 +4302,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A24"
+    "codehierarchy": "A24"
   },
   {
     "code": "A25",
@@ -4283,7 +4311,16 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A25"
+    "codehierarchy": "A25"
+  },
+  {
+    "code": "A2501",
+    "term": "Prophylactic removal due to corrective action",
+    "definition": "Prophylactic removal of a device due to corrective action without malfunction or problem of the specific device involved",
+    "Non-IMDRF Code/Term": "",
+    "Status": "New",
+    "Status Description": "Term was added on 31 January 2023. For details, see comment No. 30 of the Change Log (Release Number 2023).",
+    "codehierarchy": "A25|A2501"
   },
   {
     "code": "A26",
@@ -4292,7 +4329,7 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A26"
+    "codehierarchy": "A26"
   },
   {
     "code": "A27",
@@ -4301,6 +4338,6 @@ regulatorytools.data.imdrf.annex.a = [
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "A27"
+    "codehierarchy": "A27"
   }
 ]

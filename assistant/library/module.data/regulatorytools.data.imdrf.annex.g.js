@@ -1,2668 +1,2705 @@
+// last update: 28.02.2023
 if (regulatorytools.data.imdrf === undefined) regulatorytools.data.imdrf = {};
 if (regulatorytools.data.imdrf.annex === undefined) regulatorytools.data.imdrf.annex = {};
 regulatorytools.data.imdrf.annex.g = [
   {
+    "Code": "G01",
     "term": "Biological and Chemical",
-    "code": "G01",
-    "definition": "Component whose mode of action involves a biological process (ex. test strip which acts on antibodies) and chemical reaction or transformation (ex. activated charcoal absorber).",
+    "Definition": "Component whose mode of action involves a biological process (ex. test strip which acts on antibodies) and chemical reaction or transformation (ex. activated charcoal absorber).",
     "Non-IMDRF Code/Term": "",
     "Status": "Not selectable",
     "Status Description": "Please use more detailed term within the hierarchy",
-    "CodeHierarchy": "G01"
+    "codehierarchy": "G01"
   },
   {
+    "Code": "G01001",
     "term": "Absorber",
-    "code": "G01001",
-    "definition": "A component or material designed to take in or attenuate a substance.",
+    "Definition": "A component or material designed to take in or attenuate a substance.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G01|G01001"
+    "codehierarchy": "G01|G01001"
   },
   {
+    "Code": "G01002",
     "term": "Cautery Tip",
-    "code": "G01002",
-    "definition": "A component designed to coagulate and seal blood vessels or to destroy tissue with heat or electric current.",
+    "Definition": "A component designed to coagulate and seal blood vessels or to destroy tissue with heat or electric current.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G01|G01002"
+    "codehierarchy": "G01|G01002"
   },
   {
+    "Code": "G01003",
     "term": "Device Ingredient or Reagent",
-    "code": "G01003",
-    "definition": "A consumable material that is added to a device and is used to make a finished product or becomes part of a finished product.",
+    "Definition": "A consumable material that is added to a device and is used to make a finished product or becomes part of a finished product.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G01|G01003"
+    "codehierarchy": "G01|G01003"
   },
   {
+    "Code": "G01004",
     "term": "Gas Scavenging",
-    "code": "G01004",
-    "definition": "A component designed to remove certain gases from a gas stream or environment.",
+    "Definition": "A component designed to remove certain gases from a gas stream or environment.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G01|G01004"
+    "codehierarchy": "G01|G01004"
   },
   {
+    "Code": "G01005",
     "term": "Monomer Liquid",
-    "code": "G01005",
-    "definition": "The liquid that reacts with the polymer powder to form adhesive, resin, or cement.",
+    "Definition": "The liquid that reacts with the polymer powder to form adhesive, resin, or cement.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G01|G01005"
+    "codehierarchy": "G01|G01005"
   },
   {
+    "Code": "G01006",
     "term": "Test Strip",
-    "code": "G01006",
-    "definition": "A piece of chemically treated medium designed to react in the presence of specific amounts of a trigger substance.",
+    "Definition": "A piece of chemically treated medium designed to react in the presence of specific amounts of a trigger substance.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G01|G01006"
+    "codehierarchy": "G01|G01006"
   },
   {
+    "Code": "G01007",
     "term": "Polymer Powder",
-    "code": "G01007",
-    "definition": "The powder that reacts with the monomer liquid to form adhesive, resin, or cement.",
+    "Definition": "The powder that reacts with the monomer liquid to form adhesive, resin, or cement.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G01|G01007"
+    "codehierarchy": "G01|G01007"
   },
   {
+    "Code": "G02",
     "term": "Electrical and Magnetic",
-    "code": "G02",
-    "definition": "Components which relates to the force of magnetism or such as microchips and transistors which control and direct electric currents. Also includes components involved in the representation, storage, or transmission of information by electronic systems.",
+    "Definition": "Components which relates to the force of magnetism or such as microchips and transistors which control and direct electric currents. Also includes components involved in the representation, storage, or transmission of information by electronic systems.",
     "Non-IMDRF Code/Term": "",
     "Status": "Not selectable",
     "Status Description": "Please use more detailed term within the hierarchy",
-    "CodeHierarchy": "G02"
+    "codehierarchy": "G02"
   },
   {
+    "Code": "G02001",
     "term": "Antenna",
-    "code": "G02001",
-    "definition": "A component designed to transmit or receive electromagnetic signals.",
+    "Definition": "A component designed to transmit or receive electromagnetic signals.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02001"
+    "codehierarchy": "G02|G02001"
   },
   {
+    "Code": "G02002",
     "term": "Battery",
-    "code": "G02002",
-    "definition": "A component designed to produce an electric current through chemical reaction.",
+    "Definition": "A component designed to produce an electric current through chemical reaction.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02002"
+    "codehierarchy": "G02|G02002"
   },
   {
+    "Code": "G02003",
     "term": "Battery Charger",
-    "code": "G02003",
-    "definition": "A device designed to restore the capacity of a battery.",
+    "Definition": "A device designed to restore the capacity of a battery.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02003"
+    "codehierarchy": "G02|G02003"
   },
   {
+    "Code": "G02004",
     "term": "Cable, Electrical",
-    "code": "G02004",
-    "definition": "A long, thin, multistranded electrical wire designed to carry signals or power over a distance.",
+    "Definition": "A long, thin, multistranded electrical wire designed to carry signals or power over a distance.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02004"
+    "codehierarchy": "G02|G02004"
   },
   {
-    "term": "Cable Grip",
-    "code": "G0200401",
-    "definition": "Component used for tensioning, pulling or stringing of wires and cables.",
+    "Code": "G0200401",
+    "term": "Cable Grip/Tie",
+    "Definition": "Component used for tensioning, pulling, holding or stringing of wires and cables.",
     "Non-IMDRF Code/Term": "",
-    "Status": "",
-    "Status Description": "",
-    "CodeHierarchy": "G02|G02004|G0200401"
+    "Status": "New",
+    "Status Description": "Term/definition was modified on 31 January 2023 (Old term/definition: Cable Grip: Component used for tensioning, pulling or stringing of wires and cables.). For details, see comment No. 151 of the Change Log (Release Number 2023).",
+    "codehierarchy": "G02|G02004|G0200401"
   },
   {
+    "Code": "G0200402",
     "term": "Cable Sleeve",
-    "code": "G0200402",
-    "definition": "Component used to protect cables and wires from abrasion, moisture and the elements.",
+    "Definition": "Component used to protect cables and wires from abrasion, moisture and the elements.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02004|G0200402"
+    "codehierarchy": "G02|G02004|G0200402"
   },
   {
+    "Code": "G02005",
     "term": "Circuit Board",
-    "code": "G02005",
-    "definition": "A non-conducting board with conductive tracks and electronic components forming a circuit.",
+    "Definition": "A non-conducting board with conductive tracks and electronic components forming a circuit.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02005"
+    "codehierarchy": "G02|G02005"
   },
   {
+    "Code": "G02006",
     "term": "Circuit Breaker",
-    "code": "G02006",
-    "definition": "A component designed to open an electrical circuit when it becomes overloaded.",
+    "Definition": "A component designed to open an electrical circuit when it becomes overloaded.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02006"
+    "codehierarchy": "G02|G02006"
   },
   {
+    "Code": "G02007",
     "term": "Computer Hardware",
-    "code": "G02007",
-    "definition": "The physical components from which a computer is constructed (electronic circuits and input/output devices).",
+    "Definition": "The physical components from which a computer is constructed (electronic circuits and input/output devices).",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02007"
+    "codehierarchy": "G02|G02007"
   },
   {
+    "Code": "G0200701",
     "term": "Computer Processor",
-    "code": "G0200701",
-    "definition": "Component that carries out the instructions of a computer program by performing the basic arithmetic, logic, controlling, and input/output operations specified by the instructions.",
+    "Definition": "Component that carries out the instructions of a computer program by performing the basic arithmetic, logic, controlling, and input/output operations specified by the instructions.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02007|G0200701"
+    "codehierarchy": "G02|G02007|G0200701"
   },
   {
+    "Code": "G0200702",
     "term": "Memory/Storage",
-    "code": "G0200702",
-    "definition": "Any component that can hold data in machine-readable format.",
+    "Definition": "Any component that can hold data in machine-readable format.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02007|G0200702"
+    "codehierarchy": "G02|G02007|G0200702"
   },
   {
+    "Code": "G0200703",
     "term": "Network Interface",
-    "code": "G0200703",
-    "definition": "Point of interconnection between a computer and other computer that are linked each other.",
+    "Definition": "Point of interconnection between a computer and other computer that are linked each other.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02007|G0200703"
+    "codehierarchy": "G02|G02007|G0200703"
   },
   {
+    "Code": "G02008",
     "term": "Computer Software",
-    "code": "G02008",
-    "definition": "A collection of data or computer instructions that tell the computer how to work.",
+    "Definition": "A collection of data or computer instructions that tell the computer how to work.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02008"
+    "codehierarchy": "G02|G02008"
   },
   {
+    "Code": "G0200801",
     "term": "Driver",
-    "code": "G0200801",
-    "definition": "A computer interface designed to control the interaction between a CPU and a peripheral device.",
+    "Definition": "A computer interface designed to control the interaction between a CPU and a peripheral device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02008|G0200801"
+    "codehierarchy": "G02|G02008|G0200801"
   },
   {
+    "Code": "G0200802",
     "term": "Software Interface",
-    "code": "G0200802",
-    "definition": "Languages, codes and messages that programs use to communicate with each other and to the hardware.",
+    "Definition": "Languages, codes and messages that programs use to communicate with each other and to the hardware.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02008|G0200802"
+    "codehierarchy": "G02|G02008|G0200802"
   },
   {
+    "Code": "G0200803",
     "term": "User Interface",
-    "code": "G0200803",
-    "definition": "A computer program that controls the interaction between a user and a system.",
+    "Definition": "A computer program that controls the interaction between a user and a system.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02008|G0200803"
+    "codehierarchy": "G02|G02008|G0200803"
   },
   {
+    "Code": "G0200804",
+    "term": "Firmware",
+    "Definition": "Computer instructions and data that reside as read-only software on that device. The computer cannot modify such software during processing.",
+    "Non-IMDRF Code/Term": "",
+    "Status": "New",
+    "Status Description": "Term was added on 31 January 2023. For details, see comment No. 144 of the Change Log (Release Number 2023).",
+    "codehierarchy": "G02|G02008|G0200804"
+  },
+  {
+    "Code": "G02009",
     "term": "Cooling Module",
-    "code": "G02009",
-    "definition": "A component designed to lower the temperature of a device or system.",
+    "Definition": "A component designed to lower the temperature of a device or system.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02009"
+    "codehierarchy": "G02|G02009"
   },
   {
+    "Code": "G02010",
     "term": "Device Programmer",
-    "code": "G02010",
-    "definition": "A piece of hardware for transferring data onto programmable integrated circuits.",
+    "Definition": "A piece of hardware for transferring data onto programmable integrated circuits.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02010"
+    "codehierarchy": "G02|G02010"
   },
   {
+    "Code": "G02011",
     "term": "Device Reader",
-    "code": "G02011",
-    "definition": "A piece of hardware used to read the memory and the properties of a device.",
+    "Definition": "A piece of hardware used to read the memory and the properties of a device.",
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 16 February 2021.",
-    "CodeHierarchy": "G02|G02011"
+    "codehierarchy": "G02|G02011"
   },
   {
+    "Code": "G02012",
     "term": "Discrete Electrical Component",
-    "code": "G02012",
-    "definition": "An electrical component which is just one circuit, either passive or active, that is not an integrated circuit.",
+    "Definition": "An electrical component which is just one circuit, either passive or active, that is not an integrated circuit.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02012"
+    "codehierarchy": "G02|G02012"
   },
   {
+    "Code": "G0201201",
     "term": "Capacitor",
-    "code": "G0201201",
-    "definition": "An electrical component designed to store an electric charge.",
+    "Definition": "An electrical component designed to store an electric charge.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02012|G0201201"
+    "codehierarchy": "G02|G02012|G0201201"
   },
   {
+    "Code": "G0201202",
     "term": "Fuse",
-    "code": "G0201202",
-    "definition": "An electrical component designed to stop the flow of current when an overload condition exists.",
+    "Definition": "An electrical component designed to stop the flow of current when an overload condition exists.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02012|G0201202"
+    "codehierarchy": "G02|G02012|G0201202"
   },
   {
+    "Code": "G0201203",
     "term": "Inductor",
-    "code": "G0201203",
-    "definition": "A component designed to introduce electromotive force to a circuit, usually a coil surrounding a wire.",
+    "Definition": "A component designed to introduce electromotive force to a circuit, usually a coil surrounding a wire.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02012|G0201203"
+    "codehierarchy": "G02|G02012|G0201203"
   },
   {
+    "Code": "G0201204",
     "term": "Resistor",
-    "code": "G0201204",
-    "definition": "An electronic component that opposes the flow of current.",
+    "Definition": "An electronic component that opposes the flow of current.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02012|G0201204"
+    "codehierarchy": "G02|G02012|G0201204"
   },
   {
+    "Code": "G0201205",
     "term": "Solenoid",
-    "code": "G0201205",
-    "definition": "An electronic component consisting of a coil surrounding a movable iron core that is designed to act as a switch or relay.",
+    "Definition": "An electronic component consisting of a coil surrounding a movable iron core that is designed to act as a switch or relay.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02012|G0201205"
+    "codehierarchy": "G02|G02012|G0201205"
   },
   {
+    "Code": "G0201206",
     "term": "Transducer",
-    "code": "G0201206",
-    "definition": "An electrical component that converts one form of energy into another.",
+    "Definition": "An electrical component that converts one form of energy into another.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02012|G0201206"
+    "codehierarchy": "G02|G02012|G0201206"
   },
   {
+    "Code": "G0201207",
     "term": "Semiconductor",
-    "code": "G0201207",
-    "definition": "A type of electronic component, including transistors and diodes, that make use of the variable conductivity of certain materials.",
+    "Definition": "A type of electronic component, including transistors and diodes, that make use of the variable conductivity of certain materials.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02012|G0201207"
+    "codehierarchy": "G02|G02012|G0201207"
   },
   {
+    "Code": "G02013",
     "term": "IC (Integrated Circuit) Chip",
-    "code": "G02013",
-    "definition": "A microelectronic circuit that incorporates many interconnected transistors and other components.",
+    "Definition": "A microelectronic circuit that incorporates many interconnected transistors and other components.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02013"
+    "codehierarchy": "G02|G02013"
   },
   {
+    "Code": "G02014",
     "term": "Display",
-    "code": "G02014",
-    "definition": "A component designed to present information visually. In the case of Touchscreen, use G0204004.",
+    "Definition": "A component designed to present information visually. In the case of Touchscreen, use G0204004.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02014"
+    "codehierarchy": "G02|G02014"
   },
   {
+    "Code": "G0201401",
     "term": "Indicator",
-    "code": "G0201401",
-    "definition": "A component designed to show an operating condition of a system or to attract attention.",
+    "Definition": "A component designed to show an operating condition of a system or to attract attention.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02014|G0201401"
+    "codehierarchy": "G02|G02014|G0201401"
   },
   {
+    "Code": "G0201402",
     "term": "Screen",
-    "code": "G0201402",
-    "definition": "A panel or area on an electronic device where images and data are displayed.",
+    "Definition": "A panel or area on an electronic device where images and data are displayed.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02014|G0201402"
+    "codehierarchy": "G02|G02014|G0201402"
   },
   {
+    "Code": "G02015",
     "term": "Electrical Lead/Wire",
-    "code": "G02015",
-    "definition": "A coated or uncoated wire used to connect two locations electronically. Not to be used for patient connection.",
+    "Definition": "A coated or uncoated wire used to connect two locations electronically. Not to be used for patient connection.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02015"
+    "codehierarchy": "G02|G02015"
   },
   {
+    "Code": "G0201501",
     "term": "Electrode",
-    "code": "G0201501",
-    "definition": "A small piece of metal or other conductive substance this is used to take an electric current to or from a source of power, a piece of equipment. Not to be used for patient connection.",
+    "Definition": "A small piece of metal or other conductive substance this is used to take an electric current to or from a source of power, a piece of equipment. Not to be used for patient connection.",
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 16 February 2021.",
-    "CodeHierarchy": "G02|G02015|G0201501"
+    "codehierarchy": "G02|G02015|G0201501"
   },
   {
+    "Code": "G0201502",
     "term": "Ground Strap/Wire",
-    "code": "G0201502",
-    "definition": "A wire cable or strap designed to carry current safely away from an electronic device under fault condition",
+    "Definition": "A wire cable or strap designed to carry current safely away from an electronic device under fault condition",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02015|G0201502"
+    "codehierarchy": "G02|G02015|G0201502"
   },
   {
+    "Code": "G0201503",
     "term": "Wiring Harness",
-    "code": "G0201503",
-    "definition": "A collection of grouped wires or cables designed to connect to a specific device.",
+    "Definition": "A collection of grouped wires or cables designed to connect to a specific device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02015|G0201503"
+    "codehierarchy": "G02|G02015|G0201503"
   },
   {
+    "Code": "G02016",
     "term": "Electrical Mixer",
-    "code": "G02016",
-    "definition": "An electronic component designed to blend signals.",
+    "Definition": "An electronic component designed to blend signals.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02016"
+    "codehierarchy": "G02|G02016"
   },
   {
+    "Code": "G02017",
     "term": "Electrical Port",
-    "code": "G02017",
-    "definition": "An electronic circuit that acts as a connection to another device or component.",
+    "Definition": "An electronic circuit that acts as a connection to another device or component.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02017"
+    "codehierarchy": "G02|G02017"
   },
   {
+    "Code": "G02018",
     "term": "Emitter",
-    "code": "G02018",
-    "definition": "The electron source electrode in a transistor or any source in a system.",
+    "Definition": "The electron source electrode in a transistor or any source in a system.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02018"
+    "codehierarchy": "G02|G02018"
   },
   {
+    "Code": "G02019",
     "term": "Headphone/Headset",
-    "code": "G02019",
-    "definition": "A component that covers the ear through which you can listen to without other people hearing. Some headphones come with a microphone which is used to communicate with other people or the device.",
+    "Definition": "A component that covers the ear through which you can listen to without other people hearing. Some headphones come with a microphone which is used to communicate with other people or the device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02019"
+    "codehierarchy": "G02|G02019"
   },
   {
+    "Code": "G02020",
     "term": "Heater",
-    "code": "G02020",
-    "definition": "A piece of equipment used to raise the temperature of air, gas or water or an object.",
+    "Definition": "A piece of equipment used to raise the temperature of air, gas or water or an object.",
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 16 February 2021.",
-    "CodeHierarchy": "G02|G02020"
+    "codehierarchy": "G02|G02020"
   },
   {
+    "Code": "G02021",
     "term": "Hub",
-    "code": "G02021",
-    "definition": "An electronic component designed as a central connection for other devices or components.",
+    "Definition": "An electronic component designed as a central connection for other devices or components.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02021"
+    "codehierarchy": "G02|G02021"
   },
   {
+    "Code": "G02022",
     "term": "Inverter",
-    "code": "G02022",
-    "definition": "An electrical component that converts direct current to alternating current.",
+    "Definition": "An electrical component that converts direct current to alternating current.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02022"
+    "codehierarchy": "G02|G02022"
   },
   {
+    "Code": "G02023",
     "term": "Magnet",
-    "code": "G02023",
-    "definition": "A component that attracts iron and produces a magnetic field.",
+    "Definition": "A component that attracts iron and produces a magnetic field.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02023"
+    "codehierarchy": "G02|G02023"
   },
   {
+    "Code": "G02024",
     "term": "Oscillator",
-    "code": "G02024",
-    "definition": "An electronic component designed to produce a wave signal.",
+    "Definition": "An electronic component designed to produce a wave signal.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02024"
+    "codehierarchy": "G02|G02024"
   },
   {
+    "Code": "G02025",
     "term": "Patient Lead",
-    "code": "G02025",
-    "definition": "An insulated electrical cable designed to connect to an electrical device to a patient.",
+    "Definition": "An insulated electrical cable designed to connect to an electrical device to a patient.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02025"
+    "codehierarchy": "G02|G02025"
   },
   {
+    "Code": "G0202501",
     "term": "Lead Conductor",
-    "code": "G0202501",
-    "definition": "A cable designed to conduct electricity from the device to the lead.",
+    "Definition": "A cable designed to conduct electricity from the device to the lead.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02025|G0202501"
+    "codehierarchy": "G02|G02025|G0202501"
   },
   {
+    "Code": "G0202502",
     "term": "Patient Electrode",
-    "code": "G0202502",
-    "definition": "An electrical conductor that is designed to make contact with a patient including defibrillator paddles.",
+    "Definition": "An electrical conductor that is designed to make contact with a patient including defibrillator paddles.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02025|G0202502"
+    "codehierarchy": "G02|G02025|G0202502"
   },
   {
+    "Code": "G02026",
     "term": "Power Cord",
-    "code": "G02026",
-    "definition": "A flexible cable designed to connect an electrical device to a power outlet.",
+    "Definition": "A flexible cable designed to connect an electrical device to a power outlet.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02026"
+    "codehierarchy": "G02|G02026"
   },
   {
+    "Code": "G02027",
     "term": "Power Supply",
-    "code": "G02027",
-    "definition": "Component designed to supply electrical power to devices.",
+    "Definition": "Component designed to supply electrical power to devices.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02027"
+    "codehierarchy": "G02|G02027"
   },
   {
+    "Code": "G02028",
     "term": "Pressure Transducer Probe",
-    "code": "G02028",
-    "definition": "A probe component designed to convert a change in pressure into a varying electrical signal.",
+    "Definition": "A probe component designed to convert a change in pressure into a varying electrical signal.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02028"
+    "codehierarchy": "G02|G02028"
   },
   {
+    "Code": "G02029",
     "term": "Printer",
-    "code": "G02029",
-    "definition": "An electronic component that is designed to transfer text or images to paper or other substrate.",
+    "Definition": "An electronic component that is designed to transfer text or images to paper or other substrate.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02029"
+    "codehierarchy": "G02|G02029"
   },
   {
+    "Code": "G02030",
     "term": "Receiver",
-    "code": "G02030",
-    "definition": "An electronic component designed to capture an incoming electromagnetic signal and convert it to an audible or visual signal.",
+    "Definition": "An electronic component designed to capture an incoming electromagnetic signal and convert it to an audible or visual signal.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02030"
+    "codehierarchy": "G02|G02030"
   },
   {
+    "Code": "G02031",
     "term": "Receiver Stimulator Unit",
-    "code": "G02031",
-    "definition": "As part of a cochlear implant, an implanted component designed to receive signal from the external component and then decode the signal and transmit it to the brain.",
+    "Definition": "As part of a cochlear implant, an implanted component designed to receive signal from the external component and then decode the signal and transmit it to the brain.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02031"
+    "codehierarchy": "G02|G02031"
   },
   {
+    "Code": "G02032",
     "term": "Scanner",
-    "code": "G02032",
-    "definition": "An electronic component that generates a digital representation of an image for data input to a computer; or a receiver designed to search for a signal within a specified frequency range.",
+    "Definition": "An electronic component that generates a digital representation of an image for data input to a computer; or a receiver designed to search for a signal within a specified frequency range.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02032"
+    "codehierarchy": "G02|G02032"
   },
   {
+    "Code": "G02033",
     "term": "Speaker/Sounder",
-    "code": "G02033",
-    "definition": "A component designed to convert electrical signals to sounds that can be heard.",
+    "Definition": "A component designed to convert electrical signals to sounds that can be heard.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02033"
+    "codehierarchy": "G02|G02033"
   },
   {
+    "Code": "G02034",
     "term": "Switch/Relay",
-    "code": "G02034",
-    "definition": "A mechanical or electronic component designed to break or change the connections in a circuit (e.g. button).",
+    "Definition": "A mechanical or electronic component designed to break or change the connections in a circuit (e.g. button).",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02034"
+    "codehierarchy": "G02|G02034"
   },
   {
+    "Code": "G0203401",
     "term": "Power Switch",
-    "code": "G0203401",
-    "definition": "A switch designed to regulate the power to a device.",
+    "Definition": "A switch designed to regulate the power to a device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02034|G0203401"
+    "codehierarchy": "G02|G02034|G0203401"
   },
   {
+    "Code": "G0203402",
     "term": "Relay",
-    "code": "G0203402",
-    "definition": "A electronic component designed to break or change the connections in a circuit.",
+    "Definition": "A electronic component designed to break or change the connections in a circuit.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02034|G0203402"
+    "codehierarchy": "G02|G02034|G0203402"
   },
   {
+    "Code": "G02035",
     "term": "Telemetry",
-    "code": "G02035",
-    "definition": "Component designed to transmit and receive data from a remote source using telecommunications methods.",
+    "Definition": "Component designed to transmit and receive data from a remote source using telecommunications methods.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02035"
+    "codehierarchy": "G02|G02035"
   },
   {
+    "Code": "G02036",
     "term": "Temperature Compensator",
-    "code": "G02036",
-    "definition": "A component designed to compensate the temperature of one system in response to temperature changes in another system or the environment.",
+    "Definition": "A component designed to compensate the temperature of one system in response to temperature changes in another system or the environment.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02036"
+    "codehierarchy": "G02|G02036"
   },
   {
+    "Code": "G02037",
     "term": "Thermostat",
-    "code": "G02037",
-    "definition": "A component designed to regulate temperature by controlling the starting and stopping of a heating/cooling system.",
+    "Definition": "A component designed to regulate temperature by controlling the starting and stopping of a heating/cooling system.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02037"
+    "codehierarchy": "G02|G02037"
   },
   {
+    "Code": "G02038",
     "term": "Transformer",
-    "code": "G02038",
-    "definition": "A component that either steps up or steps down an alternating electrical current to an output that is suitable for another electrical device or component.",
+    "Definition": "A component that either steps up or steps down an alternating electrical current to an output that is suitable for another electrical device or component.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02038"
+    "codehierarchy": "G02|G02038"
   },
   {
+    "Code": "G02039",
     "term": "Transmitter",
-    "code": "G02039",
-    "definition": "A component to propagate electromagnetic waves.",
+    "Definition": "A component to propagate electromagnetic waves.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02039"
+    "codehierarchy": "G02|G02039"
   },
   {
+    "Code": "G02040",
     "term": "User Input Device",
-    "code": "G02040",
-    "definition": "A component that uses a movable handle to create two-axis input to a computer.",
+    "Definition": "A component that uses a movable handle to create two-axis input to a computer.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02040"
+    "codehierarchy": "G02|G02040"
   },
   {
+    "Code": "G0204001",
     "term": "Joystick",
-    "code": "G0204001",
-    "definition": "A control component that uses a movable handle to create two-axis input to a computer.",
+    "Definition": "A control component that uses a movable handle to create two-axis input to a computer.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02040|G0204001"
+    "codehierarchy": "G02|G02040|G0204001"
   },
   {
+    "Code": "G0204002",
     "term": "Keyboard/Keypad",
-    "code": "G0204002",
-    "definition": "A component consisting of mechanical keys that are pressed to create input to a computer.",
+    "Definition": "A component consisting of mechanical keys that are pressed to create input to a computer.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02040|G0204002"
+    "codehierarchy": "G02|G02040|G0204002"
   },
   {
+    "Code": "G0204003",
     "term": "Microphone",
-    "code": "G0204003",
-    "definition": "A component designed to convert sound to an electrical signal.",
+    "Definition": "A component designed to convert sound to an electrical signal.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02040|G0204003"
+    "codehierarchy": "G02|G02040|G0204003"
   },
   {
+    "Code": "G0204004",
     "term": "Touchscreen",
-    "code": "G0204004",
-    "definition": "A control component that operates the device following pressing the display on the screen.",
+    "Definition": "A control component that operates the device following pressing the display on the screen.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G02|G02040|G0204004"
+    "codehierarchy": "G02|G02040|G0204004"
   },
   {
+    "Code": "G03",
     "term": "Measurement",
-    "code": "G03",
-    "definition": "Component capable of measuring something in order to obtain a result.",
+    "Definition": "Component capable of measuring something in order to obtain a result.",
     "Non-IMDRF Code/Term": "",
     "Status": "Not selectable",
     "Status Description": "Please use more detailed term within the hierarchy",
-    "CodeHierarchy": "G03"
+    "codehierarchy": "G03"
   },
   {
+    "Code": "G03001",
     "term": "Analyzer",
-    "code": "G03001",
-    "definition": "Any component designed to perform an analysis.",
+    "Definition": "Any component designed to perform an analysis.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03001"
+    "codehierarchy": "G03|G03001"
   },
   {
+    "Code": "G0300101",
     "term": "Oxygen Analyzer",
-    "code": "G0300101",
-    "definition": "A component designed to measure the concentration of oxygen in a gas mixture.",
+    "Definition": "A component designed to measure the concentration of oxygen in a gas mixture.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03001|G0300101"
+    "codehierarchy": "G03|G03001|G0300101"
   },
   {
+    "Code": "G03002",
     "term": "Aperture",
-    "code": "G03002",
-    "definition": "An instrument designed to measure the size of an opening or one used to increase the diameter of an opening",
+    "Definition": "An instrument designed to measure the size of an opening or one used to increase the diameter of an opening",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03002"
+    "codehierarchy": "G03|G03002"
   },
   {
+    "Code": "G03003",
     "term": "Calibrator",
-    "code": "G03003",
-    "definition": "A standard or reference material used to set the operating parameters of an instrument.",
+    "Definition": "A standard or reference material used to set the operating parameters of an instrument.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03003"
+    "codehierarchy": "G03|G03003"
   },
   {
+    "Code": "G03004",
     "term": "Clock",
-    "code": "G03004",
-    "definition": "A component designed to indicate the time of day.",
+    "Definition": "A component designed to indicate the time of day.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03004"
+    "codehierarchy": "G03|G03004"
   },
   {
+    "Code": "G03005",
     "term": "Counter",
-    "code": "G03005",
-    "definition": "A component designed to keep track of the number of times something happens.",
+    "Definition": "A component designed to keep track of the number of times something happens.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03005"
+    "codehierarchy": "G03|G03005"
   },
   {
+    "Code": "G03006",
     "term": "Cuvette",
-    "code": "G03006",
-    "definition": "A clear container designed to interface with an optical sensor in order to obtain an optical measurement of a contained substance.",
+    "Definition": "A clear container designed to interface with an optical sensor in order to obtain an optical measurement of a contained substance.",
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 16 February 2021.",
-    "CodeHierarchy": "G03|G03006"
+    "codehierarchy": "G03|G03006"
   },
   {
+    "Code": "G03007",
     "term": "Gauges/Meters",
-    "code": "G03007",
-    "definition": "A component designed to give a visual indication of the condition of a system.",
+    "Definition": "A component designed to give a visual indication of the condition of a system.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03007"
+    "codehierarchy": "G03|G03007"
   },
   {
+    "Code": "G0300701",
     "term": "Flowmeter",
-    "code": "G0300701",
-    "definition": "A component designed to measure the flow rate of a fluid.",
+    "Definition": "A component designed to measure the flow rate of a fluid.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03007|G0300701"
+    "codehierarchy": "G03|G03007|G0300701"
   },
   {
+    "Code": "G0300702",
     "term": "Manometer",
-    "code": "G0300702",
-    "definition": "A component designed to measure pressure.",
+    "Definition": "A component designed to measure pressure.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03007|G0300702"
+    "codehierarchy": "G03|G03007|G0300702"
   },
   {
+    "Code": "G0300703",
     "term": "Thermometer",
-    "code": "G0300703",
-    "definition": "A component designed to measure temperature.",
+    "Definition": "A component designed to measure temperature.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03007|G0300703"
+    "codehierarchy": "G03|G03007|G0300703"
   },
   {
+    "Code": "G03008",
     "term": "Marker",
-    "code": "G03008",
-    "definition": "A visual indicator of position, place or route, including radiopaque markers.",
+    "Definition": "A visual indicator of position, place or route, including radiopaque markers.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03008"
+    "codehierarchy": "G03|G03008"
   },
   {
+    "Code": "G03009",
     "term": "Pipette",
-    "code": "G03009",
-    "definition": "A measuring component, traditionally including a graduated tube, designed for the accurate transfer of liquid volumes.",
+    "Definition": "A measuring component, traditionally including a graduated tube, designed for the accurate transfer of liquid volumes.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03009"
+    "codehierarchy": "G03|G03009"
   },
   {
+    "Code": "G03010",
     "term": "Pointer",
-    "code": "G03010",
-    "definition": "An indicator component designed to show a position on a scale.",
+    "Definition": "An indicator component designed to show a position on a scale.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03010"
+    "codehierarchy": "G03|G03010"
   },
   {
+    "Code": "G03011",
     "term": "Scale",
-    "code": "G03011",
-    "definition": "A component designed for weighing or an indicator component with a graduated sequence of divisions.",
+    "Definition": "A component designed for weighing or an indicator component with a graduated sequence of divisions.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03011"
+    "codehierarchy": "G03|G03011"
   },
   {
+    "Code": "G03012",
     "term": "Sensor",
-    "code": "G03012",
-    "definition": "A component designed to respond to a stimulus by generating a signal that can be measured or interpreted.",
+    "Definition": "A component designed to respond to a stimulus by generating a signal that can be measured or interpreted.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03012"
+    "codehierarchy": "G03|G03012"
   },
   {
+    "Code": "G0301201",
     "term": "Bubble Sensor",
-    "code": "G0301201",
-    "definition": "A component designed to signal the presence of bubbles in a system.",
+    "Definition": "A component designed to signal the presence of bubbles in a system.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03012|G0301201"
+    "codehierarchy": "G03|G03012|G0301201"
   },
   {
+    "Code": "G0301202",
     "term": "O2 Sensor",
-    "code": "G0301202",
-    "definition": "A sensor designed to respond to the presence or level of oxygen in a space or environment.",
+    "Definition": "A sensor designed to respond to the presence or level of oxygen in a space or environment.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03012|G0301202"
+    "codehierarchy": "G03|G03012|G0301202"
   },
   {
+    "Code": "G0301203",
     "term": "Photodetector",
-    "code": "G0301203",
-    "definition": "A component designed to detect light.",
+    "Definition": "A component designed to detect light.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03012|G0301203"
+    "codehierarchy": "G03|G03012|G0301203"
   },
   {
+    "Code": "G0301204",
     "term": "Pressure Sensor",
-    "code": "G0301204",
-    "definition": "A sensor designed to respond to the level of pressure in a space or pressing on a surface.",
+    "Definition": "A sensor designed to respond to the level of pressure in a space or pressing on a surface.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03012|G0301204"
+    "codehierarchy": "G03|G03012|G0301204"
   },
   {
+    "Code": "G0301205",
     "term": "Sensor Probe",
-    "code": "G0301205",
-    "definition": "A component designed to reach into a location for sensing. Should be used when the problem involves the probe, not the sensor.",
+    "Definition": "A component designed to reach into a location for sensing. Should be used when the problem involves the probe, not the sensor.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03012|G0301205"
+    "codehierarchy": "G03|G03012|G0301205"
   },
   {
+    "Code": "G0301206",
     "term": "Temperature Sensor",
-    "code": "G0301206",
-    "definition": "A sensor designed to respond to the temperature of a space, surface, or environment.",
+    "Definition": "A sensor designed to respond to the temperature of a space, surface, or environment.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03012|G0301206"
+    "codehierarchy": "G03|G03012|G0301206"
   },
   {
+    "Code": "G03013",
     "term": "Timer",
-    "code": "G03013",
-    "definition": "A component designed to measure a time interval.",
+    "Definition": "A component designed to measure a time interval.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G03|G03013"
+    "codehierarchy": "G03|G03013"
   },
   {
+    "Code": "G03014",
+    "term": "Control Material",
+    "Definition": "A standard or reference material used for the purposes of comparative evaluations.",
+    "Non-IMDRF Code/Term": "",
+    "Status": "New",
+    "Status Description": "Term was added on 31 January 2023. For details, see comment No. 145 of the Change Log (Release Number 2023).",
+    "codehierarchy": "G03|G03014"
+  },
+  {
+    "Code": "G03015",
+    "term": "Swab",
+    "Definition": "An absorbent pad or piece of material attached to the end of a stick typically used for applying medicines or taking specimens.",
+    "Non-IMDRF Code/Term": "",
+    "Status": "New",
+    "Status Description": "Term was added on 31 January 2023. For details, see comment No. 146 of the Change Log (Release Number 2023).",
+    "codehierarchy": "G03|G03015"
+  },
+  {
+    "Code": "G03016",
+    "term": "Tray",
+    "Definition": "A flat, shallow container with a raised rim.",
+    "Non-IMDRF Code/Term": "",
+    "Status": "New",
+    "Status Description": "Term was added on 31 January 2023. For details, see comment No. 148 of the Change Log (Release Number 2023).",
+    "codehierarchy": "G03|G03016"
+  },
+  {
+    "Code": "G04",
     "term": "Mechanical",
-    "code": "G04",
-    "definition": "Component of a device when it is working, often using power from an engine or from electricity.",
+    "Definition": "Component of a device when it is working, often using power from an engine or from electricity.",
     "Non-IMDRF Code/Term": "",
     "Status": "Not selectable",
     "Status Description": "Please use more detailed term within the hierarchy",
-    "CodeHierarchy": "G04"
+    "codehierarchy": "G04"
   },
   {
+    "Code": "G04001",
     "term": "Access Port",
-    "code": "G04001",
-    "definition": "A component designed for the introduction or removal of medical equipment or any substance.",
+    "Definition": "A component designed for the introduction or removal of medical equipment or any substance.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04001"
+    "codehierarchy": "G04|G04001"
   },
   {
+    "Code": "G04002",
     "term": "Actuator",
-    "code": "G04002",
-    "definition": "A component which moves or controls a mechanism or system.",
+    "Definition": "A component which moves or controls a mechanism or system.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04002"
+    "codehierarchy": "G04|G04002"
   },
   {
+    "Code": "G04003",
     "term": "Adapter (Adaptor)",
-    "code": "G04003",
-    "definition": "A component designed to make different pieces of apparatus compatible.",
+    "Definition": "A component designed to make different pieces of apparatus compatible.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04003"
+    "codehierarchy": "G04|G04003"
   },
   {
+    "Code": "G04004",
     "term": "Air Eliminator",
-    "code": "G04004",
-    "definition": "A component designed to remove air from a space or fluid.",
+    "Definition": "A component designed to remove air from a space or fluid.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04004"
+    "codehierarchy": "G04|G04004"
   },
   {
+    "Code": "G04005",
     "term": "Anchor",
-    "code": "G04005",
-    "definition": "A component designed to fix the device or a portion of the device in place.",
+    "Definition": "A component designed to fix the device or a portion of the device in place.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04005"
+    "codehierarchy": "G04|G04005"
   },
   {
+    "Code": "G04006",
     "term": "Applicator",
-    "code": "G04006",
-    "definition": "A component designed to transfer a substance to a surface.",
+    "Definition": "A component designed to transfer a substance to a surface.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04006"
+    "codehierarchy": "G04|G04006"
   },
   {
+    "Code": "G04007",
     "term": "Automatic Injection System",
-    "code": "G04007",
-    "definition": "A system designed to pump a gas or liquid into a space or environment without outside intervention.",
+    "Definition": "A system designed to pump a gas or liquid into a space or environment without outside intervention.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04007"
+    "codehierarchy": "G04|G04007"
   },
   {
+    "Code": "G04008",
     "term": "Bag",
-    "code": "G04008",
-    "definition": "A flexible container, often with a single opening.",
+    "Definition": "A flexible container, often with a single opening.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04008"
+    "codehierarchy": "G04|G04008"
   },
   {
+    "Code": "G04009",
     "term": "Ball",
-    "code": "G04009",
-    "definition": "Any component that is spherical in shape.",
+    "Definition": "Any component that is spherical in shape.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04009"
+    "codehierarchy": "G04|G04009"
   },
   {
+    "Code": "G04010",
     "term": "Balloon",
-    "code": "G04010",
-    "definition": "A sac designed to be inflated and deflated.",
+    "Definition": "A sac designed to be inflated and deflated.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04010"
+    "codehierarchy": "G04|G04010"
   },
   {
+    "Code": "G04011",
     "term": "Bearings",
-    "code": "G04011",
-    "definition": "A point of contact between moving parts designed for support or to reduce friction.",
+    "Definition": "A point of contact between moving parts designed for support or to reduce friction.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04011"
+    "codehierarchy": "G04|G04011"
   },
   {
+    "Code": "G04012",
     "term": "Bellows",
-    "code": "G04012",
-    "definition": "A component that expands and contracts to draw in air through a valve or orifice and expels it through a tube.",
+    "Definition": "A component that expands and contracts to draw in air through a valve or orifice and expels it through a tube.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04012"
+    "codehierarchy": "G04|G04012"
   },
   {
+    "Code": "G04013",
     "term": "Belt",
-    "code": "G04013",
-    "definition": "A component consisting of a narrow band of material moving over shafts or pulleys.",
+    "Definition": "A component consisting of a narrow band of material moving over shafts or pulleys.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04013"
+    "codehierarchy": "G04|G04013"
   },
   {
+    "Code": "G04014",
     "term": "Bottle",
-    "code": "G04014",
-    "definition": "A rigid or semi-rigid container used to store liquid.",
+    "Definition": "A rigid or semi-rigid container used to store liquid.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04014"
+    "codehierarchy": "G04|G04014"
   },
   {
+    "Code": "G04015",
     "term": "Breathing Circuit",
-    "code": "G04015",
-    "definition": "In an anesthesia machine, the pathway by which a gaseous anesthetic agent and oxygen are delivered to the patient and carbon dioxide is removed. The circuit can be open or closed.",
+    "Definition": "In an anesthesia machine, the pathway by which a gaseous anesthetic agent and oxygen are delivered to the patient and carbon dioxide is removed. The circuit can be open or closed.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04015"
+    "codehierarchy": "G04|G04015"
   },
   {
+    "Code": "G04016",
     "term": "Brush",
-    "code": "G04016",
-    "definition": "A component consisting of hairs or bristles set into a handle or holder.",
+    "Definition": "A component consisting of hairs or bristles set into a handle or holder.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04016"
+    "codehierarchy": "G04|G04016"
   },
   {
+    "Code": "G04017",
     "term": "Bushing",
-    "code": "G04017",
-    "definition": "A cylindrical metal sleeve designed to reduce the friction of a rotating shaft.",
+    "Definition": "A cylindrical metal sleeve designed to reduce the friction of a rotating shaft.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04017"
+    "codehierarchy": "G04|G04017"
   },
   {
+    "Code": "G04018",
     "term": "Cable, Mechanical/Structural",
-    "code": "G04018",
-    "definition": "A long, thin, multistranded rope or metallic wire to hold the subject.",
+    "Definition": "A long, thin, multistranded rope or metallic wire to hold the subject.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04018"
+    "codehierarchy": "G04|G04018"
   },
   {
+    "Code": "G04019",
     "term": "Cannula",
-    "code": "G04019",
-    "definition": "A rigid or semi-rigid tube inserted into the body.",
+    "Definition": "A rigid or semi-rigid tube inserted into the body.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04019"
+    "codehierarchy": "G04|G04019"
   },
   {
+    "Code": "G0401901",
     "term": "Cannula Hub",
-    "code": "G0401901",
-    "definition": "A metal or plastic component that connects to the cannula.",
+    "Definition": "A metal or plastic component that connects to the cannula.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04019|G0401901"
+    "codehierarchy": "G04|G04019|G0401901"
   },
   {
+    "Code": "G04020",
     "term": "Cap",
-    "code": "G04020",
-    "definition": "A component designed to close an opening of a container or device.",
+    "Definition": "A component designed to close an opening of a container or device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04020"
+    "codehierarchy": "G04|G04020"
   },
   {
+    "Code": "G04021",
     "term": "Carrier",
-    "code": "G04021",
-    "definition": "A component designed to facilitate the support, movement, or transport of another device or object.",
+    "Definition": "A component designed to facilitate the support, movement, or transport of another device or object.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04021"
+    "codehierarchy": "G04|G04021"
   },
   {
+    "Code": "G04022",
     "term": "Caster",
-    "code": "G04022",
-    "definition": "A pivoting roller or wheel designed to attach to an object to make it movable.",
+    "Definition": "A pivoting roller or wheel designed to attach to an object to make it movable.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04022"
+    "codehierarchy": "G04|G04022"
   },
   {
+    "Code": "G04023",
     "term": "Catheter",
-    "code": "G04023",
-    "definition": "A flexible tube inserted into the body designed to permit injection or withdrawal of fluids or to keep passage open.",
+    "Definition": "A flexible tube inserted into the body designed to permit injection or withdrawal of fluids or to keep passage open.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04023"
+    "codehierarchy": "G04|G04023"
   },
   {
+    "Code": "G0402301",
     "term": "Catheter Hub",
-    "code": "G0402301",
-    "definition": "A small metal or plastic component that connects to the catheter.",
+    "Definition": "A small metal or plastic component that connects to the catheter.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04023|G0402301"
+    "codehierarchy": "G04|G04023|G0402301"
   },
   {
+    "Code": "G04024",
     "term": "Cell",
-    "code": "G04024",
-    "definition": "A component that is designed as a container to collect and/or transfer materials, reagents or specimens.",
+    "Definition": "A component that is designed as a container to collect and/or transfer materials, reagents or specimens.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04024"
+    "codehierarchy": "G04|G04024"
   },
   {
+    "Code": "G04025",
     "term": "Chain",
-    "code": "G04025",
-    "definition": "Assembly of interconnected links, typically made of metal used for connecting other components.",
+    "Definition": "Assembly of interconnected links, typically made of metal used for connecting other components.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04025"
+    "codehierarchy": "G04|G04025"
   },
   {
+    "Code": "G04026",
     "term": "Chamber",
-    "code": "G04026",
-    "definition": "A component designed as a reservoir/storage.",
+    "Definition": "A component designed as a reservoir/storage.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04026"
+    "codehierarchy": "G04|G04026"
   },
   {
+    "Code": "G04027",
     "term": "Chassis/Frame",
-    "code": "G04027",
-    "definition": "A supporting frame designed to hold other components or devices such as the internal frame of an electronic device.",
+    "Definition": "A supporting frame designed to hold other components or devices such as the internal frame of an electronic device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04027"
+    "codehierarchy": "G04|G04027"
   },
   {
+    "Code": "G04028",
     "term": "Clutch",
-    "code": "G04028",
-    "definition": "A component that engages and disengages power transmission.",
+    "Definition": "A component that engages and disengages power transmission.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04028"
+    "codehierarchy": "G04|G04028"
   },
   {
+    "Code": "G04029",
     "term": "Coating Material",
-    "code": "G04029",
-    "definition": "A layer of material covering the surface of a device.",
+    "Definition": "A layer of material covering the surface of a device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04029"
+    "codehierarchy": "G04|G04029"
   },
   {
+    "Code": "G04030",
     "term": "Coil",
-    "code": "G04030",
-    "definition": "A structure consisting of something wrapped in a continuous series of loops.",
+    "Definition": "A structure consisting of something wrapped in a continuous series of loops.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04030"
+    "codehierarchy": "G04|G04030"
   },
   {
+    "Code": "G0403001",
     "term": "Helifix Coil",
-    "code": "G0403001",
-    "definition": "A coil designed to allow a Helifix pacing electrode to be placed in the endocardium.",
+    "Definition": "A coil designed to allow a Helifix pacing electrode to be placed in the endocardium.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04030|G0403001"
+    "codehierarchy": "G04|G04030|G0403001"
   },
   {
+    "Code": "G04031",
     "term": "Collimator",
-    "code": "G04031",
-    "definition": "A diaphragm or system of diaphragms made of an absorbing material, designed to define and restrict the dimensions and direction of a beam of radiation.",
+    "Definition": "A diaphragm or system of diaphragms made of an absorbing material, designed to define and restrict the dimensions and direction of a beam of radiation.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04031"
+    "codehierarchy": "G04|G04031"
   },
   {
+    "Code": "G04032",
     "term": "Concentrator",
-    "code": "G04032",
-    "definition": "A component designed to increase the weight per unit volume of a substance.",
+    "Definition": "A component designed to increase the weight per unit volume of a substance.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04032"
+    "codehierarchy": "G04|G04032"
   },
   {
+    "Code": "G04033",
     "term": "Cone",
-    "code": "G04033",
-    "definition": "A three-dimensional part that tapers smoothly from a flat circular shape at one end to a point at the other end.",
+    "Definition": "A three-dimensional part that tapers smoothly from a flat circular shape at one end to a point at the other end.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04033"
+    "codehierarchy": "G04|G04033"
   },
   {
+    "Code": "G04034",
     "term": "Connector/Coupler",
-    "code": "G04034",
-    "definition": "A component designed to serve as a link between parts allowing easy disconnection and reconnection when necessary.",
+    "Definition": "A component designed to serve as a link between parts allowing easy disconnection and reconnection when necessary.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04034"
+    "codehierarchy": "G04|G04034"
   },
   {
+    "Code": "G0403401",
     "term": "Connector Pin",
-    "code": "G0403401",
-    "definition": "A projecting part of a device that allows it to be secured through an opening.",
+    "Definition": "A projecting part of a device that allows it to be secured through an opening.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04034|G0403401"
+    "codehierarchy": "G04|G04034|G0403401"
   },
   {
+    "Code": "G04035",
     "term": "Controller",
-    "code": "G04035",
-    "definition": "A component designed to control or regulate the operation of another device.",
+    "Definition": "A component designed to control or regulate the operation of another device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04035"
+    "codehierarchy": "G04|G04035"
   },
   {
+    "Code": "G04036",
     "term": "Compressor",
-    "code": "G04036",
-    "definition": "A component that increases the pressure of air or gas.",
+    "Definition": "A component that increases the pressure of air or gas.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04036"
+    "codehierarchy": "G04|G04036"
   },
   {
+    "Code": "G04037",
     "term": "Cover",
-    "code": "G04037",
-    "definition": "An object designed to conceal, enclose, or protect something.",
+    "Definition": "An object designed to conceal, enclose, or protect something.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04037"
+    "codehierarchy": "G04|G04037"
   },
   {
+    "Code": "G04038",
     "term": "Cuff",
-    "code": "G04038",
-    "definition": "A bandlike structure that encircles a body part or another component or device.",
+    "Definition": "A bandlike structure that encircles a body part or another component or device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04038"
+    "codehierarchy": "G04|G04038"
   },
   {
+    "Code": "G04039",
     "term": "Cup",
-    "code": "G04039",
-    "definition": "Part or design of a device with a concave hemispherical shape.",
+    "Definition": "Part or design of a device with a concave hemispherical shape.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04039"
+    "codehierarchy": "G04|G04039"
   },
   {
+    "Code": "G04040",
     "term": "Cusp/Leaflet",
-    "code": "G04040",
-    "definition": "A thin blade-like component, typically used as part of a one-way valve.",
+    "Definition": "A thin blade-like component, typically used as part of a one-way valve.",
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Minor editorial change to the term on 25 June 2020.",
-    "CodeHierarchy": "G04|G04040"
+    "codehierarchy": "G04|G04040"
   },
   {
+    "Code": "G04041",
     "term": "Cutter/Blade",
-    "code": "G04041",
-    "definition": "A component designed for slicing or cutting.",
+    "Definition": "A component designed for slicing or cutting.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04041"
+    "codehierarchy": "G04|G04041"
   },
   {
+    "Code": "G04042",
     "term": "Cylinder",
-    "code": "G04042",
-    "definition": "A three-dimensional part with flat circular ends and long straight sides.",
+    "Definition": "A three-dimensional part with flat circular ends and long straight sides.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04042"
+    "codehierarchy": "G04|G04042"
   },
   {
+    "Code": "G04043",
     "term": "Device Collapser",
-    "code": "G04043",
-    "definition": "A component designed to fold or collapse something.",
+    "Definition": "A component designed to fold or collapse something.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04043"
+    "codehierarchy": "G04|G04043"
   },
   {
+    "Code": "G04044",
     "term": "Device Deployer",
-    "code": "G04044",
-    "definition": "A component designed to install something or distribute something in a systematic way.",
+    "Definition": "A component designed to install something or distribute something in a systematic way.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04044"
+    "codehierarchy": "G04|G04044"
   },
   {
+    "Code": "G04045",
     "term": "Diaphragm",
-    "code": "G04045",
-    "definition": "A component consisting of a flexible sheet or partition.",
+    "Definition": "A component consisting of a flexible sheet or partition.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04045"
+    "codehierarchy": "G04|G04045"
   },
   {
+    "Code": "G04046",
     "term": "Dome",
-    "code": "G04046",
-    "definition": "Part or design of a device with a convex hemispherical shape.",
+    "Definition": "Part or design of a device with a convex hemispherical shape.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04046"
+    "codehierarchy": "G04|G04046"
   },
   {
+    "Code": "G04047",
     "term": "Ejector",
-    "code": "G04047",
-    "definition": "A mechanism that pushes a device or component out.",
+    "Definition": "A mechanism that pushes a device or component out.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04047"
+    "codehierarchy": "G04|G04047"
   },
   {
+    "Code": "G04048",
     "term": "Equipment Pole",
-    "code": "G04048",
-    "definition": "A structural component designed to hang medical equipment.",
+    "Definition": "A structural component designed to hang medical equipment.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04048"
+    "codehierarchy": "G04|G04048"
   },
   {
+    "Code": "G04049",
     "term": "Extender",
-    "code": "G04049",
-    "definition": "A component designed to lengthen a structure.",
+    "Definition": "A component designed to lengthen a structure.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04049"
+    "codehierarchy": "G04|G04049"
   },
   {
+    "Code": "G04050",
     "term": "Fabric",
-    "code": "G04050",
-    "definition": "Cloth produced from textile fibers.",
+    "Definition": "Cloth produced from textile fibers.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04050"
+    "codehierarchy": "G04|G04050"
   },
   {
+    "Code": "G04051",
     "term": "Fan/Blower",
-    "code": "G04051",
-    "definition": "A component designed to create an air current through the rotation of a planar surface.",
+    "Definition": "A component designed to create an air current through the rotation of a planar surface.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04051"
+    "codehierarchy": "G04|G04051"
   },
   {
+    "Code": "G04052",
     "term": "Fastener",
-    "code": "G04052",
-    "definition": "A component designed to hold items in place.",
+    "Definition": "A component designed to hold items in place.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052"
+    "codehierarchy": "G04|G04052"
   },
   {
+    "Code": "G0405201",
     "term": "Adhesive",
-    "code": "G0405201",
-    "definition": "Any substance that affixes 2 or more surfaces together. This may be supplied separately, or attached to another item such as tape.",
+    "Definition": "Any substance that affixes 2 or more surfaces together. This may be supplied separately, or attached to another item such as tape.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405201"
+    "codehierarchy": "G04|G04052|G0405201"
   },
   {
+    "Code": "G0405202",
     "term": "Bolt",
-    "code": "G0405202",
-    "definition": "A cylindrical connector element which may have a thread/nut connection to form a fastener.",
+    "Definition": "A cylindrical connector element which may have a thread/nut connection to form a fastener.",
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 16 February 2021.",
-    "CodeHierarchy": "G04|G04052|G0405202"
+    "codehierarchy": "G04|G04052|G0405202"
   },
   {
+    "Code": "G0405203",
     "term": "Clamp",
-    "code": "G0405203",
-    "definition": "A component designed to mechanically hold items firmly together.",
+    "Definition": "A component designed to mechanically hold items firmly together.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405203"
+    "codehierarchy": "G04|G04052|G0405203"
   },
   {
+    "Code": "G0405204",
     "term": "Clip",
-    "code": "G0405204",
-    "definition": "A small component designed to hold and attach items together.",
+    "Definition": "A small component designed to hold and attach items together.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405204"
+    "codehierarchy": "G04|G04052|G0405204"
   },
   {
+    "Code": "G0405205",
     "term": "Fixation Wire",
-    "code": "G0405205",
-    "definition": "A metal strand designed for structural or other purpose.",
+    "Definition": "A metal strand designed for structural or other purpose.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405205"
+    "codehierarchy": "G04|G04052|G0405205"
   },
   {
+    "Code": "G0405206",
     "term": "Latch",
-    "code": "G0405206",
-    "definition": "A fastening component for a mobile part usually consisting of a bar that is retained in a slot.",
+    "Definition": "A fastening component for a mobile part usually consisting of a bar that is retained in a slot.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405206"
+    "codehierarchy": "G04|G04052|G0405206"
   },
   {
+    "Code": "G0405207",
     "term": "Nail",
-    "code": "G0405207",
-    "definition": "A pin-shaped fastener with a sharp point at one end and usually flat on the other end.",
+    "Definition": "A pin-shaped fastener with a sharp point at one end and usually flat on the other end.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405207"
+    "codehierarchy": "G04|G04052|G0405207"
   },
   {
+    "Code": "G0405208",
     "term": "Nut",
-    "code": "G0405208",
-    "definition": "A threaded fastener designed to engage a bolt.",
+    "Definition": "A threaded fastener designed to engage a bolt.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405208"
+    "codehierarchy": "G04|G04052|G0405208"
   },
   {
+    "Code": "G0405209",
     "term": "Pin",
-    "code": "G0405209",
-    "definition": "A small, slender separate component which is designed to secure another object.",
+    "Definition": "A small, slender separate component which is designed to secure another object.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405209"
+    "codehierarchy": "G04|G04052|G0405209"
   },
   {
+    "Code": "G0405210",
     "term": "Prong",
-    "code": "G0405210",
-    "definition": "A projecting pointed part of a device, usually one designed to attach a device to something else.",
+    "Definition": "A projecting pointed part of a device, usually one designed to attach a device to something else.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405210"
+    "codehierarchy": "G04|G04052|G0405210"
   },
   {
+    "Code": "G0405211",
     "term": "Retainer",
-    "code": "G0405211",
-    "definition": "A physical component designed to hold items in place.",
+    "Definition": "A physical component designed to hold items in place.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405211"
+    "codehierarchy": "G04|G04052|G0405211"
   },
   {
+    "Code": "G0405212",
     "term": "Rivet",
-    "code": "G0405212",
-    "definition": "A fastening component resembling a heavy pin, having a head on one end and designed to have the other end flattened after passing through the parts to be connected.",
+    "Definition": "A fastening component resembling a heavy pin, having a head on one end and designed to have the other end flattened after passing through the parts to be connected.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405212"
+    "codehierarchy": "G04|G04052|G0405212"
   },
   {
+    "Code": "G0405213",
     "term": "Screw",
-    "code": "G0405213",
-    "definition": "A fastening component with a tapered threaded shaft and a head designed to engage with a driving tool.",
+    "Definition": "A fastening component with a tapered threaded shaft and a head designed to engage with a driving tool.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405213"
+    "codehierarchy": "G04|G04052|G0405213"
   },
   {
+    "Code": "G0405214",
     "term": "Staple",
-    "code": "G0405214",
-    "definition": "A fastening component consisting of a bent wire designed to pierce and hold two or more surfaces together.",
+    "Definition": "A fastening component consisting of a bent wire designed to pierce and hold two or more surfaces together.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405214"
+    "codehierarchy": "G04|G04052|G0405214"
   },
   {
+    "Code": "G0405215",
     "term": "Suture Thread",
-    "code": "G0405215",
-    "definition": "A monofilament or multifilament material used surgically to close a wound, join tissues, or fasten components of a device (e.g. fabric to wire stent frame).",
+    "Definition": "A monofilament or multifilament material used surgically to close a wound, join tissues, or fasten components of a device (e.g. fabric to wire stent frame).",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405215"
+    "codehierarchy": "G04|G04052|G0405215"
   },
   {
+    "Code": "G0405216",
     "term": "Tape for Fixation",
-    "code": "G0405216",
-    "definition": "A long, thin, flat, flexible material often used for binding or fastening.",
+    "Definition": "A long, thin, flat, flexible material often used for binding or fastening.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04052|G0405216"
+    "codehierarchy": "G04|G04052|G0405216"
   },
   {
+    "Code": "G04053",
     "term": "Fiber",
-    "code": "G04053",
-    "definition": "Any component made from a long, slender material.",
+    "Definition": "Any component made from a long, slender material.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04053"
+    "codehierarchy": "G04|G04053"
   },
   {
+    "Code": "G04054",
     "term": "Filter",
-    "code": "G04054",
-    "definition": "A component designed to remove something from whatever passes through it.",
+    "Definition": "A component designed to remove something from whatever passes through it.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04054"
+    "codehierarchy": "G04|G04054"
   },
   {
+    "Code": "G04055",
     "term": "Flange",
-    "code": "G04055",
-    "definition": "A protruding edge designed to strengthen or stabilize a device or facilitate its attachment to a surface.",
+    "Definition": "A protruding edge designed to strengthen or stabilize a device or facilitate its attachment to a surface.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04055"
+    "codehierarchy": "G04|G04055"
   },
   {
+    "Code": "G04056",
     "term": "Foil",
-    "code": "G04056",
-    "definition": "A thin, flexible sheet of metal.",
+    "Definition": "A thin, flexible sheet of metal.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04056"
+    "codehierarchy": "G04|G04056"
   },
   {
+    "Code": "G04057",
     "term": "Gas Exchanger",
-    "code": "G04057",
-    "definition": "Component that is used to transfer gasses between two or more locations.",
+    "Definition": "Component that is used to transfer gasses between two or more locations.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04057"
+    "codehierarchy": "G04|G04057"
   },
   {
+    "Code": "G04058",
     "term": "Gasket",
-    "code": "G04058",
-    "definition": "A preformed material designed to form a seal between connecting surfaces.",
+    "Definition": "A preformed material designed to form a seal between connecting surfaces.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04058"
+    "codehierarchy": "G04|G04058"
   },
   {
+    "Code": "G04059",
     "term": "Gears",
-    "code": "G04059",
-    "definition": "A toothed wheel designed to mesh with another toothed object and transmit motion.",
+    "Definition": "A toothed wheel designed to mesh with another toothed object and transmit motion.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04059"
+    "codehierarchy": "G04|G04059"
   },
   {
+    "Code": "G04060",
     "term": "Generator",
-    "code": "G04060",
-    "definition": "A component designed to produce electricity, vapor or gas.",
+    "Definition": "A component designed to produce electricity, vapor or gas.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04060"
+    "codehierarchy": "G04|G04060"
   },
   {
+    "Code": "G04061",
     "term": "Guide",
-    "code": "G04061",
-    "definition": "A component designed to help direct the passage of another object.",
+    "Definition": "A component designed to help direct the passage of another object.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04061"
+    "codehierarchy": "G04|G04061"
   },
   {
+    "Code": "G04062",
     "term": "Guidewire",
-    "code": "G04062",
-    "definition": "A flexible wire designed to help position medical devices within the body.",
+    "Definition": "A flexible wire designed to help position medical devices within the body.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04062"
+    "codehierarchy": "G04|G04062"
   },
   {
+    "Code": "G04063",
     "term": "Handpiece",
-    "code": "G04063",
-    "definition": "A part of a device designed to be used while held in the hand.",
+    "Definition": "A part of a device designed to be used while held in the hand.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04063"
+    "codehierarchy": "G04|G04063"
   },
   {
+    "Code": "G04064",
     "term": "Header",
-    "code": "G04064",
-    "definition": "The connection point between the leads and the generator.",
+    "Definition": "The connection point between the leads and the generator.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04064"
+    "codehierarchy": "G04|G04064"
   },
   {
+    "Code": "G04065",
     "term": "Sewing Ring",
-    "code": "G04065",
-    "definition": "A ring of supportive material designed to provide a stable surface for attachment to surrounding tissues.",
+    "Definition": "A ring of supportive material designed to provide a stable surface for attachment to surrounding tissues.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04065"
+    "codehierarchy": "G04|G04065"
   },
   {
+    "Code": "G04066",
     "term": "Heat Exchanger",
-    "code": "G04066",
-    "definition": "A component designed to transfer heat between fluids and/or gases across a barrier or to the environment.",
+    "Definition": "A component designed to transfer heat between fluids and/or gases across a barrier or to the environment.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04066"
+    "codehierarchy": "G04|G04066"
   },
   {
+    "Code": "G04067",
     "term": "Hinge",
-    "code": "G04067",
-    "definition": "A component designed to join two objects and allow them to swing relative to one another.",
+    "Definition": "A component designed to join two objects and allow them to swing relative to one another.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04067"
+    "codehierarchy": "G04|G04067"
   },
   {
+    "Code": "G04068",
     "term": "Holder",
-    "code": "G04068",
-    "definition": "A component designed to hold another object.",
+    "Definition": "A component designed to hold another object.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04068"
+    "codehierarchy": "G04|G04068"
   },
   {
+    "Code": "G04069",
     "term": "Hose",
-    "code": "G04069",
-    "definition": "A flexible tube designed to carry a fluid or gas.",
+    "Definition": "A flexible tube designed to carry a fluid or gas.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04069"
+    "codehierarchy": "G04|G04069"
   },
   {
+    "Code": "G04070",
     "term": "Housing",
-    "code": "G04070",
-    "definition": "A rigid casing that encloses and protects a piece of equipment.",
+    "Definition": "A rigid casing that encloses and protects a piece of equipment.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04070"
+    "codehierarchy": "G04|G04070"
   },
   {
+    "Code": "G04071",
     "term": "Humidifier",
-    "code": "G04071",
-    "definition": "A component used to increase moisture in a gas.",
+    "Definition": "A component used to increase moisture in a gas.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04071"
+    "codehierarchy": "G04|G04071"
   },
   {
+    "Code": "G04072",
     "term": "Hydraulic System",
-    "code": "G04072",
-    "definition": "A system designed to use fluid pressure to bring about movement.",
+    "Definition": "A system designed to use fluid pressure to bring about movement.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04072"
+    "codehierarchy": "G04|G04072"
   },
   {
+    "Code": "G04073",
     "term": "Impeller",
-    "code": "G04073",
-    "definition": "The rotating component of a centrifugal pump, compressor, or other machine designed to move a fluid by rotation.",
+    "Definition": "The rotating component of a centrifugal pump, compressor, or other machine designed to move a fluid by rotation.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04073"
+    "codehierarchy": "G04|G04073"
   },
   {
+    "Code": "G04074",
     "term": "Inserter",
-    "code": "G04074",
-    "definition": "A component whose function is to facilitate the insertion of a particular device.",
+    "Definition": "A component whose function is to facilitate the insertion of a particular device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04074"
+    "codehierarchy": "G04|G04074"
   },
   {
+    "Code": "G04075",
     "term": "Insulation",
-    "code": "G04075",
-    "definition": "A material designed to reduce the transmission of heat, sound, or electricity.",
+    "Definition": "A material designed to reduce the transmission of heat, sound, or electricity.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04075"
+    "codehierarchy": "G04|G04075"
   },
   {
+    "Code": "G04076",
     "term": "Isolator",
-    "code": "G04076",
-    "definition": "Any material or structure designed to limit the interaction between two components.",
+    "Definition": "Any material or structure designed to limit the interaction between two components.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04076"
+    "codehierarchy": "G04|G04076"
   },
   {
+    "Code": "G04077",
     "term": "Jaw",
-    "code": "G04077",
-    "definition": "A component designed to use opposing parts to close on and hold an object.",
+    "Definition": "A component designed to use opposing parts to close on and hold an object.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04077"
+    "codehierarchy": "G04|G04077"
   },
   {
+    "Code": "G04078",
     "term": "Joint",
-    "code": "G04078",
-    "definition": "A component designed as the junction between objects; it may be flexible or rigid.",
+    "Definition": "A component designed as the junction between objects; it may be flexible or rigid.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04078"
+    "codehierarchy": "G04|G04078"
   },
   {
+    "Code": "G04079",
     "term": "Knob",
-    "code": "G04079",
-    "definition": "A rounded lump or ball used for adjusting or controlling.",
+    "Definition": "A rounded lump or ball used for adjusting or controlling.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04079"
+    "codehierarchy": "G04|G04079"
   },
   {
+    "Code": "G04080",
     "term": "Label",
-    "code": "G04080",
-    "definition": "Any written, printed, or graphic matter upon a device to identify its nature, ownership, or other characteristics of the device.",
+    "Definition": "Any written, printed, or graphic matter upon a device to identify its nature, ownership, or other characteristics of the device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04080"
+    "codehierarchy": "G04|G04080"
   },
   {
+    "Code": "G04081",
     "term": "Leaflet",
-    "code": "G04081",
-    "definition": "A device consisting of two thin blades hinged in the center; typically designed to control flow of fluids.",
+    "Definition": "A device consisting of two thin blades hinged in the center; typically designed to control flow of fluids.",
     "Non-IMDRF Code/Term": "",
     "Status": "Retired",
     "Status Description": "Term was inactivated on 25 June 2020. Please use \"Cusp/Leaflet\" (G04040).",
-    "CodeHierarchy": "G04|G04081"
+    "codehierarchy": "G04|G04081"
   },
   {
+    "Code": "G04082",
     "term": "Lever",
-    "code": "G04082",
-    "definition": "A rigid bar that rotates around a fixed point.",
+    "Definition": "A rigid bar that rotates around a fixed point.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04082"
+    "codehierarchy": "G04|G04082"
   },
   {
+    "Code": "G0408201",
     "term": "Foot Pedal",
-    "code": "G0408201",
-    "definition": "A lever designed to be operated with the foot.",
+    "Definition": "A lever designed to be operated with the foot.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04082|G0408201"
+    "codehierarchy": "G04|G04082|G0408201"
   },
   {
+    "Code": "G04083",
     "term": "Liner",
-    "code": "G04083",
-    "definition": "A component placed the inside of the walls of a cavity or container for protection or insulation.",
+    "Definition": "A component placed the inside of the walls of a cavity or container for protection or insulation.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04083"
+    "codehierarchy": "G04|G04083"
   },
   {
+    "Code": "G04084",
     "term": "Magazine/Cassette",
-    "code": "G04084",
-    "definition": "A compartment in a device designed to house a consumable material for feeding into a mechanism.",
+    "Definition": "A compartment in a device designed to house a consumable material for feeding into a mechanism.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04084"
+    "codehierarchy": "G04|G04084"
   },
   {
+    "Code": "G04085",
     "term": "Manifold",
-    "code": "G04085",
-    "definition": "A branched system of pipes or channels; typically to funnel the flow of liquids or gases.",
+    "Definition": "A branched system of pipes or channels; typically to funnel the flow of liquids or gases.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04085"
+    "codehierarchy": "G04|G04085"
   },
   {
+    "Code": "G04086",
     "term": "Mask",
-    "code": "G04086",
-    "definition": "A flexible, form-shaped component designed to be placed over the nose and/or mouth.",
+    "Definition": "A flexible, form-shaped component designed to be placed over the nose and/or mouth.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04086"
+    "codehierarchy": "G04|G04086"
   },
   {
+    "Code": "G04087",
     "term": "Mechanical Mixer",
-    "code": "G04087",
-    "definition": "A mechanical component designed to blend materials.",
+    "Definition": "A mechanical component designed to blend materials.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04087"
+    "codehierarchy": "G04|G04087"
   },
   {
+    "Code": "G04088",
     "term": "Membrane",
-    "code": "G04088",
-    "definition": "A component that is made from or resembles a thin flexible sheet of material acting as a boundary or separating two chambers.",
+    "Definition": "A component that is made from or resembles a thin flexible sheet of material acting as a boundary or separating two chambers.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04088"
+    "codehierarchy": "G04|G04088"
   },
   {
+    "Code": "G04089",
     "term": "Mesh",
-    "code": "G04089",
-    "definition": "Component made of overlapping strands forming a fine net-like structure.",
+    "Definition": "Component made of overlapping strands forming a fine net-like structure.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04089"
+    "codehierarchy": "G04|G04089"
   },
   {
+    "Code": "G04090",
     "term": "Motor(s)",
-    "code": "G04090",
-    "definition": "A machine that converts any form of energy to produce or impart motion (kinetic energy).",
+    "Definition": "A machine that converts any form of energy to produce or impart motion (kinetic energy).",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04090"
+    "codehierarchy": "G04|G04090"
   },
   {
+    "Code": "G04091",
     "term": "Mount",
-    "code": "G04091",
-    "definition": "A structural component designed to facilitate the attachment of one object to another.",
+    "Definition": "A structural component designed to facilitate the attachment of one object to another.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04091"
+    "codehierarchy": "G04|G04091"
   },
   {
+    "Code": "G04092",
     "term": "Needle",
-    "code": "G04092",
-    "definition": "A component with a long, slender, pointed shape.",
+    "Definition": "A component with a long, slender, pointed shape.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04092"
+    "codehierarchy": "G04|G04092"
   },
   {
+    "Code": "G04093",
     "term": "Nozzle",
-    "code": "G04093",
-    "definition": "A component designed to regulate and direct the flow of a fluid or gas.",
+    "Definition": "A component designed to regulate and direct the flow of a fluid or gas.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04093"
+    "codehierarchy": "G04|G04093"
   },
   {
+    "Code": "G04094",
     "term": "Packaging",
-    "code": "G04094",
-    "definition": "The outer wrapping around a device which serves to contain, identify, and protect it prior to use.",
+    "Definition": "The outer wrapping around a device which serves to contain, identify, and protect it prior to use.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04094"
+    "codehierarchy": "G04|G04094"
   },
   {
+    "Code": "G04095",
     "term": "Pad",
-    "code": "G04095",
-    "definition": "Typically a soft, cushion-like material used to prevent injury or damage to a person or device. Can also be made of an absorbent material to absorb liquid.",
+    "Definition": "Typically a soft, cushion-like material used to prevent injury or damage to a person or device. Can also be made of an absorbent material to absorb liquid.",
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 16 February 2021.",
-    "CodeHierarchy": "G04|G04095"
+    "codehierarchy": "G04|G04095"
   },
   {
+    "Code": "G04096",
     "term": "Panel",
-    "code": "G04096",
-    "definition": "A rigid sheet that forms a surface of a device or component.",
+    "Definition": "A rigid sheet that forms a surface of a device or component.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04096"
+    "codehierarchy": "G04|G04096"
   },
   {
+    "Code": "G04097",
     "term": "Plate",
-    "code": "G04097",
-    "definition": "A thin, flat sheet or strip used to join, strengthen or to form parts of another structure.",
+    "Definition": "A thin, flat sheet or strip used to join, strengthen or to form parts of another structure. For a flat, shallow container with a raised rim, use G03016 - Tray.",
     "Non-IMDRF Code/Term": "",
-    "Status": "",
-    "Status Description": "",
-    "CodeHierarchy": "G04|G04097"
+    "Status": "Modified (technical)",
+    "Status Description": "Definition was modified on 31 January 2023 (Old definition: A thin, flat sheet or strip used to join, strengthen or to form parts of another structure). For details, see comment No. 148 of the Change Log (Release Number 2023).",
+    "codehierarchy": "G04|G04097"
   },
   {
+    "Code": "G04098",
     "term": "Plug",
-    "code": "G04098",
-    "definition": "A component designed to seat into an opening in a device or other object.",
+    "Definition": "A component designed to seat into an opening in a device or other object.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04098"
+    "codehierarchy": "G04|G04098"
   },
   {
+    "Code": "G04099",
     "term": "Plunger",
-    "code": "G04099",
-    "definition": "A component of a machine, tool or device that pushes or thrusts another object, liquid or gas.",
+    "Definition": "A component of a machine, tool or device that pushes or thrusts another object, liquid or gas.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04099"
+    "codehierarchy": "G04|G04099"
   },
   {
+    "Code": "G04100",
     "term": "Post",
-    "code": "G04100",
-    "definition": "An upright piece that is fixed firmly that supports, place or aligns other parts.",
+    "Definition": "An upright piece that is fixed firmly that supports, place or aligns other parts.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04100"
+    "codehierarchy": "G04|G04100"
   },
   {
+    "Code": "G04101",
     "term": "Potting",
-    "code": "G04101",
-    "definition": "The resin, glue or other substance used to seal other components together.",
+    "Definition": "The resin, glue or other substance used to seal other components together.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04101"
+    "codehierarchy": "G04|G04101"
   },
   {
+    "Code": "G04102",
     "term": "Probe",
-    "code": "G04102",
-    "definition": "A component designed to reach into a location for manipulating or for measuring.",
+    "Definition": "A component designed to reach into a location for manipulating or for measuring.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04102"
+    "codehierarchy": "G04|G04102"
   },
   {
+    "Code": "G04103",
     "term": "Processor",
-    "code": "G04103",
-    "definition": "A component designed for preparing or treating a material. Should not be used for computer processors.",
+    "Definition": "A component designed for preparing or treating a material. Should not be used for computer processors.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04103"
+    "codehierarchy": "G04|G04103"
   },
   {
+    "Code": "G04104",
     "term": "Pulley",
-    "code": "G04104",
-    "definition": "A component which changes the direction of a force (e.g. belt or chain).",
+    "Definition": "A component which changes the direction of a force (e.g. belt or chain).",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04104"
+    "codehierarchy": "G04|G04104"
   },
   {
+    "Code": "G04105",
     "term": "Pump",
-    "code": "G04105",
-    "definition": "A component designed to facilitate the movement of a fluid.",
+    "Definition": "A component designed to facilitate the movement of a fluid.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04105"
+    "codehierarchy": "G04|G04105"
   },
   {
+    "Code": "G04106",
     "term": "Pusher",
-    "code": "G04106",
-    "definition": "A component designed to advance something by pushing it.",
+    "Definition": "A component designed to advance something by pushing it.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04106"
+    "codehierarchy": "G04|G04106"
   },
   {
+    "Code": "G04107",
     "term": "Rachet",
-    "code": "G04107",
-    "definition": "A part that allows or forces another part's movement in a single direction.",
+    "Definition": "A part that allows or forces another part's movement in a single direction.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04107"
+    "codehierarchy": "G04|G04107"
   },
   {
+    "Code": "G04108",
     "term": "Rail",
-    "code": "G04108",
-    "definition": "A bar designed for support, attachment, guidance, or protection from falling.",
+    "Definition": "A bar designed for support, attachment, guidance, or protection from falling.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04108"
+    "codehierarchy": "G04|G04108"
   },
   {
+    "Code": "G0410801",
     "term": "Side Rail",
-    "code": "G0410801",
-    "definition": "A supportive or protective rail attached to the side of something.",
+    "Definition": "A supportive or protective rail attached to the side of something.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04108|G0410801"
+    "codehierarchy": "G04|G04108|G0410801"
   },
   {
+    "Code": "G04109",
     "term": "Regulator",
-    "code": "G04109",
-    "definition": "A component designed to control a process or condition.",
+    "Definition": "A component designed to control a process or condition.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04109"
+    "codehierarchy": "G04|G04109"
   },
   {
+    "Code": "G04110",
     "term": "Reservoir",
-    "code": "G04110",
-    "definition": "A vessel designed to store a fluid.",
+    "Definition": "A vessel designed to store a fluid.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04110"
+    "codehierarchy": "G04|G04110"
   },
   {
+    "Code": "G04111",
     "term": "Ring",
-    "code": "G04111",
-    "definition": "A circular band-shaped component.",
+    "Definition": "A circular band-shaped component.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04111"
+    "codehierarchy": "G04|G04111"
   },
   {
+    "Code": "G04112",
     "term": "Rod/Shaft",
-    "code": "G04112",
-    "definition": "A long cylindrical bar used to transmit motion or connect other components.",
+    "Definition": "A long cylindrical bar used to transmit motion or connect other components.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04112"
+    "codehierarchy": "G04|G04112"
   },
   {
+    "Code": "G04113",
     "term": "Seal",
-    "code": "G04113",
-    "definition": "A component designed to prevent passage of material through a joint or opening.",
+    "Definition": "A component designed to prevent passage of material through a joint or opening.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04113"
+    "codehierarchy": "G04|G04113"
   },
   {
+    "Code": "G04114",
     "term": "Shock Absorber",
-    "code": "G04114",
-    "definition": "A mechanical component designed to dampen or attenuate a force.",
+    "Definition": "A mechanical component designed to dampen or attenuate a force.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04114"
+    "codehierarchy": "G04|G04114"
   },
   {
+    "Code": "G04115",
     "term": "Sleeve",
-    "code": "G04115",
-    "definition": "A cylindrical fitting that slides over another part of a device or other object.",
+    "Definition": "A cylindrical fitting that slides over another part of a device or other object.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04115"
+    "codehierarchy": "G04|G04115"
   },
   {
+    "Code": "G04116",
     "term": "Slide",
-    "code": "G04116",
-    "definition": "A flat rectangular piece of glass on which specimens can be mounted for microscopic study.",
+    "Definition": "A flat rectangular piece of glass on which specimens can be mounted for microscopic study.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04116"
+    "codehierarchy": "G04|G04116"
   },
   {
+    "Code": "G04117",
     "term": "Socket",
-    "code": "G04117",
-    "definition": "A component designed as an opening into which something else fits.",
+    "Definition": "A component designed as an opening into which something else fits.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04117"
+    "codehierarchy": "G04|G04117"
   },
   {
+    "Code": "G04118",
     "term": "Spacer",
-    "code": "G04118",
-    "definition": "A component designed to position objects further apart.",
+    "Definition": "A component designed to position objects further apart.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04118"
+    "codehierarchy": "G04|G04118"
   },
   {
+    "Code": "G04119",
     "term": "Spring",
-    "code": "G04119",
-    "definition": "An elastic component designed to bend under a load and then return to its shape when unloaded.",
+    "Definition": "An elastic component designed to bend under a load and then return to its shape when unloaded.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04119"
+    "codehierarchy": "G04|G04119"
   },
   {
+    "Code": "G04120",
     "term": "Stand",
-    "code": "G04120",
-    "definition": "A support component designed to hold an object.",
+    "Definition": "A support component designed to hold an object.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04120"
+    "codehierarchy": "G04|G04120"
   },
   {
+    "Code": "G04121",
     "term": "Steering Wire",
-    "code": "G04121",
-    "definition": "A wire designed to enable a device to be maneuvered.",
+    "Definition": "A wire designed to enable a device to be maneuvered.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04121"
+    "codehierarchy": "G04|G04121"
   },
   {
+    "Code": "G04122",
     "term": "Stent",
-    "code": "G04122",
-    "definition": "Tubular support placed inside a blood vessel, canal, or duct to aid healing or relieve an obstruction.",
+    "Definition": "Tubular support placed inside a blood vessel, canal, or duct to aid healing or relieve an obstruction.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04122"
+    "codehierarchy": "G04|G04122"
   },
   {
+    "Code": "G04123",
     "term": "Stopcock",
-    "code": "G04123",
-    "definition": "A rotating component designed to act like a tap for regulating the flow of a fluid, and to completely stop the flow when closed fully.",
+    "Definition": "A rotating component designed to act like a tap for regulating the flow of a fluid, and to completely stop the flow when closed fully.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04123"
+    "codehierarchy": "G04|G04123"
   },
   {
+    "Code": "G04124",
     "term": "Stopper",
-    "code": "G04124",
-    "definition": "Component designed to close an opening.",
+    "Definition": "Component designed to close an opening.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04124"
+    "codehierarchy": "G04|G04124"
   },
   {
+    "Code": "G04125",
     "term": "Strain Relief",
-    "code": "G04125",
-    "definition": "A structure designed to function with a connector to prevent damage to a hose or cable from excess flexing.",
+    "Definition": "A structure designed to function with a connector to prevent damage to a hose or cable from excess flexing.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04125"
+    "codehierarchy": "G04|G04125"
   },
   {
+    "Code": "G04126",
     "term": "Stylet",
-    "code": "G04126",
-    "definition": "A thin metal wire designed to be passed through a needle, catheter, or cannula to stiffen it or clear it of debris.",
+    "Definition": "A thin metal wire designed to be passed through a needle, catheter, or cannula to stiffen it or clear it of debris.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04126"
+    "codehierarchy": "G04|G04126"
   },
   {
+    "Code": "G04127",
     "term": "Syringe",
-    "code": "G04127",
-    "definition": "A component designed as a rigid cylinder with a plunger at one end and a delivery opening at the other.",
+    "Definition": "A component designed as a rigid cylinder with a plunger at one end and a delivery opening at the other.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04127"
+    "codehierarchy": "G04|G04127"
   },
   {
+    "Code": "G04128",
     "term": "Table",
-    "code": "G04128",
-    "definition": "A component having a smooth flat surface that is usually supported by one or more vertical legs.",
+    "Definition": "A component having a smooth flat surface that is usually supported by one or more vertical legs.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04128"
+    "codehierarchy": "G04|G04128"
   },
   {
+    "Code": "G04129",
     "term": "Tip",
-    "code": "G04129",
-    "definition": "Pointed or rounded end of an object.",
+    "Definition": "Pointed or rounded end of an object.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04129"
+    "codehierarchy": "G04|G04129"
   },
   {
+    "Code": "G04130",
     "term": "Tool",
-    "code": "G04130",
-    "definition": "A component that is delivered with a device to support its assembly or operation, and is not part of the device. Use only in the case there are no other terms to describe the component.",
+    "Definition": "A component that is delivered with a device to support its assembly or operation, and is not part of the device. Use only in the case there are no other terms to describe the component.",
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 16 February 2021.",
-    "CodeHierarchy": "G04|G04130"
+    "codehierarchy": "G04|G04130"
   },
   {
+    "Code": "G04131",
     "term": "Translational Motion Component",
-    "code": "G04131",
-    "definition": "A rotating part which is intended to transfer rotational movement or motion to another type of movement (e.g. excenters).",
+    "Definition": "A rotating part which is intended to transfer rotational movement or motion to another type of movement (e.g. excenters).",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04131"
+    "codehierarchy": "G04|G04131"
   },
   {
+    "Code": "G04132",
     "term": "Trap",
-    "code": "G04132",
-    "definition": "A component designed to capture or remove bubbles or fluid.",
+    "Definition": "A component designed to capture or remove bubbles or fluid.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04132"
+    "codehierarchy": "G04|G04132"
   },
   {
+    "Code": "G04133",
     "term": "Trocar",
-    "code": "G04133",
-    "definition": "A sharp, pointed rod designed to pierce the wall of a body cavity to withdraw fluid or allow placement of a catheter or other device.",
+    "Definition": "A sharp, pointed rod designed to pierce the wall of a body cavity to withdraw fluid or allow placement of a catheter or other device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04133"
+    "codehierarchy": "G04|G04133"
   },
   {
+    "Code": "G04134",
     "term": "Tube",
-    "code": "G04134",
-    "definition": "A long hollow cylinder, either rigid or flexible, for holding or transporting liquids or gasses.",
+    "Definition": "A long hollow cylinder, either rigid or flexible, for holding or transporting liquids or gasses.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04134"
+    "codehierarchy": "G04|G04134"
   },
   {
+    "Code": "G0413401",
     "term": "Capillary Tube",
-    "code": "G0413401",
-    "definition": "A narrow tube in which a liquid flows up against gravity.",
+    "Definition": "A narrow tube in which a liquid flows up against gravity.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04134|G0413401"
+    "codehierarchy": "G04|G04134|G0413401"
   },
   {
+    "Code": "G04135",
     "term": "Valve(s)",
-    "code": "G04135",
-    "definition": "A mechanical component designed to control the flow of a fluid or gas.",
+    "Definition": "A mechanical component designed to control the flow of a fluid or gas.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04135"
+    "codehierarchy": "G04|G04135"
   },
   {
+    "Code": "G0413501",
     "term": "Control Valve",
-    "code": "G0413501",
-    "definition": "A valve designed to regulate the flow of a fluid or gas.",
+    "Definition": "A valve designed to regulate the flow of a fluid or gas.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04135|G0413501"
+    "codehierarchy": "G04|G04135|G0413501"
   },
   {
+    "Code": "G0413502",
     "term": "Luer Valve",
-    "code": "G0413502",
-    "definition": "A valve that incorporates a Luer fitting.",
+    "Definition": "A valve that incorporates a Luer fitting.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04135|G0413502"
+    "codehierarchy": "G04|G04135|G0413502"
   },
   {
+    "Code": "G0413503",
     "term": "One-Way Valve",
-    "code": "G0413503",
-    "definition": "A valve designed to allow flow in only one direction.",
+    "Definition": "A valve designed to allow flow in only one direction.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04135|G0413503"
+    "codehierarchy": "G04|G04135|G0413503"
   },
   {
+    "Code": "G04136",
     "term": "Vaporiser",
-    "code": "G04136",
-    "definition": "A component for gasifying liquids such as drugs.",
+    "Definition": "A component for gasifying liquids such as drugs.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04136"
+    "codehierarchy": "G04|G04136"
   },
   {
+    "Code": "G04137",
     "term": "Vibrator",
-    "code": "G04137",
-    "definition": "A mechanical component designed to create a vibratory motion.",
+    "Definition": "A mechanical component designed to create a vibratory motion.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04137"
+    "codehierarchy": "G04|G04137"
   },
   {
+    "Code": "G04138",
     "term": "Washer",
-    "code": "G04138",
-    "definition": "A flattened disk used as a mechanical seal between objects.",
+    "Definition": "A flattened disk used as a mechanical seal between objects.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04138"
+    "codehierarchy": "G04|G04138"
   },
   {
+    "Code": "G04139",
     "term": "Weld",
-    "code": "G04139",
-    "definition": "Any joining connection that is the result of welding 2 or more parts.",
+    "Definition": "Any joining connection that is the result of welding 2 or more parts.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04139"
+    "codehierarchy": "G04|G04139"
   },
   {
+    "Code": "G04140",
     "term": "Wheel",
-    "code": "G04140",
-    "definition": "A mechanical component consisting of a spoked, circular rim or solid disk designed to rotate on an axle or shaft.",
+    "Definition": "A mechanical component consisting of a spoked, circular rim or solid disk designed to rotate on an axle or shaft.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04140"
+    "codehierarchy": "G04|G04140"
   },
   {
+    "Code": "G04141",
     "term": "Window",
-    "code": "G04141",
-    "definition": "A transparent panel in a device designed for visual inspection or to let light pass.",
+    "Definition": "A transparent panel in a device designed for visual inspection or to let light pass.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04141"
+    "codehierarchy": "G04|G04141"
   },
   {
+    "Code": "G04142",
     "term": "Shutter",
-    "code": "G04142",
-    "definition": "Aperture that controls or blocks light or radiation passing through.",
+    "Definition": "Aperture that controls or blocks light or radiation passing through.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G04|G04142"
+    "codehierarchy": "G04|G04142"
   },
   {
+    "Code": "G05",
     "term": "Optical",
-    "code": "G05",
-    "definition": "Component which involves or relates to vision, light, or images.",
+    "Definition": "Component which involves or relates to vision, light, or images.",
     "Non-IMDRF Code/Term": "",
     "Status": "Not selectable",
     "Status Description": "Please use more detailed term within the hierarchy",
-    "CodeHierarchy": "G05"
+    "codehierarchy": "G05"
   },
   {
+    "Code": "G05001",
     "term": "Camera",
-    "code": "G05001",
-    "definition": "An apparatus for taking photographs, generally consisting of a lightproof enclosure having an aperture with a shuttered lens through which the image of an object is focused and recorded.",
+    "Definition": "An apparatus for taking photographs, generally consisting of a lightproof enclosure having an aperture with a shuttered lens through which the image of an object is focused and recorded.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G05|G05001"
+    "codehierarchy": "G05|G05001"
   },
   {
+    "Code": "G05002",
     "term": "Film",
-    "code": "G05002",
-    "definition": "A photographic material designed to capture an image upon exposure to electromagnetic radiation.",
+    "Definition": "A photographic material designed to capture an image upon exposure to electromagnetic radiation.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G05|G05002"
+    "codehierarchy": "G05|G05002"
   },
   {
+    "Code": "G05003",
     "term": "Imager",
-    "code": "G05003",
-    "definition": "A component designed to create or record a visual representation.",
+    "Definition": "A component designed to create or record a visual representation.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G05|G05003"
+    "codehierarchy": "G05|G05003"
   },
   {
+    "Code": "G05004",
     "term": "Laser",
-    "code": "G05004",
-    "definition": "A component designed to emit a monochromatic beam of coherent light.",
+    "Definition": "A component designed to emit a monochromatic beam of coherent light.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G05|G05004"
+    "codehierarchy": "G05|G05004"
   },
   {
+    "Code": "G05005",
     "term": "LED (Light Emitting Diode)",
-    "code": "G05005",
-    "definition": "A type of diode designed to emit light when a current passes through it.",
+    "Definition": "A type of diode designed to emit light when a current passes through it.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G05|G05005"
+    "codehierarchy": "G05|G05005"
   },
   {
+    "Code": "G05006",
     "term": "Lenses",
-    "code": "G05006",
-    "definition": "An electric or optical component designed to focus (concentrate) or disperse electromagnetic radiation.",
+    "Definition": "An electric or optical component designed to focus (concentrate) or disperse electromagnetic radiation.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G05|G05006"
+    "codehierarchy": "G05|G05006"
   },
   {
+    "Code": "G05007",
     "term": "Light Source",
-    "code": "G05007",
-    "definition": "A component that produces visible light.",
+    "Definition": "A component that produces visible light.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G05|G05007"
+    "codehierarchy": "G05|G05007"
   },
   {
+    "Code": "G0500701",
     "term": "Bulb",
-    "code": "G0500701",
-    "definition": "A component designed to produce light or heat.",
+    "Definition": "A component designed to produce light or heat.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G05|G05007|G0500701"
+    "codehierarchy": "G05|G05007|G0500701"
   },
   {
+    "Code": "G05008",
     "term": "Mirror",
-    "code": "G05008",
-    "definition": "A component consisting of a polished surface designed to reflect light.",
+    "Definition": "A component consisting of a polished surface designed to reflect light.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G05|G05008"
+    "codehierarchy": "G05|G05008"
   },
   {
+    "Code": "G05009",
     "term": "Optical Fiber",
-    "code": "G05009",
-    "definition": "A component made with thin glass fibers as a conduit for transmission of light.",
+    "Definition": "A component made with thin glass fibers as a conduit for transmission of light.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G05|G05009"
+    "codehierarchy": "G05|G05009"
   },
   {
+    "Code": "G06",
     "term": "Safety",
-    "code": "G06",
-    "definition": "Safety related component",
+    "Definition": "Safety related component",
     "Non-IMDRF Code/Term": "",
     "Status": "Not selectable",
     "Status Description": "Please use more detailed term within the hierarchy",
-    "CodeHierarchy": "G06"
+    "codehierarchy": "G06"
   },
   {
+    "Code": "G06001",
     "term": "Alarm",
-    "code": "G06001",
-    "definition": "A component designed to signal the occurrence of a particular event.",
+    "Definition": "A component designed to signal the occurrence of a particular event.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G06|G06001"
+    "codehierarchy": "G06|G06001"
   },
   {
+    "Code": "G0600101",
     "term": "Alarm, Audible",
-    "code": "G0600101",
-    "definition": "A component designed to signal the occurrence of a particular event by making a sound.",
+    "Definition": "A component designed to signal the occurrence of a particular event by making a sound.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G06|G06001|G0600101"
+    "codehierarchy": "G06|G06001|G0600101"
   },
   {
+    "Code": "G0600102",
     "term": "Alarm, Visual",
-    "code": "G0600102",
-    "definition": "A component designed to signal the occurrence of a particular event in a way that can be seen.",
+    "Definition": "A component designed to signal the occurrence of a particular event in a way that can be seen.",
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 16 February 2021.",
-    "CodeHierarchy": "G06|G06001|G0600102"
+    "codehierarchy": "G06|G06001|G0600102"
   },
   {
+    "Code": "G06002",
     "term": "Emergency Button Or Switch",
-    "code": "G06002",
-    "definition": "A button and circuits designed to force the shutdown of a machine or device.",
+    "Definition": "A button and circuits designed to force the shutdown of a machine or device.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G06|G06002"
+    "codehierarchy": "G06|G06002"
   },
   {
+    "Code": "G06003",
     "term": "Fail-Safe System",
-    "code": "G06003",
-    "definition": "A component designed to prevent malfunction, unsafe, or unauthorized operation of a device or system.",
+    "Definition": "A component designed to prevent malfunction, unsafe, or unauthorized operation of a device or system.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G06|G06003"
+    "codehierarchy": "G06|G06003"
   },
   {
+    "Code": "G06004",
     "term": "Locking Mechanism",
-    "code": "G06004",
-    "definition": "A fastening component designed to hold, close, or secure.",
+    "Definition": "A fastening component designed to hold, close, or secure.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G06|G06004"
+    "codehierarchy": "G06|G06004"
   },
   {
+    "Code": "G06005",
     "term": "Protector/Shield",
-    "code": "G06005",
-    "definition": "A component designed to prevent harm or protect against damage to other components.",
+    "Definition": "A component designed to prevent harm or protect against damage to other components.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G06|G06005"
+    "codehierarchy": "G06|G06005"
   },
   {
+    "Code": "G06006",
     "term": "Safety Interlock",
-    "code": "G06006",
-    "definition": "A mechanical or electronic component designed to prevent undesired actions due to the changing state of a device, typically to prevent harm to an operator or damage to the device itself.",
+    "Definition": "A mechanical or electronic component designed to prevent undesired actions due to the changing state of a device, typically to prevent harm to an operator or damage to the device itself.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G06|G06006"
+    "codehierarchy": "G06|G06006"
   },
   {
+    "Code": "G0600601",
     "term": "Needle Stick Prevention Mechanism",
-    "code": "G0600601",
-    "definition": "A mechanism integrated into a device to prevent needle stick injuries.",
+    "Definition": "A mechanism integrated into a device to prevent needle stick injuries.",
     "Non-IMDRF Code/Term": "",
     "Status": "Modified (editorial)",
     "Status Description": "Editorial change to the definition on 16 February 2021.",
-    "CodeHierarchy": "G06|G06006|G0600601"
+    "codehierarchy": "G06|G06006|G0600601"
   },
   {
+    "Code": "G06007",
     "term": "Safety Valve",
-    "code": "G06007",
-    "definition": "A valve designed to automatically open in order to maintain the pressure in a system below a specified pressure.",
+    "Definition": "A valve designed to automatically open in order to maintain the pressure in a system below a specified pressure.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G06|G06007"
+    "codehierarchy": "G06|G06007"
   },
   {
+    "Code": "G07",
     "term": "Others",
-    "code": "G07",
-    "definition": "Others.",
+    "Definition": "Others.",
     "Non-IMDRF Code/Term": "",
     "Status": "Not selectable / Modified (editorial)",
     "Status Description": "Please use more detailed term within the hierarchy / Definition changed to update a working note on 16 Feb. 2021",
-    "CodeHierarchy": "G07"
+    "codehierarchy": "G07"
   },
   {
+    "Code": "G07001",
     "term": "Part/Component/Sub-assembly Term not Applicable",
-    "code": "G07001",
-    "definition": "The device does not have distinct parts, components, or sub-assemblies, or it would not be appropriate to link the reported incident to a single part, component, or sub-assembly. Use this term if the problem involves or affects the overall device rather than a specific component.",
+    "Definition": "The device does not have distinct parts, components, or sub-assemblies, or it would not be appropriate to link the reported incident to a single part, component, or sub-assembly. Use this term if the problem involves or affects the overall device rather than a specific component.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G07|G07001"
+    "codehierarchy": "G07|G07001"
   },
   {
+    "Code": "G07002",
     "term": "Appropriate Term/Code Not Available",
-    "code": "G07002",
-    "definition": "The parts, components, or sub-assemblies are not adequately described by any other term. Note: this code must not be used unless there is no other feasible code. The preferred term should be documented when submitting an adverse event report. This information will be used to determine if a new term should be added to the code table.",
+    "Definition": "The parts, components, or sub-assemblies are not adequately described by any other term. Note: this code must not be used unless there is no other feasible code. The preferred term should be documented when submitting an adverse event report. This information will be used to determine if a new term should be added to the code table.",
     "Non-IMDRF Code/Term": "",
     "Status": "",
     "Status Description": "",
-    "CodeHierarchy": "G07|G07002"
+    "codehierarchy": "G07|G07002"
   },
   {
+    "Code": "G07003",
     "term": "Insufficient information",
-    "code": "G07003",
-    "definition": "There is not yet enough information available to classify the medical device component.",
+    "Definition": "There is not yet enough information available to classify the medical device component.",
     "Non-IMDRF Code/Term": "",
     "Status": "New",
     "Status Description": "Term was added on 27 January 2022. For details, see comment No. 192 of the Change Log (Release Number 2022).",
-    "CodeHierarchy": "G07|G07003"
+    "codehierarchy": "G07|G07003"
   }
 ]
