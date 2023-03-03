@@ -136,6 +136,13 @@ core.var = {
 	outlookWebUrl: 'https://exc20/owa/auth/logon.aspx', //if you have it installed else null
 	publishedFolder: 'D:/Quality Management/published',
 
+	//  api and key for web requests with limited cors policy
+	cors: {
+		apiurl: 'http://path.to.your.webserver/cors.php',
+		apikey: 'OfenfabrikangebotenGutensohnDorfkonsum'
+	},
+
+	// important email addresses on start page
 	eMailAddress: {
 		inventorycontrol: {
 			address: "inventory.control@yourcompany.tld",
@@ -180,7 +187,8 @@ core.var = {
 			}
 		}
 	},
-
+	
+	// important apps on start page
 	apps: [{
 			path: "D:/Quality Management/apps/STLView.exe",
 			display: {
@@ -576,6 +584,10 @@ core.var = {
 		title: {
 			en: 'QM-Assistant',
 			de: 'QM-Assistent'
+		},
+		webNotAvailable: {
+			en: 'Please establish an internet connection!',
+			de: 'Bitte eine Internetverbindung herstellen!'
 		},
 		webSearch: {
 			en: 'web search',
