@@ -93,7 +93,7 @@ var stocklist = {
 
 			stocklist.var.disableOutputSelect = true; // (re-)set in case a cart has been displayed
 
-			query = query || el('itemname').value;
+			query = query || 'itemname'.element().value;
 			core.history.write('stocklist.fn.init(\'' + query + '\')');
 			let found,
 				list = '',
@@ -167,7 +167,7 @@ var stocklist = {
 				let option,
 					stocklistOrder = await core.fn.async.memory.read('stocklistOrder');
 				try {
-					if (el('stocklistorderoption1') == null)
+					if ('stocklistorderoption1'.element() == null)
 						Object.keys(stocklist.data.stocklist.content[0]).forEach(function (key) {
 							keynum = parseInt(key) + 1;
 							option = document.createElement('option');
@@ -177,7 +177,7 @@ var stocklist = {
 								option.setAttribute('selected', 'selected');
 							var optiontext = document.createTextNode(core.fn.static.lang('orderBy', 'stocklist') + stocklist.data.stocklist.content[0][key]);
 							option.appendChild(optiontext);
-							el('stocklistOrder').appendChild(option);
+							'stocklistOrder'.element().appendChild(option);
 						});
 				} catch (e) {
 					return
@@ -206,19 +206,19 @@ var stocklist = {
 				'<form id="search" action="javascript:stocklist.fn.search();">' +
 				'<input type="text" pattern=".{3,}" required value="' + query.replace(/"/g, '&quot;') + '" placeholder="' + core.fn.static.lang('inputPlaceholder', 'stocklist') + '" id="itemname" class="search" />' +
 				'<span onclick="stocklist.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
-				core.fn.static.insert.select(null, 'stocklistOrder', 'stocklistOrder', (stocklistOrder || 0), 'onchange="this.selectedIndex == 0 ? core.fn.async.memory.delete(\'stocklistOrder\') : core.fn.async.memory.write(\'stocklistOrder\',el(\'stocklistOrder\').options[el(\'stocklistOrder\').selectedIndex].value); stocklist.fn.search();"') +
+				core.fn.static.insert.select(null, 'stocklistOrder', 'stocklistOrder', (stocklistOrder || 0), 'onchange="this.selectedIndex == 0 ? core.fn.async.memory.delete(\'stocklistOrder\') : core.fn.async.memory.write(\'stocklistOrder\',\'stocklistOrder\'.element().options[\'stocklistOrder\'.element().selectedIndex].value); stocklist.fn.search();"') +
 				core.fn.static.insert.tabs(stocklist.fn.translate.returnselect(), 'stocklistFilter', (stocklistFilter || 'all'), 'onchange="stocklist.fn.search();"') +
 				'<input type="submit" id="submit" value="' + core.fn.static.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
 				'</form>');
 			await stocklist.fn.order.options();
-			el('itemname').focus();
+			'itemname'.element().focus();
 			stocklist.temp.overallItems = await stocklist.fn.search();
 			core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'stocklist') + '<br /><br />' +
 				'<div class="items items23" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await stocklist.fn.orderform() + '</div>' +
-				'<div id="currentorders"></div>' +
+				'<div id="currentorders"></div>'+
 				'<div class="items items23" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await stocklist.fn.ticketqueryform() + '</div>'
-			);
-			if (await core.fn.async.memory.read('stocklistCart')) core.fn.static.toggleHeight(el('stocklistOrderForm'), true);
+				);
+			if (await core.fn.async.memory.read('stocklistCart')) core.fn.static.toggleHeight('stocklistOrderForm'.element(), true);
 			stocklist.fn.getShoppingCart();
 			core.fn.async.stdout('currentorders', await stocklist.fn.currentorder.get());
 

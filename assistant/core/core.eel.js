@@ -49,15 +49,15 @@ core.eel = {
 						return 'href="#" onclick="eel.file_handler(core.var.environment[core.var.selectedEnv][\'' + this.type(file) + '\'].open.concat([\'' + file + '\']))(); ' + onclick + '"';
 					},
 					load: async function (destination, type = null) {
-						el(destination).value = await eel.file_picker(null, null, type)();
+						destination.element().value = await eel.file_picker(null, null, type)();
 						return;
 					},
 					pickdir: async function (destination) {
-						el(destination).value = await eel.file_directory()();
+						destination.element().value = await eel.file_directory()();
 						return;
 					},
 					saveas: async function (destination, filename = null) {
-						el(destination).value = await eel.file_saveas(filename, null, null)();
+						destination.element().value = await eel.file_saveas(filename, null, null)();
 						return;
 					},
 					type: function (file) {
@@ -109,8 +109,8 @@ core.eel = {
 			}
 		},
 		update_available: function(){
-			el('environment').children[0].title = core.fn.static.lang('updateAvailable');
-			el('environment').children[0].children[0].classList.add('appupdate');
+			'environment'.element().children[0].title = core.fn.static.lang('updateAvailable');
+			'environment'.element().children[0].children[0].classList.add('appupdate');
 		}
 	}
 };

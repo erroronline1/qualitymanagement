@@ -65,9 +65,9 @@
 				await core.init.application();
 				// launch ui
 				await core.init.ui();
-				if (this.eel) el('environment').innerHTML = core.fn.static.insert.icon('python', null, null,
+				if (this.eel) 'environment'.element().innerHTML = core.fn.static.insert.icon('python', null, null,
 					'title="nice! python support <3"');
-				else el('environment').innerHTML = core.fn.static.insert.icon('web', null, null,
+				else 'environment'.element().innerHTML = core.fn.static.insert.icon('web', null, null,
 					'title="plain web view"');
 			},
 			resourcesImport: function (src, dest) {

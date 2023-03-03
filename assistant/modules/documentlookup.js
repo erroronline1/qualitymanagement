@@ -105,7 +105,7 @@ var documentlookup = {
 			}
 		},
 		search: async (query = '') => {
-			query = query || el('documentname').value;
+			query = query || 'documentname'.element().value;
 			// set filter for next use
 			let selectedFilter = core.fn.static.getTab('filter');
 			if (!selectedFilter) await core.fn.async.memory.delete('documentlookupFilter');
@@ -179,7 +179,7 @@ var documentlookup = {
 				core.fn.static.insert.tabs(filter, 'filter', (documentlookupFilter || false), 'onchange="documentlookup.fn.search();"') +
 				'<input type="submit" id="submit" value="' + core.fn.static.lang('formSubmit', 'documentlookup') + '" hidden="hidden" /> ' +
 				'</form>');
-			el('documentname').focus();
+			'documentname'.element().focus();
 			documentlookup.fn.search(query);
 		},
 		load: async () => {

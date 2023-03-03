@@ -15,20 +15,20 @@ stocklist.fn.ticketqueryform = async () => {
 		input += '<form action="javascript:stocklist.fn.ticketsearch();">' +
 			'<input type="text" pattern=".{3,}" required  placeholder="' + core.fn.static.lang('formErpInputPlaceholder', 'stocklist') + '" id="ticketorderquery" class="search" />' +
 			'<span onclick="stocklist.fn.ticketsearch();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
-			core.fn.static.insert.select(stocklist.fn.translate.returnselect2(), 'ticketorderfilter', 'ticketorderfilter', (ticketorderfilter || 'nofilter'), 'onchange="core.fn.async.memory.write(\'stocklistticketorderfilter\',el(\'ticketorderfilter\').options[el(\'ticketorderfilter\').selectedIndex].value); stocklist.fn.ticketsearch();"') +
-			core.fn.static.insert.icon('translate', 'bigger', false, 'title="' + core.fn.static.lang('buttonTranslate', 'stocklist') + '" onclick="stocklist.fn.translate.ticketDate(el(\'ticketorderquery\').value);"') +
+			core.fn.static.insert.select(stocklist.fn.translate.returnselect2(), 'ticketorderfilter', 'ticketorderfilter', (ticketorderfilter || 'nofilter'), 'onchange="core.fn.async.memory.write(\'stocklistticketorderfilter\',\'ticketorderfilter\'.element().options[\'ticketorderfilter\'.element().selectedIndex].value); stocklist.fn.ticketsearch();"') +
+			core.fn.static.insert.icon('translate', 'bigger', false, 'title="' + core.fn.static.lang('buttonTranslate', 'stocklist') + '" onclick="stocklist.fn.translate.ticketDate(\'ticketorderquery\'.element().value);"') +
 			'<input type="submit" id="name2" value="' + core.fn.static.lang('formSubmit', 'stocklist') + '" hidden="hidden" /> ' +
 			'</form>' + core.fn.static.lang('ticketorderModified', 'stocklist');
 	} else {
 		input += '<input type="text" pattern=".{3,}" required placeholder="' + core.fn.static.lang('formInputPlaceholder', 'ticketorder') + '" id="ticketorderquery" class="search" />' +
 			'<span class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
-			core.fn.static.insert.icon('translate', 'bigger', false, 'title="' + core.fn.static.lang('buttonTranslate', 'stocklist') + '" onclick="stocklist.fn.translate.ticketDate(el(\'ticketorderquery\').value);"');
+			core.fn.static.insert.icon('translate', 'bigger', false, 'title="' + core.fn.static.lang('buttonTranslate', 'stocklist') + '" onclick="stocklist.fn.translate.ticketDate(\'ticketorderquery\'.element().value);"');
 	}
 	return input;
 }
 
 stocklist.fn.ticketsearch = async (query = '') => {
-	query = query || el('ticketorderquery').value;
+	query = query || 'ticketorderquery'.element().value;
 	let data_without_header,
 		found,
 		list = '',
@@ -39,7 +39,7 @@ stocklist.fn.ticketsearch = async (query = '') => {
 			data_without_header = JSON.parse(JSON.stringify(stocklist.data.ticketorder));
 			data_without_header.content[0] = new Array(data_without_header.content[0].length);
 			found = await core.fn.async.smartSearch.lookup(query, data_without_header.content,
-				stocklist.var.filter.tickets()[el('ticketorderfilter').options[el('ticketorderfilter').selectedIndex].value][2]);
+				stocklist.var.filter.tickets()['ticketorderfilter'.element().options['ticketorderfilter'.element().selectedIndex].value][2]);
 			// check if search matches item-list
 			if (found.length > 0) {
 				core.fn.async.smartSearch.relevance.init();

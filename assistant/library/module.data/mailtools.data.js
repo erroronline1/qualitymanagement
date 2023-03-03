@@ -37,13 +37,13 @@ mailtools.data = {
 				'  </td>' +
 				'  <td valign=top style=\'padding:0;border:0 !important\'>' +
 				'  <p style=\'' + commonstyle + '\'><br>' +
-				'  <span style=\'font-size:14.0pt;\'>' + (!form && el('name') ? el('name').value : '<input type="text" placeholder="Name" id="name" title="Name" />') + '</span>' +
+				'  <span style=\'font-size:14.0pt;\'>' + (!form && 'name'.element() ? 'name'.element().value : '<input type="text" placeholder="Name" id="name" title="Name" />') + '</span>' +
 				'  <br>' +
-				'  ' + (!form && el('funktion') ? el('funktion').value : '<input type="text" placeholder="Position" id="funktion" title="Position" />') +
+				'  ' + (!form && 'funktion'.element() ? 'funktion'.element().value : '<input type="text" placeholder="Position" id="funktion" title="Position" />') +
 				' | Department<br><br>' +
 				'  Company | Address<br>' +
-				'  Tel. <a href="tel:+49 1234 56789">+49 1234 56789</a> | Fax. +49 1234 56789 | eMail: ' + (!form && el('email') ? '<a' +
-					'  href="mailto:' + el('email').value + '@email.tld">' + el('email').value : '<input type="text" placeholder="eMail" id="email" title="eMail" />') + '@email.tld</a><br>' +
+				'  Tel. <a href="tel:+49 1234 56789">+49 1234 56789</a> | Fax. +49 1234 56789 | eMail: ' + (!form && 'email'.element() ? '<a' +
+					'  href="mailto:' + 'email'.element().value + '@email.tld">' + 'email'.element().value : '<input type="text" placeholder="eMail" id="email" title="eMail" />') + '@email.tld</a><br>' +
 				'  <a href="http://www.website.tld">http://www.website.tld</a> </p>' +
 				'  </td>' +
 				' </tr>' +
@@ -66,13 +66,13 @@ mailtools.data = {
 				'  </td>' +
 				'  <td valign=top style=\'padding:0;border:0 !important\'>' +
 				'  <p style=\'' + commonstyle + '\'><br>' +
-				'  <span style=\'font-size:14.0pt;\'>' + (!form && el('name') ? el('name').value : '<input type="text" placeholder="Name" id="name" title="Name" />') + '</span>' +
+				'  <span style=\'font-size:14.0pt;\'>' + (!form && 'name'.element() ? 'name'.element().value : '<input type="text" placeholder="Name" id="name" title="Name" />') + '</span>' +
 				'  <br>' +
-				'  ' + (!form && el('funktion') ? el('funktion').value : '<input type="text" placeholder="Funktion" id="funktion" title="Funktion" />') +
+				'  ' + (!form && 'funktion'.element() ? 'funktion'.element().value : '<input type="text" placeholder="Funktion" id="funktion" title="Funktion" />') +
 				' Abteilung<br><br>' +
 				'  Firma | Adresse<br>' +
-				'  Tel. <a href="tel:+49 1234 56789">+49 1234 56789</a> | Fax. +49 1234 56789 | eMail: ' + (!form && el('email') ? '<a' +
-					'  href="mailto:' + el('email').value + '@email.tld">' + el('email').value : '<input type="text" placeholder="eMail" id="email" title="eMail" />') + '@email.tld</a><br>' +
+				'  Tel. <a href="tel:+49 1234 56789">+49 1234 56789</a> | Fax. +49 1234 56789 | eMail: ' + (!form && 'email'.element() ? '<a' +
+					'  href="mailto:' + 'email'.element().value + '@email.tld">' + 'email'.element().value : '<input type="text" placeholder="eMail" id="email" title="eMail" />') + '@email.tld</a><br>' +
 				'  <a href="http://www.website.tld">http://www.website.tld</a> </p>' +
 				'  </td>' +
 				' </tr>' +

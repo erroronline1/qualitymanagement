@@ -47,28 +47,28 @@ var mailtools = {
 			core.history.write('mailtools.fn.init(\'serialmail\')');
 		},
 		serialtest: function () {
-			el('names').value = core.fn.static.lang('sampleNameValue', 'mailtools');
-			el('adresses').value = core.fn.static.lang('sampleMailValue', 'mailtools');
-			el('subject').value = core.fn.static.lang('sampleSubjectValue', 'mailtools');
-			el('body').value = core.fn.static.lang('sampleBodyValue', 'mailtools');
+			'names'.element().value = core.fn.static.lang('sampleNameValue', 'mailtools');
+			'adresses'.element().value = core.fn.static.lang('sampleMailValue', 'mailtools');
+			'subject'.element().value = core.fn.static.lang('sampleSubjectValue', 'mailtools');
+			'body'.element().value = core.fn.static.lang('sampleBodyValue', 'mailtools');
 		},
 		serialmailgen: function () {
 			let adresses,
 				names,
 				output = '';
-			if (el('body').value.replace('\n', '<br />').length > core.var.directMailSize) {
+			if ('body'.element().value.replace('\n', '<br />').length > core.var.directMailSize) {
 				core.fn.static.popup(core.fn.static.lang('errorMailSizeExport'));
 				return;
 			}
-			if (!el('names').value || !el('adresses').value || !el('body').value || !el('subject').value) core.fn.static.popup(core.fn.static.lang('errorNoContent', 'mailtools'));
+			if (!'names'.element().value || !'adresses'.element().value || !'body'.element().value || !'subject'.element().value) core.fn.static.popup(core.fn.static.lang('errorNoContent', 'mailtools'));
 			else {
-				names = el('names').value.split(/\n/g),
-					adresses = el('adresses').value.split(/\s/g);
+				names = 'names'.element().value.split(/\n/g),
+					adresses = 'adresses'.element().value.split(/\s/g);
 				if (names.length !== adresses.length) core.fn.static.popup(core.fn.static.lang('errorMatchingRows', 'mailtools'));
 				else {
 					output = '';
 					for (let i = 0; i < names.length; i++) {
-						output += '<a href="javascript:core.fn.static.dynamicMailto(\'' + adresses[i] + '\',\'' + el('subject').value + '\',\'' + core.fn.static.lang('outputSalutation', 'mailtools', names[i]) + ' ' + names[i] + ',<br /><br />' + el('body').value.replace('\n', '<br />') + '\')">' + core.fn.static.lang('outputMailTo', 'mailtools') + ' ' + names[i] + ' &lt;' + adresses[i] + '&gt;</a><br />';
+						output += '<a href="javascript:core.fn.static.dynamicMailto(\'' + adresses[i] + '\',\'' + 'subject'.element().value + '\',\'' + core.fn.static.lang('outputSalutation', 'mailtools', names[i]) + ' ' + names[i] + ',<br /><br />' + 'body'.element().value.replace('\n', '<br />') + '\')">' + core.fn.static.lang('outputMailTo', 'mailtools') + ' ' + names[i] + ' &lt;' + adresses[i] + '&gt;</a><br />';
 					}
 					core.fn.async.stdout('output', output);
 				}
@@ -93,11 +93,11 @@ var mailtools = {
 		},
 		notavailablegen: function () {
 			//gets date inputs and sorts them to dd.mm.yyyy
-			let from = el('notfrom').value.split(/\D/g),
+			let from = 'notfrom'.element().value.split(/\D/g),
 				dates,
-				to = el('notto').value.split(/\D/g);
+				to = 'notto'.element().value.split(/\D/g);
 			if (from[0].length > 2) from = new Array(from[2], from[1], from[0]);
-			to = el('notto').value.split(/\D/g);
+			to = 'notto'.element().value.split(/\D/g);
 			if (to[0].length > 2) to = new Array(to[2], to[1], to[0]);
 			dates = {
 				from: from,

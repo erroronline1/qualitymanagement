@@ -2,10 +2,10 @@
 
 core.fn.languageSynthesis.cCom_switch = {
 	en: function () {
-		return el('switch').checked ? 'has been selected' : 'has not been selected';
+		return 'switch'.element().checked ? 'has been selected' : 'has not been selected';
 	},
 	de: function () {
-		return el('switch').checked ? 'wurde gewählt' : 'wurde nicht gewählt';
+		return 'switch'.element().checked ? 'wurde gewählt' : 'wurde nicht gewählt';
 	}
 };
 
@@ -67,7 +67,7 @@ correspondence.data.common = {
 			de: 'Beispiel'
 		},
 		controls: '<div class="inline">' +
-			core.fn.static.insert.checkbox('Button', 'switch', false,'onchange="correspondence.fn.gen()"') + '<br />' +
+			core.fn.static.insert.checkbox('Button', 'switch', false, 'onchange="correspondence.fn.gen()"') + '<br />' +
 			'</div>',
 		contents: {
 			letter: {

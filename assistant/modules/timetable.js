@@ -54,7 +54,7 @@ var timetable = {
 					core.fn.static.insert.checkbox(core.fn.static.lang('favouriteAdd', 'timetable'), 'favouriteAdd', favouriteNameStored, false, core.fn.static.lang('favouriteAdd', 'timetable')).replace(/"/g, '&quot;').replace(/\'/g, "\\\'");
 		},
 		search: async (query = '') => {
-			query = query || el('timetablequery').value;
+			query = query || 'timetablequery'.element().value;
 			let open;
 			if (query) {
 				open = await timetable.fn.open(query);
@@ -85,7 +85,7 @@ var timetable = {
 				if (value.indexOf(':') == 0) { //if preceded by : the value will be deleted from the favourite list
 					deleteValue = true;
 					value = value.substring(1);
-				} else if (!el('favouriteAdd').checked)
+				} else if (!'favouriteAdd'.element().checked)
 					deleteValue = true;
 				if (output) {
 					if (output.indexOf(value) > -1) {
@@ -145,7 +145,7 @@ var timetable = {
 				'<span onclick="timetable.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
 				'<input type="submit" id="name" value="' + core.fn.static.lang('formSubmit', 'timetable') + '" hidden="hidden" /> ' +
 				'</form>');
-			el('timetablequery').focus();
+			'timetablequery'.element().focus();
 			core.fn.async.stdout('temp', core.fn.static.lang('explanation', 'timetable') + '<br />');
 			core.fn.async.stdout('output', '<div id="favourites">' + await timetable.fn.favouriteHandler.get('withtools') + '</div>');
 			if (query) timetable.fn.search(query);

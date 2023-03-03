@@ -41,7 +41,7 @@ var correspondence = {
 				linebreak = '',
 				query,
 				selectBlocks;
-			query = el('textTheme').options[el('textTheme').selectedIndex].value;
+			query = 'textTheme'.element().options['textTheme'.element().selectedIndex].value;
 			contents = correspondence.data[correspondence.var.currentModule][query].contents;
 			selectBlocks = correspondence.data[correspondence.var.currentModule][query].controls + "<div>";
 			Object.keys(contents).forEach(function (key) {
@@ -56,7 +56,7 @@ var correspondence = {
 					selectBlocks += (itemcount > 1 && itemcount % 2 == 0 ? '<br />' : '') + '<label class="custominput itemalign" title="' + contents[key][core.var.selectedLanguage][1] + '">' + contents[key][core.var.selectedLanguage][1] + '<input type="checkbox" name="' + contents[key][core.var.selectedLanguage][0] + '" id="' + key + '" value="' + key + '" ' + (contents[key][core.var.selectedLanguage][2] ? 'checked="checked"' : '') + ' onchange="correspondence.fn.gen()" /><span class="checkmark"></span></label>';
 				}
 			});
-			el('selectBlocks').innerHTML = selectBlocks;
+			'selectBlocks'.element().innerHTML = selectBlocks;
 		},
 		gen: function (query = '') { //create user output
 			let contents,
@@ -65,7 +65,7 @@ var correspondence = {
 				output = '',
 				wanted = [];
 			//read selected checkboxes or set to default
-			query = query || el('textTheme').options[el('textTheme').selectedIndex].value;
+			query = query || 'textTheme'.element().options['textTheme'.element().selectedIndex].value;
 			contents = correspondence.data[correspondence.var.currentModule][query].contents;
 
 			//limit output to selected topics
@@ -74,7 +74,7 @@ var correspondence = {
 				if (inputs[i].checked) wanted[i] = inputs[i].value;
 			}
 			//output
-			if (el('thirdperson') && el('thirdperson').checked) index = 4;
+			if ('thirdperson'.element() && 'thirdperson'.element().checked) index = 4;
 			Object.keys(contents).forEach((value) => {
 				if (wanted.indexOf(value) >= 0) {
 					output += contents[value][core.fn.languageSynthesis.outputLanguage()][index].replace(/\$(\w+?)\$/ig, function (match, group1) {
@@ -87,7 +87,7 @@ var correspondence = {
 			core.fn.static.limitBar(core.fn.static.escapeHTML(output, true).length, core.var.directMailSize);
 			//reassign variable value for mailto after actual output
 			if (output.length > core.var.directMailSize) output = core.fn.static.lang('errorMailSizeExport');
-			el('mailto').href = 'javascript:core.fn.static.dynamicMailto(\'\',\'\',\'' + output + '\')';
+			'mailto'.element().href = 'javascript:core.fn.static.dynamicMailto(\'\',\'\',\'' + output + '\')';
 			core.history.write('correspondence.fn.init(\'' + correspondence.var.selectedModule() + '|' + query + '\')');
 		},
 		start: async (query = '') => {
@@ -99,7 +99,7 @@ var correspondence = {
 			});
 			output = core.fn.static.insert.select(sel, 'textTheme', 'textTheme', query, 'onchange="correspondence.fn.controls(); correspondence.fn.gen()"') +
 				'<br /><br />' +
-				'<input type="text" placeholder="' + core.fn.static.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.fn.gen()" /> ' + core.fn.static.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.ecosia.org/search?q=\'+el(\'name\').value+\'+name\',\'_blank\');" title="' + core.fn.static.lang('webSearchTitle', 'correspondence') + '"') + '<br /><br />';
+				'<input type="text" placeholder="' + core.fn.static.lang('inputPlaceholder', 'correspondence') + '" id="name" onblur="correspondence.fn.gen()" /> ' + core.fn.static.insert.icon('websearch', 'bigger', false, 'onclick="window.open(\'https://www.ecosia.org/search?q=\'+\'name\'.element().value+\'+name\',\'_blank\');" title="' + core.fn.static.lang('webSearchTitle', 'correspondence') + '"') + '<br /><br />';
 
 			output += '<div id="selectBlocks"></div>';
 

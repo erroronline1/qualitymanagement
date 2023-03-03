@@ -78,10 +78,10 @@ var pyreq_qr = {
 				hint: ''
 			};
 			if (type === 'appointment') {
-				let date = el('appointmentdate').value.split(/\D/g).concat(el('appointmenttime').value.split(/\D/g)),
-					cause = el('appointmentcause').value.trim(),
-					details = el('appointmentdetails').value.trim(),
-					duration = el('appointmentduration').value,
+				let date = 'appointmentdate'.element().value.split(/\D/g).concat('appointmenttime'.element().value.split(/\D/g)),
+					cause = 'appointmentcause'.element().value.trim(),
+					details = 'appointmentdetails'.element().value.trim(),
+					duration = 'appointmentduration'.element().value,
 					dates;
 
 				if (date.length < 5 || !cause.length) return;
@@ -103,18 +103,18 @@ var pyreq_qr = {
 				output.data = pyreq_qr.data.appointment[core.var.selectedLanguage](dates);
 			} else if (type === 'labelling') {
 				let dates = {
-					name: el('labellingname').value.trim(),
-					dob: el('labellingdob').value.trim(),
-					aid: el('labellingaid').value.trim(),
-					delivered: el('labellingdelivered').value.trim(),
-					id: el('labellingpatientid').value.trim(),
-					process: el('labellingprocessnumber').value.trim()
+					name: 'labellingname'.element().value.trim(),
+					dob: 'labellingdob'.element().value.trim(),
+					aid: 'labellingaid'.element().value.trim(),
+					delivered: 'labellingdelivered'.element().value.trim(),
+					id: 'labellingpatientid'.element().value.trim(),
+					process: 'labellingprocessnumber'.element().value.trim()
 				};
 				if (!dates.name || !dates.dob || !dates.aid || !dates.delivered) return;
 				output.data = pyreq_qr.data.labelling[core.var.selectedLanguage](dates);
 				output.hint = core.fn.static.lang('labellingWarning', 'pyreq_qr');
 			} else if (type === 'open') {
-				output.data = el('opentext').value.trim();
+				output.data = 'opentext'.element().value.trim();
 			}
 			//creates and instantly opens with default shell commands
 			await eel.createqrandopenwith(output, core.var.environment[core.var.selectedEnv].default.open, pyreq_qr.var.submodules[core.fn.static.getTab('pyreq_qrselection')][core.var.selectedLanguage])();

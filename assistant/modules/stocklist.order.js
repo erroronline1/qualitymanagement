@@ -10,10 +10,8 @@
 
 stocklist.fn.authorized = () => {
 	const authorized = core.fn.static.drm.table('orderApproval');
-	let out = [
-		[core.var.eMailAddress.inventorycontrol.address, core.var.eMailAddress.inventorycontrol.display[core.var.selectedLanguage]]
-	];
-	Object.keys(authorized).forEach((key) => {
+	let out = [[core.var.eMailAddress.inventorycontrol.address, core.var.eMailAddress.inventorycontrol.display[core.var.selectedLanguage]]];
+	Object.keys(authorized).forEach((key)=>{
 		out.push([authorized[key][0], key]);
 	});
 	return out;
@@ -54,7 +52,7 @@ stocklist.fn.orderform = async () => {
 		core.fn.static.insert.radio(core.fn.static.lang('notcommissioned', 'stocklist'), 'commissioned', 'notcommissioned', true, 'onclick="stocklist.fn.requirements(\'none\')"', '') + '<br />' +
 		core.fn.static.insert.radio(core.fn.static.lang('commissioned', 'stocklist'), 'commissioned', 'commissioned', false, 'onclick="stocklist.fn.requirements(\'commissioned\')"', '') + '<br />' +
 		'<div id="commissioned_required" class="items items0">' +
-		'<input type="text" id="orderRcptName" placeholder="' + core.fn.static.lang('orderRcptName', 'stocklist') + '" title="' + core.fn.static.lang('orderRcptName', 'stocklist') + '" onchange="el(\'orderRcptDob\').required = el(\'orderRcptFlag\').required = Boolean(el(\'orderRcptName\').value.length);" />' +
+		'<input type="text" id="orderRcptName" placeholder="' + core.fn.static.lang('orderRcptName', 'stocklist') + '" title="' + core.fn.static.lang('orderRcptName', 'stocklist') + '" onchange="\'orderRcptDob\'.element().required = \'orderRcptFlag\'.element().required = Boolean(\'orderRcptName\'.element().value.length);" />' +
 		'<input type="text" onfocus="this.type=\'date\'" onblur="this.type=\'text\'" id="orderRcptDob" placeholder="' + core.fn.static.lang('orderRcptDob', 'stocklist') + '" title="' + core.fn.static.lang('orderRcptDob', 'stocklist') + '" />' +
 		'<input type="text" id="orderRcptFlag" placeholder="' + core.fn.static.lang('orderRcptFlag', 'stocklist') + '" title="' + core.fn.static.lang('orderRcptFlag', 'stocklist') + '" />' +
 		'</div>' +
@@ -69,8 +67,8 @@ stocklist.fn.orderform = async () => {
 		'<br /><br /><input type="button" id="deleteCart" value="' + core.fn.static.lang('deleteCart', 'stocklist') + '" onclick="core.fn.async.memory.delete(\'stocklistCart\'); this.value=\'' + core.fn.static.lang('deleteCartDeleted', 'stocklist') + '\'; this.disabled=true; core.fn.async.growlNotif(\'' + core.fn.static.lang('deleteCartDeleted', 'stocklist') + '\');" />' +
 		'<br /><br /><a ' + await core.fn.async.file.link(stocklist.var.orderFormFile) + '>' +
 		core.fn.static.insert.icon('pdf') + core.fn.static.lang('orderFormFile', 'stocklist') + '</a><br /><br />' +
-		core.fn.static.insert.select(stocklist.fn.authorized(), 'authorizedOrderer', 'authorizedOrderer', false, 'onchange="el(\'mailto\').setAttribute(\'data-mail\', this.value)"') +
-		'<a id="mailto" data-mail="' + core.var.eMailAddress.inventorycontrol.address + '" href="javascript:core.fn.static.dynamicMailto(el(\'mailto\').getAttribute(\'data-mail\'), core.fn.static.lang(\'orderMailSubject\', \'stocklist\') + el(\'ordererDept\').value + \' | \' + el(\'orderer\').value)">' +
+		core.fn.static.insert.select(stocklist.fn.authorized(), 'authorizedOrderer', 'authorizedOrderer', false, 'onchange="\'mailto\'.element().setAttribute(\'data-mail\', this.value)"') +
+		'<a id="mailto" data-mail="' + core.var.eMailAddress.inventorycontrol.address + '" href="javascript:core.fn.static.dynamicMailto(\'mailto\'.element().getAttribute(\'data-mail\'), core.fn.static.lang(\'orderMailSubject\', \'stocklist\') + \'ordererDept\'.element().value + \' | \' + \'orderer\'.element().value)">' +
 		core.fn.static.insert.icon('email') + core.fn.static.lang('openMailApp', 'stocklist') + '</a>' +
 		"</form>";
 	return form;
@@ -96,17 +94,17 @@ stocklist.fn.requirements = (what) => {
 		}
 	};
 	set['all'].required.forEach(f => {
-		el(f).required = set[what].required.includes(f);
+		f.element().required = set[what].required.includes(f);
 	});
 	set['all'].displayed.forEach(f => {
-		core.fn.static.toggleHeight(el(f), set[what].displayed.includes(f));
+		core.fn.static.toggleHeight(f.element(), set[what].displayed.includes(f));
 	});
 }
 
 stocklist.fn.addrow = function (conditionalDisabled) {
 	let cellContent,
 		disabledPreset,
-		table = el('ordertable'),
+		table = 'ordertable'.element(),
 		td,
 		tr = document.createElement('tr');
 	stocklist.var.orderrows++;
@@ -118,15 +116,15 @@ stocklist.fn.addrow = function (conditionalDisabled) {
 		//prefill with ticket or copy from former row, disable conditional
 		disabledPreset = field[2];
 		if (disabledPreset === true || (disabledPreset === 2 && conditionalDisabled)) cellContent += ' disabled'
-		if (stocklist.var.orderrows > 0 && stocklist.var.orderFieldsToCopy[core.var.selectedLanguage].indexOf(field[0]) > -1 && el(field[0].replace(/\W/g, '') + (stocklist.var.orderrows - 1))) cellContent += ' value="' + el(field[0].replace(/\W/g, '') + (stocklist.var.orderrows - 1)).value + '"';
+		if (stocklist.var.orderrows > 0 && stocklist.var.orderFieldsToCopy[core.var.selectedLanguage].indexOf(field[0]) > -1 && (field[0].replace(/\W/g, '') + (stocklist.var.orderrows - 1)).element()) cellContent += ' value="' + (field[0].replace(/\W/g, '') + (stocklist.var.orderrows - 1)).element().value + '"';
 		cellContent += ' />';
 		td.innerHTML = cellContent
 	});
 	td = tr.appendChild(document.createElement('td'));
 	td.innerHTML = core.fn.static.insert.icon('delete', 'bigger rownumberingpseudoclass', false, 'lineexists' + (stocklist.var.orderrows) + ' onclick="stocklist.fn.deleterow(' + (stocklist.var.orderrows) + ')"');
 	table.appendChild(tr);
-	el('tidyOrder').disabled = false;
-	if (el('submitOrder')) el('submitOrder').disabled = false;
+	'tidyOrder'.element().disabled = false;
+	if ('submitOrder'.element()) 'submitOrder'.element().disabled = false;
 	return stocklist.var.orderrows;
 }
 
@@ -134,7 +132,7 @@ stocklist.fn.deleterow = function (itemindex) {
 	let rows = document.getElementsByClassName('rownumberingpseudoclass');
 	for (var i = 0; i < rows.length; i++) {
 		if (rows[i].hasAttribute('lineexists' + itemindex)) {
-			el('ordertable').deleteRow(i + 1);
+			'ordertable'.element().deleteRow(i + 1);
 			break;
 		}
 	}
@@ -153,7 +151,7 @@ stocklist.fn.getShoppingCart = async (updateLast = false) => {
 			stocklist.var.orderFields[core.var.selectedLanguage].forEach(function (field, fieldindex) {
 				if (fieldindex in stocklist.var.apiTranslate.fieldCorrelation) value = stocklist.data.stocklist.content[index][stocklist.var.apiTranslate.fieldCorrelation[fieldindex]];
 				else value = '';
-				el(field[0].replace(/\W/g, '') + lineindex).value = value;
+				(field[0].replace(/\W/g, '') + lineindex).element().value = value;
 			});
 		});
 	}
@@ -169,22 +167,22 @@ stocklist.fn.currentorder = {
 			orderobj = {},
 			neworder,
 			wildcard = false;
-		orderobj.subject = core.fn.static.lang('orderMailSubject', 'stocklist') + el('ordererDept').value + ' | ' + el('orderer').value;
+		orderobj.subject = core.fn.static.lang('orderMailSubject', 'stocklist') + 'ordererDept'.element().value + ' | ' + 'orderer'.element().value;
 		// same fields as in getting peculiar order, change on both ends
 		['notcommissioned', 'commissioned', 'retour', 'service'].forEach(function (field) {
-			if (el(field).checked) orderobj.type = core.fn.static.lang(field, 'stocklist');
+			if (field.element().checked) orderobj.type = core.fn.static.lang(field, 'stocklist');
 		});
 		['orderRcptName', 'orderRcptDob', 'orderRcptFlag', 'orderer', 'ordererDept', 'ordererCostUnit', 'ordererContact', 'orderNeededBy', 'orderNote', 'orderReferralTicket'].forEach(function (field) {
-			if (el(field).value) orderobj[field] = el(field).value;
+			if (field.element().value) orderobj[field] = field.element().value;
 		});
 		orderobj.items = [];
 		// iterate through order form for item descriptions
 		for (var i = 0; i < stocklist.var.orderrows + 1; i++) {
 			items = [];
-			if (el(stocklist.var.apiTranslate.idField().replace(/\W/g, '') + i)) {
+			if ((stocklist.var.apiTranslate.idField().replace(/\W/g, '') + i).element()) {
 				for (let index = 0; index < stocklist.var.orderFields[core.var.selectedLanguage].length; index++) {
 					field = stocklist.var.orderFields[core.var.selectedLanguage][index]
-					curval = el(field[0].replace(/\W/g, '') + i).value || '';
+					curval = (field[0].replace(/\W/g, '') + i).element().value || '';
 					items.push(curval);
 					if (stocklist.var.apiTranslate.orderNumberWildcard && curval.indexOf(stocklist.var.apiTranslate.orderNumberWildcard) > -1) wildcard = true;
 				}
@@ -196,22 +194,22 @@ stocklist.fn.currentorder = {
 			return;
 		}
 
-		core.fn.async.memory.write('stocklistDept', el('ordererDept').selectedIndex);
-		core.fn.async.memory.write('stocklistCostUnit', el('ordererCostUnit').selectedIndex);
-		core.fn.async.memory.write('stocklistContact', el('ordererContact').value);
+		core.fn.async.memory.write('stocklistDept', 'ordererDept'.element().selectedIndex);
+		core.fn.async.memory.write('stocklistCostUnit', 'ordererCostUnit'.element().selectedIndex);
+		core.fn.async.memory.write('stocklistContact', 'ordererContact'.element().value);
 		if (!stocklist.var.displayOnly) {
 			ordernum = await core.fn.async.memory.read('stocklistAwaitingOrders');
-			ordernum = el('editOrder').value || eval(ordernum) + 1;
+			ordernum = 'editOrder'.element().value || eval(ordernum) + 1;
 			neworder = await core.fn.async.memory.write('stocklistAwaitingOrder' + ordernum, JSON.stringify(orderobj), core.fn.static.lang('orderStorageError', 'stocklist'));
-			if (neworder && !el('editOrder').value) {
+			if (neworder && !'editOrder'.element().value) {
 				core.fn.async.memory.write('stocklistAwaitingOrders', ordernum);
 				core.fn.async.memory.delete('stocklistCart')
-				if (el('deleteCart')) el('deleteCart').style.display = 'none';
+				if ('deleteCart'.element()) 'deleteCart'.element().style.display = 'none';
 			} else core.fn.async.memory.write('stocklistAwaitingOrders', ordernum);
 			core.fn.async.stdout('currentorders', await stocklist.fn.currentorder.get());
 		} else {
 			core.fn.async.stdout('output', await stocklist.fn.currentorder.get(JSON.stringify(orderobj)));
-			el('output').scrollTop = el('output').scrollHeight;
+			'output'.element().scrollTop = 'output'.element().scrollHeight;
 		}
 		stocklist.var.displayOnly = false;
 	},
@@ -225,16 +223,16 @@ stocklist.fn.currentorder = {
 		function displayOrder(orderobj) {
 			let output = '';
 			orderobj = JSON.parse(orderobj);
-
-			orderobj.items.sort((a, b) => {
-				index = stocklist.var.orderFieldToSortBy;
+			
+			orderobj.items.sort((a,b)=>{
+				index=stocklist.var.orderFieldToSortBy;
 				if (a[index] === b[index]) {
 					return 0;
 				} else {
 					return (a[index] < b[index]) ? 1 : -1;
 				}
 			});
-
+			
 			output = orderobj.subject + '<br /><br />';
 			output += '<i>' + orderobj.type + '</i><br /><br />'
 			output += core.fn.static.lang('captionCheckTicket', 'stocklist') + ': ' + stocklist.fn.translate.newTicket() + '<br />';
@@ -249,10 +247,10 @@ stocklist.fn.currentorder = {
 				output += '>' + field[0] + '</th>';
 			});
 			output += '</tr>';
-			sortHeader = '';
+			sortHeader='';
 			for (let i = 0; i < orderobj.items.length; i++) {
-				if (sortHeader != orderobj.items[i][stocklist.var.orderFieldToSortBy]) {
-					output += '<tr><td colspan="' + stocklist.var.orderFields[core.var.selectedLanguage].length + '">-------' + orderobj.items[i][stocklist.var.orderFieldToSortBy] + '-------</td></tr>';
+				if (sortHeader != orderobj.items[i][stocklist.var.orderFieldToSortBy]){
+					output+='<tr><td colspan="' + stocklist.var.orderFields[core.var.selectedLanguage].length + '">-------' + orderobj.items[i][stocklist.var.orderFieldToSortBy] + '-------</td></tr>';
 					sortHeader = orderobj.items[i][stocklist.var.orderFieldToSortBy];
 				}
 				output += '<tr>';
@@ -288,31 +286,32 @@ stocklist.fn.currentorder = {
 				core.fn.async.stdout('temp', core.fn.static.lang('useCaseDescription', 'stocklist') + '<br /><br />' +
 					'<div class="items items23 expand" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await stocklist.fn.orderform() + '</div>' +
 					'<div id="currentorders"></div>' +
-					'<div class="items items23" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await stocklist.fn.ticketqueryform() + '</div>');
+					'<div class="items items23" id="stocklistOrderForm" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand() + await stocklist.fn.ticketqueryform() + '</div>')
+				;
 				core.fn.async.stdout('currentorders', await stocklist.fn.currentorder.get());
 
 				cart = JSON.parse(cart);
 
 				// same fields as in adding order, change on both ends
 				['notcommissioned', 'commissioned', 'retour', 'service'].forEach(function (field) {
-					el(field).checked = cart.type === core.fn.static.lang(field, 'stocklist');
+					field.element().checked = cart.type === core.fn.static.lang(field, 'stocklist');
 				});
 				['orderRcptName', 'orderRcptDob', 'orderRcptFlag', 'orderer', 'ordererDept', 'ordererCostUnit', 'ordererContact', 'orderNeededBy', 'orderNote'].forEach(function (field) {
-					el(field).value = cart[field] || '';
+					field.element().value = cart[field] || '';
 				});
 				cart.items.forEach(function (article) {
 					lineindex = stocklist.fn.addrow(true);
 					stocklist.var.orderFields[core.var.selectedLanguage].forEach(function (field, fieldindex) {
-						el(field[0].replace(/\W/g, '') + lineindex).value = article[fieldindex];
+						(field[0].replace(/\W/g, '') + lineindex).element().value = article[fieldindex];
 					});
 				});
 			}
-			el('editOrder').value = order;
-			el('deleteCart').value = core.fn.static.lang('deleteCurrentOrder', 'stocklist');
-			el('deleteCart').onclick = function () {
+			'editOrder'.element().value = order;
+			'deleteCart'.element().value = core.fn.static.lang('deleteCurrentOrder', 'stocklist');
+			'deleteCart'.element().onclick = function () {
 				stocklist.fn.currentorder.delete(order);
-				el('deleteCart').value = core.fn.static.lang('deleteCartDeleted', 'stocklist');
-				el('deleteCart').disabled = true;
+				'deleteCart'.element().value = core.fn.static.lang('deleteCartDeleted', 'stocklist');
+				'deleteCart'.element().disabled = true;
 				core.fn.async.growlNotif(core.fn.static.lang('deleteCartDeleted', 'stocklist'));
 			}
 		}
@@ -323,7 +322,7 @@ stocklist.fn.currentorder = {
 			core.fn.async.growlNotif(core.fn.static.lang('deletionReminder', 'stocklist'));
 		} else if (particularOrder) {
 			await importOrder(particularOrder);
-			el('temp').scrollTo(0, 0);
+			'temp'.element().scrollTo(0, 0);
 		} else if (ordernum) {
 			for (let o = 0; o < ordernum; o++) {
 				orders = await core.fn.async.memory.read('stocklistAwaitingOrder' + (o + 1))

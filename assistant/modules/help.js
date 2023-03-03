@@ -28,12 +28,12 @@ var help = {
 	},
 	fn: {
 		search: async (query = '') => {
-			query = query || el('helpquery').value;
+			query = query || 'helpquery'.element().value;
 			let found,
 				list = '',
 				tresult;
 			Object.keys(help.data.content).forEach(function (key) {
-				if (help.data.content[key][0]) list += '<a style="cursor:pointer" onclick="el(\'helpquery\').value=\'' + help.data.content[key][0] + '\'; el(\'search\').submit();">' + help.data.content[key][0] + '</a><br />';
+				if (help.data.content[key][0]) list += '<a style="cursor:pointer" onclick="\'helpquery\'.element().value=\'' + help.data.content[key][0] + '\'; \'search\'.element().submit();">' + help.data.content[key][0] + '</a><br />';
 				else list += '<br />';
 			});
 			core.fn.async.stdout('temp', '<span class="highlight">' + core.fn.static.lang('tableOfContents', 'help') + ':</span><br />' + list);
@@ -62,7 +62,7 @@ var help = {
 				'<span onclick="help.fn.search();" class="search">' + core.fn.static.insert.icon('search') + '</span> ' +
 				'<input type="submit" id="artikelsuche" value="' + core.fn.static.lang('formSubmit', 'help') + '" hidden="hidden" /> ' +
 				'</form>');
-			el('helpquery').focus();
+			'helpquery'.element().focus();
 			help.fn.search(query);
 		},
 		load: async () => {

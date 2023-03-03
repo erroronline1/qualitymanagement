@@ -50,10 +50,10 @@ core.fn.languageSynthesis = {
 
 	longname: {
 		en: function () {
-			return el('name').value;
+			return 'name'.element().value;
 		},
 		de: function () {
-			return el('name').value;
+			return 'name'.element().value;
 		}
 	},
 
@@ -68,15 +68,15 @@ core.fn.languageSynthesis = {
 	output: function (block) {
 		var withname = ['salutation', 'shortname', 'shortnameaccusativ'],
 			name, index = 0;
-		if (el('adult'))
-			if (el('adult').checked) index = 2;
-		if (el('female'))
-			if (el('female').checked) index += 1;
+		if ('adult'.element())
+			if ('adult'.element().checked) index = 2;
+		if ('female'.element())
+			if ('female'.element().checked) index += 1;
 		if (withname.indexOf(block) > -1) {
-			if (el('name').value) {
-				var namen = el('name').value.trim().split(' ');
-				if (!el('adult') || (el('adult')&&el('adult').checked)) name = namen[namen.length - 1];
-				if (el('child')&&el('child').checked) name = namen[0];
+			if ('name'.element().value) {
+				var namen = 'name'.element().value.trim().split(' ');
+				if (!'adult'.element() || ('adult'.element() && 'adult'.element().checked)) name = namen[namen.length - 1];
+				if ('child'.element() && 'child'.element().checked) name = namen[0];
 
 				return this[block][this.outputLanguage()][index] + name
 			}

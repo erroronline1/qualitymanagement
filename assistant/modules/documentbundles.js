@@ -46,7 +46,7 @@ var documentbundles = {
 				if (documentbundles.data.exceptions.noserialprint.indexOf(pack.primary[index]) < 0) serialList.push(pack.primary[index]);
 			});
 			//add exceptive documents according to additional data (inputs in form)
-			if (el('enableexceptions').checked) {
+			if ('enableexceptions'.element().checked) {
 				Object.keys(documentbundles.data.exceptions.addtobundle).forEach(function (index) {
 					if (pack.primary.indexOf(documentbundles.data.exceptions.addtobundle[index]) < 0) {
 						serialList.push(documentbundles.data.exceptions.addtobundle[index]);
@@ -70,7 +70,7 @@ var documentbundles = {
 					serialPrintExceptions += ', ' + el.substring(el.lastIndexOf('/'), el.lastIndexOf('.')).substring(1);
 				});
 				//add exceptive documents according to additional data (inputs in form)
-				if (el('enableexceptions').checked) {
+				if ('enableexceptions'.element().checked) {
 					for (let index of Object.keys(documentbundles.data.exceptions.addtobundle)) {
 						if (pack.primary.indexOf(documentbundles.data.exceptions.addtobundle[index]) < 0) {
 							primary += await documentbundles.fn.linkfile(documentbundles.data.exceptions.addtobundle[index]);
@@ -94,7 +94,7 @@ var documentbundles = {
 				out += '<option id="' + key + '" value="' + key + '" ' + (query === key ? 'selected' : '') + '>' + key.replace(/_/g, " ") + '</option>';
 			});
 			out += '</select>';
-			await core.fn.async.stdout('input', out + '<span class="inline" style="padding-top:.375em">' + core.fn.static.insert.checkbox(core.fn.static.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=el(\'packages\').options[el(\'packages\').selectedIndex].value; if (sel) documentbundles.fn.gen(sel)"') + '</span>');
+			await core.fn.async.stdout('input', out + '<span class="inline" style="padding-top:.375em">' + core.fn.static.insert.checkbox(core.fn.static.lang('selectEnableExceptions', 'documentbundles'), 'enableexceptions', false, 'onchange="var sel=\'packages\'.element().options[\'packages\'.element().selectedIndex].value; if (sel) documentbundles.fn.gen(sel)"') + '</span>');
 			if (query) documentbundles.fn.gen(query);
 			else {
 				await core.fn.async.stdout('temp', '<br />' + core.fn.static.lang('useCaseDescription', 'documentbundles'));
