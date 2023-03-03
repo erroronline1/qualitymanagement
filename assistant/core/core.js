@@ -1,5 +1,19 @@
-function el(v) {
-	return document.getElementById(v);
+Array.prototype.containsAny = String.prototype.containsAny = function (...compare) {
+	// to use intuitive with arrays or strings. pass arrays with spread operator
+	// test = ['a', 'f']
+	// ['a', 'b', 'c'].containsAny('a', 'f') => true
+	// ['a', 'b', 'c'].containsAny(...test) => true
+	return compare.some(value => this.includes(value));
+}
+Array.prototype.containsAll = String.prototype.containsAll = function (...compare) {
+	// like containsAny, but only if all elements are present
+	return compare.every(value => this.includes(value));
+}
+String.prototype.element = function () {
+	// to use intuitive with string instead of former el()
+	// 'thisid'.getElement()
+	// replace el\((.+?)\) with $1.element() but put concatenated ids in parentheses
+	return document.getElementById(this.valueOf());
 }
 
 if (typeof core === 'undefined') var core = {};
@@ -114,6 +128,7 @@ core.fn = {
 					key: ['0 0 2048 2048', '1,-1', 'M2048 475v-475h-512v256h-256v256h-256v207q-74 -39 -155 -59t-165 -20q-97 0 -187 25t-168 71t-142.5 110.5t-110.5 142.5t-71 168t-25 187t25 187t71 168t110.5 142.5t142.5 110.5t168 71t187 25t187 -25t168 -71t142.5 -110.5t110.5 -142.5t71 -168t25 -187q0 -51 -8 -101t-23 -98zM1920 421l-690 690q22 57 36 114.5t14 118.5q0 119 -45.5 224t-123.5 183t-183 123.5t-224 45.5t-224 -45.5t-183 -123.5t-123.5 -183t-45.5 -224t45.5 -224t123.5 -183t183 -123.5t224 -45.5q97 0 190.5 33t168.5 95h89v-256h256v-256h256v-256h256v293zM512 1664q27 0 50 -10t40.5 -27.5t27.5 -40.5t10 -50t-10 -50t-27.5 -40.5t-40.5 -27.5t-50 -10t-50 10t-40.5 27.5t-27.5 40.5t-10 50t10 50t27.5 40.5t40.5 27.5t50 10z'],
 					mail: ['0 0 2048 2048', '1,-1', 'M0 1664h2048v-1280h-2048v1280zM1905 1536h-1762l881 -441zM128 512h1792v888l-896 -447l-896 447v-888z'],
 					moduleselector: ['0 0 2048 2048', '1,-1', 'M1600 1024h192v-896h-1664v1664h896v-192l448 448l576 -576zM1054 1472l418 -418l418 418l-418 418zM1024 1344v-320h320zM256 1024h640v640h-640v-640zM896 896h-640v-640h640v640zM1024 896v-640h640v640h-640z'],
+					networkoffline: ['0 0 2048 2048', '1,1', 'M1600 1152q93 0 174.5 35t142.5 96 96 142.5 35 174.5-35 174.5-96 142.5-142.5 96-174.5 35-174.5-35-142.5-96-96-142.5-35-174.5 35-174.5 96-142.5 142.5-96 174.5-35zm-320 448q0 66 25 124.5t68.5 102 102 68.5 124.5 25q47 0 92-13.5t84-39.5l-443-443q-26 39-39.5 84t-13.5 92zm587 176q26-39 39.5-84t13.5-92q0-66-25.5-124t-69-101.5-101.5-69-124-25.5q-47 0-92 13.5t-84 39.5zm-774 125q22 36 48 69t57 62q-43 8-86.5 12t-87.5 4q-141 0-272-36.5T507.5 1908t-207-160.5-160.5-207T36.5 1296 0 1024t36.5-272T140 507.5t160.5-207 207-160.5T752 36.5 1024 0t272 36.5T1540.5 140t207 160.5 160.5 207T2011.5 752t36.5 272q0 44-4 87.5t-12 86.5q-54-59-118-98l4-38 2-38q0-130-38-256h-362q8 62 11.5 123t4.5 124q-33 3-65 10t-64 18v-39q0-60-4-118.5T1391 768H657q-9 64-13 127.5t-4 128.5 4 128.5 13 127.5h446q-37 59-60 128H679q8 37 23 89t37 109 51 113 64.5 101 78 72.5 91.5 27.5q18 0 35.5-5.5t33.5-13.5zm739-1261q-38-81-91.5-152.5T1621 357t-143-104.5-162-74.5q36 49 64.5 105t51 115.5 39.5 121 29 120.5h332zm-808-512q-49 0-91.5 27.5t-78 72.5T790 329t-51 113-37 109-23 89h690q-8-37-23-89t-37-109-51-113-64.5-101-78-72.5T1024 128zm-292 50q-85 29-162 74.5T427 357 307.5 487.5 216 640h332q12-59 28.5-120.5t39-121T667 283t65-105zm-604 846q0 130 38 256h362q-8-64-12-127.5t-4-128.5 4-128.5T528 768H166q-38 126-38 256zm88 384q38 81 91.5 152.5T427 1691t143 104.5 162 74.5q-36-49-65-105t-51.5-115.5-39-121T548 1408H216z'],
 					outlook: ['0 0 50 50', '1,1', 'M 28.875 0 C 28.855469 0.0078125 28.832031 0.0195313 28.8125 0.03125 L 0.8125 5.34375 C 0.335938 5.433594 -0.0078125 5.855469 0 6.34375 L 0 43.65625 C -0.0078125 44.144531 0.335938 44.566406 0.8125 44.65625 L 28.8125 49.96875 C 29.101563 50.023438 29.402344 49.949219 29.632813 49.761719 C 29.859375 49.574219 29.996094 49.296875 30 49 L 30 38 L 34.0625 38 C 34.019531 38.332031 34 38.660156 34 39 C 34 43.40625 37.59375 47 42 47 C 46.40625 47 50 43.40625 50 39 C 50 37.609375 49.628906 36.296875 49 35.15625 C 49.003906 35.105469 49.003906 35.050781 49 35 L 49 17.65625 C 49.082031 17.433594 49.082031 17.191406 49 16.96875 L 49 12 C 49 11.449219 48.550781 11 48 11 L 30 11 L 30 1 C 30.003906 0.710938 29.878906 0.4375 29.664063 0.246094 C 29.449219 0.0546875 29.160156 -0.0351563 28.875 0 Z M 28 2.1875 L 28 11.6875 C 27.941406 11.882813 27.941406 12.085938 28 12.28125 L 28 36.6875 C 27.941406 36.882813 27.941406 37.085938 28 37.28125 L 28 47.8125 L 2 42.84375 L 2 7.15625 Z M 30 13 L 47 13 L 47 16.78125 L 33.75 24.625 L 30 21.53125 Z M 14.84375 15.53125 C 12.324219 15.53125 10.308594 16.40625 8.78125 18.1875 C 7.253906 19.96875 6.5 22.304688 6.5 25.1875 C 6.5 27.917969 7.246094 30.144531 8.75 31.84375 C 10.253906 33.542969 12.207031 34.40625 14.59375 34.40625 C 17.042969 34.40625 19.007813 33.503906 20.53125 31.75 C 22.054688 29.992188 22.8125 27.679688 22.8125 24.8125 C 22.8125 22.023438 22.09375 19.800781 20.625 18.09375 C 19.15625 16.390625 17.222656 15.53125 14.84375 15.53125 Z M 14.75 19.0625 C 16.027344 19.0625 17.042969 19.605469 17.78125 20.65625 C 18.519531 21.707031 18.875 23.171875 18.875 25.0625 C 18.875 26.878906 18.476563 28.292969 17.71875 29.3125 C 16.957031 30.335938 15.949219 30.84375 14.65625 30.84375 C 13.398438 30.84375 12.371094 30.332031 11.59375 29.28125 C 10.820313 28.230469 10.4375 26.773438 10.4375 24.96875 C 10.4375 23.1875 10.816406 21.769531 11.59375 20.6875 C 12.367188 19.605469 13.433594 19.0625 14.75 19.0625 Z M 47 19.125 L 47 32.78125 C 45.628906 31.679688 43.886719 31 42 31 C 38.660156 31 35.789063 33.082031 34.59375 36 L 30 36 L 30 24.09375 L 33.03125 26.59375 C 33.355469 26.867188 33.820313 26.90625 34.1875 26.6875 Z M 42 33 C 45.324219 33 48 35.675781 48 39 C 48 42.324219 45.324219 45 42 45 C 38.675781 45 36 42.324219 36 39 C 36 35.675781 38.675781 33 42 33 Z M 41 34 L 41 41 L 46 41 L 46 39 L 43 39 L 43 34 Z'],
 					pdf: ['0 0 2048 2048', '1,-1', 'M1920 384h-128v-384h-1664v384h-128v1024h128v640h1243l421 -421v-219h128v-1024zM1408 1664h165l-165 165v-165zM256 1408h1408v128h-384v384h-1024v-512zM1664 384h-1408v-256h1408v256zM1792 1280h-1664v-768h1664v768zM448 1152q40 0 75 -15t61 -41t41 -61t15 -75t-15 -75t-41 -61t-61 -41t-75 -15h-64v-128h-128v512h192zM448 896q26 0 45 19t19 45t-19 45t-45 19h-64v-128h64zM896 1152q53 0 99.5 -20t81.5 -55t55 -81.5t20 -99.5t-20 -99.5t-55 -81.5t-81.5 -55t-99.5 -20h-128v512h128zM896 768q27 0 50 10t40.5 27.5t27.5 40.5t10 50t-10 50t-27.5 40.5t-40.5 27.5t-50 10v-256zM1280 1152h320v-128h-192v-128h192v-128h-192v-128h-128v512z'],
 					print: ['0 0 2048 2048', '1,-1', 'M1920 1280q26 0 49.5 -10t41 -27.5t27.5 -41t10 -49.5v-896h-512v-256h-1024v256h-512v896q0 26 10 49.5t27.5 41t41 27.5t49.5 10h384v768h1024v-768h384zM640 1280h768v640h-768v-640zM1408 640h-768v-512h768v512zM1920 1152h-1792v-768h384v384h1024v-384h384v768z M320 1024q26 0 45 -19t19 -45t-19 -45t-45 -19t-45 19t-19 45t19 45t45 19z'],
@@ -200,16 +215,16 @@ core.fn = {
 		limitBar: (actual, max, id) => { // update indicator and set warning colours
 			if (id === undefined) id = 'limitBar'
 			if (typeof max === NaN) return false;
-			el(id + 'Indicator').style.width = Math.min(actual / max, 1) * 100 + "%";
+			(id + 'Indicator').element().style.width = Math.min(actual / max, 1) * 100 + "%";
 			if (actual > max) {
-				el(id + 'Indicator').classList.remove('green', 'orange');
-				el(id + 'Indicator').classList.add('red');
+				(id + 'Indicator').element().classList.remove('green', 'orange');
+				(id + 'Indicator').element().classList.add('red');
 			} else if (actual > max * .8) {
-				el(id + 'Indicator').classList.remove('green', 'red');
-				el(id + 'Indicator').classList.add('orange');
+				(id + 'Indicator').element().classList.remove('green', 'red');
+				(id + 'Indicator').element().classList.add('orange');
 			} else {
-				el(id + 'Indicator').classList.remove('orange', 'red');
-				el(id + 'Indicator').classList.add('green');
+				(id + 'Indicator').element().classList.remove('orange', 'red');
+				(id + 'Indicator').element().classList.add('green');
 			}
 		},
 		maxMailSize: () => { // try to create a mail with so much characters to determine maximum possible amount of passable content
@@ -234,21 +249,21 @@ core.fn = {
 		},
 		popup: (text) => { //toggle notification popup
 			let otext = '<span style="display:block; width:100%; text-align:right;">' + core.fn.static.insert.icon('closepopup', 'bigger', false, 'title="' + core.fn.static.lang('popupCloseButton') + '" onclick="core.fn.static.popup()"') + '</span>' + text;
-			if (el('popup').style.opacity == '1' && typeof text === 'undefined') {
-				el('popup').style.opacity = '0';
-				el('popuptext').style.transform = 'translateX(0)';
+			if ('popup'.element().style.opacity == '1' && typeof text === 'undefined') {
+				'popup'.element().style.opacity = '0';
+				'popuptext'.element().style.transform = 'translateX(0)';
 				document.getElementsByTagName('main')[0].style.filter = document.getElementsByTagName('header')[0].style.filter = 'none';
 				setTimeout(() => {
-					el('popup').style.display = 'none';
+					'popup'.element().style.display = 'none';
 					core.fn.async.stdout('popuptext', otext);
 				}, 100);
 			} else {
 				core.fn.async.stdout('popuptext', otext);
-				el('popup').style.display = 'block';
-				el('popup').style.opacity = '1';
+				'popup'.element().style.display = 'block';
+				'popup'.element().style.opacity = '1';
 				document.getElementsByTagName('main')[0].style.filter = document.getElementsByTagName('header')[0].style.filter = 'blur(2px)';
 				setTimeout(() => {
-					el('popuptext').style.transform = 'translateX(-100vw)';
+					'popuptext'.element().style.transform = 'translateX(-100vw)';
 				}, 100);
 			}
 		},
@@ -263,7 +278,7 @@ core.fn = {
 					win = window.open("", "win");
 					doc = win.document;
 					doc.open("text/html", "replace");
-					doc.write('<html><head><title>' + core.fn.static.lang('copycontentNewWindowCaption') + '</title><style>body {font-family:\'' + core.var.corporateFontFace + '\'; font-size:' + core.var.corporateFontSize + ';}</style></head><body onclick="window.self.close()"><div id="text">' + el(element).innerHTML + '</div></body></html>');
+					doc.write('<html><head><title>' + core.fn.static.lang('copycontentNewWindowCaption') + '</title><style>body {font-family:\'' + core.var.corporateFontFace + '\'; font-size:' + core.var.corporateFontSize + ';}</style></head><body onclick="window.self.close()"><div id="text">' + element.element().innerHTML + '</div></body></html>');
 					doc.close();
 					text = doc.getElementById('text');
 				} else {
@@ -324,10 +339,10 @@ core.fn = {
 		growlNotif: async (text) => { // short popups for status information
 			let coregrowlNotifInterval = await core.fn.async.memory.read('coregrowlNotifInterval');
 			if (typeof text !== 'undefined') {
-				el('growlNotif').innerHTML = text;
-				el('growlNotif').classList.add('growlNotifshow');
+				'growlNotif'.element().innerHTML = text;
+				'growlNotif'.element().classList.add('growlNotifshow');
 				window.setTimeout(core.fn.async.growlNotif, coregrowlNotifInterval * 1000 || 3000);
-			} else el('growlNotif').classList.remove('growlNotifshow');
+			} else 'growlNotif'.element().classList.remove('growlNotifshow');
 		},
 		file: {
 			exists: (file) => {
@@ -565,8 +580,57 @@ core.fn = {
 					console.log(what);
 					console.groupEnd(group);
 				}
-				if (w !== 'console' && el(w)) el(w).innerHTML = what;
+				if (w !== 'console' && w.element()) w.element().innerHTML = what;
 			});
+		},
+		web: {
+			request: async (destination, method = 'GET', payload = {}) => {
+				method = method ? method.toUpperCase() : "GET";
+				payload = payload ? payload : {};
+				let query = '';
+				if (method == 'GET' && payload.length !== undefined) {
+					query = '?',
+						Object.keys(payload).forEach(key => {
+							query += '&' + key + '=' + payload[key];
+						});
+				}
+				let response = await fetch(destination + query, {
+					method: method, // *GET, POST, PUT, DELETE, etc.
+					cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+					body: (method == 'GET' ? null : JSON.stringify(payload)) // body data type must match "Content-Type" header
+				}).then(async response => {
+					if (response.ok) return response.text();
+					else throw new Error('server error, response ' + response.status);
+				}).catch(async error => {
+					if (typeof core.var.cors.apikey !== undefined && typeof core.var.cors.apiurl !== undefined) {
+						payload['apikey'] = core.var.cors.apikey;
+						payload['url'] = destination + query;
+						let cors_response = await fetch(core.var.cors.apiurl, {
+							method: 'POST',
+							cache: 'no-cache',
+							body: JSON.stringify(payload)
+						}).then(response => {
+							if (response.ok) return response.text();
+							else throw new Error('server error, response ' + response.status);
+						}).catch(error => {
+							return error;
+						});
+						return cors_response;
+					}
+					return error;
+				});
+				return response;
+			},
+			test: async (url = 'https://raw.githubusercontent.com/erroronline1/qualitymanagement/master/assistant/requirements.txt') => {
+				core.fn.async.web.request(url)
+					.then(data => {
+						console.log(data);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+
+			}
 		}
 	}
 };
@@ -620,7 +684,7 @@ core.init = {
 			'default') || 'default') + '.css', {
 			id: 'coretheme'
 		});
-		el('output').style.flexGrow = coreOutputWidth;
+		'output'.element().style.flexGrow = coreOutputWidth;
 
 		await updateTracker.alert();
 		for (let key of Object.keys(core.var.modules)) {
@@ -633,18 +697,17 @@ core.init = {
 				await core.fn.async.loadScript(core.var.moduleDir + key + '.js', key + '.fn.load()');
 			}
 		}
-		menu += '<br /><br />' + core.fn.static.insert.icon('decreaseindent', 'bigger', false, ' onclick="el(\'menu\').classList.toggle(\'small\'); this.style.transform=\'scale(\' + (el(\'menu\').classList.contains(\'small\')? -1 : 1) + \', -1)\'"');
+		menu += '<br /><br />' + core.fn.static.insert.icon('decreaseindent', 'bigger', false, ' onclick="\'menu\'.element().classList.toggle(\'small\'); this.style.transform=\'scale(\' + (\'menu\'.element().classList.contains(\'small\')? -1 : 1) + \', -1)\'"');
 		core.fn.async.stdout('menu', menu);
 	},
 	module: (module, callback = false) => {
 		//set current scope(==module name), window title and wide-input-property
-		let modules = {}
 		core.var.currentScope = module;
 		document.title = core.fn.static.lang('title') + (module ? ' - ' + core.var.modules[module].display[core.var.selectedLanguage] : '');
 		Object.keys(core.var.modules).forEach((key) => { // unhighlight all menu icons
-			if (el('module' + key) !== null) el('module' + key).checked = false;
+			if (('module' + key).element() !== null)('module' + key).element().checked = false;
 		});
-		if (module) el('module' + module).checked = true; // highlight called menu icon
+		if (module)('module' + module).element().checked = true; // highlight called menu icon
 		slider.slide(module);
 		if (!module && !callback) callback = 'core.init.ui()';
 		callback = callback || module + '.fn.init()';
@@ -654,13 +717,13 @@ core.init = {
 		let eMailList = core.fn.static.lang('importantMails') + '<p>',
 			appList = core.fn.static.lang('importantApps') + '<p>';
 		await core.fn.async.stdout('input',
-			'<form id="search" action="javascript:core.globalSearch.search(el(\'globalsearch\').value);">' +
+			'<form id="search" action="javascript:core.globalSearch.search(\'globalsearch\'.element().value);">' +
 			'<input type="text" pattern=".{3,}" id="globalsearch" placeholder="' +
 			core.fn.static.lang('globalSearchPlaceholder') + '" class="search" value="' + query.replace(/"/g, '&quot;') + '" />' +
-			'<span onclick="core.globalSearch.search(el(\'globalsearch\').value);" class="search">' + core.fn.static.insert.icon('search') + '</span>' +
+			'<span onclick="core.globalSearch.search(\'globalsearch\'.element().value);" class="search">' + core.fn.static.insert.icon('search') + '</span>' +
 			'<input type="submit" id="submit" value="' + core.fn.static.lang('formSubmit') + '" hidden="hidden" /> ' +
 			'</form>');
-		el('globalsearch').focus();
+		'globalsearch'.element().focus();
 		for (let key of Object.keys(core.var.apps)) {
 			if (await core.fn.async.file.exists(core.var.apps[key].path)) appList += '<a ' + await core.fn.async.file.link(core.var.apps[key].path) + '>' + core.fn.static.insert.icon(core.var.apps[key].icon) + core.var.apps[key].display[core.var.selectedLanguage] + '</a><br />';
 			else appList += '<i class="grayedout">' + core.var.apps[key].display[core.var.selectedLanguage] + core.fn.static.lang('errorFileAccess') + ' </i><br />';
@@ -687,7 +750,7 @@ core.init = {
 		core.var.currentScope = null;
 		document.title = core.fn.static.lang('title');
 		Object.keys(core.var.modules).forEach((key) => {
-			if (el('module' + key) != 'undefined' && el('module' + key) != null) el('module' + key).checked = false;
+			if (('module' + key).element() != 'undefined' && ('module' + key).element() != null)('module' + key).element().checked = false;
 		});
 		core.globalSearch.search(query); // api status in case query is undefined
 		core.history.write('core.init.ui(\'' + query + '\')');
@@ -726,7 +789,7 @@ core.setup = {
 			'<br />' + core.fn.static.lang('settinggrowlNotifIntervalCaption') + ':<br /><input type="range" min="1" max="10" value="' + (coregrowlNotifInterval || 2) + '" onchange="core.fn.async.memory.write(\'coregrowlNotifInterval\', this.value);  core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))" />' +
 			//  as of 2-2020 chrome and edge support somewhere (but not exactly) up to 2^11 characters minus mailto:{xxx}?subject={xxx}&body=
 			//  only firefox seemingly supports up to 2^15 characters (32768 - the afore mentioned)
-			'<br />' + core.fn.static.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="100" max="32400" step="300" value="' + ((coreDirectMailSize || core.var.directMailSize)) + '" onchange="core.fn.async.memory.write(\'coreDirectMailSize\', this.value); el(\'currentDirectMailSize\').innerHTML=this.value; core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))" title="' + core.fn.static.lang('settingRestartNeccessary') + '" />' +
+			'<br />' + core.fn.static.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="100" max="32400" step="300" value="' + ((coreDirectMailSize || core.var.directMailSize)) + '" onchange="core.fn.async.memory.write(\'coreDirectMailSize\', this.value); \'currentDirectMailSize\'.element().innerHTML=this.value; core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))" title="' + core.fn.static.lang('settingRestartNeccessary') + '" />' +
 			' <span id="currentDirectMailSize">' + ((coreDirectMailSize || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.static.maxMailSize()" value="' + core.fn.static.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.static.lang('settingMailSizeDeterminationHint') + '" />';
 		core.fn.async.stdout('settingContent', display);
 	},
@@ -776,7 +839,7 @@ core.setup = {
 			'<br /><input type="text" placeholder="' + core.fn.static.lang('settingDeleteDistinctPlaceholder') + '" id="deleteDistinctSettings" />' +
 			core.fn.static.insert.icon('delete', 'bigger', false,
 				'title="' + core.fn.static.lang('settingDeleteDistinctPlaceholder') + '" ' +
-				'onclick="el(\'deleteDistinctSettings\').value.split(/\\W/).forEach(function(s){if (s) core.fn.async.memory.delete(s)});"') +
+				'onclick="\'deleteDistinctSettings\'.element().value.split(/\\W/).forEach(function(s){if (s) core.fn.async.memory.delete(s)});"') +
 			'<br />' +
 			core.fn.static.insert.icon('feedbackrequest', 'bigger', false,
 				'title="' + core.fn.static.lang('settingMailDebugDump') +
@@ -786,10 +849,10 @@ core.setup = {
 	},
 	key: async () => { //  password construction - please forgive me the ugly nested javascript creation
 		let display = '<form onsubmit="' +
-			'if (!el(\'setupkeyname\').value.trim() || !el(\'setupkeypassword0\').value.trim() || el(\'setupkeypassword0\').value != el(\'setupkeypassword1\').value)' +
-			'el(\'keygenresult\').innerHTML=\'' + core.fn.static.lang('settingKeyError') + '\';' +
-			'else el(\'keygenresult\').innerHTML=\'' +
-			'<a href=&quot;#&quot; onclick=&quot;core.fn.static.dynamicMailto(\\\'' + core.var.eMailAddress.admin.address + '\\\', \\\'' + core.fn.static.lang('settingKeyMailHeader') + '\\\', el(\\\'setupkeyname\\\').value + \\\': \\\' + core.fn.static.drm.createHash(el(\\\'setupkeyname\\\').value + el(\\\'setupkeypassword0\\\').value));&quot;>' + core.fn.static.lang('settingKeyResult') + '</a>' +
+			'if (!\'setupkeyname\'.element().value.trim() || !\'setupkeypassword0\'.element().value.trim() || \'setupkeypassword0\'.element().value != \'setupkeypassword1\'.element().value)' +
+			'\'keygenresult\'.element().innerHTML=\'' + core.fn.static.lang('settingKeyError') + '\';' +
+			'else \'keygenresult\'.element().innerHTML=\'' +
+			'<a href=&quot;#&quot; onclick=&quot;core.fn.static.dynamicMailto(\\\'' + core.var.eMailAddress.admin.address + '\\\', \\\'' + core.fn.static.lang('settingKeyMailHeader') + '\\\', \\\'setupkeyname\\\'.element().value + \\\': \\\' + core.fn.static.drm.createHash(\\\'setupkeyname\\\'.element().value + \\\'setupkeypassword0\\\'.element().value));&quot;>' + core.fn.static.lang('settingKeyResult') + '</a>' +
 			'\'; return false;' +
 			'">' +
 			core.fn.static.lang('settingKeyName') + '<br /><input type="text" id="setupkeyname" required /><br /><br />' +
@@ -805,7 +868,7 @@ core.setup = {
 		if (typeof (core.var) !== 'undefined') {
 			for (let key of Object.keys(core.var.modules)) {
 				module['core_' + key] = await core.fn.async.memory.read('core_' + key);
-				moduleSelector += core.fn.static.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'core_' + key, (module['core_' + key] ? module['core_' + key] : core.var.modules[key].enabledByDefault), 'onchange="core.var.modules[\'' + key + '\'].enabledByDefault == el(\'core_' + key + '\').checked ? core.fn.async.memory.delete(\'core_' + key + '\'): core.fn.async.memory.write(\'core_' + key + '\', Number(el(\'core_' + key + '\').checked)); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"', core.fn.static.lang('settingRestartNeccessary')) + '<br />';
+				moduleSelector += core.fn.static.insert.checkbox(core.var.modules[key].display[core.var.selectedLanguage], 'core_' + key, (module['core_' + key] ? module['core_' + key] : core.var.modules[key].enabledByDefault), 'onchange="core.var.modules[\'' + key + '\'].enabledByDefault == (\'core_' + key + '\').element().checked ? core.fn.async.memory.delete(\'core_' + key + '\'): core.fn.async.memory.write(\'core_' + key + '\', Number((\'core_' + key + '\').element().checked)); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"', core.fn.static.lang('settingRestartNeccessary')) + '<br />';
 			}
 		} else moduleSelector = core.fn.static.lang('errorLoadingModules');
 		core.fn.async.stdout('settingContent', moduleSelector);
@@ -819,10 +882,10 @@ core.history = {
 	storage: [],
 	currentStep: 1,
 	buttoncolor: function () {
-		if (core.history.currentStep < 2) el('titleforthbutton').classList.add('inactiveicon');
-		else el('titleforthbutton').classList.remove('inactiveicon');
-		if (core.history.currentStep === core.history.storage.length) el('titlebackbutton').classList.add('inactiveicon');
-		else el('titlebackbutton').classList.remove('inactiveicon');
+		if (core.history.currentStep < 2) 'titleforthbutton'.element().classList.add('inactiveicon');
+		else 'titleforthbutton'.element().classList.remove('inactiveicon');
+		if (core.history.currentStep === core.history.storage.length) 'titlebackbutton'.element().classList.add('inactiveicon');
+		else 'titlebackbutton'.element().classList.remove('inactiveicon');
 	},
 	go: function (dir) {
 		if (dir === 'back') core.history.currentStep = ++core.history.currentStep <= core.history.storage.length ? core.history.currentStep : core.history.storage.length;
@@ -874,7 +937,7 @@ core.globalSearch = { //searches all modules using their api-methods from the st
 					displayResult += '</div>';
 				}
 			});
-		} else if (search) displayResult = core.fn.static.lang('errorNothingFound', null, el('globalsearch').value);
+		} else if (search) displayResult = core.fn.static.lang('errorNothingFound', null, 'globalsearch'.element().value);
 		if (core.var.currentScope === null) core.fn.async.stdout('output', displayResult);
 		document.body.style.cursor = 'default';
 	},
@@ -901,14 +964,14 @@ var slider = { //just fancy animation of content on module change
 	modules: [null],
 	recent: 0,
 	slide: function (module) {
-		el('content').classList.remove('slideup', 'slidedown');
-		var newone = el('content').cloneNode(true);
-		el('content').parentNode.replaceChild(newone, el('content'));
+		'content'.element().classList.remove('slideup', 'slidedown');
+		var newone = 'content'.element().cloneNode(true);
+		'content'.element().parentNode.replaceChild(newone, 'content'.element());
 		core.fn.async.stdout(['input', 'temp', 'output'], '');
-		if (slider.modules.indexOf(module) > slider.recent) el('content').classList.add('slideup')
-		if (slider.modules.indexOf(module) < slider.recent) el('content').classList.add('slidedown')
+		if (slider.modules.indexOf(module) > slider.recent) 'content'.element().classList.add('slideup')
+		if (slider.modules.indexOf(module) < slider.recent) 'content'.element().classList.add('slidedown')
 		slider.recent = slider.modules.indexOf(module)
-		el('output').addEventListener("mousedown", startresizing, false); //must be readded after cloning
+		'output'.element().addEventListener("mousedown", startresizing, false); //must be readded after cloning
 	}
 };
 
@@ -919,18 +982,18 @@ let m_pos,
 
 function resize(e) {
 	const dx = (m_pos - e.x) / (window.innerWidth / 4);
-	el('output').style.flexGrow = panelgrow + dx;
+	'output'.element().style.flexGrow = panelgrow + dx;
 }
 
 function startresizing(e) {
 	if (e.offsetX < BORDER_SIZE) {
 		m_pos = e.x;
-		panelgrow = Number(el('output').style.flexGrow);
+		panelgrow = Number('output'.element().style.flexGrow);
 		document.addEventListener("mousemove", resize, false);
 	}
 }
-el('output').addEventListener("mousedown", startresizing, false);
+'output'.element().addEventListener("mousedown", startresizing, false);
 document.addEventListener("mouseup", function () {
 	document.removeEventListener("mousemove", resize, false);
-	core.fn.async.memory.write('coreOutputWidth', el('output').style.flexGrow);
+	core.fn.async.memory.write('coreOutputWidth', 'output'.element().style.flexGrow);
 }, false);

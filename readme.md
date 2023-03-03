@@ -433,7 +433,7 @@ globalSearch api: returns submodules where titles match the search terms.
 
 ### filter
 ![assistant filter](assets/assistant_filter.png)
-this module accesses  [filter.py](#filterpy) with a user interface so no one has to be afraid of spooky hacker shell wiggly text windows and *just maybe* doesn't leave the execution to the hackerman and does their job as in the description. sourcefiles are selectable through a file dialogue, as well as operational arguments with sliders and buttons. settings have to be done within the modules data-object as opposed to json-setup-files for stand-alone-use.
+this module accesses [filter.py](#filterpy) with a user interface so no one has to be afraid of spooky hacker shell wiggly text windows and *just maybe* doesn't leave the execution to the hackerman and does their job as in the description. sourcefiles are selectable through a file dialogue, as well as operational arguments with sliders and buttons. settings have to be done within the modules data-object as opposed to json-setup-files for stand-alone-use.
 
 dependencies are: datalist for setups.
 
@@ -535,7 +535,7 @@ all modules are depentent on the main module, only some may have dependencies of
 [back to top](#table-of-contents)
 
 ### output containers
-container for output are named 'input', 'temp' and 'output' and can be accessed preferably via `core.fn.async.stdout('input', content)` or `el('input').innerHTML` or whatever.
+container for output are named 'input', 'temp' and 'output' and can be accessed preferably via `core.fn.async.stdout('input', content)` or `'input'.element().innerHTML` or whatever.
 
 ### registering and loading of modules
 register and deregister modules in ROOT/core/core.var.js so they are accessible and listed and imported on initial start. files to be imported (preferably from the modules load-method) always have to be hardcoded (e.g. dropdown-list) because javascript having no indirect access to local file system (directory-listing etc.). data-objects should be stored in `core.var.moduleDataDir`-folder prefixed with modulename_. therefore these can remain untouched if any changes occur for the main module-file and won't be affected during file-transfers in reviews. modules will be loaded on startup with the load-method as callback.
@@ -589,7 +589,9 @@ every module has to contain an api-method that returns some value (at least a `r
 a shortened overview of recuring used core-functions that can be made use of in future modules (not the complete list though). these are ordered by being static or asynchronous for easier comprehension of structures within any given function, method, whatever. 
 
 ### core.js
-`el(v)` returns document.getElementById(v)
+some bad practice prototypes are implemented (added prototypes to standard js objects):
+* Array- and String.containsAny, Array- and String.containsAll simplify comparison operations. like `['a', 'b', 'c'].containsAny(...compare)` where compare = ['a', 'g'] => true
+* String.element() returns document.getElementById(String) and replaces the former `el('elementID')`. like `'elementID'.element()`
 
 `core.fn.static`
 * `.drm` methods for hash- and token-creation and translation given special rights within modules
@@ -615,6 +617,7 @@ async functions rely on other async functions at some time. mostly by reading or
 * `.memory` handles everything storage-related including reading, writing, deleting and some more.
 * `.smartSearch` compares raw user input to objects values and returns an array with matches ordered by relevance/multi matches on multiple query terms. handles optional fuzzy search based on overall application setting. has an included relevance tracker.
 * `.stdout(where, what)` serves as a wrapper for output to innerHTML, but can be used for debugging easily by setting/adding 'console' to *where*
+* `.web.request(destination, method, payload)` retrieves web content. also see [cors.php](#corsphp).
 
 other core-functions are 
 * `core.init` intitializing the whole application, every module on call and the start-screen
@@ -624,6 +627,13 @@ other core-functions are
 
 ### ../library/core/core.fn.languageSynthesis.js
 extends the core-object with the language synthesis. here you define textblocks that can be switched for $keyword$ within continuous text using the function `core.fn.languageSynthesis.output(block)` called by `'string'.replace(/\$(\w+?)\$/ig,function(match,group1){return core.fn.languageSynthesis.output(group1)})`
+
+### cors.php
+the policy of my company restricts internet access to personal accounts. however it is possible to allow access giving personal credentials in the browser session, having access while the browser remains open.
+therefore web queries are possible using javascripts fetch. but cors-policies can deny content on some webservers. you are able to circumvent this if you have access to a webserver. the `core.fn.async.web.request`-method requests the ressource and re-requests on error looping through the cors.php on your server.
+
+this way provides web-content that can be scraped, processed or enrich content on your custom module. ~~currently this is implemented within the regulatory tools to ensure the imdrf annexes are always up to date, since it fetches the kindly prepared json-files of the annexes a-g.~~ i couldn't figure out how to catch network errors. works quite well if you have an internet connection, but without the frontend is not able to tell properly.
+i'd prefer an eel-implementation but proxy setting don't allow this at my site and this way may be accessible even if you don't use the python wrapper. make sure to set the location and your individual apikey within the core.var-object and your version of the cors.php-file.
 
 [back to top](#table-of-contents)
 

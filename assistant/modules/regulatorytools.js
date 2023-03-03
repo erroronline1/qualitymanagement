@@ -59,7 +59,7 @@ regulatorytools = {
 				questionarray;
 			if (regulatorytools.data.auditplanner !== undefined) {
 				Object.keys(regulatorytools.data.auditplanner.content).forEach((key) => {
-					if (key > 0 && el('ap' + key).checked) { //skip first item being header only and not selected topics
+					if (key > 0 && ('ap' + key).element().checked) { //skip first item being header only and not selected topics
 						output += regulatorytools.data.auditplanner.content[key][0] + ' ' + regulatorytools.data.auditplanner.content[key][1] + ': ' + '<br />';
 						//deep-copy line to new array
 						questionarray = regulatorytools.data.auditplanner.content[key].slice(0);
@@ -76,7 +76,7 @@ regulatorytools = {
 						}
 						if (questionarray[0] != undefined) outputarray.push(questionarray[0]);
 						//select maximum number of questions
-						outputarray = outputarray.splice(0, el('maxquestions').options[el('maxquestions').selectedIndex].value);
+						outputarray = outputarray.splice(0, 'maxquestions'.element().options['maxquestions'.element().selectedIndex].value);
 						outputarray.forEach(function (key) {
 							output += '- ' + key + '<br /><br />';
 						});
@@ -100,42 +100,63 @@ regulatorytools = {
 			}
 			regulatorytools.fn.auditplanneroutput();
 		},
-		imdrfinput: async(selectedAnnex = 'a')=>{
+		imdrfinput: async (selectedAnnex = 'a') => {
+			/*if (regulatorytools.data.imdrf === undefined) {
+				core.fn.async.growlNotif(core.fn.static.lang('imdrfscraping','regulatorytools'));
+				document.body.style.cursor = 'wait';
+				regulatorytools.data.imdrf = {};
+				regulatorytools.data.imdrf.annex = {};
+				const imdrf = await core.fn.async.web.request(regulatorytools.var.imdrfURL);
+				if (!imdrf.toLowerCase().containsAny('Error')) {
+					const currentsection = imdrf.match(regulatorytools.var.imdrfCurrentSectionPattern);
+					const annexes = [...currentsection[0].matchAll(regulatorytools.var.imdrfPattern)];
+					for (let src = 0; src < annexes.length; src++) {
+						regulatorytools.data.imdrf.annex[regulatorytools.var.imdrfAnnexes[src]] = JSON.parse(await core.fn.async.web.request(annexes[src][0]));
+					}
+				}
+				else {
+					core.fn.async.growlNotif(core.fn.static.insert.icon('networkoffline') + imdrf);
+				}
+				document.body.style.cursor = 'initial';
+			}*/
 			regulatorytools.var.disableOutputSelect = true;
 			let annex,
 				annexOptions = {},
-				annexCategories = {0: [null, core.fn.static.lang('selectTopic', 'regulatorytools')]},
-				selection = '<a href="' + regulatorytools.var.imdrfurl + '" target="_blank">' + core.fn.static.lang('imdrfurl', 'regulatorytools') + '</a><br />';
-			
-			regulatorytools.var.imdrfAnnexes.forEach(async annex=>{
-				annexOptions[annex] = [annex, "Annex "+ annex.toUpperCase()];
+				annexCategories = {
+					0: [null, core.fn.static.lang('selectTopic', 'regulatorytools')]
+				},
+				selection = '<a href="' + regulatorytools.var.imdrfURL + '" target="_blank">' + core.fn.static.lang('imdrfurl', 'regulatorytools') + '</a><br />';
+
+			regulatorytools.var.imdrfAnnexes.forEach(async annex => {
+				annexOptions[annex] = [annex, "Annex " + annex.toUpperCase()];
 			});
-			
-			if (el('imdrfannex')) selectedAnnex = el('imdrfannex').options[el('imdrfannex').selectedIndex].value;
+
+			if ('imdrfannex'.element()) selectedAnnex = 'imdrfannex'.element().options['imdrfannex'.element().selectedIndex].value;
 			annex = regulatorytools.data.imdrf.annex[selectedAnnex];
-			Object.keys(annex).forEach(key=>{
-				if (annex[key]['code'].length <= 3) annexCategories[annex[key]['code']] = [annex[key]['code'], annex[key]['term']];
+			Object.keys(annex).forEach(key => {
+				let code = annex[key]['code'] === undefined ? 'Code' : 'code';
+				if (annex[key][code].length <= 3) annexCategories[annex[key][code]] = [annex[key][code], annex[key]['term']];
 			});
-						
+
 			selection += core.fn.static.insert.select(annexOptions, 'imdrfannex', 'imdrfannex', selectedAnnex, 'onchange="regulatorytools.fn.imdrfinput(this.options[this.selectedIndex].value); "') +
-				core.fn.static.insert.select(annexCategories, 'imdrfannexcat', 'imdrfannexcat', false, 'onchange="regulatorytools.fn.imdrfoutput(this.options[this.selectedIndex].value); el(\'imdrffilter\').value=this.options[this.selectedIndex].value"') +
+				core.fn.static.insert.select(annexCategories, 'imdrfannexcat', 'imdrfannexcat', false, 'onchange="regulatorytools.fn.imdrfoutput(this.options[this.selectedIndex].value); \'imdrffilter\'.element().value=this.options[this.selectedIndex].value"') +
 				'<input type="text" id="imdrffilter" placeholder="' + core.fn.static.lang('inputFilter', 'regulatorytools') + '" />' +
-				'<input type="button" value="' + core.fn.static.lang('buttonFilter', 'regulatorytools') + '" onclick="regulatorytools.fn.imdrfoutput(el(\'imdrffilter\').value); if (el(\'imdrfannexcat\').options[el(\'imdrfannexcat\').selectedIndex].value != el(\'imdrffilter\').value) el(\'imdrfannexcat\').selectedIndex = 0" />';
+				'<input type="button" value="' + core.fn.static.lang('buttonFilter', 'regulatorytools') + '" onclick="regulatorytools.fn.imdrfoutput(\'imdrffilter\'.element().value); if (\'imdrfannexcat\'.element().options[\'imdrfannexcat\'.element().selectedIndex].value != \'imdrffilter\'.element().value) \'imdrfannexcat\'.element().selectedIndex = 0" />';
 			await core.fn.async.stdout('temp', selection);
 			regulatorytools.fn.imdrfoutput();
 		},
-		imdrfoutput: function(filter = null){
-			let annex = regulatorytools.data.imdrf.annex[el('imdrfannex').options[el('imdrfannex').selectedIndex].value],
+		imdrfoutput: function (filter = null) {
+			let annex = regulatorytools.data.imdrf.annex['imdrfannex'.element().options['imdrfannex'.element().selectedIndex].value],
 				keep,
 				output = '',
 				temp = '';
 
-			Object.keys(annex).forEach(key=>{
+			Object.keys(annex).forEach(key => {
 				//for the moment a quick and dirty filter because of current incompatibility to smartSearch
 				keep = false,
-				temp ='<div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand();
-				Object.keys(annex[key]).forEach(key2=>{
-					if (!filter || annex[key][key2].toLowerCase().indexOf(filter.toLowerCase())>-1) keep = true;
+					temp = '<div class="items items71" onclick="core.fn.static.toggleHeight(this)">' + core.fn.static.insert.expand();
+				Object.keys(annex[key]).forEach(key2 => {
+					if (!filter || annex[key][key2].toLowerCase().indexOf(filter.toLowerCase()) > -1) keep = true;
 					temp += '<p><span class="highlight">' + key2 + ':</span> ' + annex[key][key2] + '</p>';
 				});
 				temp += '</div>';
@@ -160,8 +181,12 @@ regulatorytools = {
 		load: async () => {
 			await core.fn.async.loadScript(core.var.moduleVarDir + 'regulatorytools.var.js');
 			await core.fn.async.loadScript(core.var.moduleDataDir + 'regulatorytools.data.auditplanner.js');
-			
-			regulatorytools.var.imdrfAnnexes.forEach(async annex=>{
+
+			// imdrf data is prepared to be scraped to be up to date
+			// however until today this remains a draft since i couldn't figure out how to catch network errors
+
+			// import static data files on start
+			regulatorytools.var.imdrfAnnexes.forEach(async annex => {
 				await core.fn.async.loadScript(core.var.moduleDataDir + 'regulatorytools.data.imdrf.annex.' + annex + '.js');
 			});
 		}
