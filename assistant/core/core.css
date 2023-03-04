@@ -543,6 +543,7 @@ textarea {
 #popuptext label,
 #popuptext svg,
 #growlNotif,
+#growlNotif .icon,
 ::selection,
 #menu.small>label:hover div,
 input[type='button'],
