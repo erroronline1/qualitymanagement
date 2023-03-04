@@ -632,8 +632,7 @@ extends the core-object with the language synthesis. here you define textblocks 
 the policy of my company restricts internet access to personal accounts. however it is possible to allow access giving personal credentials in the browser session, having access while the browser remains open.
 therefore web queries are possible using javascripts fetch. but cors-policies can deny content on some webservers. you are able to circumvent this if you have access to a webserver. the `core.fn.async.web.request`-method requests the ressource and re-requests on error looping through the cors.php on your server.
 
-this way provides web-content that can be scraped, processed or enrich content on your custom module. ~~currently this is implemented within the regulatory tools to ensure the imdrf annexes are always up to date, since it fetches the kindly prepared json-files of the annexes a-g.~~ i couldn't figure out how to catch network errors. works quite well if you have an internet connection, but without the frontend is not able to tell properly.
-i'd prefer an eel-implementation but proxy setting don't allow this at my site and this way may be accessible even if you don't use the python wrapper. make sure to set the location and your individual apikey within the core.var-object and your version of the cors.php-file.
+this way provides web-content that can be scraped, processed or enrich content on your custom module. currently this is implemented within the regulatory tools to ensure the imdrf annexes are always up to date, since it fetches the kindly prepared json-files of the annexes a-g. if you are connected. i'd prefer an eel-implementation but proxy settings don't allow this at my site and this way may be accessible even if you don't use the python wrapper. make sure to set the location and your individual apikey within the core.var-object and your version of the cors.php-file.
 
 [back to top](#table-of-contents)
 

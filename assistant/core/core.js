@@ -584,34 +584,45 @@ core.fn = {
 			});
 		},
 		web: {
-			request: async (destination, method = 'GET', payload = {}) => {
+			request: async function (destination = 'https://raw.githubusercontent.com/erroronline1/qualitymanagement/master/assistant/requirements.txt', method = 'GET', payload = {}) {
 				method = method ? method.toUpperCase() : "GET";
 				payload = payload ? payload : {};
-				let query = '';
+				let query = '',
+					result, parameters;
 				if (method == 'GET' && payload.length !== undefined) {
 					query = '?',
 						Object.keys(payload).forEach(key => {
 							query += '&' + key + '=' + payload[key];
 						});
 				}
-				let response = await fetch(destination + query, {
+				parameters = {
 					method: method, // *GET, POST, PUT, DELETE, etc.
 					cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
 					body: (method == 'GET' ? null : JSON.stringify(payload)) // body data type must match "Content-Type" header
-				}).then(async response => {
+				}
+				result = await this.fetch(destination + query, parameters, payload);
+
+				if (result && !result.containsAny('TypeError: Failed to fetch')) return result;
+				else core.fn.async.growlNotif(core.fn.static.insert.icon('networkoffline') + core.fn.static.lang('webNotAvailable'));
+				return null;
+			},
+			fetch: async (url, parameters, payload) => {
+				let response = await fetch(url, parameters).then(async response => {
 					if (response.ok) return response.text();
-					else throw new Error('server error, response ' + response.status);
+					console.log('direct request - response ' + response.status + response.type);
+					return Promise.reject(response)
 				}).catch(async error => {
 					if (typeof core.var.cors.apikey !== undefined && typeof core.var.cors.apiurl !== undefined) {
 						payload['apikey'] = core.var.cors.apikey;
-						payload['url'] = destination + query;
+						payload['url'] = url;
 						let cors_response = await fetch(core.var.cors.apiurl, {
 							method: 'POST',
 							cache: 'no-cache',
 							body: JSON.stringify(payload)
 						}).then(response => {
 							if (response.ok) return response.text();
-							else throw new Error('server error, response ' + response.status);
+							console.log('cors.php request - response ' + response.status + response.type);
+							return Promise.reject(response)
 						}).catch(error => {
 							return error;
 						});
@@ -619,17 +630,7 @@ core.fn = {
 					}
 					return error;
 				});
-				return response;
-			},
-			test: async (url = 'https://raw.githubusercontent.com/erroronline1/qualitymanagement/master/assistant/requirements.txt') => {
-				core.fn.async.web.request(url)
-					.then(data => {
-						console.log(data);
-					})
-					.catch((error) => {
-						console.log(error);
-					});
-
+				return response.toString();
 			}
 		}
 	}

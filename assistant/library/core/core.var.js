@@ -586,8 +586,8 @@ core.var = {
 			de: 'QM-Assistent'
 		},
 		webNotAvailable: {
-			en: 'Please establish an internet connection!',
-			de: 'Bitte eine Internetverbindung herstellen!'
+			en: 'An error occured. Url or server not available or returned nothing. Or maybe i can has internet?',
+			de: 'Ein Fehler trat auf. Die Adresse oder der Server sind nicht erreichbar oder haben nichts geantwortet. Oder kann ich Internet?'
 		},
 		webSearch: {
 			en: 'web search',

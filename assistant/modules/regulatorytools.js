@@ -101,24 +101,22 @@ regulatorytools = {
 			regulatorytools.fn.auditplanneroutput();
 		},
 		imdrfinput: async (selectedAnnex = 'a') => {
-			/*if (regulatorytools.data.imdrf === undefined) {
+			if (regulatorytools.data.imdrf === undefined) {
 				core.fn.async.growlNotif(core.fn.static.lang('imdrfscraping','regulatorytools'));
 				document.body.style.cursor = 'wait';
-				regulatorytools.data.imdrf = {};
-				regulatorytools.data.imdrf.annex = {};
 				const imdrf = await core.fn.async.web.request(regulatorytools.var.imdrfURL);
-				if (!imdrf.toLowerCase().containsAny('Error')) {
-					const currentsection = imdrf.match(regulatorytools.var.imdrfCurrentSectionPattern);
+				if (imdrf) {
+					regulatorytools.data.imdrf = {};
+					regulatorytools.data.imdrf.annex = {};
+						const currentsection = imdrf.match(regulatorytools.var.imdrfCurrentSectionPattern);
 					const annexes = [...currentsection[0].matchAll(regulatorytools.var.imdrfPattern)];
 					for (let src = 0; src < annexes.length; src++) {
 						regulatorytools.data.imdrf.annex[regulatorytools.var.imdrfAnnexes[src]] = JSON.parse(await core.fn.async.web.request(annexes[src][0]));
 					}
 				}
-				else {
-					core.fn.async.growlNotif(core.fn.static.insert.icon('networkoffline') + imdrf);
-				}
 				document.body.style.cursor = 'initial';
-			}*/
+				if (regulatorytools.data.imdrf === undefined) return false;
+			}
 			regulatorytools.var.disableOutputSelect = true;
 			let annex,
 				annexOptions = {},
@@ -183,12 +181,11 @@ regulatorytools = {
 			await core.fn.async.loadScript(core.var.moduleDataDir + 'regulatorytools.data.auditplanner.js');
 
 			// imdrf data is prepared to be scraped to be up to date
-			// however until today this remains a draft since i couldn't figure out how to catch network errors
 
-			// import static data files on start
-			regulatorytools.var.imdrfAnnexes.forEach(async annex => {
-				await core.fn.async.loadScript(core.var.moduleDataDir + 'regulatorytools.data.imdrf.annex.' + annex + '.js');
-			});
+			// import static data files on start instead
+			//regulatorytools.var.imdrfAnnexes.forEach(async annex => {
+			//	await core.fn.async.loadScript(core.var.moduleDataDir + 'regulatorytools.data.imdrf.annex.' + annex + '.js');
+			//});
 		}
 	}
 };
