@@ -53,14 +53,14 @@ $ assistant --help    for overview
 			'p':['--port|-p', '\d+']
 			}
 		for i in range(0, len(sys.argv)-1):
-			for opt in options:
-				arg = re.findall(options[opt][0], sys.argv[i], re.IGNORECASE)
-				arg2 = re.findall(options[opt][1], sys.argv[i+1], re.IGNORECASE) if options[opt][1] and i + 1 < len(sys.argv) else None
+			for opt, pattern in options.items():
+				arg = re.findall(pattern[0], sys.argv[i], re.IGNORECASE)
+				arg2 = re.findall(pattern[1], sys.argv[i+1], re.IGNORECASE) if pattern[1] and i + 1 < len(sys.argv) else None
 				if bool(arg2):
 					i += 1
 				if opt == 'h' and arg:
 					print(HELP)
-					exit()
+					sys.exit()
 				elif opt == 'w' and bool(arg) and bool(arg2):
 					WEBFOLDER = str(arg2[0])
 				elif opt == 'b' and bool(arg) and bool(arg2):
@@ -93,11 +93,11 @@ def rootResourcesImport(file):
 
 def has_update(curdir):
 	exclude=["__pycache__", ".venv", "test.py"]
-	dir = os.scandir(curdir)
-	for file in dir:
+	directory = os.scandir(curdir)
+	for file in directory:
 		if not file.name in exclude and file.is_dir() and has_update(os.path.normpath(os.path.join(curdir, file.name))):
 			return True
-		elif not file.name in exclude and file.is_file() and file.stat().st_mtime > LAUNCHTIME:
+		if not file.name in exclude and file.is_file() and file.stat().st_mtime > LAUNCHTIME:
 			return True
 	return False
 
@@ -114,13 +114,13 @@ def update_daemon():
 #                          |___|                         |___|
 
 class db_handler:
-	def __init__(self, db):
-		self.connection = sqlite3.connect(db)
-		c = self.connection.cursor()
-		c.execute('''SELECT count(name) FROM sqlite_master WHERE type='table' AND name='SETTINGS';''')
-		if not c.fetchone()[0]:
+	def __init__(self, database):
+		self.connection = sqlite3.connect(database)
+		cursor = self.connection.cursor()
+		cursor.execute('''SELECT count(name) FROM sqlite_master WHERE type='table' AND name='SETTINGS';''')
+		if not cursor.fetchone()[0]:
 			self.create()
-	
+
 	def __del__(self):
 		self.connection.close()
 
@@ -133,31 +133,31 @@ class db_handler:
 		return True
 
 	def clear(self):
-		self.connection.executescript('''DELETE FROM SETTINGS; VACUUM;''')
+		self.connection.executescript('DELETE FROM SETTINGS; VACUUM;')
 		self.connection.commit()
 
 	def dbSize(self):
 		cursor = self.connection.cursor()
-		cursor.execute('''SELECT page_count * page_size as size FROM pragma_page_count(), pragma_page_size();''')
+		cursor.execute('SELECT page_count * page_size as size FROM pragma_page_count(), pragma_page_size();')
 		result = cursor.fetchone()
 		return result
 
 	def delete(self, key):
 		key = key.replace('\'','\'\'')
-		self.connection.execute('''DELETE FROM SETTINGS WHERE KEY='{0}';'''.format(key))
+		self.connection.execute(f"DELETE FROM SETTINGS WHERE KEY='{key}';")
 		self.connection.commit()
 		return True
 
 	def keyDump(self):
 		cursor = self.connection.cursor()
-		cursor.execute('''SELECT KEY FROM SETTINGS;''')
+		cursor.execute('SELECT KEY FROM SETTINGS;')
 		result = cursor.fetchall()
 		return ([key[0] for key in result])
 
 	def read(self, key):
 		key = key.replace('\'','\'\'')
 		cursor = self.connection.cursor()
-		cursor.execute('''SELECT VALUE FROM SETTINGS WHERE KEY='{0}';'''.format(key))
+		cursor.execute("SELECT VALUE FROM SETTINGS WHERE KEY='{key}';")
 		result = cursor.fetchone()
 		if result is not None:
 			return result[0]
@@ -166,7 +166,7 @@ class db_handler:
 	def write(self, key, value):
 		key = key.replace('\'','\'\'')
 		value = value.replace('\'','\'\'')
-		self.connection.execute('''INSERT OR REPLACE INTO SETTINGS (KEY, VALUE) VALUES ('{0}', '{1}');'''.format(key, value))
+		self.connection.execute("INSERT OR REPLACE INTO SETTINGS (KEY, VALUE) VALUES ('{key}', '{value}');")
 		self.connection.commit()
 		return True
 
@@ -207,8 +207,8 @@ def file_directory(initial = None, title = None, filetypes = None):
 
 def file_handler(call):
 	escaped=[]
-	for arg in call:
-		escaped.append(os.path.normpath(arg) if re.search('./', arg) else arg)
+	for argument in call:
+		escaped.append(os.path.normpath(argument) if re.search('./', argument) else argument)
 	subprocess.run(escaped)
 
 def file_readdir(path):
@@ -249,14 +249,14 @@ if __name__ == '__main__':
 	#  therefore exposed functions are placed here, since the main application has to be updated with importing anyway.
 	#  specific algorithms may take place in the distinctive module file
 
-	import pymodules.qr as qr
+	from pymodules import qr
 	def createqrandopenwith(data, openwith, usecase):
 		return qr.create(data, openwith, usecase, file_handler)
 		#passing file_handler to reuse but to avoid recursive import
 
 	import pymodules.filter as processfilter
-	def filter(settings, arguments):
-		return processfilter.filter(settings, arguments)
+	def csvfilter(settings, arguments):
+		return processfilter.csvfilter(settings, arguments)
 
 	#       _           _
 	#   ___| |_ ___ ___| |_
@@ -264,7 +264,7 @@ if __name__ == '__main__':
 	#  |___|_| |__,|_| |_|
 	#
 	_database = db_handler(str(Path.home()) +'/qmassistant.db')
-	
+
 	eel.expose(webroot)
 	eel.expose(rootResourcesImport)
 
@@ -283,7 +283,7 @@ if __name__ == '__main__':
 	eel.expose(file_saveas)
 
 	eel.expose(createqrandopenwith)
-	eel.expose(filter)
+	eel.expose(csvfilter)
 
 	if WEBFOLDER:
 		print ('\nDo not close this window, otherwise the browserview will stop working.\n')

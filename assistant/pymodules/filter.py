@@ -159,7 +159,7 @@ DEFAULTJSON = {
 		},
 		"split":{
 			"DEPARTMENT": "(.*)",
-			"DELIVERED": "(?:\\d\\d\.\d\d.)(\d+)"
+			"DELIVERED": "(?:\\d\\d\\.\\d\\d.)(\\d+)"
 		},
 		"format":{
 			"sheet": {
@@ -189,7 +189,7 @@ DEFAULTJSON = {
 	}
 }
 
-helptext='''
+HELPTEXT='''
 [help]
     usage: filter  [ -h  | --help  ]  this message, priority handling
                    [ -s  | --set   ]  index of filter set overriding default declared in json-file
@@ -291,45 +291,45 @@ helptext='''
 RESULTSTRING = ''
 
 def fprint(*args):
-	# like print but adds to resultstring for external call 
+	''' like print but adds to resultstring for external call '''
 	global RESULTSTRING
 	msg = ''
-	for a in args:
-		msg += str( a )
+	for argument in args:
+		msg += str( argument )
 	print(msg)
 	RESULTSTRING += msg +'\n'
 	if ASSISTANT:
 		interface(msg + '<br />')
 
-def reset(thisfilename):
-	# create a default configuration file
+def reset(this_file_name):
+	''' create a default configuration file '''
 	try:
-		with open(thisfilename + '.json', 'x', newline = '', encoding = 'utf8') as file:
-			json.dump(DEFAULTJSON, file, ensure_ascii = False, indent = 4)
-		fprint('[*] default setting file ', thisfilename, '.json successfully written. please accommodate to your environment.\n')
+		with open(this_file_name + '.json', 'x', newline = '', encoding = 'utf8') as configfile:
+			json.dump(DEFAULTJSON, configfile, ensure_ascii = False, indent = 4)
+		fprint('[*] default setting file ', this_file_name, '.json successfully written. please accommodate to your environment.\n')
 	except:
-		fprint('[~] ', thisfilename, '.json could not be written because it already existed. please contact devops.\n')
+		fprint('[~] ', this_file_name, '.json could not be written because it already existed. please contact devops.\n')
 
-def sourcefile(regexPattern):
-	# look for last touched source file that matches filter for source according to settings
+def sourcefile(regex_pattern):
+	''' look for last touched source file that matches filter for source according to settings '''
 	sourcefile = []
 	directory = None
-	if os.path.isfile(regexPattern): # aka distinct file with path is passed
-		directory = os.path.split(regexPattern)[0]
-		regexPattern = os.path.split(regexPattern)[1]
+	if os.path.isfile(regex_pattern): # aka distinct file with path is passed
+		directory = os.path.split(regex_pattern)[0]
+		regex_pattern = os.path.split(regex_pattern)[1]
 	if not directory:
 		directory = os.getcwd()
 	for entry in os.scandir( directory ):
 		if os.path.isfile( os.path.join( directory, entry) ):
-			if re.match( regexPattern, entry.name ):
+			if re.match( regex_pattern, entry.name ):
 				sourcefile.append( [ os.path.join( directory, entry), entry.stat().st_mtime ] )
-	if len(sourcefile):
+	if sourcefile:
 		sourcefile.sort( key = lambda time: time[1], reverse = True )
 		return os.path.abspath(sourcefile[0][0])
-	else:
-		return False
+	return False
 
 def export(RESULT):
+	''' export the result '''
 	destination = os.path.abspath(RESULT.setting['filesetting']['destination'])
 	filetype = destination[destination.rindex('.'):].lower()
 	try:
@@ -368,7 +368,7 @@ def export(RESULT):
 				files.append(outputfile)
 			return ", ".join(files)
 
-		elif filetype == '.xlsx':
+		if filetype == '.xlsx':
 			workbook = xlsxwriter.Workbook(destination)
 
 			cell_std = workbook.add_format({'top': 1, 'num_format':'@', 'valign': 'top', 'text_wrap': True})
@@ -399,7 +399,7 @@ def export(RESULT):
 				xlrow += 1
 
 				# add headers + static
-				header = [h for h in RESULT.setting['filesetting']['columns']]
+				header = list(RESULT.setting['filesetting']['columns'])
 				xlrow=0
 				xlcol=0
 				# add sort key as header on sheet
@@ -420,33 +420,35 @@ def export(RESULT):
 			workbook.close()
 			return destination
 
-		else:
-			raise Exception(f'[~] filetype {filetype} not supported!')
+		raise Exception(f'[~] filetype {filetype} not supported!')
 	except Exception as e:
 		fprint('[~] ', destination, ' could not be written probably because it was already opened or filetype is not supported.\n', traceback.format_exc())
 	return False
 
 def monthdelta(date, delta):
-    m, y = (date.month + delta) % 12, date.year + ((date.month) + delta - 1) // 12
-    if not m: m = 12
-    d = min(date.day, calendar.monthrange(y, m)[1])
-    return date.replace(day = d, month = m, year = y)
-	
-def monthdiff(first, last, format):
-	# determine approximately difference of months
+	''' determine if date month matches interval'''
+	month, year = (date.month + delta) % 12, date.year + ((date.month) + delta - 1) // 12
+	if not month:
+		month = 12
+	day = min(date.day, calendar.monthrange(year, month)[1])
+	return date.replace(day = day, month = month, year = year)
+
+def monthdiff(first, last, dateformat):
+	''' determine approximately difference of months '''
 	fchunk, lchunk = re.findall( r'\d+', first ), re.findall( r'\d+', last )
 	fdate, ldate = {}, {}
 	i = 0
-	for key in format:
+	for key in dateformat:
 		fdate[key], ldate[key] = int(fchunk[i]), int(lchunk[i])
 		i += 1
 	fdate['datetime'] = datetime(fdate['y'], fdate['m'], fdate['d'])
 	ldate['datetime'] = datetime(ldate['y'], ldate['m'], ldate['d'])
 	return round((ldate['datetime'] - fdate['datetime']).days / (365 / 12))
 
-class listprocessor:
-	def __init__(self, setting, argument = None, isChild = False):
-		self.isChild = isChild
+class Listprocessor:
+	''' processes an csv list with filters '''
+	def __init__(self, setting, argument = None, is_child = False):
+		self.is_child = is_child
 		self.argument = argument if argument else {'track': {'column': None, 'values': None}}
 		self.setting = setting
 		self.list = {}
@@ -468,20 +470,21 @@ class listprocessor:
 					raise Exception('not all necessary fields were found in sourcefile or header-format not processable! filter aborted!')
 				# csv.DictReader does not handle the structure of the given file thus needing a custom solution for use of fieldnames
 				for i, row in enumerate(rows[self.setting['filesetting']['headerrowindex'] + 1:]):
-					l = {}
+					line = {}
 					for cell in zip(self.headers, row):
 						# this cumbersome behaviour is necessary to certainly populate fields due to possible identical column names
 						# this had me for some hours. who tf does shit like that?
-						if not cell[0] in l or l[cell[0]] == '':
-							l[cell[0]] = cell[1].strip()
-					self.list[i] = l
+						if not cell[0] in line or line[cell[0]] == '':
+							line[cell[0]] = cell[1].strip()
+					self.list[i] = line
 			csvfile.close()
-		except Exception as e:
+		except Exception:
 			self.log('[~] source file ', self.file, ' could not be loaded or some filter error occured, filter not successful...\n', traceback.format_exc())
 		if len(self.list):
 			self.filter()
 
 	def filter(self):
+		''' iterates through filter rules according to passed setting and calls required the methods '''
 		self.log('[*] total rows: ', len(self.list))
 		if 'track' in self.argument:
 			if self.argument['track']['column'] and self.argument['track']['values']:
@@ -493,16 +496,16 @@ class listprocessor:
 		# apply filters
 		##############################################################################
 		if 'filter' in self.setting:
-			for filter in self.setting['filter']:
-				if 'comment' in filter:
-					self.log('[*] applying filter: ', filter['apply'], ' ', filter['comment'], '...')
-				
+			for listfilter in self.setting['filter']:
+				if 'comment' in listfilter:
+					self.log('[*] applying filter: ', listfilter['apply'], ' ', listfilter['comment'], '...')
+
 				try:
-					getattr(self, filter['apply'])(filter)
+					getattr(self, listfilter['apply'])(listfilter)
 					self.log('[*] remaining filtered: ', len(self.list))
 
-				except Exception as e:
-					self.log('[~] ', filter['apply'], ' does not exist and could not be applied!\n', traceback.format_exc())
+				except Exception:
+					self.log('[~] ', listfilter['apply'], ' does not exist and could not be applied!\n', traceback.format_exc())
 
 		###########################################################################
 		## modify the result list if applicable
@@ -513,14 +516,14 @@ class listprocessor:
 			for column in modifications['remove']:
 				try:
 					self.setting['filesetting']['columns'].remove(column)
-				except Exception as e:
+				except Exception:
 					pass
 			self.log('[*] modifications done')
 
 		###########################################################################
 		## split list or at least elevate to n = 1 for output
 		###########################################################################
-		if not self.isChild:
+		if not self.is_child:
 			self.split(self.setting.get('split'))
 
 		###########################################################################
@@ -535,8 +538,9 @@ class listprocessor:
 		if destination:
 			if 'evaluate' in self.setting:
 				warning={}
-				for subset in self.list:
-					for row in self.list[subset]:
+				for i, subset in self.list.items():
+					# another level iteration because of previously splitted result
+					for row in subset:
 						for evaluation in self.setting['evaluate']:
 							if row[evaluation] and re.match(self.setting['evaluate'][evaluation], row[evaluation]):
 								if evaluation in warning:
@@ -545,211 +549,195 @@ class listprocessor:
 									warning[evaluation] = 1
 					for key, value in warning.items():
 						self.log('\n[!] WARNING: ', str(value), ' values of ', key, ' may be faulty, please revise in the output file ', destination)
-			postProcessing = ''
+			post_processing = ''
 			if 'postProcessing' in self.setting:
-				postProcessing = self.setting['postProcessing']
-			self.log('\n[*] done! ', postProcessing, ' ', destination)
+				post_processing = self.setting['postProcessing']
+			self.log('\n[*] done! ', post_processing, ' ', destination)
 
 	def log(self, *msg):
-		if self.isChild:
+		''' result logging '''
+		if self.is_child:
 			msg = list(msg)
-			msg[0]=re.sub('(\[.+\])', r'\1 compare file:')
+			msg[0]=re.sub('(\[.+\])', r'\1 compare file:', msg[0])
 			msg = tuple(msg)
 		fprint(*msg)
 
 	def delete(self, key):
+		''' deletion of entries with track message '''
 		deleted = self.list.pop(key, None)
-		if deleted != None and not self.isChild and self.argument['track'] and self.argument['track']['column'] and self.argument['track']['values'] and self.argument['track']['column'] in deleted and deleted[self.argument['track']['column']] in self.argument['track']['values']:
+		if deleted is not None and not self.is_child and self.argument['track'] and self.argument['track']['column'] and self.argument['track']['values'] and self.argument['track']['column'] in deleted and deleted[self.argument['track']['column']] in self.argument['track']['values']:
 			self.log('[!] tracked value ', deleted[self.argument['track']['column']], ' has been deleted ', self.argument['track']['cause'])
 
 	def modify(self, modifications):
-		###########################################################################
-		# add column with fixed value or formula or replace regex pattern in existing column
-		###########################################################################
+		''' add column with fixed value or formula or replace regex pattern in existing column '''
 		addedcolumns={'add':[], 'remove':[]}
 		for modify in modifications:
 			for rule in modifications[modify]:
 				if modify == 'add':
 					if not rule in addedcolumns['add']:
 						addedcolumns['add'].append(rule)
-					for row in self.list:
-						self.list[row][rule] = modifications[modify][rule]
+					for i in self.list:
+						self.list[i][rule] = modifications[modify][rule]
 				if modify == 'replace':
-					for row in self.list:
-						for column in self.list[row]:
+					for i, row in self.list.items():
+						for column in row:
 							if not rule[0] or rule[0] == column:
-								self.list[row][column] = re.sub(rule[1], rule[2], self.list[row][column]).strip()
+								self.list[i][column] = re.sub(rule[1], rule[2], row[column]).strip()
 				if modify == 'remove' and not rule in addedcolumns['remove']:
 					addedcolumns['remove'].append(rule)
 				if modify == 'rewrite':
-					for newColumn in rule:
-						if not newColumn in addedcolumns['add']:
-							addedcolumns['add'].append(newColumn)
-						for row in self.list:
+					for new_column in rule:
+						if not new_column in addedcolumns['add']:
+							addedcolumns['add'].append(new_column)
+						for i, row in self.list.items():
 							concatenate = ''
-							for column in rule[newColumn]:
-								if column in self.list[row]:
-									concatenate += self.list[row][column]
+							for column in rule[new_column]:
+								if column in row:
+									concatenate += row[column]
 									if not column in addedcolumns['remove']:
 										addedcolumns['remove'].append(column)
 								else:
 									concatenate += column
-							self.list[row][newColumn] = concatenate
+							self.list[i][new_column] = concatenate
 				if modify == 'translate' and self.setting.get('translations'):
-					for row in self.list:
+					for i, row in self.list.items():
 						for translation in self.setting['translations'][modifications[modify][rule]]:
-							self.list[row][rule] = re.sub("^" + translation + "$", self.setting['translations'][modifications[modify][rule]][translation], self.list[row][rule]).strip()
+							self.list[i][rule] = re.sub("^" + translation + "$", self.setting['translations'][modifications[modify][rule]][translation], row[rule]).strip()
 		# unify passed columns
 		addedcolumns={'add':addedcolumns['add'], 'remove':addedcolumns['remove']}
 		return addedcolumns
 
 	def split(self, rule = None):
-		splitList = {}
-		for row in self.list:
+		''' split list as desired or at least nest one layer '''
+		split_list = {}
+		for i, row in self.list.items():
 			if rule:
 				# create sorting key by matched patterns, mandatory translated if applicable
 				sorting = ''
 				for sort in rule:
-					match = re.findall(rule[sort], self.list[row][sort], re.IGNORECASE)
+					match = re.findall(rule[sort], row[sort], re.IGNORECASE)
 					if len(match):
 						sorting += ' '.join(match)
 				sorting = sorting.strip()
-				if not sorting in splitList:
-					splitList[sorting] = [self.list[row]]
+				if sorting not in split_list:
+					split_list[sorting] = [row]
 				else:
-					splitList[sorting].append(self.list[row])
+					split_list[sorting].append(row)
 			else:
-				if not 1 in splitList:
-					splitList[1] = [self.list[row]]
+				if 1 not in split_list:
+					split_list[1] = [row]
 				else:
-					splitList[1].append(self.list[row])
-		self.list = splitList
+					split_list[1].append(row)
+		self.list = split_list
 
 	def filter_by_expression(self, rule):
-		###########################################################################
-		# keep or discard all entries where column values match regex pattern 
-		###########################################################################
-		rows = dict(self.list)
-		for i in rows:
+		''' keep or discard all entries where column values match regex pattern '''
+		for i, row in dict(self.list).items():
 			keep = True
 			self.argument['track']['cause'] = []
 			if 'match' in rule:
 				if 'any' in rule['match']:
 					for column in rule['match']['any']:
 						keep = not rule['keep']
-						if bool(re.search(rule['match']['any'][column], rows[i][column], re.IGNORECASE|re.MULTILINE)):
+						if bool(re.search(rule['match']['any'][column], row[column], re.IGNORECASE|re.MULTILINE)):
 							keep = rule['keep']
-							self.argument['track']['cause'].append({'filtered':column, 'keep':keep})
+							self.argument['track']['cause'].append({'filtered': column, 'keep': keep})
 							break
 				elif 'all' in rule['match']:
 					for column in rule['match']['all']:
 						keep = rule['keep']
-						if not bool(re.search(rule['match']['all'][column], rows[i][column], re.IGNORECASE|re.MULTILINE)):
+						if not bool(re.search(rule['match']['all'][column], row[column], re.IGNORECASE|re.MULTILINE)):
 							keep = not rule['keep']
-							self.argument['track']['cause'].append({'filtered':column, 'keep':keep})
+							self.argument['track']['cause'].append({'filtered': column, 'keep': keep})
 							break
 			if not keep:
 				self.delete(i)
 
 	def filter_by_monthdiff(self, rule):
-		###########################################################################
-		# keep or discard all entries if 'column' meets 'bias' for 'threshold'
-		###########################################################################
-		dateFormat = rule['date']['format']
-		rows = dict(self.list)
-		for i in rows:
-			entrydate = re.findall(r'\d+', rows[i][rule['date']['column']])
+		''' keep or discard all entries if 'column' meets 'bias' for 'threshold' '''
+		date_format = rule['date']['format']
+		for i, row in dict(self.list).items():
+			entrydate = re.findall(r'\d+', row[rule['date']['column']])
 			if len(entrydate) < 1:
 				continue
 			# create dictionary according to set format
 			edate = {}
-			for j, key in enumerate(dateFormat):
+			for j, key in enumerate(date_format):
 				edate[key] = entrydate[j]
-			timespan = monthdiff('01.' + str(edate['m']) + '.' + str(edate['y']), '01.' + self.argument['processedMonth'] + '.' + self.argument['processedYear'], dateFormat)
+			timespan = monthdiff('01.' + str(edate['m']) + '.' + str(edate['y']), '01.' + self.argument['processedMonth'] + '.' + self.argument['processedYear'], date_format)
 			filtermatch = (rule['date']['bias'] == '<' and timespan <= rule['date']['threshold']) or (rule['date']['bias'] == '>' and timespan >= rule['date']['threshold'])
 			if (filtermatch and not rule['keep']) or (not filtermatch and rule['keep']):
 				self.delete(i)
-	
+
 	def filter_by_monthinterval(self, rule):
-		###########################################################################
-		# keep or discard if 'column'-value -+ 'offset' matches 'interval' from current or cli-set date
-		###########################################################################
-		dateFormat = rule['interval']['format']
-		rows = dict(self.list)
+		''' keep or discard if 'column'-value -+ 'offset' matches 'interval' from current or cli-set date '''
+		date_format = rule['interval']['format']
 		edate = {}
-		for i in rows:
-			entrydate = re.findall(r'\d+', rows[i][rule['interval']['column']])
+		for i, row in dict(self.list).items():
+			entrydate = re.findall(r'\d+', row[rule['interval']['column']])
 			if len(entrydate) < 1:
 				continue
-			for j, key in enumerate(dateFormat):
+			for j, key in enumerate(date_format):
 				edate[key]=entrydate[j]
 			offset_edate = monthdelta(datetime(int(edate['y']), int(edate['m']), 1), rule['interval']['offset'])
-			timespan = monthdiff('01.' + str(offset_edate.month) + '.' + str(offset_edate.year), '01.' + self.argument['processedMonth'] + '.' + self.argument['processedYear'], dateFormat)
+			timespan = monthdiff('01.' + str(offset_edate.month) + '.' + str(offset_edate.year), '01.' + self.argument['processedMonth'] + '.' + self.argument['processedYear'], date_format)
 			filtermatch = timespan % rule['interval']['interval']
 			if (filtermatch and not rule['keep']) or (not filtermatch and rule['keep']):
 				self.delete(i)
-	
+
 	def filter_by_comparison_file(self, rule):
-		###########################################################################
-		## discard or keep explicit excemptions as stated in excemption file, based on same identifier.
-		###########################################################################
+		''' discard or keep explicit excemptions as stated in excemption file, based on same identifier '''
 		if rule['filesetting']['source'] == 'SELF':
 			rule['filesetting']['source'] = self.setting['filesetting']['source']
 		rule['translations'] = self.setting['translations']
 		fprint('[*] comparing with ', rule['filesetting']['source'])
-		COMPARE = listprocessor(rule, {'track': {'column': None, 'values': None}, 'processedMonth': self.argument['processedMonth'], 'processedYear': self.argument['processedYear']}, True)
-		selfRows = dict(self.list)
-		cmpRows = dict(COMPARE.list)
+		compare_list = Listprocessor(rule, {'track': {'column': None, 'values': None}, 'processedMonth': self.argument['processedMonth'], 'processedYear': self.argument['processedYear']}, True)
 		equals = set()
-		for anyOrAll in rule['match']:
-			compareColumns = rule['match'][anyOrAll]
+		for any_or_all in rule['match']:
+			compare_columns = rule['match'][any_or_all]
 			# prepare possibly needed amount of matches
-			correspond = [False for i in range(len(compareColumns))]
+			correspond = [False for i in range(len(compare_columns))]
 			# fill false-prepared match-items with values
-			for i in selfRows:
-				for j in cmpRows:
+			for i, self_row in dict(self.list).items():
+				for j, cmp_row in dict(compare_list.list).items():
 					corresponded = 0
 					#iterate over matches
-					for column in compareColumns:
-						correspond[corresponded] = selfRows[i][column] == cmpRows[j][compareColumns[column]]
-						if anyOrAll == 'any':
+					for column in compare_columns:
+						correspond[corresponded] = self_row[column] == cmp_row[compare_columns[column]]
+						if any_or_all == 'any':
 							break
 						corresponded += 1
-					if (anyOrAll == 'any' and True in correspond) or (anyOrAll == 'all' and all(correspond)):
+					if (any_or_all == 'any' and True in correspond) or (any_or_all == 'all' and all(correspond)):
 						equals.add(i)
-		for i in selfRows:
+		for i in compare_list.list:
 			if (i in equals) != rule['keep']:
 				self.argument['track']['cause'] = {'identified by': i , 'corresponding values do not match: ': i}
 				self.delete(i)
 
 	def filter_by_duplicates(self, rule):
-		###########################################################################
-		## keep amount of duplicates of concatenated column(s) value(s), ordered by another column (asc/desc)
-		###########################################################################
+		''' keep amount of duplicates of concatenated column(s) value(s), ordered by another column (asc/desc) '''
 		duplicates = {}
-		rows = dict(self.list)
-		for i in rows:
-			identifier = rows[i][rule['duplicates']['column']]
+		for i, row in dict(self.list).items():
+			identifier = row[rule['duplicates']['column']]
 			if not identifier in duplicates:
-				duplicates[identifier] = [[''.join([rows[i][v] for v in rule['duplicates']['orderby']]), i]]
+				duplicates[identifier] = [[''.join([row[v] for v in rule['duplicates']['orderby']]), i]]
 			else:
-				duplicates[identifier].append([''.join([rows[i][v] for v in rule['duplicates']['orderby']]), i])
-		for i in duplicates:
-			duplicates[i].sort(key=lambda x:x[0], reverse = rule['duplicates']['descending'])
-			self.argument['track']['cause'] = {'identified by': i , 'duplicate values for column': duplicates[i]}
-			for j, k in enumerate(duplicates[i]):
+				duplicates[identifier].append([''.join([row[v] for v in rule['duplicates']['orderby']]), i])
+		for i, double in duplicates.items():
+			double.sort(key=lambda x:x[0], reverse = rule['duplicates']['descending'])
+			self.argument['track']['cause'] = {'identified by': i , 'duplicate values for column': double}
+			for j, k in enumerate(double):
 				if j < rule['duplicates']['amount']:
-					self.argument['track']['cause']['kept'] = duplicates[i][j]
-					pass
+					self.argument['track']['cause']['kept'] = double[j]
 				else:
 					self.delete(k[1])
-	
 
-def filter(setting, argument = None):
+def csvfilter(setting, argument = None):
+	''' initiate filter procedure '''
 	global RESULTSTRING
 	RESULTSTRING = ''
 
-	listprocessor(setting, argument)
+	Listprocessor(setting, argument)
 
 	return RESULTSTRING
 
@@ -771,8 +759,8 @@ if __name__ == '__main__':
 	except Exception as e:
 		fprint('[~] settings could not be loaded, see help for syntax...\n', traceback.format_exc())
 		SETTINGS = False
-		
-	# argument handler	
+
+	# argument handler
 	# options actually ordered by importance
 	sys.argv.pop(0)
 	options = {
@@ -783,28 +771,28 @@ if __name__ == '__main__':
 		'y': '((?:--year|-y)[:\\s]+)(\\d+)',
 		't': '((?:--track|-t)[:\\s]+)(\\S+)'}
 	params = ' '.join(sys.argv) + ' '
-	for opt in options:
-		arg = re.findall(options[opt], params, re.IGNORECASE)
+	for opt, pattern in options.items():
+		arg = re.findall(pattern, params, re.IGNORECASE)
 		if opt == 'r' and arg:
 			reset(thisfilename)
 			sys.exit()
 		elif (opt == 'h' and arg) or not SETTINGS:
-			fprint(helptext)
+			fprint(HELPTEXT)
 			sys.exit()
 		elif opt == 's' and bool(arg):
 			selectedset = str(arg[0][1])
-			params=params.replace(''.join(arg[0]), '')
+			params = params.replace(''.join(arg[0]), '')
 		elif opt == 'm' and bool(arg):
 			processedMonth = str(arg[0][1])
-			params=params.replace(''.join(arg[0]), '')
+			params = params.replace(''.join(arg[0]), '')
 		elif opt == 'y' and bool(arg):
 			processedYear = str(arg[0][1])
-			params=params.replace(''.join(arg[0]), '')
+			params = params.replace(''.join(arg[0]), '')
 		elif opt == 't' and bool(arg):
 			trackparam = str(arg[0][1]).split(':')
 			track['column'] = trackparam[0]
 			track['values'] = trackparam[1].split(',')
-			params=params.replace(''.join(arg[0]), '')
+			params = params.replace(''.join(arg[0]), '')
 		else:
 			pass
 

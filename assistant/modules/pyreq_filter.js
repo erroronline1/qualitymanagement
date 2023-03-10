@@ -157,7 +157,7 @@ var pyreq_filter = {
 			core.fn.async.stdout('output', '');
 			core.eel.interface.destination = ["output".element(), "innerHTML"];
 			core.eel.interface.append = true;
-			let result = await eel.filter(fsettings, farguments)();
+			let result = await eel.csvfilter(fsettings, farguments)();
 			core.fn.async.stdout('output', result.replaceAll(/\n/ig, '<br />'));
 			("submit" + filter).element().disabled = null
 			document.body.style.cursor = 'initial';
