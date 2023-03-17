@@ -1,5 +1,6 @@
 import cchardet
 import eel
+import pyautogui
 import os
 from pathlib import Path
 import re
@@ -9,6 +10,7 @@ import sys
 import time
 import tkinter as tk
 from tkinter import filedialog
+import random
 
 HELP = '''
 start this application with options:
@@ -36,7 +38,7 @@ if __name__ == '__main__':
  ___ ___ ___|_|___| |_ ___ ___| |_   _ _ _ ___ ___ ___ ___ ___ ___
 | .'|_ -|_ -| |_ -|  _| .'|   |  _| | | | |  _| .'| . | . | -_|  _|
 |__,|___|___|_|___|_| |__,|_|_|_|   |_____|_| |__,|  _|  _|___|_|
-                                                  |_| |_|          built 20230220
+                                                  |_| |_|          built 20230316
 
 by error on line 1 (erroronline.one)
 
@@ -91,21 +93,54 @@ def rootResourcesImport(file):
 	text = blob.decode(encoding)
 	return text
 
-def has_update(curdir):
-	exclude=["__pycache__", ".venv", "test.py"]
-	directory = os.scandir(curdir)
-	for file in directory:
-		if not file.name in exclude and file.is_dir() and has_update(os.path.normpath(os.path.join(curdir, file.name))):
-			return True
-		if not file.name in exclude and file.is_file() and file.stat().st_mtime > LAUNCHTIME:
-			return True
-	return False
+#           _
+#   ___ _ _| |_ ___ ___ ___ ___ ___ ___ ___ ___ ___
+#  |_ -| | | . | . |  _| . |  _| -_|_ -|_ -| -_|_ -|
+#  |___|___|___|  _|_| |___|___|___|___|___|___|___|
+#              |_|
 
-def update_daemon():
-	while True:
-		if has_update(WEBFOLDER):
-			eel.update_available()()
-		eel.sleep(600)
+class UpdateChecker:
+	def __init__(self):
+		eel.spawn(self.check)
+	def check(self):
+		while True:
+			if self.has_update(WEBFOLDER):
+				eel.update_available()()
+			eel.sleep(600)
+	def has_update(self, curdir):
+		exclude=["__pycache__", ".venv", "test.py"]
+		directory = os.scandir(curdir)
+		for file in directory:
+			if not file.name in exclude and file.is_dir() and self.has_update(os.path.normpath(os.path.join(curdir, file.name))):
+				return True
+			if not file.name in exclude and file.is_file() and file.stat().st_mtime > LAUNCHTIME:
+				return True
+		return False
+
+class GLaDOS:
+	lyrics=(
+		"And believe me I am still alive",
+		"I'm doing science and I'm still alive",
+		"I feel fantastic and I'm still alive",
+		"While you're dying I'll be still alive",
+		"And when you're dead I will be still alive"
+	)
+	def __init__(self):
+		if not _database.read('coreGLaDOS'):
+			return
+		eel.spawn(self.watch)
+
+	def watch(self):
+		''' checks for last mouse position and "presses" buttons to mimic user interaction'''
+		curr_coords = None
+		while (minutes := int(_database.read('coreGLaDOS'))):
+			if curr_coords == pyautogui.position():
+				sys.stdout.write( f'\r* {random.choice(self.lyrics)} *{" "*15}' )
+				sys.stdout.flush()
+				pyautogui.press('scrolllock') # hopefully least intrusive key since mouse movement doesn't do the trick
+				pyautogui.press('scrolllock')
+			curr_coords = pyautogui.position()
+			eel.sleep(minutes * 29) # slightly less than half of the given minutes to avoid adverse overlapping of check, interaction and cycle
 
 #                                 _             _ _ _
 #   _____ ___ _____ ___ ___ _ _  | |_ ___ ___ _| | |_|___ ___
@@ -114,13 +149,13 @@ def update_daemon():
 #                          |___|                         |___|
 
 class db_handler:
-	def __init__(self, database):
-		self.connection = sqlite3.connect(database)
-		cursor = self.connection.cursor()
-		cursor.execute('''SELECT count(name) FROM sqlite_master WHERE type='table' AND name='SETTINGS';''')
-		if not cursor.fetchone()[0]:
+	def __init__(self, db):
+		self.connection = sqlite3.connect(db)
+		c = self.connection.cursor()
+		c.execute('''SELECT count(name) FROM sqlite_master WHERE type='table' AND name='SETTINGS';''')
+		if not c.fetchone()[0]:
 			self.create()
-
+	
 	def __del__(self):
 		self.connection.close()
 
@@ -133,31 +168,31 @@ class db_handler:
 		return True
 
 	def clear(self):
-		self.connection.executescript('DELETE FROM SETTINGS; VACUUM;')
+		self.connection.executescript('''DELETE FROM SETTINGS; VACUUM;''')
 		self.connection.commit()
 
 	def dbSize(self):
 		cursor = self.connection.cursor()
-		cursor.execute('SELECT page_count * page_size as size FROM pragma_page_count(), pragma_page_size();')
+		cursor.execute('''SELECT page_count * page_size as size FROM pragma_page_count(), pragma_page_size();''')
 		result = cursor.fetchone()
 		return result
 
 	def delete(self, key):
 		key = key.replace('\'','\'\'')
-		self.connection.execute(f"DELETE FROM SETTINGS WHERE KEY='{key}';")
+		self.connection.execute('''DELETE FROM SETTINGS WHERE KEY='{0}';'''.format(key))
 		self.connection.commit()
 		return True
 
 	def keyDump(self):
 		cursor = self.connection.cursor()
-		cursor.execute('SELECT KEY FROM SETTINGS;')
+		cursor.execute('''SELECT KEY FROM SETTINGS;''')
 		result = cursor.fetchall()
 		return ([key[0] for key in result])
 
 	def read(self, key):
 		key = key.replace('\'','\'\'')
 		cursor = self.connection.cursor()
-		cursor.execute("SELECT VALUE FROM SETTINGS WHERE KEY='{key}';")
+		cursor.execute('''SELECT VALUE FROM SETTINGS WHERE KEY='{0}';'''.format(key))
 		result = cursor.fetchone()
 		if result is not None:
 			return result[0]
@@ -166,7 +201,7 @@ class db_handler:
 	def write(self, key, value):
 		key = key.replace('\'','\'\'')
 		value = value.replace('\'','\'\'')
-		self.connection.execute("INSERT OR REPLACE INTO SETTINGS (KEY, VALUE) VALUES ('{key}', '{value}');")
+		self.connection.execute('''INSERT OR REPLACE INTO SETTINGS (KEY, VALUE) VALUES ('{0}', '{1}');'''.format(key, value))
 		self.connection.commit()
 		return True
 
@@ -287,7 +322,8 @@ if __name__ == '__main__':
 
 	if WEBFOLDER:
 		print ('\nDo not close this window, otherwise the browserview will stop working.\n')
-		eel.spawn(update_daemon)
+		UpdateChecker()
+		GLaDOS()
 		eel.start('core.html', port = PORT, mode = BROWSER)
 	else:
 		print(HELP)
