@@ -114,6 +114,8 @@ in case you use the python wrapper for the assistant i recommend creating a virt
 if you create a fresh virtual environment you can exclude following modules to save some bytes: 'altgraph', 'certifi', 'future', 'idna', 'numpy', 'pyinstaller', 'setuptools', 'six', 'urllib3'.
 put these into the exclude-list within the spec-file and occasionally rerun *pyinstaller assistant.spec*.
 
+while adding pyautogui there happened errors in a proper install of the depending pyscreeze. upgrading to pyscreeze 0.1.28 was impossible on the worksite dev env (3/23). [here is a solution to fix it.](https://github.com/asweigart/pyautogui/issues/598)
+
 ![sample folder structure](assets/folderstructure.png)
 * the provided folder structure might not be neccessarily your first choice and serves just as a sample. you have to change at least the default paths within the vba-code and the assistant anyway.
 * even if you don't want to use the assistant, the documents semiautomated version control still might be useful for you. on the other hand the assistant is hardly possible to populate without the documents unless you write your own routines for that.
