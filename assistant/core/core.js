@@ -776,9 +776,10 @@ core.setup = {
 		await core.setup.common();
 	},
 	advanced: async () => {
-		let coreFuzzyThreshold = await core.fn.async.memory.read('coreFuzzyThreshold'),
-			coreDirectMailSize = await core.fn.async.memory.read('coreDirectMailSize'),
-			coregrowlNotifInterval = await core.fn.async.memory.read('coregrowlNotifInterval'),
+		let coreFuzzyThreshold = await core.fn.async.memory.read('coreFuzzyThreshold') || 5,
+			coreDirectMailSize = await core.fn.async.memory.read('coreDirectMailSize') || core.var.directMailSize,
+			coregrowlNotifInterval = await core.fn.async.memory.read('coregrowlNotifInterval') || 2,
+			coreGLaDOS = await core.fn.async.memory.read('coreGLaDOS') || 0,
 			display,
 			envSelector = {};
 		Object.keys(core.var.environment).forEach(function (key) {
@@ -786,18 +787,19 @@ core.setup = {
 		});
 		display = '<input type="button" onclick="core.fn.async.memory.clear(); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))" value="' + core.fn.static.lang('settingResetApp') + '" title="' + core.fn.static.lang('settingRestartNeccessary') + '" /><br />' +
 			'<br />' + core.fn.static.lang('settingSelectedEnvCaption') + ':<br />' + core.fn.static.insert.select(envSelector, 'coreSelectedEnv', 'coreSelectedEnv', core.var.selectedEnv, 'onchange="core.var.selectedEnv = this.value; core.fn.async.memory.write(\'coreSelectedEnv\', this.value); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"') +
-			'<br /><br />' + core.fn.static.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + (coreFuzzyThreshold || 5) + '" onchange="core.fn.async.memory.write(\'coreFuzzyThreshold\', this.value); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))" />' +
-			'<br />' + core.fn.static.lang('settinggrowlNotifIntervalCaption') + ':<br /><input type="range" min="1" max="10" value="' + (coregrowlNotifInterval || 2) + '" onchange="core.fn.async.memory.write(\'coregrowlNotifInterval\', this.value);  core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))" />' +
+			'<br /><br />' + core.fn.static.lang('settingFuzzyThresholdCaption') + ':<br /><input type="range" min="0" max="10" value="' + coreFuzzyThreshold + '" onchange="core.fn.async.memory.write(\'coreFuzzyThreshold\', this.value); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\')); \'currentFuzzyThreshold\'.element().innerHTML=this.value" /> <span id="currentFuzzyThreshold">' + coreFuzzyThreshold + '</span>' +
+			'<br />' + core.fn.static.lang('settinggrowlNotifIntervalCaption') + ':<br /><input type="range" min="1" max="10" value="' + coregrowlNotifInterval + '" onchange="core.fn.async.memory.write(\'coregrowlNotifInterval\', this.value);  core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\')); \'currentgrowlNotif\'.element().innerHTML=this.value+\' s\';" /> <span id="currentgrowlNotif">' + coregrowlNotifInterval + ' s</span>' +
+			(root.eel ? '<br />GLaDOS:<br /><input type="range" min="0" max="20" value="' + (coreGLaDOS) + '" onchange="core.fn.async.memory.write(\'coreGLaDOS\', this.value); \'currentGLaDOS\'.element().innerHTML=this.value + \' min\';  core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))" /> <span id="currentGLaDOS">' + coreGLaDOS + ' min</span>' : "") +
 			//  as of 2-2020 chrome and edge support somewhere (but not exactly) up to 2^11 characters minus mailto:{xxx}?subject={xxx}&body=
 			//  only firefox seemingly supports up to 2^15 characters (32768 - the afore mentioned)
-			'<br />' + core.fn.static.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="100" max="32400" step="300" value="' + ((coreDirectMailSize || core.var.directMailSize)) + '" onchange="core.fn.async.memory.write(\'coreDirectMailSize\', this.value); \'currentDirectMailSize\'.element().innerHTML=this.value; core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))" title="' + core.fn.static.lang('settingRestartNeccessary') + '" />' +
-			' <span id="currentDirectMailSize">' + ((coreDirectMailSize || core.var.directMailSize)) + '</span><br /><input type="button" onclick="core.fn.static.maxMailSize()" value="' + core.fn.static.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.static.lang('settingMailSizeDeterminationHint') + '" />';
+			'<br />' + core.fn.static.lang('settingMailSizeDeterminationCaption') + ':<br /><input type="range" min="100" max="32400" step="300" value="' + coreDirectMailSize + '" onchange="core.fn.async.memory.write(\'coreDirectMailSize\', this.value); \'currentDirectMailSize\'.element().innerHTML=this.value; core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))" title="' + core.fn.static.lang('settingRestartNeccessary') + '" />' +
+			' <span id="currentDirectMailSize">' + coreDirectMailSize + '</span><br /><input type="button" onclick="core.fn.static.maxMailSize()" value="' + core.fn.static.lang('settingMailSizeDeterminationCheck') + '" title="' + core.fn.static.lang('settingMailSizeDeterminationHint') + '" />';
 		core.fn.async.stdout('settingContent', display);
 	},
 	common: async () => {
-		let coreFontsize = await core.fn.async.memory.read('coreFontsize'),
-			coreFuzzySearch = await core.fn.async.memory.read('coreFuzzySearch'),
-			coreNewWindowCopy = await core.fn.async.memory.read('coreNewWindowCopy'),
+		let coreFontsize = await core.fn.async.memory.read('coreFontsize') || 0,
+			coreFuzzySearch = await core.fn.async.memory.read('coreFuzzySearch') || 0,
+			coreNewWindowCopy = await core.fn.async.memory.read('coreNewWindowCopy') || 0,
 			coreTheme = await core.fn.async.memory.read('coreTheme'),
 			display,
 			latestNotif = 'coreNotificationHide' + updateTracker.latestMajorUpdate(),
@@ -810,11 +812,11 @@ core.setup = {
 		}
 		module[latestNotif] = await core.fn.async.memory.read(latestNotif);
 		display = core.fn.static.lang('settingThemeCaption') + ':<br />' + core.fn.static.insert.select(themeSelector, 'coreTheme', 'coreTheme', (coreTheme || null), 'onchange="root.resourcesImport(root.dir + \'core/\' + this.value + \'.css\', {id: \'coretheme\'}); core.fn.async.memory.write(\'coreTheme\', this.value)"') +
-			'<br /><br />' + core.fn.static.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + (coreFontsize || 0) + '" onchange="document.body.style.fontSize = (this.value / 10 + 1) + \'em\'; core.fn.async.memory.write(\'coreFontsize\', this.value)" />' +
+			'<br /><br />' + core.fn.static.lang('settingFontsizeCaption') + ':<br /><input type="range" min="-5" max="10" value="' + coreFontsize + '" onchange="document.body.style.fontSize = (this.value / 10 + 1) + \'em\'; core.fn.async.memory.write(\'coreFontsize\', this.value); \'currentFontSize\'.element().innerHTML=this.value;" /> <span id="currentFontSize">' + coreFontsize + '</span>' +
 			'<br />' + core.fn.static.lang('settingLanguageCaption') + ':<br />' + core.fn.static.insert.select(core.var.registeredLanguages, 'coreLanguage', 'coreLanguage', (core.var.selectedLanguage || null), 'title="' + core.fn.static.lang('settingRestartNeccessary') + '" onchange="core.fn.async.memory.write(\'coreLanguage\', this.value); core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"') +
-			'<br /><br />' + core.fn.static.insert.checkbox(core.fn.static.lang('settingSearchOptionFuzzy'), 'coreFuzzySearch', (coreFuzzySearch || 0), 'onchange="this.checked ? core.fn.async.memory.write(\'coreFuzzySearch\', 1) : core.fn.async.memory.delete(\'coreFuzzySearch\');  core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"') +
+			'<br /><br />' + core.fn.static.insert.checkbox(core.fn.static.lang('settingSearchOptionFuzzy'), 'coreFuzzySearch', coreFuzzySearch, 'onchange="this.checked ? core.fn.async.memory.write(\'coreFuzzySearch\', 1) : core.fn.async.memory.delete(\'coreFuzzySearch\');  core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"') +
 			'<br /><small>' + core.fn.static.lang('settingSearchOptionFuzzyHint') + '</small>' +
-			'<br />' + core.fn.static.insert.checkbox(core.fn.static.lang('settingCopyOptionSelector'), 'coreNewWindowCopy', (coreNewWindowCopy || 0), 'onchange="this.checked ? core.fn.async.memory.write(\'coreNewWindowCopy\', 1) : core.fn.async.memory.delete(\'coreNewWindowCopy\');  core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"') +
+			'<br />' + core.fn.static.insert.checkbox(core.fn.static.lang('settingCopyOptionSelector'), 'coreNewWindowCopy', coreNewWindowCopy, 'onchange="this.checked ? core.fn.async.memory.write(\'coreNewWindowCopy\', 1) : core.fn.async.memory.delete(\'coreNewWindowCopy\');  core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"') +
 			'<br /><small>' + core.fn.static.lang('settingCopyOptionHint') + '</small>' +
 			'<br />' + core.fn.static.insert.checkbox(core.fn.static.lang('settingNotificationSelector'), latestNotif, module[latestNotif], 'onchange="this.checked ? core.fn.async.memory.write(\'' + latestNotif + '\', 1) : core.fn.async.memory.delete(\'' + latestNotif + '\');  core.fn.async.growlNotif(core.fn.static.lang(\'settingRestartNeccessary\'))"', core.fn.static.lang('settingRestartNeccessary')) +
 			'<br /><small>' + core.fn.static.lang('settingNotificationHint') + '</small>';
