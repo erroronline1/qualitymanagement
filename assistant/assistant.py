@@ -38,7 +38,7 @@ if __name__ == '__main__':
  ___ ___ ___|_|___| |_ ___ ___| |_   _ _ _ ___ ___ ___ ___ ___ ___
 | .'|_ -|_ -| |_ -|  _| .'|   |  _| | | | |  _| .'| . | . | -_|  _|
 |__,|___|___|_|___|_| |__,|_|_|_|   |_____|_| |__,|  _|  _|___|_|
-                                                  |_| |_|          built 20230324
+                                                  |_| |_|          built 20230325
 
 by error on line 1 (erroronline.one)
 
@@ -293,9 +293,11 @@ if __name__ == '__main__':
 	def csvfilter(settings, arguments):
 		return processfilter.csvfilter(settings, arguments)
 
-	from pymodules.filehandler import backupfiles
+	from pymodules.filehandler import backupfiles, resizeimages
 	def backup(paths):
 		return backupfiles(paths)
+	def resize(paths):
+		return resizeimages(paths)
 
 	#       _           _
 	#   ___| |_ ___ ___| |_
@@ -324,6 +326,7 @@ if __name__ == '__main__':
 	eel.expose(createqrandopenwith)
 	eel.expose(csvfilter)
 	eel.expose(backup)
+	eel.expose(resize)
 
 	if WEBFOLDER:
 		print ('\nDo not close this window, otherwise the browserview will stop working.\n')

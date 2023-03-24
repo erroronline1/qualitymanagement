@@ -453,7 +453,8 @@ globalSearch api: returns submodules where titles match the search terms.
 ### filehandler
 ![assistant filehandler](assets/assistant_filehandler.png)
 digitalize all the things! but don't provide storage... in case you run out of space and don't get handed enough network storage use this module to backup a source folder to a destination folder (e.g. an external hard drive). on first use all the files will be copied. on the next use only new files or files with a newer file date will be overwritten without annoying prompts. you can exclude directory names on both sides to fasten things up. these settings will be stored for the given destinations.
-until now there is only a backup submodule, but this could be extended in the future with more functions.
+
+one method to avoid this issue could be to set the resolution of cameras to a reasonable setting. because this is not more than wishful thinking this module provides the opportunity to downsize jpg and png files with optional replacement. in this case the date of the original file will be added to the filename to preserve this assignment.
 
 globalSearch api: returns submodules where titles match the search terms.
 
