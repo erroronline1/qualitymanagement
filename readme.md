@@ -450,6 +450,15 @@ globalSearch api: returns submodules where titles match the search terms.
 
 [back to top](#table-of-contents)
 
+### filehandler
+![assistant filehandler](assets/assistant_filehandler.png)
+digitalize all the things! but don't provide storage... in case you run out of space and don't get handed enough network storage use this module to backup a source folder to a destination folder (e.g. an external hard drive). on first use all the files will be copied. on the next use only new files or files with a newer file date will be overwritten without annoying prompts. you can exclude directory names on both sides to fasten things up. these settings will be stored for the given destinations.
+until now there is only a backup submodule, but this could be extended in the future with more functions.
+
+globalSearch api: returns submodules where titles match the search terms.
+
+[back to top](#table-of-contents)
+
 ## structure
 please adhere to the modules structure. each module consists of an object with properties and methods.
 

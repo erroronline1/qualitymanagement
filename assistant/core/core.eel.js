@@ -90,6 +90,15 @@ core.eel = {
 					enabledByDefault: true,
 				};
 
+				core.var.modules.pyreq_filehandler = {
+					icon: core.fn.static.insert.icon('networksharing'),
+					display: {
+						en: 'Filehandler',
+						de: 'Dateiverwaltung',
+					},
+					enabledByDefault: true,
+				};
+
 				core.var.lang.updateAvailable = {
 					en: 'Update available :) Restart the assistant in due course.',
 					de: 'Update am Start :) Starte den Assistenten beizeiten neu.'
