@@ -26,9 +26,14 @@ IF EXIST %home_location% (
 
 IF EXIST %python_location% (
     :: optional change to dev environment, launch .venv, start py-project
-    ECHO [^^!] I see, you're a person of culture.  %python_name:"=% is available on your machine. 
-    SET /P "dev_env=[?] Want to start %python_name:"=%-environment in %dev_location% [y/N]? "
-    IF /I "!dev_env!"=="y" (
+    ECHO [^^!] I see, you're a person of culture. %python_name:"=% is available on your machine.
+    :: choice with 5s timeout defaults to no
+    CHOICE /C yn /t 5 /d n /M "[?] Want to start %python_name:"=%-environment in %dev_location%?"
+    if errorlevel 2  (
+        :: reset errorlevel
+        ver > nul
+        ECHO [~] %python_name:"=% not launched, assistant about to be started as EXE from %runtime_location%
+    ) ELSE (
         IF NOT EXIST %home_location% (
             CD %dev_location:~1,2% >> NUL
             IF NOT "%cd%"=="%dev_location:"=%" (
@@ -39,10 +44,6 @@ IF EXIST %python_location% (
         )
         START py "%dev_location:"=%assistant.py" --webfolder %dev_name% --browser edge
         GOTO :end
-    ) ELSE (
-        :: if not reassigned an empty dev_env-value results in errorlevel=1. also the info about exe doesn't concern anyone else
-        SET dev_env=n
-        ECHO [~] %python_name:"=% not available/launched, assistant started as EXE
     )
 )
 
@@ -51,7 +52,6 @@ IF EXIST %runtime_location% (
     COPY "%runtime_location:"=%assistant.exe" %TEMP% >> NUL
     START %TEMP%\assistant.exe --webfolder "%runtime_name:"=%" --browser edge
     IF %errorlevel% GTR 0 (
-        echo %errorlevel%
         :: webview as fallback, even if not recommended for several reasons, documents are still accessible
         ECHO.
         ECHO [^^!] Error starting wrapper application. Please contact application administration for help.
