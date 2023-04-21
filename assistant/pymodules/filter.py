@@ -31,7 +31,7 @@ print('built 20230223 by error on line 1 (erroronline.one)')
 DEFAULTJSON = {
 	"defaultset": 0,
 	"sets": [{
-		"postProcessing": "do not forget to check an archive",
+		"postProcessing": "some message, e.g. do not forget to check and archive",
 		"filesetting": {
 			"source": "Export.+?\\.csv",
 			"headerrowindex": 0,
@@ -329,7 +329,7 @@ def sourcefile(regex_pattern):
 	return False
 
 def export(RESULT):
-	''' export the result '''
+	''' export the result as csv, js or xslx according to destination filename extension'''
 	destination = os.path.abspath(RESULT.setting['filesetting']['destination'])
 	filetype = destination[destination.rindex('.'):].lower()
 	try:
@@ -434,7 +434,7 @@ def monthdelta(date, delta):
 	return date.replace(day = day, month = month, year = year)
 
 def monthdiff(first, last, dateformat):
-	''' determine approximately difference of months '''
+	''' determine approximately difference of months (not taking leap years into account) '''
 	fchunk, lchunk = re.findall( r'\d+', first ), re.findall( r'\d+', last )
 	fdate, ldate = {}, {}
 	i = 0
@@ -446,7 +446,7 @@ def monthdiff(first, last, dateformat):
 	return round((ldate['datetime'] - fdate['datetime']).days / (365 / 12))
 
 class Listprocessor:
-	''' processes an csv list with filters '''
+	''' processes a csv list with filters '''
 	def __init__(self, setting, argument = None, is_child = False):
 		self.is_child = is_child
 		self.argument = argument if argument else {'track': {'column': None, 'values': None}}
@@ -563,7 +563,7 @@ class Listprocessor:
 		fprint(*msg)
 
 	def delete(self, key):
-		''' deletion of entries with track message '''
+		''' deletion of row with track message '''
 		deleted = self.list.pop(key, None)
 		if deleted is not None and not self.is_child and self.argument['track'] and self.argument['track']['column'] and self.argument['track']['values'] and self.argument['track']['column'] in deleted and deleted[self.argument['track']['column']] in self.argument['track']['values']:
 			self.log('[!] tracked value ', deleted[self.argument['track']['column']], ' has been deleted ', self.argument['track']['cause'])
@@ -667,6 +667,7 @@ class Listprocessor:
 			timespan = monthdiff('01.' + str(edate['m']) + '.' + str(edate['y']), '01.' + self.argument['processedMonth'] + '.' + self.argument['processedYear'], date_format)
 			filtermatch = (rule['date']['bias'] == '<' and timespan <= rule['date']['threshold']) or (rule['date']['bias'] == '>' and timespan >= rule['date']['threshold'])
 			if (filtermatch and not rule['keep']) or (not filtermatch and rule['keep']):
+				self.argument['track']['cause'] = {f"identified by {rule['date']['column']}": i , f"monthdiff {rule['date']['threshold']} {rule['date']['bias']}": timespan}
 				self.delete(i)
 
 	def filter_by_monthinterval(self, rule):
@@ -683,6 +684,7 @@ class Listprocessor:
 			timespan = monthdiff('01.' + str(offset_edate.month) + '.' + str(offset_edate.year), '01.' + self.argument['processedMonth'] + '.' + self.argument['processedYear'], date_format)
 			filtermatch = timespan % rule['interval']['interval']
 			if (filtermatch and not rule['keep']) or (not filtermatch and rule['keep']):
+				self.argument['track']['cause'] = {f"identified by {rule['interval']['column']}": i , f"interval {rule['interval']['interval']} does not match, remainder": filtermatch}
 				self.delete(i)
 
 	def filter_by_comparison_file(self, rule):
@@ -709,13 +711,13 @@ class Listprocessor:
 						corresponded += 1
 					if (any_or_all == 'any' and True in correspond) or (any_or_all == 'all' and all(correspond)):
 						equals.add(i)
-		for i in compare_list.list:
+		for i in dict(self.list):
 			if (i in equals) != rule['keep']:
-				self.argument['track']['cause'] = {'identified by': i , 'corresponding values do not match: ': i}
+				self.argument['track']['cause'] = {'identified by': i , f"corresponding values for {json.dumps(rule['match'])} do{' not' if rule['keep'] else ''} match, matches should be kept ": rule['keep']}
 				self.delete(i)
 
 	def filter_by_duplicates(self, rule):
-		''' keep amount of duplicates of concatenated column(s) value(s), ordered by another column (asc/desc) '''
+		''' keep amount of duplicates of column value, ordered by another concatenated column values (asc/desc) '''
 		duplicates = {}
 		for i, row in dict(self.list).items():
 			identifier = row[rule['duplicates']['column']]
@@ -725,7 +727,7 @@ class Listprocessor:
 				duplicates[identifier].append([''.join([row[v] for v in rule['duplicates']['orderby']]), i])
 		for i, double in duplicates.items():
 			double.sort(key=lambda x:x[0], reverse = rule['duplicates']['descending'])
-			self.argument['track']['cause'] = {'identified by': i , 'duplicate values for column': double}
+			self.argument['track']['cause'] = {f"identified by {rule['duplicates']['column']}": i , f"duplicate values for {','.join(rule['duplicates']['orderby'])}": double}
 			for j, k in enumerate(double):
 				if j < rule['duplicates']['amount']:
 					self.argument['track']['cause']['kept'] = double[j]
