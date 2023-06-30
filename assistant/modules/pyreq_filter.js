@@ -35,7 +35,7 @@ var pyreq_filter = {
 			// filter analyzer 
 			filter_by_comparison_file: function (filter, selection) {
 				//comparison file not required if no comparison filter specified
-				let set = filter.sets[selection.selectedIndex||0];
+				let set = filter.sets[selection.selectedIndex || 0];
 				if (set.hasOwnProperty('filter')) {
 					for (let i = 0; i < set.filter.length; i++) {
 						if (set.filter[i].apply == "filter_by_comparison_file" && set.filter[i].filesetting.source != "SELF") return set.filter[i].filesetting.source
@@ -45,7 +45,7 @@ var pyreq_filter = {
 			},
 			export_directory: function (filter, selection) {
 				// export directory disabled if specified in filter settings
-				let set = filter.sets[selection.selectedIndex||0];
+				let set = filter.sets[selection.selectedIndex || 0];
 				if (set.filesetting.destination.match(/\\|\//gmi)) return false
 				return true
 			},
@@ -134,6 +134,7 @@ var pyreq_filter = {
 				core.fn.static.insert.select(filtersets, 'stocklistfilterSet', 'stocklistfilterSet', null, 'onchange="pyreq_filter.fn.required.requirements(\'stocklistfilter\')"') +
 				core.fn.static.insert.icon('info', 'bigger', null, 'onclick="core.fn.static.popup(pyreq_filter.data.stocklistfilter.sets[\'stocklistfilterSet\'.element().selectedIndex].useCase + \'<br /><textarea readonly style=&quot;overflow:scroll; width:100%; height:15em;&quot;>\' + JSON.stringify(pyreq_filter.data.stocklistfilter.sets[\'stocklistfilterSet\'.element().selectedIndex], null, 4) + \'</textarea>\')"') +
 				'<br /><br />' +
+				'<input type="button" value="' + core.fn.static.lang('labelprocessfilterCompare', 'pyreq_filter') + '" onclick="core.fn.async.file.load(\'stocklistfilterCompare\', [[\'csv files\',\'*.csv\']])" id="stocklistfilterCompareButton" disabled /><br /><input type="text" id="stocklistfilterCompare" disabled /><br /><br />' +
 				'<input type="button" value="' + core.fn.static.lang('labelprocessfilterDestination', 'pyreq_filter') + '" onclick="core.fn.async.file.pickdir(\'stocklistfilterDestination\')" id="stocklistfilterDestinationButton" /><br /><input type="text" id="stocklistfilterDestination" required /><br /><br />' +
 				'<input type="submit" id="submitstocklistfilter" value="' + core.fn.static.lang('labelstocklistfilterSubmit', 'pyreq_filter') + '" /><br /><br />' +
 				'</form>');
@@ -147,6 +148,11 @@ var pyreq_filter = {
 			fsettings['translations'] = 'translations' in pyreq_filter.data.stocklistfilter ? JSON.parse(JSON.stringify(pyreq_filter.data.stocklistfilter.translations)) : null;
 
 			fsettings.filesetting.source = 'stocklistfilterSrc'.element().value.replaceAll(/\\/ig, '/');
+			if ('filter' in fsettings) {
+				for (let c = 0; c < fsettings.filter.length; c++) {
+					if (fsettings.filter[c].apply === "filter_by_comparison_file" && fsettings.filter[c].filesetting.source !== "SELF") fsettings.filter[c].filesetting.source = 'stocklistfilterCompare'.element().value.replaceAll(/\\/ig, '/');
+				}
+			}
 			let selectedDestination = 'stocklistfilterDestination'.element().value.replaceAll(/\\/ig, '/');
 			fsettings.filesetting.destination = (selectedDestination.length ? selectedDestination + '/' : '') + fsettings.filesetting.destination;
 			this.filtersubmit('stocklistfilter', fsettings);
