@@ -6,6 +6,7 @@ import calendar
 import sys
 import os
 import traceback
+import random
 import xlsxwriter
 try:
 	from assistant import interface
@@ -26,7 +27,7 @@ $ filter --help    for overview
 else:
 	print ('<filter> as integrated module')
 
-print('built 20230223 by error on line 1 (erroronline.one)')
+print('built 20230701 by error on line 1 (erroronline.one)')
 
 DEFAULTJSON = {
 	"defaultset": 0,
@@ -137,6 +138,17 @@ DEFAULTJSON = {
 					"format": ["d", "m", "y"],
 					"interval": 6,
 					"offset": 0
+				}
+			},
+			{
+				"apply": "filter_by_rand",
+				"comment": "keep some random rows",
+				"keep": True,
+				"data": {
+					"columns": {
+						"SOMEFILTERCOLUMN", "hasvalue"
+					},
+					"amount": 10
 				}
 			}
 		],
@@ -264,6 +276,13 @@ HELPTEXT='''
             "format": list/array of date format order e.g. ["d", "m", "y"],
             "interval": integer for months,
             "offset": optional offset in months
+
+        "apply": "filter_by_rand",
+        "comment": description, will be displayed
+        "keep": boolean if matches are kept or omitted
+        "data": select amount of random rows that match given content of asserted column (if multiple, all must be found)
+            "columns": object/dict of COLUMN-REGEX-pairs to select from,
+            "amount": integer > 0
 
     "modify": modifies the result
         "add": adds a column with the set value. if the name is already in use this will be replaced!
@@ -449,7 +468,7 @@ class Listprocessor:
 	''' processes a csv list with filters '''
 	def __init__(self, setting, argument = None, is_child = False):
 		self.is_child = is_child
-		self.argument = argument if argument else {'track': {'column': None, 'values': None}}
+		self.argument = argument if argument else {'track': {'column': None, 'values': None}, 'processedMonth':datetime.now().month, 'processedYear':datetime.now().year}
 		self.setting = setting
 		self.list = {}
 		self.file = sourcefile(self.setting['filesetting']['source'])
@@ -733,6 +752,33 @@ class Listprocessor:
 					self.argument['track']['cause']['kept'] = double[j]
 				else:
 					self.delete(k[1])
+	
+	def filter_by_rand(self, rule):
+		''' keep or discard amount of random rows that match given column values '''
+		subset = []
+		randomset = []
+		if (rule['data'].get('columns')):
+			for i, row in dict(self.list).items():
+				match = False
+				for column in rule['data']['columns']:
+					match = bool(re.search(rule['data']['columns'][column], row[column], re.IGNORECASE|re.MULTILINE))
+					if not match:
+						break
+				if not match:
+					continue
+				subset.append(i)
+		else:
+			subset = dict(self.list).keys()
+		randomset = random.sample(subset, min(len(subset), rule['data']['amount']))
+		for i in subset:
+			if i in randomset:
+				if rule['keep']:
+					continue
+			else:
+				if not rule['keep']:
+					continue
+			self.argument['track']['cause'] = ({'randomly selected row': i, 'should be kept': rule['keep']})
+			self.delete(i)
 
 def csvfilter(setting, argument = None):
 	''' initiate filter procedure '''
