@@ -1,5 +1,5 @@
 eel==0.15.3
-PyInstaller==5.8.0
+PyInstaller==5.13.1
 cchardet==2.1.7
 qrcode==7.4.2
 pillow==9.4.0
