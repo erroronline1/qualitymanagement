@@ -7,6 +7,7 @@ import sys
 import os
 import traceback
 import random
+import ast
 import xlsxwriter
 try:
 	from assistant import interface
@@ -27,7 +28,7 @@ $ filter --help    for overview
 else:
 	print ('<filter> as integrated module')
 
-print('built 20230701 by error on line 1 (erroronline.one)')
+print('built 20231208 by error on line 1 (erroronline.one)')
 
 DEFAULTJSON = {
 	"defaultset": 0,
@@ -127,6 +128,9 @@ DEFAULTJSON = {
 					"any":{
 						"ORIGININDEX": "COMPAREFILEINDEX"
 					}
+				},
+				"transfer":{
+					"NEWPARENTCOLUMN": "COMPARECOLUMN"
 				}
 			},
 			{
@@ -155,7 +159,7 @@ DEFAULTJSON = {
 		"modify":{
 			"add":{
 				"NEWCOLUMNNAME": "string",
-				"ANOTHERCOLUMNNAME" : "string"
+				"ANOTHERCOLUMNNAME" : ["PRICE", "*1.5"]
 			},
 			"replace":[
 				["NAME", "regex", "replacement"],
@@ -176,7 +180,8 @@ DEFAULTJSON = {
 		"format":{
 			"sheet": {
 				"width": 125,
-				"orientation": "landscape"
+				"orientation": "landscape",
+				"row-height":32
 			},
 			"columns":{
 				"ORIGININDEX":5,
@@ -267,6 +272,7 @@ HELPTEXT='''
             "match":
                 "all": dict with one or multiple "ORIGININDEX": "COMPAREFILEINDEX", kept if all match
                 "any": dict with one or multiple "ORIGININDEX": "COMPAREFILEINDEX", kept if at least one matches
+            "transfer": add a new column with comparison value
 
         "apply": "filter_by_monthinterval",
         "comment": description, will be displayed
@@ -286,6 +292,9 @@ HELPTEXT='''
 
     "modify": modifies the result
         "add": adds a column with the set value. if the name is already in use this will be replaced!
+               this can be used to insert excel-formulas in english notation as well.
+               if property is an array with number values and arithmetic operators it will try to calculate
+               comma will be replaced with a decimal point in the latter case. hope for a proper number format.
         "replace": replaces regex matches with the given value either at a specified field or in all
                    according to index 0 being a column name or none/null
         "remove": remove columns from result, may have been used solely for filtering
@@ -296,7 +305,7 @@ HELPTEXT='''
     "split": split output by matched patterns of column values into multiple files (csv, js) or sheets (xlsx)
 
     "format: optional in case of xlsx-exports
-        "sheet": global as width in points, orientation portrait or landscape by default
+        "sheet": global as width and line-height in points, orientation portrait or landscape by default
         "columns": dict of columns and their percentage portion 
 
     "evaluate": object/dict with colum-name keys and patterns as values that just create a warning, e.g. email verification
@@ -402,7 +411,7 @@ def export(RESULT):
 					if orientation == "portrait":
 						worksheet.set_portrait()
 				worksheet.set_margins(left = .25, right = .15, top = .5, bottom = .25)
-				worksheet.set_default_row(32)
+				worksheet.set_default_row(RESULT.setting['format']['sheet'].get('row-height') or 32)
 				worksheet.set_header(os.path.split(destination)[1] + ' - ' + (subset + ' - ' if isinstance(subset, str) else '') + datetime.now().strftime('%B %Y'))
 
 				# set column widths and store column number for supported style properties
@@ -464,18 +473,31 @@ def monthdiff(first, last, dateformat):
 	ldate['datetime'] = datetime(ldate['y'], ldate['m'], ldate['d'])
 	return round((ldate['datetime'] - fdate['datetime']).days / (365 / 12))
 
+def calculate(expression):
+	''' tries to calculate an expression, returns rounded number, otherwise string'''
+	try:
+		tree = ast.parse(''.join([(str(x).replace(',', '.')) for x in expression]), mode='eval')
+	except SyntaxError:
+		return ''.join(expression)   # not a python expression
+	if not all(isinstance(node, (ast.Expression,
+	ast.UnaryOp, ast.unaryop,
+	ast.BinOp, ast.operator,
+	ast.Num)) for node in ast.walk(tree)):
+		return ''.join(expression)   # not a mathematical expression (numbers and operators)
+	return round(eval(compile(tree, filename='', mode='eval')))
+
 class Listprocessor:
 	''' processes a csv list with filters '''
 	def __init__(self, setting, argument = None, is_child = False):
 		self.is_child = is_child
-		self.argument = argument if argument else {'track': {'column': None, 'values': None}, 'processedMonth':datetime.now().month, 'processedYear':datetime.now().year}
+		self.argument = argument if argument else {'track': {'column': None, 'values': None}, 'processedMonth':str(datetime.now().month), 'processedYear':str(datetime.now().year)}
 		self.setting = setting
 		self.list = {}
 		self.file = sourcefile(self.setting['filesetting']['source'])
 		try:
 			with open( self.file, newline='') as csvfile:
 				self.log('[*] loading source file ', self.file, '...')
-				#detect dialect, with quotes or without, idk, works well but not without
+				# detect dialect, with quotes or without, idk, works well but not without
 				rows = csvfile.readlines()
 				dialect = csv.Sniffer().sniff(list(rows)[self.setting['filesetting']['headerrowindex']])
 				csvfile.seek(0)
@@ -596,7 +618,11 @@ class Listprocessor:
 					if not rule in addedcolumns['add']:
 						addedcolumns['add'].append(rule)
 					for i in self.list:
-						self.list[i][rule] = modifications[modify][rule]
+						if isinstance(modifications[modify][rule], list):
+							expression = [self.list[i][possible_col] if possible_col in self.list[i] else possible_col for possible_col in modifications[modify][rule] ]
+						else:
+							expression = modifications[modify][rule]
+						self.list[i][rule] = calculate(expression)
 				if modify == 'replace':
 					for i, row in self.list.items():
 						for column in row:
@@ -714,6 +740,7 @@ class Listprocessor:
 		fprint('[*] comparing with ', rule['filesetting']['source'])
 		compare_list = Listprocessor(rule, {'track': {'column': None, 'values': None}, 'processedMonth': self.argument['processedMonth'], 'processedYear': self.argument['processedYear']}, True)
 		equals = set()
+		transfercolumns = rule.get('transfer')
 		for any_or_all in rule['match']:
 			compare_columns = rule['match'][any_or_all]
 			# prepare possibly needed amount of matches
@@ -730,6 +757,12 @@ class Listprocessor:
 						corresponded += 1
 					if (any_or_all == 'any' and True in correspond) or (any_or_all == 'all' and all(correspond)):
 						equals.add(i)
+						if transfercolumns:
+							for transfer in transfercolumns:
+								if not transfer in self.setting['filesetting']['columns']:
+									self.setting['filesetting']['columns'].append(transfer)
+								self.list[i][transfer] = cmp_row[transfercolumns[transfer]]
+
 		for i in dict(self.list):
 			if (i in equals) != rule['keep']:
 				self.argument['track']['cause'] = {'identified by': i , f"corresponding values for {json.dumps(rule['match'])} do{' not' if rule['keep'] else ''} match, matches should be kept ": rule['keep']}
