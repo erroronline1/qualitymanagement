@@ -46,7 +46,10 @@ End Sub
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Public Function SanitizeString(ByVal output As String) As String
+    dim lb
+    lb = "<br>"
     output = Replace(output, Chr(34), "'")
+    output = Replace(Replace(Replace(Replace(Replace(Replace(output, Chr(10), lb), Chr(13), lb), vbCr , lb), vbCrLf, lb), vbLf, lb), vbNewLine, lb)
     SanitizeString = Replace(output, "\", "/")
 End Function
 
